@@ -1,10 +1,7 @@
-# :hotel::heavy_plus_sign: ECSE321 Project: Team 12
+# ECSE321 Project: Team 12
 
-_(Edit this file as needed, then remove this sentence)._
 
 ## Project Overview
-
-_Provide a one-sentence overview of your project here._
 
 For more information about the application, please consult the wiki.
 
