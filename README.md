@@ -3,7 +3,7 @@
 
 ## Project Overview
 
-This web application facilitates the management of a local sport center. It provides a platform for the owner and instructor to schedule different types of classes and allows customers register to for specific sessions.
+This web application facilitates the management of a local sport center. It provides a platform for the owner and instructor to schedule different types of classes and allows customers to register for specific sessions.
 
 ## Team Members
 
