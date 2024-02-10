@@ -9,6 +9,7 @@ class Account {
   email;
   password;
   name;
+  Integer id;
 }
 
 class Owner {
