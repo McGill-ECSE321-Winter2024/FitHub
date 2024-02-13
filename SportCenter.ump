@@ -25,8 +25,8 @@ class Customer {
 }
 
 class Registration {
-  1 <- * Customer customer;
-  1 <- * Session session;
+  1 -> * Customer customer;
+  1 -> * Session session;
 }
 
 class Session {
@@ -77,7 +77,7 @@ class SportCenter {
   email;
   phoneNumber;
 
-  1 center <@>- * Course courses;
+  1 center <@>- 1..* Course courses;
   1 center <@>- * Location location;
   1 center <@>- * Account accounts;
 }
