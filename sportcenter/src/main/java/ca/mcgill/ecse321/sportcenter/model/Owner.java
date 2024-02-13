@@ -1,8 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-
 // line 16 "model.ump"
-// line 102 "model.ump"
+// line 101 "model.ump"
 public class Owner extends Account
 {
 

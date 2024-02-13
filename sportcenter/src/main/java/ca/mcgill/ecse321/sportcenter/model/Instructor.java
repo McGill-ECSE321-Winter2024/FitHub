@@ -1,8 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-
 // line 20 "model.ump"
-// line 107 "model.ump"
+// line 106 "model.ump"
 public class Instructor extends Account
 {
 

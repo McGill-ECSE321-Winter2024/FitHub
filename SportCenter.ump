@@ -77,7 +77,7 @@ class SportCenter {
   email;
   phoneNumber;
 
-  1 center <@>- 1..* Course courses;
+  1 center <@>- * Course courses;
   1 center <@>- * Location location;
   1 center <@>- * Account accounts;
 }

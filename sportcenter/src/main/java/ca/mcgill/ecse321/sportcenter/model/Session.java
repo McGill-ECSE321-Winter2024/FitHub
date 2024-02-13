@@ -1,9 +1,10 @@
 package ca.mcgill.ecse321.sportcenter.model;
+
 import java.sql.Time;
 import java.sql.Date;
 
 // line 33 "model.ump"
-// line 124 "model.ump"
+// line 121 "model.ump"
 public class Session
 {
 
@@ -21,14 +22,13 @@ public class Session
   //Session Associations
   private Instructor supervisor;
   private Course type;
-  private Registration registration;
   private Location location;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aType, Registration aRegistration, Location aLocation)
+  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aType, Location aLocation)
   {
     startTime = aStartTime;
     endTime = aEndTime;
@@ -42,10 +42,6 @@ public class Session
     if (!setType(aType))
     {
       throw new RuntimeException("Unable to create Session due to aType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    if (!setRegistration(aRegistration))
-    {
-      throw new RuntimeException("Unable to create Session due to aRegistration. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     if (!setLocation(aLocation))
     {
@@ -132,11 +128,6 @@ public class Session
     return type;
   }
   /* Code from template association_GetOne */
-  public Registration getRegistration()
-  {
-    return registration;
-  }
-  /* Code from template association_GetOne */
   public Location getLocation()
   {
     return location;
@@ -164,17 +155,6 @@ public class Session
     return wasSet;
   }
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setRegistration(Registration aNewRegistration)
-  {
-    boolean wasSet = false;
-    if (aNewRegistration != null)
-    {
-      registration = aNewRegistration;
-      wasSet = true;
-    }
-    return wasSet;
-  }
-  /* Code from template association_SetUnidirectionalOne */
   public boolean setLocation(Location aNewLocation)
   {
     boolean wasSet = false;
@@ -190,7 +170,6 @@ public class Session
   {
     supervisor = null;
     type = null;
-    registration = null;
     location = null;
   }
 
@@ -205,7 +184,6 @@ public class Session
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "supervisor = "+(getSupervisor()!=null?Integer.toHexString(System.identityHashCode(getSupervisor())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "type = "+(getType()!=null?Integer.toHexString(System.identityHashCode(getType())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "registration = "+(getRegistration()!=null?Integer.toHexString(System.identityHashCode(getRegistration())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "location = "+(getLocation()!=null?Integer.toHexString(System.identityHashCode(getLocation())):"null");
   }
 }

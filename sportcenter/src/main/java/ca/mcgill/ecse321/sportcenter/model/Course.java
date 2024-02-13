@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
+
 // line 49 "model.ump"
-// line 137 "model.ump"
+// line 133 "model.ump"
 public class Course
 {
 

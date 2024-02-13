@@ -2,8 +2,8 @@ package ca.mcgill.ecse321.sportcenter.model;
 
 import java.sql.Date;
 
-// line 57 "model.ump"
-// line 142 "model.ump"
+// line 60 "model.ump"
+// line 138 "model.ump"
 public class BillingAccount
 {
 
@@ -15,7 +15,7 @@ public class BillingAccount
   private int cardNumber;
   private String cardHolder;
   private String billingAddress;
-  private int CVV;
+  private int cvv;
   private Date expirationDate;
   private boolean isDefault;
   private int id;
@@ -27,12 +27,12 @@ public class BillingAccount
   // CONSTRUCTOR
   //------------------------
 
-  public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCVV, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
+  public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
   {
     cardNumber = aCardNumber;
     cardHolder = aCardHolder;
     billingAddress = aBillingAddress;
-    CVV = aCVV;
+    cvv = aCvv;
     expirationDate = aExpirationDate;
     isDefault = aIsDefault;
     id = aId;
@@ -70,10 +70,10 @@ public class BillingAccount
     return wasSet;
   }
 
-  public boolean setCVV(int aCVV)
+  public boolean setCvv(int aCvv)
   {
     boolean wasSet = false;
-    CVV = aCVV;
+    cvv = aCvv;
     wasSet = true;
     return wasSet;
   }
@@ -117,9 +117,9 @@ public class BillingAccount
     return billingAddress;
   }
 
-  public int getCVV()
+  public int getCvv()
   {
-    return CVV;
+    return cvv;
   }
 
   public Date getExpirationDate()
@@ -165,7 +165,7 @@ public class BillingAccount
             "cardNumber" + ":" + getCardNumber()+ "," +
             "cardHolder" + ":" + getCardHolder()+ "," +
             "billingAddress" + ":" + getBillingAddress()+ "," +
-            "CVV" + ":" + getCVV()+ "," +
+            "cvv" + ":" + getCvv()+ "," +
             "isDefault" + ":" + getIsDefault()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "expirationDate" + "=" + (getExpirationDate() != null ? !getExpirationDate().equals(this)  ? getExpirationDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
