@@ -63,7 +63,7 @@ class BillingAccount {
   Date expirationDate;
   boolean isDefault;
   Integer id;
-  0..* billingAccount -> 1 Customer customer;
+  0..* billingAccounts -> 1 Customer customer;
 }
 
 
