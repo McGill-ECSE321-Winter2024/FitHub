@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+
 // line 24 "model.ump"
 // line 111 "model.ump"
 public class Customer extends Account

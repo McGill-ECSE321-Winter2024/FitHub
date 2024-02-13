@@ -1,10 +1,9 @@
 package ca.mcgill.ecse321.sportcenter.model;
-
 import java.sql.Time;
 import java.sql.Date;
 
 // line 33 "model.ump"
-// line 121 "model.ump"
+// line 126 "model.ump"
 public class Session
 {
 
@@ -21,14 +20,14 @@ public class Session
 
   //Session Associations
   private Instructor supervisor;
-  private Course type;
+  private Course courseType;
   private Location location;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aType, Location aLocation)
+  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aCourseType, Location aLocation)
   {
     startTime = aStartTime;
     endTime = aEndTime;
@@ -39,9 +38,9 @@ public class Session
     {
       throw new RuntimeException("Unable to create Session due to aSupervisor. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    if (!setType(aType))
+    if (!setCourseType(aCourseType))
     {
-      throw new RuntimeException("Unable to create Session due to aType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create Session due to aCourseType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
     if (!setLocation(aLocation))
     {
@@ -123,9 +122,9 @@ public class Session
     return supervisor;
   }
   /* Code from template association_GetOne */
-  public Course getType()
+  public Course getCourseType()
   {
-    return type;
+    return courseType;
   }
   /* Code from template association_GetOne */
   public Location getLocation()
@@ -144,12 +143,12 @@ public class Session
     return wasSet;
   }
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setType(Course aNewType)
+  public boolean setCourseType(Course aNewCourseType)
   {
     boolean wasSet = false;
-    if (aNewType != null)
+    if (aNewCourseType != null)
     {
-      type = aNewType;
+      courseType = aNewCourseType;
       wasSet = true;
     }
     return wasSet;
@@ -169,7 +168,7 @@ public class Session
   public void delete()
   {
     supervisor = null;
-    type = null;
+    courseType = null;
     location = null;
   }
 
@@ -183,7 +182,7 @@ public class Session
             "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "supervisor = "+(getSupervisor()!=null?Integer.toHexString(System.identityHashCode(getSupervisor())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "type = "+(getType()!=null?Integer.toHexString(System.identityHashCode(getType())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "courseType = "+(getCourseType()!=null?Integer.toHexString(System.identityHashCode(getCourseType())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "location = "+(getLocation()!=null?Integer.toHexString(System.identityHashCode(getLocation())):"null");
   }
 }

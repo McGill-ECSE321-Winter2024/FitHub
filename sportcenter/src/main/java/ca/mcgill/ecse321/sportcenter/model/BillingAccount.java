@@ -2,8 +2,8 @@ package ca.mcgill.ecse321.sportcenter.model;
 
 import java.sql.Date;
 
-// line 60 "model.ump"
-// line 138 "model.ump"
+// line 59 "model.ump"
+// line 146 "model.ump"
 public class BillingAccount
 {
 

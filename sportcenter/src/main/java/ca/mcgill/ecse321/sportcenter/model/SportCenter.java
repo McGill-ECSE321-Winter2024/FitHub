@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.*;
 
 // line 71 "model.ump"
-// line 144 "model.ump"
+// line 152 "model.ump"
 public class SportCenter
 {
 
@@ -23,7 +23,7 @@ public class SportCenter
 
   //SportCenter Associations
   private List<Course> courses;
-  private List<Location> location;
+  private List<Location> locations;
   private List<Account> accounts;
 
   //------------------------
@@ -40,7 +40,7 @@ public class SportCenter
     email = aEmail;
     phoneNumber = aPhoneNumber;
     courses = new ArrayList<Course>();
-    location = new ArrayList<Location>();
+    locations = new ArrayList<Location>();
     accounts = new ArrayList<Account>();
   }
 
@@ -171,31 +171,31 @@ public class SportCenter
   /* Code from template association_GetMany */
   public Location getLocation(int index)
   {
-    Location aLocation = location.get(index);
+    Location aLocation = locations.get(index);
     return aLocation;
   }
 
-  public List<Location> getLocation()
+  public List<Location> getLocations()
   {
-    List<Location> newLocation = Collections.unmodifiableList(location);
-    return newLocation;
+    List<Location> newLocations = Collections.unmodifiableList(locations);
+    return newLocations;
   }
 
-  public int numberOfLocation()
+  public int numberOfLocations()
   {
-    int number = location.size();
+    int number = locations.size();
     return number;
   }
 
-  public boolean hasLocation()
+  public boolean hasLocations()
   {
-    boolean has = location.size() > 0;
+    boolean has = locations.size() > 0;
     return has;
   }
 
   public int indexOfLocation(Location aLocation)
   {
-    int index = location.indexOf(aLocation);
+    int index = locations.indexOf(aLocation);
     return index;
   }
   /* Code from template association_GetMany */
@@ -301,20 +301,20 @@ public class SportCenter
     return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfLocation()
+  public static int minimumNumberOfLocations()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Location addLocation(String aFoor, String aRoom)
+  public Location addLocation(String aFloor, String aRoom)
   {
-    return new Location(aFoor, aRoom, this);
+    return new Location(aFloor, aRoom, this);
   }
 
   public boolean addLocation(Location aLocation)
   {
     boolean wasAdded = false;
-    if (location.contains(aLocation)) { return false; }
+    if (locations.contains(aLocation)) { return false; }
     SportCenter existingCenter = aLocation.getCenter();
     boolean isNewCenter = existingCenter != null && !this.equals(existingCenter);
     if (isNewCenter)
@@ -323,7 +323,7 @@ public class SportCenter
     }
     else
     {
-      location.add(aLocation);
+      locations.add(aLocation);
     }
     wasAdded = true;
     return wasAdded;
@@ -335,7 +335,7 @@ public class SportCenter
     //Unable to remove aLocation, as it must always have a center
     if (!this.equals(aLocation.getCenter()))
     {
-      location.remove(aLocation);
+      locations.remove(aLocation);
       wasRemoved = true;
     }
     return wasRemoved;
@@ -347,9 +347,9 @@ public class SportCenter
     if(addLocation(aLocation))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfLocation()) { index = numberOfLocation() - 1; }
-      location.remove(aLocation);
-      location.add(index, aLocation);
+      if(index > numberOfLocations()) { index = numberOfLocations() - 1; }
+      locations.remove(aLocation);
+      locations.add(index, aLocation);
       wasAdded = true;
     }
     return wasAdded;
@@ -358,12 +358,12 @@ public class SportCenter
   public boolean addOrMoveLocationAt(Location aLocation, int index)
   {
     boolean wasAdded = false;
-    if(location.contains(aLocation))
+    if(locations.contains(aLocation))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfLocation()) { index = numberOfLocation() - 1; }
-      location.remove(aLocation);
-      location.add(index, aLocation);
+      if(index > numberOfLocations()) { index = numberOfLocations() - 1; }
+      locations.remove(aLocation);
+      locations.add(index, aLocation);
       wasAdded = true;
     } 
     else 
@@ -451,11 +451,11 @@ public class SportCenter
       courses.remove(aCourse);
     }
     
-    while (location.size() > 0)
+    while (locations.size() > 0)
     {
-      Location aLocation = location.get(location.size() - 1);
+      Location aLocation = locations.get(locations.size() - 1);
       aLocation.delete();
-      location.remove(aLocation);
+      locations.remove(aLocation);
     }
     
     while (accounts.size() > 0)

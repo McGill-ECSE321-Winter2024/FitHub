@@ -1,5 +1,4 @@
 package ca.mcgill.ecse321.sportcenter.model;
-
 // line 2 "model.ump"
 // line 90 "model.ump"
 public class Image

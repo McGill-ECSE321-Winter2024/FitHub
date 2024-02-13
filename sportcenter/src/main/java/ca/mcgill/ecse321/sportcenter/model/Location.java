@@ -1,7 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+
 // line 43 "model.ump"
-// line 128 "model.ump"
+// line 135 "model.ump"
 public class Location
 {
 
@@ -10,7 +11,7 @@ public class Location
   //------------------------
 
   //Location Attributes
-  private String foor;
+  private String floor;
   private String room;
 
   //Location Associations
@@ -20,9 +21,9 @@ public class Location
   // CONSTRUCTOR
   //------------------------
 
-  public Location(String aFoor, String aRoom, SportCenter aCenter)
+  public Location(String aFloor, String aRoom, SportCenter aCenter)
   {
-    foor = aFoor;
+    floor = aFloor;
     room = aRoom;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
@@ -35,10 +36,10 @@ public class Location
   // INTERFACE
   //------------------------
 
-  public boolean setFoor(String aFoor)
+  public boolean setFloor(String aFloor)
   {
     boolean wasSet = false;
-    foor = aFoor;
+    floor = aFloor;
     wasSet = true;
     return wasSet;
   }
@@ -51,9 +52,9 @@ public class Location
     return wasSet;
   }
 
-  public String getFoor()
+  public String getFloor()
   {
-    return foor;
+    return floor;
   }
 
   public String getRoom()
@@ -99,7 +100,7 @@ public class Location
   public String toString()
   {
     return super.toString() + "["+
-            "foor" + ":" + getFoor()+ "," +
+            "floor" + ":" + getFloor()+ "," +
             "room" + ":" + getRoom()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "center = "+(getCenter()!=null?Integer.toHexString(System.identityHashCode(getCenter())):"null");
   }
