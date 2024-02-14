@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
 // line 8 "model.ump"
-// line 96 "model.ump"
+// line 95 "model.ump"
 public abstract class Account
 {
 

@@ -1,9 +1,10 @@
 package ca.mcgill.ecse321.sportcenter.model;
+
 import java.sql.Time;
 import java.sql.Date;
 
 // line 33 "model.ump"
-// line 126 "model.ump"
+// line 120 "model.ump"
 public class Session
 {
 

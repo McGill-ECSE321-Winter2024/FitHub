@@ -1,8 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.model;
-
-
 // line 43 "model.ump"
-// line 135 "model.ump"
+// line 126 "model.ump"
 public class Location
 {
 

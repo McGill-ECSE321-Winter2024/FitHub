@@ -1,7 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+
 // line 28 "model.ump"
-// line 116 "model.ump"
+// line 115 "model.ump"
 public class Registration
 {
 

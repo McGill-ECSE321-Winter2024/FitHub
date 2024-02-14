@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.*;
 
 // line 71 "model.ump"
-// line 152 "model.ump"
+// line 142 "model.ump"
 public class SportCenter
 {
 
