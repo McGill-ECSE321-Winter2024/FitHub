@@ -1,0 +1,83 @@
+class Image {
+  url;
+  Integer id;
+  0..1 pfp -<@> 1 Account account;
+}
+
+class Account {
+  abstract;
+  email;
+  password;
+  name;
+  Integer id;
+}
+
+class Owner {
+  isA Account;
+}
+
+class Instructor {
+  isA Account;
+}
+
+class Customer {
+  isA Account;
+}
+
+class Registration {
+  * registrations -> 1 Customer customer;
+  * registrations -> 1 Session session;
+}
+
+class Session {
+  Time startTime;
+  Time endTime;
+  Date date;
+  Integer capacity;
+  Integer id;
+  * sessions -> 1 Instructor supervisor;
+  * sessions -> 1 Course courseType;
+}
+
+class Location {
+  floor;
+  room;
+  1 location <- * Session sessions;
+}
+
+class Course {
+  name;
+  Difficulty difficulty;
+  Status status;
+  description;
+  Integer id;
+  enum Difficulty {Beginner, Intermediate, Advanced}
+  enum Status {Approved, Pending, Closed, Disaproved}
+}
+
+class BillingAccount {
+  Integer cardNumber;
+  cardHolder;
+  billingAddress;
+  Integer cvv;
+  Date expirationDate;
+  boolean isDefault;
+  Integer id;
+  0..* billingAccounts -> 1 Customer customer;
+}
+
+
+class SportCenter {
+  Integer id;
+  name;
+  Time openingTime;
+  Time closingTime;
+  address;
+  email;
+  phoneNumber;
+
+  1 center <@>- * Course courses;
+  1 center <@>- * Location locations;
+  1 center <@>- * Account accounts;
+}
+
