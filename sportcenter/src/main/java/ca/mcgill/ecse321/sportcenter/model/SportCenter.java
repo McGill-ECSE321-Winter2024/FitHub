@@ -3,8 +3,14 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.util.*;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 // line 71 "model.ump"
 // line 142 "model.ump"
+@Entity
 public class SportCenter
 {
 
@@ -13,6 +19,8 @@ public class SportCenter
   //------------------------
 
   //SportCenter Attributes
+  @Id
+  @GeneratedValue
   private int id;
   private String name;
   private Time openingTime;
@@ -22,8 +30,11 @@ public class SportCenter
   private String phoneNumber;
 
   //SportCenter Associations
+  @OneToMany
   private List<Course> courses;
+  @OneToMany
   private List<Location> locations;
+  @OneToMany
   private List<Account> accounts;
 
   //------------------------
@@ -139,6 +150,7 @@ public class SportCenter
     return phoneNumber;
   }
   /* Code from template association_GetMany */
+
   public Course getCourse(int index)
   {
     Course aCourse = courses.get(index);
