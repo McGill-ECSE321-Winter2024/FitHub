@@ -1,10 +1,7 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+package ca.mcgill.ecse321.sportcenter.model;
 
-
-
-// line 50 "model.ump"
-// line 142 "model.ump"
+// line 49 "model.ump"
+// line 131 "model.ump"
 public class Course
 {
 

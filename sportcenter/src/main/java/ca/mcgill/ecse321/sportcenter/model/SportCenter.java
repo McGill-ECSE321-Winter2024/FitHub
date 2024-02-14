@@ -1,12 +1,10 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
+package ca.mcgill.ecse321.sportcenter.model;
 
 import java.sql.Time;
 import java.util.*;
 
-// line 72 "model.ump"
-// line 154 "model.ump"
+// line 71 "model.ump"
+// line 142 "model.ump"
 public class SportCenter
 {
 

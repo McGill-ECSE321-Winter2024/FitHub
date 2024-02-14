@@ -1,19 +1,14 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
+package ca.mcgill.ecse321.sportcenter.model;
 
 
 // line 28 "model.ump"
-// line 117 "model.ump"
+// line 115 "model.ump"
 public class Registration
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
-
-  //Registration Attributes
-  private int id;
 
   //Registration Associations
   private Customer customer;
@@ -23,9 +18,8 @@ public class Registration
   // CONSTRUCTOR
   //------------------------
 
-  public Registration(int aId, Customer aCustomer, Session aSession)
+  public Registration(Customer aCustomer, Session aSession)
   {
-    id = aId;
     if (!setCustomer(aCustomer))
     {
       throw new RuntimeException("Unable to create Registration due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
@@ -39,19 +33,6 @@ public class Registration
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public int getId()
-  {
-    return id;
-  }
   /* Code from template association_GetOne */
   public Customer getCustomer()
   {
@@ -91,12 +72,4 @@ public class Registration
     session = null;
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "session = "+(getSession()!=null?Integer.toHexString(System.identityHashCode(getSession())):"null");
-  }
 }

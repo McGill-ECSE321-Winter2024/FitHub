@@ -1,10 +1,6 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
-
-
-// line 44 "model.ump"
-// line 136 "model.ump"
+package ca.mcgill.ecse321.sportcenter.model;
+// line 43 "model.ump"
+// line 126 "model.ump"
 public class Location
 {
 
