@@ -1,19 +1,26 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-// line 8 "model.ump"
-// line 95 "model.ump"
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account
 {
 
   //------------------------
   // MEMBER VARIABLES
-  //------------------------
-
-  //Account Attributes
+  //-----------------------
+  @Id
+  @GeneratedValue
+  private int id;
   private String email;
   private String password;
   private String name;
-  private int id;
 
   //Account Associations
   private Image pfp;
