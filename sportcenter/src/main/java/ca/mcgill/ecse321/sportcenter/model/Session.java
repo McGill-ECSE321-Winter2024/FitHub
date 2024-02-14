@@ -3,8 +3,12 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 33 "model.ump"
-// line 120 "model.ump"
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
+@Entity
 public class Session
 {
 
@@ -13,11 +17,13 @@ public class Session
   //------------------------
 
   //Session Attributes
+  @Id
+  @GeneratedValue
+  private int id;
   private Time startTime;
   private Time endTime;
   private Date date;
   private int capacity;
-  private int id;
 
   //Session Associations
   private Instructor supervisor;
