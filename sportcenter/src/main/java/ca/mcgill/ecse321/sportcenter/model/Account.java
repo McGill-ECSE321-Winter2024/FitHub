@@ -1,7 +1,10 @@
-package ca.mcgill.ecse321.sportcenter.model;
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
 
 // line 8 "model.ump"
-// line 95 "model.ump"
+// line 97 "model.ump"
 public abstract class Account
 {
 

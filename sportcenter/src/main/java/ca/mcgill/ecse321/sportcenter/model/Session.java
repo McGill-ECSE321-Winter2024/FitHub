@@ -1,10 +1,12 @@
-package ca.mcgill.ecse321.sportcenter.model;
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
 
 import java.sql.Time;
 import java.sql.Date;
 
-// line 33 "model.ump"
-// line 120 "model.ump"
+// line 34 "model.ump"
+// line 127 "model.ump"
 public class Session
 {
 

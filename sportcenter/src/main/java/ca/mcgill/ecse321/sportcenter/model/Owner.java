@@ -1,6 +1,10 @@
-package ca.mcgill.ecse321.sportcenter.model;
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
+
+
+
 // line 16 "model.ump"
-// line 100 "model.ump"
+// line 102 "model.ump"
 public class Owner extends Account
 {
 

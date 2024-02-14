@@ -25,7 +25,8 @@ class Customer {
 }
 
 class Registration {
-  * registrations -> 1 Customer customer;
+  Integer id;
+* registrations -> 1 Customer customer;
   * registrations -> 1 Session session;
 }
 
