@@ -1,7 +1,9 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Id;
 
 @Entity
 public class Location
@@ -9,6 +11,9 @@ public class Location
 
   private String floor;
   private String room;
+  
+  @Id
+  @GeneratedValue
   private int id;
 
   @ManyToOne
