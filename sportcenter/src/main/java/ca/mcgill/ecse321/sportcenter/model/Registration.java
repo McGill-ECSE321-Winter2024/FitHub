@@ -1,75 +1,74 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+import java.io.Serializable;
+import java.util.Objects;
 
-// line 28 "model.ump"
-// line 115 "model.ump"
-public class Registration
-{
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
+@Entity
+public class Registration {
+    @EmbeddedId
+    private Key key;
 
-  //Registration Associations
-  private Customer customer;
-  private Session session;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public Registration(Customer aCustomer, Session aSession)
-  {
-    if (!setCustomer(aCustomer))
-    {
-      throw new RuntimeException("Unable to create Registration due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    public Registration(Key key) {
+        this.key = key;
     }
-    if (!setSession(aSession))
-    {
-      throw new RuntimeException("Unable to create Registration due to aSession. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-  }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
-  /* Code from template association_GetOne */
-  public Customer getCustomer()
-  {
-    return customer;
-  }
-  /* Code from template association_GetOne */
-  public Session getSession()
-  {
-    return session;
-  }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setCustomer(Customer aNewCustomer)
-  {
-    boolean wasSet = false;
-    if (aNewCustomer != null)
-    {
-      customer = aNewCustomer;
-      wasSet = true;
+    public Key getKey() {
+        return key;
     }
-    return wasSet;
-  }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setSession(Session aNewSession)
-  {
-    boolean wasSet = false;
-    if (aNewSession != null)
-    {
-      session = aNewSession;
-      wasSet = true;
+
+    public void setKey(Key key) {
+        this.key = key;
     }
-    return wasSet;
-  }
 
-  public void delete()
-  {
-    customer = null;
-    session = null;
-  }
+    @Embeddable
+    public static class Key implements Serializable {
+        @ManyToOne
+        private Customer customer;
+        @ManyToOne
+        private Session session;
 
+        public Key() {
+        }
+
+        public Key(Customer customer, Session session) {
+            this.customer = customer;
+            this.session = session;
+        }
+
+        public Customer getCustomer() {
+            return customer;
+        }
+
+        public Session getSession() {
+            return session;
+        }
+
+        public void setCustomer(Customer customer) {
+            this.customer = customer;
+        }
+
+        public void setSession(Session session) {
+            this.session = session;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof Key)) {
+                return false;
+            }
+            Key other = (Key) obj;
+            return this.getCustomer().getId() == other.getCustomer().getId()
+                    && this.getSession().getId() == other.getSession().getId();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.getCustomer().getId(), this.getSession().getId());
+        }
+    }
 }

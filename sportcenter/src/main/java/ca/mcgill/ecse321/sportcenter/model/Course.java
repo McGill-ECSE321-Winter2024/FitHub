@@ -8,17 +8,8 @@ import jakarta.persistence.GeneratedValue;
 @Entity
 public class Course
 {
-
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
-
   public enum Difficulty { Beginner, Intermediate, Advanced }
   public enum Status { Approved, Pending, Closed, Disaproved }
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
 
   @Id
   @GeneratedValue
@@ -31,10 +22,6 @@ public class Course
   //Course Associations
   @ManyToOne
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, SportCenter aCenter)
   {
@@ -49,10 +36,6 @@ public class Course
       throw new RuntimeException("Unable to create course due to center. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setName(String aName)
   {
@@ -118,12 +101,12 @@ public class Course
   {
     return id;
   }
-  /* Code from template association_GetOne */
+
   public SportCenter getCenter()
   {
     return center;
   }
-  /* Code from template association_SetOneToMany */
+  
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;

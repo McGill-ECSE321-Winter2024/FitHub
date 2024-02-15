@@ -28,10 +28,6 @@ public class BillingAccount
   @ManyToOne
   private Customer customer;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
   public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
   {
     cardNumber = aCardNumber;
@@ -46,10 +42,6 @@ public class BillingAccount
       throw new RuntimeException("Unable to create BillingAccount due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setCardNumber(int aCardNumber)
   {
@@ -141,13 +133,12 @@ public class BillingAccount
   {
     return id;
   }
-  /* Code from template association_GetOne */
   
   public Customer getCustomer()
   {
     return customer;
   }
-  /* Code from template association_SetUnidirectionalOne */
+  
   public boolean setCustomer(Customer aNewCustomer)
   {
     boolean wasSet = false;
