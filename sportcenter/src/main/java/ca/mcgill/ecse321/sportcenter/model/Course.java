@@ -1,16 +1,26 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GeneratedValue;
+
+@Entity
 public class Course
 {
   public enum Difficulty { Beginner, Intermediate, Advanced }
   public enum Status { Approved, Pending, Closed, Disaproved }
 
+  @Id
+  @GeneratedValue
+  private int id;
   private String name;
   private Difficulty difficulty;
   private Status status;
   private String description;
-  private int id;
-
+  
+  //Course Associations
+  @ManyToOne
   private SportCenter center;
 
   public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, SportCenter aCenter)

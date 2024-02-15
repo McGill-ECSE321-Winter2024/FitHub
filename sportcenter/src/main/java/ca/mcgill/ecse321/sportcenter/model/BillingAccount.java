@@ -1,16 +1,31 @@
 package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Date;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GeneratedValue;
+
+@Entity
 public class BillingAccount
 {
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  @Id
+  @GeneratedValue
+  private int id;
   private int cardNumber;
   private String cardHolder;
   private String billingAddress;
   private int cvv;
   private Date expirationDate;
   private boolean isDefault;
-  private int id;
 
+  //BillingAccount Associations
+  @ManyToOne
   private Customer customer;
 
   public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
