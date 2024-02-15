@@ -11,10 +11,6 @@ import jakarta.persistence.InheritanceType;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //-----------------------
   @Id
   @GeneratedValue
   private int id;
@@ -22,13 +18,8 @@ public abstract class Account
   private String password;
   private String name;
 
-  //Account Associations
   private Image pfp;
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Account(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
   {
@@ -42,10 +33,6 @@ public abstract class Account
       throw new RuntimeException("Unable to create account due to center. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setEmail(String aEmail)
   {
@@ -98,7 +85,7 @@ public abstract class Account
   {
     return id;
   }
-  /* Code from template association_GetOne */
+  
   public Image getPfp()
   {
     return pfp;
@@ -109,18 +96,17 @@ public abstract class Account
     boolean has = pfp != null;
     return has;
   }
-  /* Code from template association_GetOne */
+  
   public SportCenter getCenter()
   {
     return center;
   }
-  /* Code from template association_SetOptionalOneToOne */
+  
   public boolean setPfp(Image aNewPfp)
   {
     boolean wasSet = false;
     if (pfp != null && !pfp.equals(aNewPfp) && equals(pfp.getAccount()))
     {
-      //Unable to setPfp, as existing pfp would become an orphan
       return wasSet;
     }
 
@@ -141,7 +127,7 @@ public abstract class Account
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
+  
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;

@@ -3,16 +3,8 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.util.*;
 
-// line 71 "model.ump"
-// line 142 "model.ump"
 public class SportCenter
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //SportCenter Attributes
   private int id;
   private String name;
   private Time openingTime;
@@ -21,14 +13,9 @@ public class SportCenter
   private String email;
   private String phoneNumber;
 
-  //SportCenter Associations
   private List<Course> courses;
   private List<Location> locations;
   private List<Account> accounts;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public SportCenter(int aId, String aName, Time aOpeningTime, Time aClosingTime, String aAddress, String aEmail, String aPhoneNumber)
   {
@@ -43,10 +30,6 @@ public class SportCenter
     locations = new ArrayList<Location>();
     accounts = new ArrayList<Account>();
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setId(int aId)
   {
@@ -138,7 +121,7 @@ public class SportCenter
   {
     return phoneNumber;
   }
-  /* Code from template association_GetMany */
+
   public Course getCourse(int index)
   {
     Course aCourse = courses.get(index);
@@ -168,7 +151,7 @@ public class SportCenter
     int index = courses.indexOf(aCourse);
     return index;
   }
-  /* Code from template association_GetMany */
+
   public Location getLocation(int index)
   {
     Location aLocation = locations.get(index);
@@ -198,7 +181,7 @@ public class SportCenter
     int index = locations.indexOf(aLocation);
     return index;
   }
-  /* Code from template association_GetMany */
+
   public Account getAccount(int index)
   {
     Account aAccount = accounts.get(index);
@@ -228,12 +211,12 @@ public class SportCenter
     int index = accounts.indexOf(aAccount);
     return index;
   }
-  /* Code from template association_MinimumNumberOfMethod */
+
   public static int minimumNumberOfCourses()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
+
   public Course addCourse(String aName, Course.Difficulty aDifficulty, Course.Status aStatus, String aDescription, int aId)
   {
     return new Course(aName, aDifficulty, aStatus, aDescription, aId, this);
@@ -260,7 +243,7 @@ public class SportCenter
   public boolean removeCourse(Course aCourse)
   {
     boolean wasRemoved = false;
-    //Unable to remove aCourse, as it must always have a center
+
     if (!this.equals(aCourse.getCenter()))
     {
       courses.remove(aCourse);
@@ -268,7 +251,7 @@ public class SportCenter
     }
     return wasRemoved;
   }
-  /* Code from template association_AddIndexControlFunctions */
+
   public boolean addCourseAt(Course aCourse, int index)
   {  
     boolean wasAdded = false;
@@ -300,12 +283,12 @@ public class SportCenter
     }
     return wasAdded;
   }
-  /* Code from template association_MinimumNumberOfMethod */
+
   public static int minimumNumberOfLocations()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
+
   public Location addLocation(String aFloor, String aRoom)
   {
     return new Location(aFloor, aRoom, this);
@@ -332,7 +315,7 @@ public class SportCenter
   public boolean removeLocation(Location aLocation)
   {
     boolean wasRemoved = false;
-    //Unable to remove aLocation, as it must always have a center
+
     if (!this.equals(aLocation.getCenter()))
     {
       locations.remove(aLocation);
@@ -340,7 +323,7 @@ public class SportCenter
     }
     return wasRemoved;
   }
-  /* Code from template association_AddIndexControlFunctions */
+
   public boolean addLocationAt(Location aLocation, int index)
   {  
     boolean wasAdded = false;
@@ -372,14 +355,12 @@ public class SportCenter
     }
     return wasAdded;
   }
-  /* Code from template association_MinimumNumberOfMethod */
+
   public static int minimumNumberOfAccounts()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-
-
+  
   public boolean addAccount(Account aAccount)
   {
     boolean wasAdded = false;

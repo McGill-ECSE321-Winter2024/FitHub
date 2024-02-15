@@ -1,23 +1,11 @@
 package ca.mcgill.ecse321.sportcenter.model;
-// line 43 "model.ump"
-// line 126 "model.ump"
+
 public class Location
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Location Attributes
   private String floor;
   private String room;
 
-  //Location Associations
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Location(String aFloor, String aRoom, SportCenter aCenter)
   {
@@ -29,10 +17,6 @@ public class Location
       throw new RuntimeException("Unable to create location due to center. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setFloor(String aFloor)
   {
@@ -59,12 +43,12 @@ public class Location
   {
     return room;
   }
-  /* Code from template association_GetOne */
+
   public SportCenter getCenter()
   {
     return center;
   }
-  /* Code from template association_SetOneToMany */
+  
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;
@@ -93,7 +77,6 @@ public class Location
       placeholderCenter.removeLocation(this);
     }
   }
-
 
   public String toString()
   {
