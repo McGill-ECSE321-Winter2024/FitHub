@@ -1,7 +1,10 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-// line 49 "model.ump"
-// line 131 "model.ump"
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+
+@Entity
 public class Course
 {
 
@@ -16,13 +19,14 @@ public class Course
   // MEMBER VARIABLES
   //------------------------
 
-  //Course Attributes
+  @Id
+  @GeneratedValue
+  private int id;
   private String name;
   private Difficulty difficulty;
   private Status status;
   private String description;
-  private int id;
-
+  
   //Course Associations
   private SportCenter center;
 
