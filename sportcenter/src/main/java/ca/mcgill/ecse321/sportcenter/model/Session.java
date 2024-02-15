@@ -34,13 +34,12 @@ public class Session
   // CONSTRUCTOR
   //------------------------
 
-  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aCourseType, Location aLocation)
+  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation)
   {
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;
     capacity = aCapacity;
-    id = aId;
     if (!setSupervisor(aSupervisor))
     {
       throw new RuntimeException("Unable to create Session due to aSupervisor. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
