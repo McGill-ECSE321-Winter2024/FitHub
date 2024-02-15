@@ -1,16 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Date;
 
-// line 59 "model.ump"
-// line 136 "model.ump"
 public class BillingAccount
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //BillingAccount Attributes
   private int cardNumber;
   private String cardHolder;
   private String billingAddress;
@@ -19,12 +11,7 @@ public class BillingAccount
   private boolean isDefault;
   private int id;
 
-  //BillingAccount Associations
   private Customer customer;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
   {
@@ -40,10 +27,6 @@ public class BillingAccount
       throw new RuntimeException("Unable to create BillingAccount due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setCardNumber(int aCardNumber)
   {
@@ -135,12 +118,12 @@ public class BillingAccount
   {
     return id;
   }
-  /* Code from template association_GetOne */
+  
   public Customer getCustomer()
   {
     return customer;
   }
-  /* Code from template association_SetUnidirectionalOne */
+  
   public boolean setCustomer(Customer aNewCustomer)
   {
     boolean wasSet = false;

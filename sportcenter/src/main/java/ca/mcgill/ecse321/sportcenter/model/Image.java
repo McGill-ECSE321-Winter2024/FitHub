@@ -3,28 +3,16 @@ package ca.mcgill.ecse321.sportcenter.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-// line 2 "model.ump"
-// line 90 "model.ump"
+
 @Entity
 public class Image
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Image Attributes
   @Id
   @GeneratedValue
   private int id;
   private String url;
 
-  //Image Associations
   private Account account;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Image(String aUrl, int aId, Account aAccount)
   {
@@ -36,10 +24,6 @@ public class Image
       throw new RuntimeException("Unable to create pfp due to account. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setUrl(String aUrl)
   {
@@ -66,25 +50,23 @@ public class Image
   {
     return id;
   }
-  /* Code from template association_GetOne */
+  
   public Account getAccount()
   {
     return account;
   }
-  /* Code from template association_SetOneToOptionalOne */
+  
   public boolean setAccount(Account aNewAccount)
   {
     boolean wasSet = false;
     if (aNewAccount == null)
     {
-      //Unable to setAccount to null, as pfp must always be associated to a account
       return wasSet;
     }
     
     Image existingPfp = aNewAccount.getPfp();
     if (existingPfp != null && !equals(existingPfp))
     {
-      //Unable to setAccount, the current account already has a pfp, which would be orphaned if it were re-assigned
       return wasSet;
     }
     

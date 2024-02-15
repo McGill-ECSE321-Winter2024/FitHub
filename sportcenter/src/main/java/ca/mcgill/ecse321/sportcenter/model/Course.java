@@ -1,34 +1,17 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-// line 49 "model.ump"
-// line 131 "model.ump"
 public class Course
 {
-
-  //------------------------
-  // ENUMERATIONS
-  //------------------------
-
   public enum Difficulty { Beginner, Intermediate, Advanced }
   public enum Status { Approved, Pending, Closed, Disaproved }
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Course Attributes
   private String name;
   private Difficulty difficulty;
   private Status status;
   private String description;
   private int id;
 
-  //Course Associations
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, SportCenter aCenter)
   {
@@ -43,10 +26,6 @@ public class Course
       throw new RuntimeException("Unable to create course due to center. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setName(String aName)
   {
@@ -112,12 +91,12 @@ public class Course
   {
     return id;
   }
-  /* Code from template association_GetOne */
+
   public SportCenter getCenter()
   {
     return center;
   }
-  /* Code from template association_SetOneToMany */
+  
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;
