@@ -14,9 +14,9 @@ public class Instructor extends Account
   // CONSTRUCTOR
   //------------------------
 
-  public Instructor(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
+  public Instructor(String aEmail, String aPassword, String aName, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aId, aCenter);
+    super(aEmail, aPassword, aName, aCenter);
   }
 
   //------------------------

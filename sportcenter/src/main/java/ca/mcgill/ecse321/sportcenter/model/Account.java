@@ -30,12 +30,16 @@ public abstract class Account
   // CONSTRUCTOR
   //------------------------
 
-  public Account(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
+  protected Account()
+  {
+
+  }
+
+  public Account(String aEmail, String aPassword, String aName, SportCenter aCenter)
   {
     email = aEmail;
     password = aPassword;
     name = aName;
-    id = aId;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
