@@ -25,7 +25,7 @@ class Customer {
 }
 
 class Registration {
-  * registrations -> 1 Customer customer;
+* registrations -> 1 Customer customer;
   * registrations -> 1 Session session;
 }
 
@@ -43,6 +43,7 @@ class Location {
   floor;
   room;
   1 location <- * Session sessions;
+  Integer id;
 }
 
 class Course {
