@@ -1,6 +1,11 @@
 package ca.mcgill.ecse321.sportcenter.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
 // line 2 "model.ump"
 // line 90 "model.ump"
+@Entity
 public class Image
 {
 
@@ -9,8 +14,10 @@ public class Image
   //------------------------
 
   //Image Attributes
-  private String url;
+  @Id
+  @GeneratedValue
   private int id;
+  private String url;
 
   //Image Associations
   private Account account;
