@@ -1,7 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-// line 24 "model.ump"
-// line 110 "model.ump"
+import jakarta.persistence.Entity;
+
+@Entity
 public class Customer extends Account
 {
 
