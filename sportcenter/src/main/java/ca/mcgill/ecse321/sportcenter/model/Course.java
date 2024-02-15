@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 
 @Entity
@@ -28,6 +29,7 @@ public class Course
   private String description;
   
   //Course Associations
+  @ManyToOne
   private SportCenter center;
 
   //------------------------

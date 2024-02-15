@@ -3,6 +3,7 @@ import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 
 @Entity
@@ -24,6 +25,7 @@ public class BillingAccount
   private boolean isDefault;
 
   //BillingAccount Associations
+  @ManyToOne
   private Customer customer;
 
   //------------------------
@@ -140,6 +142,7 @@ public class BillingAccount
     return id;
   }
   /* Code from template association_GetOne */
+  
   public Customer getCustomer()
   {
     return customer;
