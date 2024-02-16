@@ -9,11 +9,6 @@ import jakarta.persistence.GeneratedValue;
 @Entity
 public class BillingAccount
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
   @Id
   @GeneratedValue
   private int id;
