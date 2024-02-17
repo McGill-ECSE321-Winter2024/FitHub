@@ -2,10 +2,8 @@ package ca.mcgill.ecse321.sportcenter.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
-import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +52,6 @@ public class BillingAccountRepositoryTests {
        
         aSportCenter = sportCenterRepo.save(aSportCenter);
         bob = accountRepo.save(bob);
-      
 
         int aCardNumber = 0;
         String aCardHolder = "Bobby Bob";
