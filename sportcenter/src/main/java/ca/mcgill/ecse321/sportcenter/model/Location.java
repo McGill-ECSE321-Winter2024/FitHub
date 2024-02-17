@@ -27,11 +27,10 @@ public class Location
     
   }
 
-  public Location(String aFloor, String aRoom, int aId, SportCenter aCenter)
+  public Location(String aFloor, String aRoom, SportCenter aCenter)
   {
     floor = aFloor;
     room = aRoom;
-    id = aId;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {

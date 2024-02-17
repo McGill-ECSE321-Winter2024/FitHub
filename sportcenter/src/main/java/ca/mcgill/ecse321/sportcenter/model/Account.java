@@ -24,13 +24,8 @@ public abstract class Account
   @ManyToOne
   private SportCenter center;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
   protected Account()
   {
-
   }
 
   public Account(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)

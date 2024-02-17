@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 @Entity
 public class Course
 {
+  
   public enum Difficulty { Beginner, Intermediate, Advanced }
   public enum Status { Approved, Pending, Closed, Disaproved }
 
@@ -19,25 +20,19 @@ public class Course
   private Status status;
   private String description;
   
-  //Course Associations
   @ManyToOne
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
+  
   protected Course() {
     
   }
 
-  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, SportCenter aCenter)
+  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, SportCenter aCenter)
   {
     name = aName;
     difficulty = aDifficulty;
     status = aStatus;
     description = aDescription;
-    id = aId;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
