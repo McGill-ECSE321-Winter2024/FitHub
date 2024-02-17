@@ -51,10 +51,10 @@ public class BillingAccountRepositoryTests {
         
         SportCenter aSportCenter = SportCenter.getSportCenter();
         Account bob = new Customer(aEmail, aPassword, aName, aImageURL, aSportCenter);
-
+       
         aSportCenter = sportCenterRepo.save(aSportCenter);
-    
         bob = accountRepo.save(bob);
+      
 
         int aCardNumber = 0;
         String aCardHolder = "Bobby Bob";
@@ -65,6 +65,7 @@ public class BillingAccountRepositoryTests {
         BillingAccount billingAccount = new BillingAccount(aCardNumber, aCardHolder , aBillingAdress, aCCV, expDate, isDefault, (Customer)bob);
 
         billingAccount = billingRepo.save(billingAccount);
+       
         int billingAccountId = billingAccount.getId();
 
         BillingAccount billingAccountFromDb = billingRepo.findBillingAccountById(billingAccountId);
@@ -75,8 +76,12 @@ public class BillingAccountRepositoryTests {
         assertEquals(aCardHolder, billingAccountFromDb.getCardHolder());
         assertEquals(aBillingAdress, billingAccountFromDb.getBillingAddress());
         assertEquals(aCCV, billingAccountFromDb.getCvv());
-        assertEquals(expDate, billingAccountFromDb.getExpirationDate());
+        assertEquals(expDate.toString(), billingAccountFromDb.getExpirationDate().toString());
         assertEquals(isDefault, billingAccountFromDb.getIsDefault());
+        assertNotNull(billingAccountFromDb.getId());
+        assertNotNull(billingAccountFromDb.getCustomer().getId());
+        assertEquals(billingAccount.getCustomer().getId(),billingAccountFromDb.getCustomer().getId());
+        
     }
     
 }

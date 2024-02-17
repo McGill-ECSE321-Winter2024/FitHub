@@ -21,7 +21,7 @@ public class BillingAccount
   private boolean isDefault;
 
   //BillingAccount Associations
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   private Customer customer;
 
   //------------------------
