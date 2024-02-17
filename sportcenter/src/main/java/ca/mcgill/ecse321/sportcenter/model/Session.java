@@ -20,11 +20,11 @@ public class Session
   private Date date;
   private int capacity;
 
-  @ManyToOne //(cascade = CascadeType.ALL)
+  @ManyToOne 
   private Instructor supervisor;
-  @ManyToOne// (cascade = CascadeType.ALL)
+  @ManyToOne
   private Course courseType;
-  @ManyToOne //(cascade = CascadeType.ALL)
+  @ManyToOne 
   private Location location;
 
 
