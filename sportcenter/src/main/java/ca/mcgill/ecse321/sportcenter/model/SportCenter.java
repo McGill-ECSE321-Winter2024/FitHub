@@ -1,8 +1,11 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+
 import java.sql.Time;
 import java.util.*;
 
+// line 72 "model.ump"
+// line 154 "model.ump"
 public class SportCenter
 {
   private int id;
@@ -288,10 +291,10 @@ public class SportCenter
   {
     return 0;
   }
-
-  public Location addLocation(String aFloor, String aRoom)
+  /* Code from template association_AddManyToOne */
+  public Location addLocation(String aFloor, String aRoom, int aId)
   {
-    return new Location(aFloor, aRoom, this);
+    return new Location(aFloor, aRoom, aId, this);
   }
 
   public boolean addLocation(Location aLocation)
