@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 
@@ -32,7 +33,8 @@ public class CourseRepositoryTest {
         Difficulty diff = Difficulty.Beginner;
         Status status = Status.Approved;
 
-        Course course = new Course(name, description, diff, status);
+        Course course = new Course(name, diff, status, description, SportCenter.getSportCenter());
+        //Course cours = new Course(name, )
 
         course = repo.save(course);
         int courseId = course.getId();
@@ -45,7 +47,7 @@ public class CourseRepositoryTest {
         assertEquals(name, courseFromDb.getName());
         assertEquals(description, courseFromDb.getDescription());
         assertEquals(diff, courseFromDb.getDifficulty());
-        assertEquals(status, courseFromDb.getName());
+        assertEquals(status, courseFromDb.getStatus());
 
     }
 
