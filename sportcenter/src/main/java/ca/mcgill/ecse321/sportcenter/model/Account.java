@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -18,7 +20,9 @@ public abstract class Account
   private String password;
   private String name;
 
+  @OneToOne
   private Image pfp;
+  @ManyToOne
   private SportCenter center;
 
   public Account(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)

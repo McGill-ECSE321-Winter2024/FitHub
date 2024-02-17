@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.sportcenter.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Image
@@ -12,6 +13,7 @@ public class Image
   private int id;
   private String url;
 
+  @OneToOne
   private Account account;
 
   public Image(String aUrl, int aId, Account aAccount)
