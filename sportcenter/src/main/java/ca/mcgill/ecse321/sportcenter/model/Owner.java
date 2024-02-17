@@ -5,12 +5,12 @@ import jakarta.persistence.Entity;
 @Entity
 public class Owner extends Account
 {
-  
-  public Owner(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
-  {
-    super(aEmail, aPassword, aName, aId, aCenter);
-  }
 
+  public Owner(String aEmail, String aPassword, String aName, String aImageURL, int aId, SportCenter aCenter)
+  {
+    super(aEmail, aPassword, aName, aImageURL, aId, aCenter);
+  }
+  
   public void delete()
   {
     super.delete();
