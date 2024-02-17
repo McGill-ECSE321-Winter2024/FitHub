@@ -19,14 +19,9 @@ public class Course
   private Status status;
   private String description;
   
-  //Course Associations
   @ManyToOne
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
+  
   protected Course() {
     
   }

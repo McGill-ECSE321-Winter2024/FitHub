@@ -9,17 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-// line 71 "model.ump"
-// line 142 "model.ump"
+
 @Entity
 public class SportCenter
 {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //SportCenter Attributes
   @Id
   @GeneratedValue
   private int id;
@@ -30,18 +24,13 @@ public class SportCenter
   private String email;
   private String phoneNumber;
 
-  //SportCenter Associations
   @OneToMany
   private List<Course> courses;
   @OneToMany
   private List<Location> locations;
   @OneToMany
   private List<Account> accounts;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
+  
   protected SportCenter() {
     
   }

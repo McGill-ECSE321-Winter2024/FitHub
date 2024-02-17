@@ -4,13 +4,6 @@ import jakarta.persistence.Entity;
 @Entity
 public class Customer extends Account
 {
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Customer() {
     

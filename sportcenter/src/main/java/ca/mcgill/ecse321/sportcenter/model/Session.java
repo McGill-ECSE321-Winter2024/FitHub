@@ -27,9 +27,6 @@ public class Session
   @ManyToOne
   private Location location;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   protected Session() {
     

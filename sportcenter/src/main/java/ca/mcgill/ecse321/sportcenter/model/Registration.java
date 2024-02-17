@@ -14,7 +14,6 @@ public class Registration {
     private Key key;
 
     protected Registration() {
-        
     }
 
     public Registration(Key key) {
