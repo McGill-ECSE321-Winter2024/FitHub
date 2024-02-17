@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class SportCenter
 {
+  private static SportCenter sportCenter;
 
   @Id
   @GeneratedValue
@@ -46,6 +47,22 @@ public class SportCenter
     courses = new ArrayList<Course>();
     locations = new ArrayList<Location>();
     accounts = new ArrayList<Account>();
+  }
+
+  public static SportCenter getSportCenter() {
+    if (sportCenter==null) {
+      // TO do it should be loaded ? from the persistence, like in 223
+      String name = "FitHub";
+      Time openTime = Time.valueOf("08:00:00");
+      Time closeTime = Time.valueOf("18:00:00");
+      String email = "info@fithub.com";
+      String phone = "421-436-4444";
+      String address = "2011, University Street, Montreal";
+      
+      sportCenter = new SportCenter(name, openTime, closeTime, address, email, phone);
+    }
+
+    return sportCenter;
   }
 
   public boolean setId(int aId)
