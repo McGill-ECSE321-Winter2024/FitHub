@@ -31,7 +31,7 @@ public class SessionRepositoryTest {
 	}
 
 	@Test
-	public void testPersistAndLoadPerson() {
+	public void testPersistAndLoadSession() {
 
         String name = "FitHub";
         Time openingTime = new Time(1);
@@ -53,12 +53,10 @@ public class SessionRepositoryTest {
 
         Session aSession = new Session(startTime, endTime, date, aCapacity, aSupervisor, aCourseType, aLocation);
 
-		// Save person
-		aSession = sessionRepository.save(aSession);
-
-        int aSessionId = aSession.getId();
-
-        Session sessionFromDb = sessionRepository.findSessionById(aSessionId);
+        Session savedSession = sessionRepository.save(aSession);
+    
+        // Retrieve session from the database
+        Session sessionFromDb = sessionRepository.findSessionById(savedSession.getId());
 
 		// Assert that person is not null and has correct attributes.
 		assertNotNull(sessionFromDb);
