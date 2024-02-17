@@ -25,6 +25,8 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 public class AccountRepositoryTest {
     @Autowired
     private AccountRepository repo;
+    @Autowired
+    private SportCenterRepository sportCenterRepo;
 
     @BeforeEach
     @AfterEach
@@ -34,11 +36,27 @@ public class AccountRepositoryTest {
 
     @Test
     public void testCreateAndReadOwner() {
+        // Save sportCenterRepo
+        SportCenter sportCenter = sportCenterRepo.save(SportCenter.getSportCenter());
+
+        // Create the owner 
         String email = "Jumijabasali@info.com";
         String password = "sportcenter";
         String name = "Jumijabasali";
         String imageURL = "pfp.com";
-        Owner owner = new Owner(email, password, name, imageURL, SportCenter.getSportCenter());
+        Owner owner = new Owner(email, password, name, imageURL, sportCenter);
+        
+        // Save into database
+        owner = repo.save(owner);
+        Integer ownerId = owner.getId();
+        
+        // Read back from database
+        Owner ownerDb = (Owner) repo.findAccountById(owner.getId());
 
+        assertNotNull(ownerDb);
+        assertEquals(email, ownerDb.getEmail());
+        assertEquals(password, ownerDb.getPassword());
+        assertEquals(name, ownerDb.getName());
+        assertEquals(imageURL, ownerDb.getImageURL());
     }
 }
