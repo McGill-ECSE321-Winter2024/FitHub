@@ -3,30 +3,29 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.sql.Date;
 
-// line 33 "model.ump"
-// line 120 "model.ump"
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Session
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Session Attributes
+  @Id
+  @GeneratedValue
+  private int id;
   private Time startTime;
   private Time endTime;
   private Date date;
   private int capacity;
-  private int id;
 
-  //Session Associations
+  @ManyToOne
   private Instructor supervisor;
+  @ManyToOne
   private Course courseType;
+  @ManyToOne
   private Location location;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aCourseType, Location aLocation)
   {
@@ -48,10 +47,6 @@ public class Session
       throw new RuntimeException("Unable to create Session due to aLocation. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setStartTime(Time aStartTime)
   {
@@ -117,22 +112,22 @@ public class Session
   {
     return id;
   }
-  /* Code from template association_GetOne */
+
   public Instructor getSupervisor()
   {
     return supervisor;
   }
-  /* Code from template association_GetOne */
+
   public Course getCourseType()
   {
     return courseType;
   }
-  /* Code from template association_GetOne */
+
   public Location getLocation()
   {
     return location;
   }
-  /* Code from template association_SetUnidirectionalOne */
+
   public boolean setSupervisor(Instructor aNewSupervisor)
   {
     boolean wasSet = false;
@@ -143,7 +138,7 @@ public class Session
     }
     return wasSet;
   }
-  /* Code from template association_SetUnidirectionalOne */
+
   public boolean setCourseType(Course aNewCourseType)
   {
     boolean wasSet = false;
@@ -154,7 +149,7 @@ public class Session
     }
     return wasSet;
   }
-  /* Code from template association_SetUnidirectionalOne */
+
   public boolean setLocation(Location aNewLocation)
   {
     boolean wasSet = false;

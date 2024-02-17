@@ -1,27 +1,29 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-// line 8 "model.ump"
-// line 95 "model.ump"
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Account Attributes
+  @Id
+  @GeneratedValue
+  private int id;
   private String email;
   private String password;
   private String name;
-  private int id;
 
-  //Account Associations
+  @OneToOne
   private Image pfp;
+  @ManyToOne
   private SportCenter center;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
 
   public Account(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
   {
@@ -35,10 +37,6 @@ public abstract class Account
       throw new RuntimeException("Unable to create account due to center. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setEmail(String aEmail)
   {
@@ -91,7 +89,7 @@ public abstract class Account
   {
     return id;
   }
-  /* Code from template association_GetOne */
+  
   public Image getPfp()
   {
     return pfp;
@@ -102,18 +100,17 @@ public abstract class Account
     boolean has = pfp != null;
     return has;
   }
-  /* Code from template association_GetOne */
+  
   public SportCenter getCenter()
   {
     return center;
   }
-  /* Code from template association_SetOptionalOneToOne */
+  
   public boolean setPfp(Image aNewPfp)
   {
     boolean wasSet = false;
     if (pfp != null && !pfp.equals(aNewPfp) && equals(pfp.getAccount()))
     {
-      //Unable to setPfp, as existing pfp would become an orphan
       return wasSet;
     }
 
@@ -134,7 +131,7 @@ public abstract class Account
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
+  
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;
