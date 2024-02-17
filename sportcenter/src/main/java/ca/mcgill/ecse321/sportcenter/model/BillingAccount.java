@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -20,7 +21,7 @@ public class BillingAccount
   private boolean isDefault;
 
   //BillingAccount Associations
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   private Customer customer;
 
   //------------------------

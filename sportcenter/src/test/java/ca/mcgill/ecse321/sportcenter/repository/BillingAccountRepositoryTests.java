@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
@@ -26,11 +27,18 @@ public class BillingAccountRepositoryTests {
     @Autowired
     private CustomerRepository customerRepo;
 
+    @Autowired
+    private AccountRepository accountRepo;
+
+    @Autowired
+    private SportCenterRepository sportCenterRepo;
+
     @BeforeEach
     @AfterEach
     public void clearDatabase(){
         billingRepo.deleteAll();
         customerRepo.deleteAll();
+        accountRepo.deleteAll();
     }
 
     @Test
@@ -40,13 +48,13 @@ public class BillingAccountRepositoryTests {
         String aPassword = "password";
         String aName = "Bobby Bob";
         String aImageURL = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c5/Bob_the_builder.jpg/220px-Bob_the_builder.jpg";
-        Integer id = 0;
         
-        SportCenter aCenter = new SportCenter(id, "FitHub", new Time(6), new Time(22), "2011 University Street, Montreal", "fithub@gmail.com", "514-873-2648");
-        Customer bob = new Customer(aEmail, aPassword, aName, aImageURL, aCenter);
+        SportCenter aSportCenter = SportCenter.getSportCenter();
+        Account bob = new Customer(aEmail, aPassword, aName, aImageURL, aSportCenter);
 
-        bob = customerRepo.save(bob);
-
+        aSportCenter = sportCenterRepo.save(aSportCenter);
+    
+        bob = accountRepo.save(bob);
 
         int aCardNumber = 0;
         String aCardHolder = "Bobby Bob";
@@ -54,7 +62,7 @@ public class BillingAccountRepositoryTests {
         int aCCV = 374;
         Date expDate = new Date(4);
         boolean isDefault = false;
-        BillingAccount billingAccount = new BillingAccount(aCardNumber, aCardHolder , aBillingAdress, aCCV, expDate, isDefault, 0, bob);
+        BillingAccount billingAccount = new BillingAccount(aCardNumber, aCardHolder , aBillingAdress, aCCV, expDate, isDefault, (Customer)bob);
 
         billingAccount = billingRepo.save(billingAccount);
         int billingAccountId = billingAccount.getId();
