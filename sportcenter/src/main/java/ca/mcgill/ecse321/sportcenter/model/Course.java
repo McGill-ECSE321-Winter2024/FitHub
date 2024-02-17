@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -20,7 +21,7 @@ public class Course
   private Status status;
   private String description;
   
-  @ManyToOne
+  @ManyToOne (cascade = CascadeType.ALL)
   private SportCenter center;
   
   protected Course() {

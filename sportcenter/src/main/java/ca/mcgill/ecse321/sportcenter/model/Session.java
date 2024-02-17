@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.sql.Date;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,11 +20,11 @@ public class Session
   private Date date;
   private int capacity;
 
-  @ManyToOne
+  @ManyToOne (cascade = CascadeType.ALL)
   private Instructor supervisor;
-  @ManyToOne
+  @ManyToOne (cascade = CascadeType.ALL)
   private Course courseType;
-  @ManyToOne
+  @ManyToOne (cascade = CascadeType.ALL)
   private Location location;
 
 

@@ -29,7 +29,7 @@ public class SportCenter
   private List<Course> courses;
   @OneToMany
   private List<Location> locations;
-  @OneToMany
+  @OneToMany 
   private List<Account> accounts;
   
   protected SportCenter() {
