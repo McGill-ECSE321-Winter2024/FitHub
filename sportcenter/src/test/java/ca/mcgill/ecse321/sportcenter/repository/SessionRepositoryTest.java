@@ -38,6 +38,10 @@ public class SessionRepositoryTest {
 	@AfterEach
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
+        instructorRepository.deleteAll();
+        courseRepository.deleteAll();
+        locationRepository.deleteAll();
+        sportCenterRepository.deleteAll();
 	}
 
 	@Test
