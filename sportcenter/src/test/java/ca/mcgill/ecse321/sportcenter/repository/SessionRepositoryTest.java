@@ -25,6 +25,15 @@ public class SessionRepositoryTest {
 	@Autowired
 	private SessionRepository sessionRepository;
 
+    @Autowired
+	private LocationRepository locationRepository;
+
+    @Autowired
+	private CourseRepository courseRepository;
+
+    @Autowired
+    private InstructorRepository instructuRepository;
+
 	@AfterEach
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
@@ -53,8 +62,12 @@ public class SessionRepositoryTest {
 
         Session aSession = new Session(startTime, endTime, date, aCapacity, aSupervisor, aCourseType, aLocation);
 
+        Location savedLocation = locationRepository.save(aLocation);
+        Instructor savedInstructor = instructuRepository.save(aSupervisor);
+        Course savedCourse = courseRepository.save(aCourseType);
+
         Session savedSession = sessionRepository.save(aSession);
-    
+
         // Retrieve session from the database
         Session sessionFromDb = sessionRepository.findSessionById(savedSession.getId());
 
