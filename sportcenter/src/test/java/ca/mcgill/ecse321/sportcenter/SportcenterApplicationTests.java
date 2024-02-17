@@ -12,7 +12,7 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import java.sql.Time;
 
 @SpringBootTest
-class SportcenterApplicationTests {
+public class SportcenterApplicationTests {
 
 	@Test
 	void contextLoads() {
@@ -27,18 +27,10 @@ class SportcenterApplicationTests {
         repo.deleteAll();
     }
 
-	@BeforeAll
-	public void createSportsCenter(){
-		String name = "FitHub";
-		Time openTime = Time.valueOf("08:00:00");
-        Time closeTime = Time.valueOf("18:00:00");
-		String email = "info@fithub.com";
-		String phone = "421-436-4444";
-		String address = "2011, University Street, Montreal";
-		
-		SportCenter sportsCenter = new SportCenter(0, name, openTime, closeTime, address, email, phone);
-
-		sportsCenter = repo.save(sportsCenter);
+    @Test
+	public void testCreateSportsCenter(){
+		// TODO finish
+		SportCenter sportsCenter = repo.save(SportCenter.getSportCenter());
 		int centerId = sportsCenter.getId();
 
 		SportCenter centerFromDb = repo.findSportCenterById(centerId);
