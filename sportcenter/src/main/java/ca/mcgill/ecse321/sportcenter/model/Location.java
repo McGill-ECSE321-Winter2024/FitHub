@@ -74,7 +74,6 @@ public class Location
   {
     return center;
   }
-
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;
