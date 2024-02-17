@@ -96,18 +96,24 @@ public class SessionRepositoryTest {
         assertEquals(floor, sessionFromDb.getLocation().getFloor());
         
         //making sure the other objects were also saved
+        assertNotNull(savedSupervisor);
+        assertEquals(savedSupervisor.getId(), sessionFromDb.getSupervisor().getId());
         assertEquals(savedSupervisor.getEmail(), sessionFromDb.getSupervisor().getEmail());
         assertEquals(savedSupervisor.getPassword(), sessionFromDb.getSupervisor().getPassword());
         assertEquals(savedSupervisor.getName(), sessionFromDb.getSupervisor().getName());
         assertEquals(savedSupervisor.getImageURL(), sessionFromDb.getSupervisor().getImageURL());
 
         //Assert that the information in the course association has been saved. 
+        assertNotNull(savedCourse);
+        assertEquals(savedCourse.getId(), sessionFromDb.getCourseType().getId());
         assertEquals(savedCourse.getName(), sessionFromDb.getCourseType().getName());
         assertEquals(savedCourse.getDifficulty(), sessionFromDb.getCourseType().getDifficulty());
         assertEquals(savedCourse.getStatus(), sessionFromDb.getCourseType().getStatus());
         assertEquals(savedCourse.getDescription(), sessionFromDb.getCourseType().getDescription());
 
-        //Assert that the information in the location association has been saved. 
+        //Assert that the information in the location association has been saved.
+        assertNotNull(savedLocation);
+        assertEquals(savedLocation.getId(), sessionFromDb.getLocation().getId()); 
         assertEquals(savedLocation.getRoom(), sessionFromDb.getLocation().getRoom());
         assertEquals(savedLocation.getFloor(), sessionFromDb.getLocation().getFloor());
 
