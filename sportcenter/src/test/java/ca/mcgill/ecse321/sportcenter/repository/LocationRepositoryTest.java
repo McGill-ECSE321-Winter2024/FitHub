@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.sql.Date;
 import java.sql.Time;
 
-import ca.mcgill.ecse321.sportcenter.model.Course;
-import ca.mcgill.ecse321.sportcenter.model.Instructor;
-import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 
@@ -38,7 +35,7 @@ public class LocationRepositoryTest {
 
         Location savedLocation = locationRepository.save(location);
 
-        // Retrieve session from the database
+        // Retrieve location from the database
         Location locationFromDb = locationRepository.findLocationById(savedLocation.getId());
 
         //Assert that the information in the location association has been saved. 
