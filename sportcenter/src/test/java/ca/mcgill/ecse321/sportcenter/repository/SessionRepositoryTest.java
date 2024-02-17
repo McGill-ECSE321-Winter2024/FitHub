@@ -2,18 +2,15 @@ package ca.mcgill.ecse321.sportcenter.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.startsWith;
 
 import java.sql.Date;
 import java.sql.Time;
 
-import ca.mcgill.ecse321.sportcenter.SportcenterApplication;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.model.Location;
-import ca.mcgill.ecse321.sportcenter.model.Account;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +22,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SessionRepositoryTest {
 	@Autowired
 	private SessionRepository sessionRepository;
+
+    @Autowired
+	private InstructorRepository instructorRepository;
+
+    @Autowired
+	private CourseRepository courseRepository;
+    
+    @Autowired
+	private LocationRepository locationRepository;
+ 
+    @Autowired
+	private SportCenterRepository sportCenterRepository;
 
 	@AfterEach
 	public void clearDatabase() {
@@ -54,6 +63,11 @@ public class SessionRepositoryTest {
 
         Session aSession = new Session(startTime, endTime, date, aCapacity, aSupervisor, aCourseType, aLocation);
 
+        SportCenter center = sportCenterRepository.save(SportCenter.getSportCenter());
+        Instructor savedSupervisor = instructorRepository.save(aSupervisor);
+        Course savedCourse = courseRepository.save(aCourseType);
+        Location savedLocation = locationRepository.save(aLocation);
+
         Session savedSession = sessionRepository.save(aSession);
 
         // Retrieve session from the database
@@ -80,6 +94,22 @@ public class SessionRepositoryTest {
         //Assert that the information in the location association has been saved. 
         assertEquals(room, sessionFromDb.getLocation().getRoom());
         assertEquals(floor, sessionFromDb.getLocation().getFloor());
+        
+        //making sure the other objects were also saved
+        assertEquals(savedSupervisor.getEmail(), sessionFromDb.getSupervisor().getEmail());
+        assertEquals(savedSupervisor.getPassword(), sessionFromDb.getSupervisor().getPassword());
+        assertEquals(savedSupervisor.getName(), sessionFromDb.getSupervisor().getName());
+        assertEquals(savedSupervisor.getImageURL(), sessionFromDb.getSupervisor().getImageURL());
+
+        //Assert that the information in the course association has been saved. 
+        assertEquals(savedCourse.getName(), sessionFromDb.getCourseType().getName());
+        assertEquals(savedCourse.getDifficulty(), sessionFromDb.getCourseType().getDifficulty());
+        assertEquals(savedCourse.getStatus(), sessionFromDb.getCourseType().getStatus());
+        assertEquals(savedCourse.getDescription(), sessionFromDb.getCourseType().getDescription());
+
+        //Assert that the information in the location association has been saved. 
+        assertEquals(savedLocation.getRoom(), sessionFromDb.getLocation().getRoom());
+        assertEquals(savedLocation.getFloor(), sessionFromDb.getLocation().getFloor());
 
 	}
 }
