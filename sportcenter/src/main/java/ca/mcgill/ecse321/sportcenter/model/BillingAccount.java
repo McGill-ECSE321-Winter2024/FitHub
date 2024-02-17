@@ -1,25 +1,26 @@
 package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Date;
 
-// line 59 "model.ump"
-// line 136 "model.ump"
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GeneratedValue;
+
+@Entity
 public class BillingAccount
 {
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //BillingAccount Attributes
+  @Id
+  @GeneratedValue
+  private int id;
   private int cardNumber;
   private String cardHolder;
   private String billingAddress;
   private int cvv;
   private Date expirationDate;
   private boolean isDefault;
-  private int id;
 
   //BillingAccount Associations
+  @ManyToOne
   private Customer customer;
 
   //------------------------
@@ -44,10 +45,6 @@ public class BillingAccount
       throw new RuntimeException("Unable to create BillingAccount due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setCardNumber(int aCardNumber)
   {
@@ -139,12 +136,12 @@ public class BillingAccount
   {
     return id;
   }
-  /* Code from template association_GetOne */
+  
   public Customer getCustomer()
   {
     return customer;
   }
-  /* Code from template association_SetUnidirectionalOne */
+  
   public boolean setCustomer(Customer aNewCustomer)
   {
     boolean wasSet = false;

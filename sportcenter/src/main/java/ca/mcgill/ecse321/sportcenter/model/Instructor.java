@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 @Entity
 public class Instructor extends Account
 {
-
   //------------------------
   // MEMBER VARIABLES
   //------------------------
@@ -18,15 +17,11 @@ public class Instructor extends Account
     
   }
 
-  public Instructor(String aEmail, String aPassword, String aName, SportCenter aCenter)
+  public Instructor(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aCenter);
+    super(aEmail, aPassword, aName, aImageURL, aCenter);
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-
+  
   public void delete()
   {
     super.delete();

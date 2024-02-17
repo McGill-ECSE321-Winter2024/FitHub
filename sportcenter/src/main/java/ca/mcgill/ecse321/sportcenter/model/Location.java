@@ -1,18 +1,22 @@
 package ca.mcgill.ecse321.sportcenter.model;
-// line 43 "model.ump"
-// line 126 "model.ump"
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Id;
+
+@Entity
 public class Location
 {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Location Attributes
   private String floor;
   private String room;
+  
+  @Id
+  @GeneratedValue
+  private int id;
 
-  //Location Associations
+  @ManyToOne
   private SportCenter center;
 
   //------------------------
@@ -23,20 +27,17 @@ public class Location
     
   }
 
-  public Location(String aFloor, String aRoom, SportCenter aCenter)
+  public Location(String aFloor, String aRoom, int aId, SportCenter aCenter)
   {
     floor = aFloor;
     room = aRoom;
+    id = aId;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
       throw new RuntimeException("Unable to create location due to center. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setFloor(String aFloor)
   {
@@ -54,6 +55,14 @@ public class Location
     return wasSet;
   }
 
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    id = aId;
+    wasSet = true;
+    return wasSet;
+  }
+
   public String getFloor()
   {
     return floor;
@@ -63,12 +72,16 @@ public class Location
   {
     return room;
   }
-  /* Code from template association_GetOne */
+
+  public int getId()
+  {
+    return id;
+  }
+
   public SportCenter getCenter()
   {
     return center;
   }
-  /* Code from template association_SetOneToMany */
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;
@@ -98,12 +111,12 @@ public class Location
     }
   }
 
-
   public String toString()
   {
     return super.toString() + "["+
             "floor" + ":" + getFloor()+ "," +
-            "room" + ":" + getRoom()+ "]" + System.getProperties().getProperty("line.separator") +
+            "room" + ":" + getRoom()+ "," +
+            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "center = "+(getCenter()!=null?Integer.toHexString(System.identityHashCode(getCenter())):"null");
   }
 }

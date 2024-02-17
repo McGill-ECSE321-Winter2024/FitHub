@@ -18,15 +18,11 @@ public class Owner extends Account
     
   }
 
-  public Owner(String aEmail, String aPassword, String aName, SportCenter aCenter)
+  public Owner(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aCenter);
+    super(aEmail, aPassword, aName, aImageURL, aCenter);
   }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-
+  
   public void delete()
   {
     super.delete();
