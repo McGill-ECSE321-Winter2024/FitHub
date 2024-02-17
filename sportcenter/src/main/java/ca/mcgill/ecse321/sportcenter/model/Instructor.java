@@ -5,14 +5,7 @@ import jakarta.persistence.Entity;
 @Entity
 public class Instructor extends Account
 {
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-  
   protected Instructor() {
     
   }

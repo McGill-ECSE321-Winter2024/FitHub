@@ -9,17 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-// line 71 "model.ump"
-// line 142 "model.ump"
+
 @Entity
 public class SportCenter
 {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //SportCenter Attributes
   @Id
   @GeneratedValue
   private int id;
@@ -30,25 +24,19 @@ public class SportCenter
   private String email;
   private String phoneNumber;
 
-  //SportCenter Associations
   @OneToMany
   private List<Course> courses;
   @OneToMany
   private List<Location> locations;
   @OneToMany
   private List<Account> accounts;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
+  
   protected SportCenter() {
     
   }
 
-  public SportCenter(int aId, String aName, Time aOpeningTime, Time aClosingTime, String aAddress, String aEmail, String aPhoneNumber)
+  public SportCenter(String aName, Time aOpeningTime, Time aClosingTime, String aAddress, String aEmail, String aPhoneNumber)
   {
-    id = aId;
     name = aName;
     openingTime = aOpeningTime;
     closingTime = aClosingTime;
@@ -248,7 +236,7 @@ public class SportCenter
 
   public Course addCourse(String aName, Course.Difficulty aDifficulty, Course.Status aStatus, String aDescription, int aId)
   {
-    return new Course(aName, aDifficulty, aStatus, aDescription, aId, this);
+    return new Course(aName, aDifficulty, aStatus, aDescription, this);
   }
 
   public boolean addCourse(Course aCourse)
@@ -320,7 +308,7 @@ public class SportCenter
   /* Code from template association_AddManyToOne */
   public Location addLocation(String aFloor, String aRoom, int aId)
   {
-    return new Location(aFloor, aRoom, aId, this);
+    return new Location(aFloor, aRoom, this);
   }
 
   public boolean addLocation(Location aLocation)

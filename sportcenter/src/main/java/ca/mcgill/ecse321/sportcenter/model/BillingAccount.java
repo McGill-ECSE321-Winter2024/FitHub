@@ -31,7 +31,7 @@ public class BillingAccount
 
   }
 
-  public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
+  public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, Customer aCustomer)
   {
     cardNumber = aCardNumber;
     cardHolder = aCardHolder;
@@ -39,7 +39,6 @@ public class BillingAccount
     cvv = aCvv;
     expirationDate = aExpirationDate;
     isDefault = aIsDefault;
-    id = aId;
     if (!setCustomer(aCustomer))
     {
       throw new RuntimeException("Unable to create BillingAccount due to aCustomer. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
