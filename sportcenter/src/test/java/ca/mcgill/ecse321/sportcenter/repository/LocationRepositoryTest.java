@@ -2,55 +2,48 @@ package ca.mcgill.ecse321.sportcenter.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
 import java.sql.Time;
 
+import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
+import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
+import ca.mcgill.ecse321.sportcenter.model.Location;
+
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestExecutionListeners;
 
-import ca.mcgill.ecse321.sportcenter.model.Account;
-import ca.mcgill.ecse321.sportcenter.model.Location;
-import ca.mcgill.ecse321.sportcenter.model.Instructor;
-import ca.mcgill.ecse321.sportcenter.model.Customer;
 
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
-
+@SpringBootTest
 public class LocationRepositoryTest {
-    @Autowired
-    private LocationRepository repo;
+	@Autowired
+	private LocationRepository locationRepository;
 
-    @BeforeEach
-    @AfterEach
-    public void clearDatabase() {
-        repo.deleteAll();
-    }
+	@AfterEach
+	public void clearDatabase() {
+		locationRepository.deleteAll();
+	}
 
-    @Test
-    public void testCreateAndReadLocation() {
+	@Test
+	public void testPersistAndLoadLocation() {
         
-        // Create Location
-        String floor = "1";
-        String room = "1";
+        String floor = "aFloor";
+        String room = "aRoom";
+
         Location location = new Location(floor, room, SportCenter.getSportCenter());
 
-        // Save in the database
-        location = repo.save(location);
-        int locationId = location.getId();
+        Location savedLocation = locationRepository.save(location);
 
-        // Read back from the database
-        Location locationFromDb = repo.findLocationById(locationId);
+        // Retrieve session from the database
+        Location locationFromDb = locationRepository.findLocationById(savedLocation.getId());
 
-        // Assertions
-        assertNotNull(locationFromDb);
-        assertEquals(locationId, locationFromDb.getId());
-        assertEquals(floor, locationFromDb.getFloor());
+        //Assert that the information in the location association has been saved. 
         assertEquals(room, locationFromDb.getRoom());
-    }
-}
+        assertEquals(floor, locationFromDb.getFloor());
 
+	}
+}
