@@ -39,6 +39,7 @@ public class LocationRepositoryTest {
         Location locationFromDb = locationRepository.findLocationById(savedLocation.getId());
 
         //Assert that the information in the location association has been saved. 
+        assertNotNull(locationFromDb);
         assertEquals(room, locationFromDb.getRoom());
         assertEquals(floor, locationFromDb.getFloor());
 
