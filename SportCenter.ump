@@ -1,14 +1,9 @@
-class Image {
-  url;
-  Integer id;
-  0..1 pfp -<@> 1 Account account;
-}
-
 class Account {
   abstract;
   email;
   password;
   name;
+  imageURL;
   Integer id;
 }
 
@@ -25,7 +20,7 @@ class Customer {
 }
 
 class Registration {
-* registrations -> 1 Customer customer;
+  * registrations -> 1 Customer customer;
   * registrations -> 1 Session session;
 }
 
@@ -40,10 +35,10 @@ class Session {
 }
 
 class Location {
+  Integer id;
   floor;
   room;
   1 location <- * Session sessions;
-  Integer id;
 }
 
 class Course {
