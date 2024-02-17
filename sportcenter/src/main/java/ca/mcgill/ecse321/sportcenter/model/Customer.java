@@ -4,10 +4,21 @@ import jakarta.persistence.Entity;
 @Entity
 public class Customer extends Account
 {
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
 
-  public Customer(String aEmail, String aPassword, String aName, String aImageURL, int aId, SportCenter aCenter)
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  public Customer() {
+    
+  }
+
+  public Customer(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aImageURL, aId, aCenter);
+    super(aEmail, aPassword, aName, aImageURL, aCenter);
   }
 
   public void delete()

@@ -24,13 +24,21 @@ public abstract class Account
   @ManyToOne
   private SportCenter center;
 
-  public Account(String aEmail, String aPassword, String aName, String aImageURL, int aId, SportCenter aCenter)
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected Account()
+  {
+
+  }
+
+  public Account(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
     email = aEmail;
     password = aPassword;
     name = aName;
     imageURL = aImageURL;
-    id = aId;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {

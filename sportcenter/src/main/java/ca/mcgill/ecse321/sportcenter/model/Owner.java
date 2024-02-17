@@ -6,9 +6,21 @@ import jakarta.persistence.Entity;
 public class Owner extends Account
 {
 
-  public Owner(String aEmail, String aPassword, String aName, String aImageURL, int aId, SportCenter aCenter)
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected Owner() {
+    
+  }
+
+  public Owner(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aImageURL, aId, aCenter);
+    super(aEmail, aPassword, aName, aImageURL, aCenter);
   }
   
   public void delete()

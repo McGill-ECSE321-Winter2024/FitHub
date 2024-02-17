@@ -27,13 +27,20 @@ public class Session
   @ManyToOne
   private Location location;
 
-  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aCourseType, Location aLocation)
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected Session() {
+    
+  }
+
+  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation)
   {
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;
     capacity = aCapacity;
-    id = aId;
     if (!setSupervisor(aSupervisor))
     {
       throw new RuntimeException("Unable to create Session due to aSupervisor. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
