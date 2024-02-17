@@ -19,6 +19,10 @@ public class Location
   // CONSTRUCTOR
   //------------------------
 
+  protected Location() {
+    
+  }
+
   public Location(String aFloor, String aRoom, SportCenter aCenter)
   {
     floor = aFloor;

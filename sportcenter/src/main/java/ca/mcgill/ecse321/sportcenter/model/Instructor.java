@@ -13,6 +13,10 @@ public class Instructor extends Account
   //------------------------
   // CONSTRUCTOR
   //------------------------
+  
+  protected Instructor() {
+    
+  }
 
   public Instructor(String aEmail, String aPassword, String aName, SportCenter aCenter)
   {

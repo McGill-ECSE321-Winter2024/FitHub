@@ -30,6 +30,10 @@ public class SportCenter
   // CONSTRUCTOR
   //------------------------
 
+  protected SportCenter() {
+    
+  }
+
   public SportCenter(int aId, String aName, Time aOpeningTime, Time aClosingTime, String aAddress, String aEmail, String aPhoneNumber)
   {
     id = aId;

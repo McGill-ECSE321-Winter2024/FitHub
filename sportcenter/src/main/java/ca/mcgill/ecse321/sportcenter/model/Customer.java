@@ -14,6 +14,10 @@ public class Customer extends Account
   // CONSTRUCTOR
   //------------------------
 
+  public Customer() {
+    
+  }
+
   public Customer(String aEmail, String aPassword, String aName, SportCenter aCenter)
   {
     super(aEmail, aPassword, aName, aCenter);

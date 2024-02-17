@@ -14,6 +14,10 @@ public class Owner extends Account
   // CONSTRUCTOR
   //------------------------
 
+  protected Owner() {
+    
+  }
+
   public Owner(String aEmail, String aPassword, String aName, SportCenter aCenter)
   {
     super(aEmail, aPassword, aName, aCenter);

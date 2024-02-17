@@ -34,6 +34,10 @@ public class Session
   // CONSTRUCTOR
   //------------------------
 
+  protected Session() {
+    
+  }
+
   public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation)
   {
     startTime = aStartTime;

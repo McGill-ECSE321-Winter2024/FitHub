@@ -13,6 +13,10 @@ public class Registration {
     @EmbeddedId
     private Key key;
 
+    protected Registration() {
+        
+    }
+
     public Registration(Key key) {
         this.key = key;
     }
