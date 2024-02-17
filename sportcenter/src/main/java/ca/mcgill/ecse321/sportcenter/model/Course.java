@@ -23,6 +23,14 @@ public class Course
   @ManyToOne
   private SportCenter center;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected Course() {
+    
+  }
+
   public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, SportCenter aCenter)
   {
     name = aName;

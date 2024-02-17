@@ -23,6 +23,14 @@ public class BillingAccount
   @ManyToOne
   private Customer customer;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected BillingAccount() {
+
+  }
+
   public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, int aId, Customer aCustomer)
   {
     cardNumber = aCardNumber;

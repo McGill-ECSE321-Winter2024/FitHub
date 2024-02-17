@@ -19,6 +19,14 @@ public class Location
   @ManyToOne
   private SportCenter center;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected Location() {
+    
+  }
+
   public Location(String aFloor, String aRoom, int aId, SportCenter aCenter)
   {
     floor = aFloor;

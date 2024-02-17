@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,24 +12,33 @@ import jakarta.persistence.ManyToOne;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account
 {
-  @Id
-  @GeneratedValue
-  private int id;
+
   private String email;
   private String password;
   private String name;
+  private String imageURL;
+  @Id
+  @GeneratedValue
+  private int id;
 
-  @OneToOne
-  private Image pfp;
   @ManyToOne
   private SportCenter center;
 
-  public Account(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected Account()
+  {
+
+  }
+
+  public Account(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
     email = aEmail;
     password = aPassword;
     name = aName;
-    id = aId;
+    imageURL = aImageURL;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
@@ -62,6 +70,14 @@ public abstract class Account
     return wasSet;
   }
 
+  public boolean setImageURL(String aImageURL)
+  {
+    boolean wasSet = false;
+    imageURL = aImageURL;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setId(int aId)
   {
     boolean wasSet = false;
@@ -85,53 +101,21 @@ public abstract class Account
     return name;
   }
 
+  public String getImageURL()
+  {
+    return imageURL;
+  }
+
   public int getId()
   {
     return id;
   }
-  
-  public Image getPfp()
-  {
-    return pfp;
-  }
 
-  public boolean hasPfp()
-  {
-    boolean has = pfp != null;
-    return has;
-  }
-  
   public SportCenter getCenter()
   {
     return center;
   }
-  
-  public boolean setPfp(Image aNewPfp)
-  {
-    boolean wasSet = false;
-    if (pfp != null && !pfp.equals(aNewPfp) && equals(pfp.getAccount()))
-    {
-      return wasSet;
-    }
 
-    pfp = aNewPfp;
-    Account anOldAccount = aNewPfp != null ? aNewPfp.getAccount() : null;
-
-    if (!this.equals(anOldAccount))
-    {
-      if (anOldAccount != null)
-      {
-        anOldAccount.pfp = null;
-      }
-      if (pfp != null)
-      {
-        pfp.setAccount(this);
-      }
-    }
-    wasSet = true;
-    return wasSet;
-  }
-  
   public boolean setCenter(SportCenter aCenter)
   {
     boolean wasSet = false;
@@ -153,13 +137,6 @@ public abstract class Account
 
   public void delete()
   {
-    Image existingPfp = pfp;
-    pfp = null;
-    if (existingPfp != null)
-    {
-      existingPfp.delete();
-      existingPfp.setAccount(null);
-    }
     SportCenter placeholderCenter = center;
     this.center = null;
     if(placeholderCenter != null)
@@ -175,8 +152,8 @@ public abstract class Account
             "email" + ":" + getEmail()+ "," +
             "password" + ":" + getPassword()+ "," +
             "name" + ":" + getName()+ "," +
+            "imageURL" + ":" + getImageURL()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "pfp = "+(getPfp()!=null?Integer.toHexString(System.identityHashCode(getPfp())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "center = "+(getCenter()!=null?Integer.toHexString(System.identityHashCode(getCenter())):"null");
   }
 }

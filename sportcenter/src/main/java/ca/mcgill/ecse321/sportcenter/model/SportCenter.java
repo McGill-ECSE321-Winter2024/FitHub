@@ -38,6 +38,14 @@ public class SportCenter
   @OneToMany
   private List<Account> accounts;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  protected SportCenter() {
+    
+  }
+
   public SportCenter(int aId, String aName, Time aOpeningTime, Time aClosingTime, String aAddress, String aEmail, String aPhoneNumber)
   {
     id = aId;

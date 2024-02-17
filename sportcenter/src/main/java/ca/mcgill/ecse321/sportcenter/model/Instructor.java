@@ -5,11 +5,23 @@ import jakarta.persistence.Entity;
 @Entity
 public class Instructor extends Account
 {
-  public Instructor(String aEmail, String aPassword, String aName, int aId, SportCenter aCenter)
-  {
-    super(aEmail, aPassword, aName, aId, aCenter);
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+  
+  protected Instructor() {
+    
   }
 
+  public Instructor(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
+  {
+    super(aEmail, aPassword, aName, aImageURL, aCenter);
+  }
+  
   public void delete()
   {
     super.delete();
