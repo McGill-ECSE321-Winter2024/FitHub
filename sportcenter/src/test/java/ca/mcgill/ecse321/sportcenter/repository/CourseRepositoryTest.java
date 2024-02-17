@@ -34,7 +34,6 @@ public class CourseRepositoryTest {
         Status status = Status.Approved;
 
         Course course = new Course(name, diff, status, description, SportCenter.getSportCenter());
-        //Course cours = new Course(name, )
 
         course = repo.save(course);
         int courseId = course.getId();
