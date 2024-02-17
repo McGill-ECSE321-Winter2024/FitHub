@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,7 +22,7 @@ public abstract class Account
   @GeneratedValue
   private int id;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   private SportCenter center;
 
   protected Account()

@@ -26,9 +26,9 @@ public class SportCenter
   private String email;
   private String phoneNumber;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private List<Course> courses;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private List<Location> locations;
   @OneToMany(cascade = CascadeType.ALL)
   private List<Account> accounts;
