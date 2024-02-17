@@ -7,6 +7,7 @@ import java.sql.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Session
@@ -19,8 +20,11 @@ public class Session
   private Date date;
   private int capacity;
 
+  @ManyToOne
   private Instructor supervisor;
+  @ManyToOne
   private Course courseType;
+  @ManyToOne
   private Location location;
 
   public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int aId, Instructor aSupervisor, Course aCourseType, Location aLocation)
