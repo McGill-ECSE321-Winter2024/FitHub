@@ -48,24 +48,27 @@ public class CourseRepositoryTest {
 
     @Test
     public void testCreateAndReadCourse() {
+
+        //create a course
         String name = "Cardio";
         String description = "Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope, squat jumps, lunges cycling and more.";
         Difficulty diff = Difficulty.Beginner;
         Status status = Status.Approved;
-
         Course course = new Course();
         course.setName(name);
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
+        course.setCenter(sportCenter);
         
+        //save into database
         course = courseRepo.save(course);
-
         Integer courseId = course.getId();
+        
+        //read from database
+        Course courseFromDb = courseRepo.findCourseById(course.getId());
 
-        Course courseFromDb = courseRepo.findCourseById(courseId);
-
-        //Assertions
+        //Assertions to check if course exists and has the appropiate attributes
         assertNotNull(courseFromDb);
         assertEquals(courseId, courseFromDb.getId());
         assertEquals(name, courseFromDb.getName());

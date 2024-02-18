@@ -22,6 +22,7 @@ import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
+
 @SpringBootTest
 public class RegistrationRepositoryTest {
 
@@ -37,71 +38,106 @@ public class RegistrationRepositoryTest {
     private CourseRepository courseRepo;
     @Autowired
     private RegistrationRepository registrationRepo;
+    @Autowired
+    private SportCenterRepository sportCenterRepo;
+
+    private SportCenter sportCenter;
 
     @BeforeEach
     @AfterEach
     public void clearDatabase() { 
-        locationRepo.deleteAll();
-        courseRepo.deleteAll();
-        instructorRepo.deleteAll();
         registrationRepo.deleteAll();
         customerRepo.deleteAll();
         sessionRepo.deleteAll();
+        instructorRepo.deleteAll();
+        locationRepo.deleteAll();
+        courseRepo.deleteAll();
+    }
+
+    @BeforeEach
+    public void createAndSaveSportCenter() {
+        SportCenter sportCenter = new SportCenter();
+        sportCenter.setName("FitHub");
+        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
+        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
+        sportCenter.setEmail("info@fithub.com");
+        sportCenter.setPhoneNumber("421-436-4444");
+        sportCenter.setAddress("2011, University Street, Montreal");
+
+        // Save sportCenterRepo
+        sportCenter = sportCenterRepo.save(sportCenter);
     }
     
     @Test
     public void testCreateAndReadRegistration() {
         
         //create a customer 
-        String custName = "Bob";
-        String custEmail = "bob@gmail.com";
-        String custPassword = "123456";
-        String custImageURL = "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/";
-        Customer cust = new Customer(custName, custEmail, custPassword, custImageURL, SportCenter.getSportCenter());
-        cust = customerRepo.save(cust);
+        Customer customer = new Customer();
+        customer.setEmail("bob@gmail.com");
+        customer.setPassword("12345");
+        customer.setName("Bob");
+        customer.setImageURL("pfp123.com");
+        // Save into database
+        customer = customerRepo.save(customer);
         
         //create a supervisor(instructor)
-        String instrName = "Bob";
-        String instrEmail = "bob@gmail.com";
-        String instrPassword = "123456";
-        String instrImageURL = "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/";
-        Instructor instr = new Instructor(instrName, instrEmail, instrPassword, instrImageURL, SportCenter.getSportCenter());
-        instr = instructorRepo.save(instr);
+        Instructor instructor = new Instructor();
+        instructor.setEmail("Jumijabasali@fithub.com");
+        instructor.setPassword("sportcenter");
+        instructor.setName("Jumijabasali");
+        instructor.setImageURL("pfp.com");
+        instructor.setCenter(sportCenter);
+        // Save into database
+        instructor = instructorRepo.save(instructor);
         
         //create a location
-        String floor = "2";
-        String room = "M12";
-        Location location = new Location(floor, room, SportCenter.getSportCenter());
-        location = locationRepo.save(location);
+        Location location = new Location();
+        location.setFloor( "aFloor");
+        location.setRoom( "aRoom");
+        location.setCenter(sportCenter);
+        // Save into database
+        Location savedLocation = locationRepo.save(location);
 
         //create a course
-        String name = "Cardio";
-        String description = "Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope, squat jumps, lunges cycling and more.";
-        Difficulty diff = Difficulty.Beginner;
-        Status status = Status.Approved;
-        Course course = new Course(name, diff, status, description, SportCenter.getSportCenter());
+        Course course = new Course();
+        course.setName("Cardio");
+        course.setDescription("Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope");
+        course.setDifficulty(Difficulty.Beginner);
+        course.setStatus(Status.Approved);
+        // Save into database
         course = courseRepo.save(course);
 
         //create a session
-        Time startTime = Time.valueOf("10:00:00");
-        Time endTime = Time.valueOf("11:00:00");
-        int cap = 50;
-        Date date = Date.valueOf("2024-02-09");
-        Session session = new Session(startTime, endTime, date, cap, instr, course, location);
-        session = sessionRepo.save(session);
+        Session aSession = new Session();
+        aSession.setStartTime(Time.valueOf("08:00:00"));
+        aSession.setEndTime(Time.valueOf("09:00:00"));
+        aSession.setDate(Date.valueOf("2024-02-18"));
+        aSession.setCapacity(50);
+        aSession.setSupervisor(instructor);
+        aSession.setCourseType(course);
+        aSession.setLocation(location);
+        // Save into database
+        aSession = sessionRepo.save(aSession);
 
         //create a registration
-        Registration.Key key = new Registration.Key(cust, session);
+        Registration.Key key = new Registration.Key(customer, aSession);
         Registration reg = new Registration(key);
         reg = registrationRepo.save(reg);
+
+        // Retrieve registration from the database
         Registration regFromDb = registrationRepo.findRegistrationByKey(key);
 
+        //Assert that session is not null and has correct attributes.
         assertNotNull(regFromDb);
         assertNotNull(regFromDb.getKey());
-        assertNotNull(regFromDb.getKey().getCustomer());
-        assertEquals(cust.getId(), regFromDb.getKey().getCustomer().getId());
-        assertNotNull(regFromDb.getKey().getSession());
-        assertEquals(session.getId(), regFromDb.getKey().getSession().getId());
 
+        //Assert that the information in the session association has been saved. 
+        assertNotNull(regFromDb.getKey().getSession()); 
+        assertEquals(aSession.getId(), regFromDb.getKey().getSession().getId());
+
+        //Assert that the information in the customer association has been saved.
+        assertNotNull(regFromDb.getKey().getCustomer());
+        assertEquals(customer.getId(), regFromDb.getKey().getCustomer().getId());
+        
     }
 }
