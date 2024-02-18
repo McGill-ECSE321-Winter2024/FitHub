@@ -17,6 +17,11 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
+/**
+ * This class represents the JUnit test cases for the AccountRepository.
+ * It ensures the correctness of CRUD operations related to various account types.
+ * Specifically, it tests the creation and retrieval of Owner, Instructor, and Customer entities.
+ */
 @SpringBootTest
 public class AccountRepositoryTest {
     @Autowired
@@ -26,6 +31,9 @@ public class AccountRepositoryTest {
 
     private SportCenter sportCenter;
 
+    /**
+     * Clears the database before each test.
+     */
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
@@ -33,6 +41,9 @@ public class AccountRepositoryTest {
         sportCenterRepo.deleteAll();
     }
 
+    /**
+     * Creates and saves a SportCenter instance before each test.
+     */
     @BeforeEach
     public void createAndSaveSportCenter() {
         SportCenter sportCenter = new SportCenter();
@@ -47,6 +58,9 @@ public class AccountRepositoryTest {
         sportCenter = sportCenterRepo.save(sportCenter);
     }
 
+    /**
+     * Tests the creation and retrieval of an Owner entity.
+     */
     @Test
     public void testCreateAndReadOwner() {
         // Create the owner 
@@ -71,13 +85,16 @@ public class AccountRepositoryTest {
         assertNotNull(ownerDb);
         // Test if the id is the same
         assertEquals(ownerId, ownerDb.getId());
-        // Test if other attributes is the same
+        // Test if other attributes are the same
         assertEquals(email, ownerDb.getEmail());
         assertEquals(password, ownerDb.getPassword());
         assertEquals(name, ownerDb.getName());
         assertEquals(imageURL, ownerDb.getImageURL());
     }
 
+    /**
+     * Tests the creation and retrieval of an Instructor entity.
+     */
     @Test
     public void testCreateAndReadInstructor() {
         // Create the instructor 
@@ -102,13 +119,16 @@ public class AccountRepositoryTest {
         assertNotNull(instructorDb);
         // Test if the id is the same
         assertEquals(instructorId, instructorDb.getId());
-        // Test if other attributes is the same
+        // Test if other attributes are the same
         assertEquals(email, instructorDb.getEmail());
         assertEquals(password, instructorDb.getPassword());
         assertEquals(name, instructorDb.getName());
         assertEquals(imageURL, instructorDb.getImageURL());
     }
 
+    /**
+     * Tests the creation and retrieval of a Customer entity.
+     */
     @Test
     public void testCreateAndReadCustomer() {
         // Create the customer 
@@ -133,7 +153,7 @@ public class AccountRepositoryTest {
         assertNotNull(customerDb);
         // Test if the id is the same
         assertEquals(customerId, customerDb.getId());
-        // Test if other attributes is the same
+        // Test if other attributes are the same
         assertEquals(email, customerDb.getEmail());
         assertEquals(password, customerDb.getPassword());
         assertEquals(name, customerDb.getName());

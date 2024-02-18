@@ -2,9 +2,7 @@ package ca.mcgill.ecse321.sportcenter.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
@@ -13,21 +11,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
+/**
+ * This class provides test cases for the SportCenterRepository class.
+ * It verifies the functionalities related to creating and reading sport centers.
+ */
 @SpringBootTest
 public class SportCenterRepositoryTests {
 
     @Autowired
     private SportCenterRepository sportCenterRepo;
 
+    /**
+     * Method to clear the database before and after each test.
+     */
     @BeforeEach
     @AfterEach
     public void clearDatabase(){
         sportCenterRepo.deleteAll();
     }
 
+    /**
+     * Test case to verify the creation and reading of a sport center.
+     */
     @Test
     public void testCreateAndReadSportCenter(){
         String name = "FitHub";
@@ -57,8 +64,5 @@ public class SportCenterRepositoryTests {
         assertEquals(email, sportCenterFromDb.getEmail());
         assertEquals(phone, sportCenterFromDb.getPhoneNumber());
         assertEquals(address, sportCenterFromDb.getAddress());
-    }
-
-
-    
+    }  
 }

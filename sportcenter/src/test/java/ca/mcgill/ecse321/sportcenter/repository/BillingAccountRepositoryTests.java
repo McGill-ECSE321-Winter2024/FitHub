@@ -12,11 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
+/**
+ * This class provides test cases for the BillingAccountRepository class.
+ * It verifies the functionalities related to creating and reading billing accounts.
+ */
 @SpringBootTest
 public class BillingAccountRepositoryTests {
 
@@ -34,6 +37,9 @@ public class BillingAccountRepositoryTests {
 
     private SportCenter sportCenter;
 
+    /**
+     * Method to clear the database before and after each test.
+     */
     @BeforeEach
     @AfterEach
     public void clearDatabase(){
@@ -43,6 +49,9 @@ public class BillingAccountRepositoryTests {
         sportCenterRepo.deleteAll();
     }
 
+    /**
+     * Method to create and save a sport center before each test.
+     */
     @BeforeEach
     public void createAndSaveSportCenter() {
         SportCenter sportCenter = new SportCenter();
@@ -57,6 +66,9 @@ public class BillingAccountRepositoryTests {
         sportCenter = sportCenterRepo.save(sportCenter);
     }
 
+    /**
+     * Test case to verify the creation and reading of a billing account.
+     */
     @Test
     public void testCreateAndReadBillingAccount(){
         // Create the customer 

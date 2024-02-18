@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.sportcenter.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
@@ -15,7 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
+/**
+ * This class provides test cases for the LocationRepository class.
+ * It verifies the functionalities related to persisting and loading locations.
+ */
 @SpringBootTest
 public class LocationRepositoryTest {
 	@Autowired
@@ -25,12 +27,18 @@ public class LocationRepositoryTest {
 
         private SportCenter sportCenter;
 
+	/**
+     * Method to clear the database after each test.
+     */
 	@AfterEach
 	public void clearDatabase() {
 		locationRepository.deleteAll();
                 sportCenterRepo.deleteAll();
         }
 
+        /**
+         * Method to create and save a sport center before each test.
+         */
         @BeforeEach
         public void createAndSaveSportCenter() {
                 SportCenter sportCenter = new SportCenter();
@@ -45,6 +53,9 @@ public class LocationRepositoryTest {
                 sportCenter = sportCenterRepo.save(sportCenter);
         }
 
+	/**
+     * Test case to verify the persistence and loading of a location.
+     */
 	@Test
 	public void testPersistAndLoadLocation() {
         
