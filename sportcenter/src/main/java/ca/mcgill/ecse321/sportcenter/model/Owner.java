@@ -14,7 +14,7 @@ public class Owner extends Account
   // CONSTRUCTOR
   //------------------------
 
-  protected Owner() {
+  public Owner() {
     
   }
 

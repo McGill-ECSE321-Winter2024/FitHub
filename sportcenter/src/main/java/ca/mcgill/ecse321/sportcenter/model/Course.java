@@ -2,8 +2,11 @@ package ca.mcgill.ecse321.sportcenter.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GeneratedValue;
 
 @Entity
@@ -17,14 +20,18 @@ public class Course
   @GeneratedValue
   private int id;
   private String name;
+
+  @Enumerated(EnumType.ORDINAL)
   private Difficulty difficulty;
+
+  @Enumerated(EnumType.ORDINAL)
   private Status status;
   private String description;
   
-  @ManyToOne (cascade = CascadeType.ALL)
+  @ManyToOne 
   private SportCenter center;
   
-  protected Course() {
+  public Course() {
     
   }
 

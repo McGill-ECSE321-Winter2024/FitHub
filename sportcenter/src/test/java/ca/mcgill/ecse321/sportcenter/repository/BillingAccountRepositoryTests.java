@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,35 +32,63 @@ public class BillingAccountRepositoryTests {
     @Autowired
     private SportCenterRepository sportCenterRepo;
 
+    private SportCenter sportCenter;
+
     @BeforeEach
     @AfterEach
     public void clearDatabase(){
         billingRepo.deleteAll();
         customerRepo.deleteAll();
         accountRepo.deleteAll();
+        sportCenterRepo.deleteAll();
+    }
+
+    @BeforeEach
+    public void createAndSaveSportCenter() {
+        SportCenter sportCenter = new SportCenter();
+        sportCenter.setName("FitHub");
+        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
+        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
+        sportCenter.setEmail("info@fithub.com");
+        sportCenter.setPhoneNumber("421-436-4444");
+        sportCenter.setAddress("2011, University Street, Montreal");
+
+        // Save sportCenterRepo
+        sportCenter = sportCenterRepo.save(sportCenter);
     }
 
     @Test
     public void testCreateAndReadBillingAccount(){
-
-        String aEmail = "bobby@gmail.com";
-        String aPassword = "password";
-        String aName = "Bobby Bob";
-        String aImageURL = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c5/Bob_the_builder.jpg/220px-Bob_the_builder.jpg";
+        // Create the customer 
+        String email = "Jumijabasali@fithub.com";
+        String password = "sportcenter";
+        String name = "Jumijabasali";
+        String imageURL = "pfp.com";
+        Customer customer = new Customer();
+        customer.setEmail(email);
+        customer.setPassword(password);
+        customer.setName(name);
+        customer.setImageURL(imageURL);
         
-        SportCenter aSportCenter = SportCenter.getSportCenter();
-        Account bob = new Customer(aEmail, aPassword, aName, aImageURL, aSportCenter);
-       
-        aSportCenter = sportCenterRepo.save(aSportCenter);
-        bob = accountRepo.save(bob);
+        // Save into database
+        customer = accountRepo.save(customer);
 
+        // Then create the billing account
         int aCardNumber = 0;
         String aCardHolder = "Bobby Bob";
         String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
         int aCCV = 374;
         Date expDate = new Date(4);
         boolean isDefault = false;
-        BillingAccount billingAccount = new BillingAccount(aCardNumber, aCardHolder , aBillingAdress, aCCV, expDate, isDefault, (Customer)bob);
+
+        BillingAccount billingAccount = new BillingAccount();
+        billingAccount.setCardNumber(aCardNumber);
+        billingAccount.setCardHolder(aCardHolder);
+        billingAccount.setBillingAddress(aBillingAdress);
+        billingAccount.setCvv(aCCV);
+        billingAccount.setExpirationDate(expDate);
+        billingAccount.setIsDefault(isDefault);
+        billingAccount.setCustomer(customer);
 
         billingAccount = billingRepo.save(billingAccount);
        
@@ -67,7 +96,7 @@ public class BillingAccountRepositoryTests {
 
         BillingAccount billingAccountFromDb = billingRepo.findBillingAccountById(billingAccountId);
 
-        //Assertions
+        // Testing
         assertNotNull(billingAccountFromDb);
         assertEquals(aCardNumber, billingAccountFromDb.getCardNumber());
         assertEquals(aCardHolder, billingAccountFromDb.getCardHolder());
