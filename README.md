@@ -19,11 +19,11 @@ This web application facilitates the management of a local sport center. It prov
 ## Deliverable 1 - Overview of individual effort
 | Name           | Team Role             | Individual Effort |
 | -------------- | --------------------- | ----------------- |
-| Anjali Singhal | Persistence Layer     | 5.5               |
-| Sahar Fathi    | Build System          | 5.0               |
-| James Luu      | Domain model          | 5.0               |
-| Tayba Jusab    | Project Management    | 5.0               |
-| Émilia Gagné   | Requirements          | 7.0               |
-| Julia Grenier  | Testing               | 5.5               |
+| Anjali Singhal | Persistence Layer     | 10.5               |
+| Sahar Fathi    | Build System          | 10.0               |
+| James Luu      | Domain model          | 10.0               |
+| Tayba Jusab    | Project Management    | 10.0               |
+| Émilia Gagné   | Requirements          | 12.0               |
+| Julia Grenier  | Testing               | 10.5               |
 
 
