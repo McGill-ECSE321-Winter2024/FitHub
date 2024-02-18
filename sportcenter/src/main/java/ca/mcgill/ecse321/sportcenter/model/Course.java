@@ -21,7 +21,7 @@ public class Course
   private Status status;
   private String description;
   
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne (cascade = CascadeType.ALL)
   private SportCenter center;
   
   protected Course() {

@@ -17,7 +17,7 @@ public class Location
   @GeneratedValue
   private int id;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne (cascade = CascadeType.ALL)
   private SportCenter center;
 
   //------------------------

@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.sql.Date;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,11 +19,11 @@ public class Session
   private Date date;
   private int capacity;
 
-  @ManyToOne
+  @ManyToOne 
   private Instructor supervisor;
   @ManyToOne
   private Course courseType;
-  @ManyToOne
+  @ManyToOne 
   private Location location;
 
 
