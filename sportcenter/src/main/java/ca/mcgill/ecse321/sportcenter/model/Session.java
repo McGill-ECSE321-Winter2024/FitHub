@@ -27,7 +27,7 @@ public class Session
   private Location location;
 
 
-  protected Session() {
+  public Session() {
     
   }
 

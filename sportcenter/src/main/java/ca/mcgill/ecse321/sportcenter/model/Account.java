@@ -22,10 +22,10 @@ public abstract class Account
   @GeneratedValue
   private int id;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   private SportCenter center;
 
-  protected Account()
+  public Account()
   {
   }
 

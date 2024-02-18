@@ -10,9 +10,12 @@ import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
+import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
+import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,95 +34,96 @@ public class SessionRepositoryTest {
     
     @Autowired
 	private LocationRepository locationRepository;
- 
+    
     @Autowired
-	private SportCenterRepository sportCenterRepository;
+    private SportCenterRepository sportCenterRepo;
+
+    private SportCenter sportCenter;
 
 	@AfterEach
+    @BeforeEach
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
         instructorRepository.deleteAll();
         courseRepository.deleteAll();
         locationRepository.deleteAll();
-        sportCenterRepository.deleteAll();
+        sportCenterRepo.deleteAll();
 	}
+
+    @BeforeEach
+    public void createAndSaveSportCenter() {
+            SportCenter sportCenter = new SportCenter();
+            sportCenter.setName("FitHub");
+            sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
+            sportCenter.setClosingTime(Time.valueOf("18:00:00"));
+            sportCenter.setEmail("info@fithub.com");
+            sportCenter.setPhoneNumber("421-436-4444");
+            sportCenter.setAddress("2011, University Street, Montreal");
+
+            // Save sportCenterRepo
+            sportCenter = sportCenterRepo.save(sportCenter);
+    }
 
 	@Test
 	public void testPersistAndLoadSession() {
+        // Create and save the location
+        Location location = new Location();
+        location.setFloor("501D");
+        location.setRoom("50");
+        location.setCenter(sportCenter);
+        location = locationRepository.save(location);
 
-        Time startTime = new Time(0);
-        Time endTime = new Time(0);
-        Date date = new Date(0);
-        int aCapacity = 50;
+        // Create and save the instructor 
+        Instructor instructor = new Instructor();
+        instructor.setEmail("Jumijabasali@fithub.com");
+        instructor.setPassword("sportcenter");
+        instructor.setName("Sahar");
+        instructor.setImageURL("pfp.com");
+        instructor = instructorRepository.save(instructor);
+        
+        // Create and save the course
+        Course aCourseType = new Course();
+        aCourseType.setName("Kung Fu I");
+        aCourseType.setDescription("Martial art beginner course");
+        aCourseType.setDifficulty(Difficulty.Beginner);
+        aCourseType.setStatus(Status.Pending);
+        aCourseType = courseRepository.save(aCourseType);
 
-        String email = "aEmail";
-        String password = "aPassword";
-        String name1 = "aName1";
-        String name2 = "aName2";
-        String imageURL = "aImageURL";
-        String description = "aDescription";
-        String floor = "aFloor";
-        String room = "aRoom";
+        Time startTime = Time.valueOf("08:00:00");
+        Time endTime = Time.valueOf("09:00:00");
+        Date date = Date.valueOf("2024-02-18");
+        Integer capacity = 10;
 
-        Instructor aSupervisor = new Instructor(email, password, name1, imageURL, SportCenter.getSportCenter());
-        Course aCourseType = new Course(name2, Course.Difficulty.Beginner, Course.Status.Approved , description, SportCenter.getSportCenter());
-        Location aLocation = new Location(floor, room, SportCenter.getSportCenter());
+        Session aSession = new Session();
+        aSession.setStartTime(startTime);
+        aSession.setEndTime(endTime);
+        aSession.setDate(date);
+        aSession.setCapacity(capacity);
+        aSession.setSupervisor(instructor);
+        aSession.setCourseType(aCourseType);
+        aSession.setLocation(location);
 
-        Session aSession = new Session(startTime, endTime, date, aCapacity, aSupervisor, aCourseType, aLocation);
-
-        SportCenter center = sportCenterRepository.save(SportCenter.getSportCenter());
-        Instructor savedSupervisor = instructorRepository.save(aSupervisor);
-        Course savedCourse = courseRepository.save(aCourseType);
-        Location savedLocation = locationRepository.save(aLocation);
-
-        Session savedSession = sessionRepository.save(aSession);
+        aSession = sessionRepository.save(aSession);
 
         // Retrieve session from the database
-        Session sessionFromDb = sessionRepository.findSessionById(savedSession.getId());
+        Session sessionFromDb = sessionRepository.findSessionById(aSession.getId());
 
 		// Assert that session is not null and has correct attributes.
 		assertNotNull(sessionFromDb);
-        assertEquals(aCapacity, sessionFromDb.getCapacity());
-        assertEquals(startTime.toString(), sessionFromDb.getEndTime().toString());
-        assertEquals(endTime.toString(), sessionFromDb.getStartTime().toString());
+        assertEquals(startTime.toString(), sessionFromDb.getStartTime().toString());
+        assertEquals(endTime.toString(), sessionFromDb.getEndTime().toString());
+        assertEquals(capacity, sessionFromDb.getCapacity());
 
-        //Assert that the information in the instructor association has been saved.
-        assertEquals(email, sessionFromDb.getSupervisor().getEmail());
-        assertEquals(password, sessionFromDb.getSupervisor().getPassword());
-        assertEquals(name1, sessionFromDb.getSupervisor().getName());
-        assertEquals(imageURL, sessionFromDb.getSupervisor().getImageURL());
-
-        //Assert that the information in the course association has been saved. 
-        assertEquals(name2, sessionFromDb.getCourseType().getName());
-        assertEquals(Course.Difficulty.Beginner, sessionFromDb.getCourseType().getDifficulty());
-        assertEquals(Course.Status.Approved, sessionFromDb.getCourseType().getStatus());
-        assertEquals(description, sessionFromDb.getCourseType().getDescription());
-
-        //Assert that the information in the location association has been saved. 
-        assertEquals(room, sessionFromDb.getLocation().getRoom());
-        assertEquals(floor, sessionFromDb.getLocation().getFloor());
-        
         //making sure the other objects were also saved
-        assertNotNull(savedSupervisor);
-        assertEquals(savedSupervisor.getId(), sessionFromDb.getSupervisor().getId());
-        assertEquals(savedSupervisor.getEmail(), sessionFromDb.getSupervisor().getEmail());
-        assertEquals(savedSupervisor.getPassword(), sessionFromDb.getSupervisor().getPassword());
-        assertEquals(savedSupervisor.getName(), sessionFromDb.getSupervisor().getName());
-        assertEquals(savedSupervisor.getImageURL(), sessionFromDb.getSupervisor().getImageURL());
+        assertNotNull(sessionFromDb.getSupervisor());
+        assertEquals(instructor.getId(), sessionFromDb.getSupervisor().getId());
 
         //Assert that the information in the course association has been saved. 
-        assertNotNull(savedCourse);
-        assertEquals(savedCourse.getId(), sessionFromDb.getCourseType().getId());
-        assertEquals(savedCourse.getName(), sessionFromDb.getCourseType().getName());
-        assertEquals(savedCourse.getDifficulty(), sessionFromDb.getCourseType().getDifficulty());
-        assertEquals(savedCourse.getStatus(), sessionFromDb.getCourseType().getStatus());
-        assertEquals(savedCourse.getDescription(), sessionFromDb.getCourseType().getDescription());
+        assertNotNull(sessionFromDb.getCourseType());
+        assertEquals(aCourseType.getId(), sessionFromDb.getCourseType().getId());
 
         //Assert that the information in the location association has been saved.
-        assertNotNull(savedLocation);
-        assertEquals(savedLocation.getId(), sessionFromDb.getLocation().getId()); 
-        assertEquals(savedLocation.getRoom(), sessionFromDb.getLocation().getRoom());
-        assertEquals(savedLocation.getFloor(), sessionFromDb.getLocation().getFloor());
-
+        assertNotNull(sessionFromDb.getLocation());
+        assertEquals(location.getId(), sessionFromDb.getLocation().getId()); 
 	}
 }

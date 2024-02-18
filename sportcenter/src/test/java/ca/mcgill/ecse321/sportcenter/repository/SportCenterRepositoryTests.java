@@ -30,7 +30,6 @@ public class SportCenterRepositoryTests {
 
     @Test
     public void testCreateAndReadSportCenter(){
-
         String name = "FitHub";
 		Time openTime = Time.valueOf("08:00:00");
         Time closeTime = Time.valueOf("18:00:00");
@@ -38,7 +37,13 @@ public class SportCenterRepositoryTests {
 		String phone = "421-436-4444";
 		String address = "2011, University Street, Montreal";
 		
-		SportCenter sportsCenter = new SportCenter(name, openTime, closeTime, address, email, phone);
+		SportCenter sportsCenter = new SportCenter();
+        sportsCenter.setName(name);
+        sportsCenter.setOpeningTime(openTime);
+        sportsCenter.setClosingTime(closeTime);
+        sportsCenter.setEmail(email);
+        sportsCenter.setPhoneNumber(phone);
+        sportsCenter.setAddress(address);
 
 		sportsCenter = sportCenterRepo.save(sportsCenter);
         int centerId = sportsCenter.getId();
@@ -52,8 +57,6 @@ public class SportCenterRepositoryTests {
         assertEquals(email, sportCenterFromDb.getEmail());
         assertEquals(phone, sportCenterFromDb.getPhoneNumber());
         assertEquals(address, sportCenterFromDb.getAddress());
-
-        
     }
 
 

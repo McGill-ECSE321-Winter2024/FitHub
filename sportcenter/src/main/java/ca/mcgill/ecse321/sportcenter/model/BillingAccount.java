@@ -28,7 +28,7 @@ public class BillingAccount
   // CONSTRUCTOR
   //------------------------
 
-  protected BillingAccount() {
+  public BillingAccount() {
 
   }
 

@@ -17,14 +17,14 @@ public class Location
   @GeneratedValue
   private int id;
 
-  @ManyToOne (cascade = CascadeType.ALL)
+  @ManyToOne 
   private SportCenter center;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  protected Location() {
+  public Location() {
     
   }
 

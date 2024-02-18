@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,29 +20,51 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class LocationRepositoryTest {
 	@Autowired
 	private LocationRepository locationRepository;
+        @Autowired
+        private SportCenterRepository sportCenterRepo;
+
+        private SportCenter sportCenter;
 
 	@AfterEach
 	public void clearDatabase() {
 		locationRepository.deleteAll();
-	}
+                sportCenterRepo.deleteAll();
+        }
+
+        @BeforeEach
+        public void createAndSaveSportCenter() {
+                SportCenter sportCenter = new SportCenter();
+                sportCenter.setName("FitHub");
+                sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
+                sportCenter.setClosingTime(Time.valueOf("18:00:00"));
+                sportCenter.setEmail("info@fithub.com");
+                sportCenter.setPhoneNumber("421-436-4444");
+                sportCenter.setAddress("2011, University Street, Montreal");
+
+                // Save sportCenterRepo
+                sportCenter = sportCenterRepo.save(sportCenter);
+        }
 
 	@Test
 	public void testPersistAndLoadLocation() {
         
-        String floor = "aFloor";
-        String room = "aRoom";
+                String floor = "aFloor";
+                String room = "aRoom";
 
-        Location location = new Location(floor, room, SportCenter.getSportCenter());
+                Location location = new Location();
+                location.setFloor(floor);
+                location.setRoom(room);
+                location.setCenter(sportCenter);
 
-        Location savedLocation = locationRepository.save(location);
+                Location savedLocation = locationRepository.save(location);
 
-        // Retrieve location from the database
-        Location locationFromDb = locationRepository.findLocationById(savedLocation.getId());
+                // Retrieve location from the database
+                Location locationFromDb = locationRepository.findLocationById(savedLocation.getId());
 
-        //Assert that the information in the location association has been saved. 
-        assertNotNull(locationFromDb);
-        assertEquals(room, locationFromDb.getRoom());
-        assertEquals(floor, locationFromDb.getFloor());
+                //Assert that the information in the location association has been saved. 
+                assertNotNull(locationFromDb);
+                assertEquals(room, locationFromDb.getRoom());
+                assertEquals(floor, locationFromDb.getFloor());
 
 	}
 }
