@@ -5,8 +5,7 @@ import jakarta.persistence.Entity;
 @Entity
 public class Instructor extends Account
 {
-
-  protected Instructor() {
+  public Instructor() {
     
   }
 

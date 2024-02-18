@@ -13,7 +13,7 @@ public class Registration {
     @EmbeddedId
     private Key key;
 
-    protected Registration() {
+    public Registration() {
     }
 
     public Registration(Key key) {

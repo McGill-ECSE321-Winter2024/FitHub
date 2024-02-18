@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Id;
+import jakarta.persistence.CascadeType;
 
 @Entity
 public class Location
@@ -16,14 +17,14 @@ public class Location
   @GeneratedValue
   private int id;
 
-  @ManyToOne
+  @ManyToOne 
   private SportCenter center;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  protected Location() {
+  public Location() {
     
   }
 
