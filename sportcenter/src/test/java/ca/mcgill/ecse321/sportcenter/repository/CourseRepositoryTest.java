@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.repository;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Time;
 
@@ -16,6 +16,10 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 
+/**
+ * This class provides test cases for the CourseRepository class.
+ * It verifies the functionalities related to creating and reading courses.
+ */
 @SpringBootTest
 public class CourseRepositoryTest {
     @Autowired
@@ -25,6 +29,9 @@ public class CourseRepositoryTest {
 
     private SportCenter sportCenter;
 
+    /**
+     * Method to clear the database before and after each test.
+     */
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
@@ -32,6 +39,9 @@ public class CourseRepositoryTest {
         sportCenterRepo.deleteAll();
     }
 
+    /**
+     * Method to create and save a sport center before each test.
+     */
     @BeforeEach
     public void createAndSaveSportCenter() {
         SportCenter sportCenter = new SportCenter();
@@ -46,6 +56,9 @@ public class CourseRepositoryTest {
         sportCenter = sportCenterRepo.save(sportCenter);
     }
 
+    /**
+     * Test case to verify the creation and reading of a course.
+     */
     @Test
     public void testCreateAndReadCourse() {
 
@@ -68,7 +81,7 @@ public class CourseRepositoryTest {
         //read from database
         Course courseFromDb = courseRepo.findCourseById(course.getId());
 
-        //Assertions to check if course exists and has the appropiate attributes
+        //Assertions to check if course exists and has the appropriate attributes
         assertNotNull(courseFromDb);
         assertEquals(courseId, courseFromDb.getId());
         assertEquals(name, courseFromDb.getName());

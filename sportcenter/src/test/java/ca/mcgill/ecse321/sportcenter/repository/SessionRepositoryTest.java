@@ -1,3 +1,7 @@
+/**
+ * This class provides test cases for the SessionRepository class.
+ * It verifies the functionalities related to creating and reading sessions.
+ */
 package ca.mcgill.ecse321.sportcenter.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +44,9 @@ public class SessionRepositoryTest {
 
     private SportCenter sportCenter;
 
+	/**
+     * Method to clear the database before and after each test.
+     */
 	@AfterEach
     @BeforeEach
 	public void clearDatabase() {
@@ -50,6 +57,9 @@ public class SessionRepositoryTest {
         sportCenterRepo.deleteAll();
 	}
 
+    /**
+     * Method to create and save a sport center before each test.
+     */
     @BeforeEach
     public void createAndSaveSportCenter() {
             SportCenter sportCenter = new SportCenter();
@@ -64,6 +74,9 @@ public class SessionRepositoryTest {
             sportCenter = sportCenterRepo.save(sportCenter);
     }
 
+	/**
+     * Test case to verify the creation and reading of a session.
+     */
 	@Test
 	public void testPersistAndLoadSession() {
         // Create and save the location

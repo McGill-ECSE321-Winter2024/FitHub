@@ -22,7 +22,10 @@ import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
-
+/**
+ * This class provides test cases for the RegistrationRepository class.
+ * It verifies the functionalities related to creating and reading registrations.
+ */
 @SpringBootTest
 public class RegistrationRepositoryTest {
 
@@ -43,6 +46,9 @@ public class RegistrationRepositoryTest {
 
     private SportCenter sportCenter;
 
+    /**
+     * Method to clear the database before and after each test.
+     */
     @BeforeEach
     @AfterEach
     public void clearDatabase() { 
@@ -54,6 +60,9 @@ public class RegistrationRepositoryTest {
         courseRepo.deleteAll();
     }
 
+    /**
+     * Method to create and save a sport center before each test.
+     */
     @BeforeEach
     public void createAndSaveSportCenter() {
         SportCenter sportCenter = new SportCenter();
@@ -68,6 +77,9 @@ public class RegistrationRepositoryTest {
         sportCenter = sportCenterRepo.save(sportCenter);
     }
     
+    /**
+     * Test case to verify the creation and reading of a registration.
+     */
     @Test
     public void testCreateAndReadRegistration() {
         
