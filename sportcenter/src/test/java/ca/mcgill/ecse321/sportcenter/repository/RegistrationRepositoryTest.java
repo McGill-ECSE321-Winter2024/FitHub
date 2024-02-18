@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
@@ -21,6 +22,7 @@ import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
+@SpringBootTest
 public class RegistrationRepositoryTest {
 
     @Autowired
@@ -42,9 +44,9 @@ public class RegistrationRepositoryTest {
         locationRepo.deleteAll();
         courseRepo.deleteAll();
         instructorRepo.deleteAll();
+        registrationRepo.deleteAll();
         customerRepo.deleteAll();
         sessionRepo.deleteAll();
-        registrationRepo.deleteAll();
     }
     
     @Test
