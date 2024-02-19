@@ -4,7 +4,6 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.util.*;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
