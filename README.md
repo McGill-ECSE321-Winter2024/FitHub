@@ -1,9 +1,10 @@
 # ECSE321 Project: Team 12
 
-
 ## Project Overview
 
 This web application facilitates the management of a local sport center. It provides a platform for the owner and instructor to schedule different types of classes and allows customers to register for specific sessions.
+
+To access the Home of our project, please consult this [wiki page](https://github.com/McGill-ECSE321-Winter2024/project-group-12/wiki).
 
 ## Team Members
 
@@ -17,13 +18,12 @@ This web application facilitates the management of a local sport center. It prov
 | Julia Grenier  | julia-b-grenier |
 
 ## Deliverable 1 - Overview of individual effort
-| Name           | Team Role             | Individual Effort |
-| -------------- | --------------------- | ----------------- |
-| Anjali Singhal | Persistence Layer     | 5.5               |
-| Sahar Fathi    | Build System          | 5.0               |
-| James Luu      | Domain model          | 5.0               |
-| Tayba Jusab    | Project Management    | 5.0               |
-| Émilia Gagné   | Requirements          | 7.0               |
-| Julia Grenier  | Testing               | 5.5               |
 
-
+| Name           | Individual Effort |
+| -------------- | ----------------- |
+| Anjali Singhal | 12.5              |
+| Sahar Fathi    | 12.0              |
+| James Luu      | 12.0              |
+| Tayba Jusab    | 12.0              |
+| Émilia Gagné   | 14.0              |
+| Julia Grenier  | 12.5              |
