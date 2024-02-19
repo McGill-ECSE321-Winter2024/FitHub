@@ -20,9 +20,9 @@ This web application facilitates the management of a local sport center. It prov
 | Name           | Team Role       | Individual Effort |
 | -------------- | --------------- | ----------------- |
 | Anjali Singhal | Anji00          | 2.5               |
-| Sahar Fathi    | Persistence     | 2.0               |
-| James Luu      | Domain Model    | 2.0               |
+| Sahar Fathi    | fathisahar      | 2.0               |
+| James Luu      | Jamesluu0917    | 2.0               |
 | Tayba Jusab    | TJusab          | 2.0               |
-| Émilia Gagné   | Requirements    | 4.0               |
+| Émilia Gagné   | EmiliaGagne     | 4.0               |
 | Julia Grenier  | julia-b-grenier | 2.0               |
 
