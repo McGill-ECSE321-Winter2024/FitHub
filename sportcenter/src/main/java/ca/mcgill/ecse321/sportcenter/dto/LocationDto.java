@@ -1,15 +1,16 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
 
-public class LocationDto {
+public class LocationDTO {
+
     private String floor;
     private String room;
 
-    public LocationDto() {
+    public LocationDTO() {
 
     }
 
-    public LocationDto(String floor, String room) {
+    public LocationDTO(String floor, String room) {
         this.floor = floor;
         this.room = room;
     }
