@@ -222,9 +222,28 @@ public class TestCourseService {
 
     @Test
     public void testFindCoursesByStatus() {
-        service.createCourse("Course 1", "Description for Course 1", Course.Difficulty.Beginner, Course.Status.Closed);
-        service.createCourse("Course 3", "Description for Course 3", Course.Difficulty.Beginner, Course.Status.Closed);
-        service.createCourse("Course 2", "Description for Course 2", Course.Difficulty.Intermediate, Course.Status.Pending);
+        
+        Course course1 = new Course();
+        course1.setName("Course 1");
+        course1.setDescription("Description for Course 1");
+        course1.setDifficulty(Course.Difficulty.Beginner);
+        course1.setStatus(Course.Status.Closed);
+        courseDao.save(course1);
+
+        Course course3 = new Course();
+        course3.setName("Course 3");
+        course3.setDescription("Description for Course 3");
+        course3.setDifficulty(Course.Difficulty.Beginner);
+        course3.setStatus(Course.Status.Closed);
+        courseDao.save(course1);
+
+        Course course2 = new Course();
+        course2.setName("Course 2");
+        course2.setDescription("Description for Course 2");
+        course2.setDifficulty(Course.Difficulty.Intermediate);
+        course2.setStatus(Course.Status.Pending);
+        courseDao.save(course2);
+
         // Assuming 'Approved' is an existing status in your database
         List<Course> closed = service.findCoursesByStatus(Course.Status.Closed);
         assertNotNull(closed);
