@@ -12,6 +12,7 @@ import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 
+@Service
 public class CourseService {
     @Autowired
 	CourseRepository courseRepository;
@@ -39,35 +40,24 @@ public class CourseService {
 
     @Transactional
     public List<Course> findCoursesByDifficulty(Course.Difficulty difficulty){
-        List<Course> courses = courseRepository.findCoursesByDifficulty(difficulty);
-
-        if (courses == null){
-
+        List<Course> coursesByDifficulty = new ArrayList<>();
+        for (Course course : courseRepository.findAll()) {
+            if (course.getDifficulty().equals(difficulty)){
+                coursesByDifficulty.add(course);
+            }
         }
-
-        return courses;
+        return coursesByDifficulty;
     }
 
     @Transactional
     public List<Course> findCoursesByStatus(Course.Status status){
-        List<Course> courses = courseRepository.findCoursesByStatus(status);
-
-        if (courses == null){
-
+        List<Course> coursesByStatus = new ArrayList<>();
+        for (Course course : courseRepository.findAll()) {
+            if (course.getStatus().equals(status)){
+                coursesByStatus.add(course);
+            }
         }
-
-        return courses;
-    }
-
-    @Transactional
-    public Course findCourseByName(String name){
-        Course course = courseRepository.findCourseByName(name);
-
-        if (course == null){
-
-        }
-
-        return course;
+        return coursesByStatus;
     }
 
     private <T> List<T> toList(Iterable<T> iterable){
