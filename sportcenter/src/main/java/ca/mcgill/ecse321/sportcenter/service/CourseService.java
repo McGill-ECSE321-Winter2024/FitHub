@@ -18,7 +18,27 @@ public class CourseService {
 	CourseRepository courseRepository;
 
     @Transactional
-    public Course createCourse(String name, String description, Difficulty diff, Status status){
+    public Course createCourse(String name, String description, Difficulty diff, Status status) {
+        //Input validation checks to ensure that the course being created is valid.
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be empty!");
+        }
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course description cannot be empty!");
+        }
+        if (diff == null) {
+            throw new IllegalArgumentException("Course difficulty cannot be null!");
+        }
+        if (status == null) {
+            throw new IllegalArgumentException("Course status cannot be null!");
+        }
+
+        //Ensuring the uniqueness of each course.
+        if (courseRepository.existsByName(name)){
+            throw new IllegalArgumentException("Course already exists!");
+        }
+
+        //If the arguments of the course are valid, then let it be created. 
         Course course = new Course();
         course.setName(name);
         course.setDescription(description);
@@ -26,9 +46,13 @@ public class CourseService {
         course.setStatus(status);
         return courseRepository.save(course);
     }
+    
 
     @Transactional 
     public Course getCourse(Integer id){
+        if (!courseRepository.existsById(id)){
+            throw new IllegalArgumentException("Course doesn't exist!");
+        }
         Course course = courseRepository.findCourseById(id);
         return course;
     }
@@ -46,6 +70,11 @@ public class CourseService {
                 coursesByDifficulty.add(course);
             }
         }
+
+        //If there are no courses of that difficulty existing, then stop the query. 
+        if (coursesByDifficulty.size() == 0){
+            throw new IllegalArgumentException("No courses of that difficulty exist!");
+        }
         return coursesByDifficulty;
     }
 
@@ -56,6 +85,10 @@ public class CourseService {
             if (course.getStatus().equals(status)){
                 coursesByStatus.add(course);
             }
+        }
+        //If there are no courses of that status existing, then stop the query. 
+        if (coursesByStatus.size() == 0){
+            throw new IllegalArgumentException("No courses of that status exist!");
         }
         return coursesByStatus;
     }
