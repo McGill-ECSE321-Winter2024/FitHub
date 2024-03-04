@@ -19,43 +19,52 @@ public class CourseService {
 
     @Transactional
     public Course createCourse(String name, String description, Difficulty diff, Status status) {
-        //Input validation checks to ensure that the course being created is valid.
+        // Accumulate error messages
+        StringBuilder errorMessage = new StringBuilder();
+    
+        // Input validation checks
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course name cannot be empty!");
+            errorMessage.append("Course name cannot be empty! ");
         }
         if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course description cannot be empty!");
+            errorMessage.append("Course description cannot be empty! ");
         }
         if (diff == null) {
-            throw new IllegalArgumentException("Course difficulty cannot be null!");
+            errorMessage.append("Course difficulty cannot be null! ");
         }
         if (status == null) {
-            throw new IllegalArgumentException("Course status cannot be null!");
+            errorMessage.append("Course status cannot be null! ");
         }
-
-        //Ensuring the uniqueness of each course.
-        if (courseRepository.existsByName(name)){
-            throw new IllegalArgumentException("Course already exists!");
+        // Ensure the uniqueness of each course
+        if (courseRepository.existsByName(name)) {
+            errorMessage.append("Course already exists! ");
         }
-
-        //If the arguments of the course are valid, then let it be created. 
+    
+        // If there are any errors, throw an exception
+        if (errorMessage.length() > 0) {
+            throw new IllegalArgumentException(errorMessage.toString().trim());
+        }
+    
+        // If no errors, create and save the course
         Course course = new Course();
         course.setName(name);
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        return courseRepository.save(course);
-    }
-    
+        course.toString();
+        courseRepository.save(course);
+        return course;
+    }    
 
     @Transactional 
     public Course getCourse(Integer id){
         if (!courseRepository.existsById(id)){
-            throw new IllegalArgumentException("Course doesn't exist!");
+            throw new IllegalArgumentException("Course doesn't exist! ");
         }
         Course course = courseRepository.findCourseById(id);
         return course;
     }
+
 
     @Transactional
     public List<Course> getAllCourses() {
