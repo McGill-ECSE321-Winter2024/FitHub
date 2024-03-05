@@ -30,7 +30,7 @@ public class BillingAccountRepositoryTests {
     private CustomerRepository customerRepo;
 
     @Autowired
-    private AccountRepository accountRepo;
+    private CustomerRepository accountRepo;
 
     @Autowired
     private SportCenterRepository sportCenterRepo;
