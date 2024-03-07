@@ -81,6 +81,7 @@ public class BillingAccountRepositoryTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setCenter(sportCenter);
         
         // Save into database
         customer = accountRepo.save(customer);

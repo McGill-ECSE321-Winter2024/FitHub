@@ -23,7 +23,7 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
  * Specifically, it tests the creation and retrieval of Owner, Instructor, and Customer entities.
  */
 @SpringBootTest
-public class AccountRepositoryTest {
+public class AccountRepositoryTests {
     @Autowired
     private CustomerRepository customerRepo;
     @Autowired
@@ -93,7 +93,7 @@ public class AccountRepositoryTest {
         // Test if the id is the same
         assertEquals(ownerId, ownerDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, ownerDb.getEmail());
+        assertEquals(email.toLowerCase(), ownerDb.getEmail());
         assertEquals(password, ownerDb.getPassword());
         assertEquals(name, ownerDb.getName());
         assertEquals(imageURL, ownerDb.getImageURL());
@@ -107,7 +107,7 @@ public class AccountRepositoryTest {
         // Test if the id is the same
         assertEquals(ownerId, ownerDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, ownerDb.getEmail());
+        assertEquals(email.toLowerCase(), ownerDb.getEmail());
         assertEquals(password, ownerDb.getPassword());
         assertEquals(name, ownerDb.getName());
         assertEquals(imageURL, ownerDb.getImageURL());
@@ -142,7 +142,7 @@ public class AccountRepositoryTest {
         // Test if the id is the same
         assertEquals(instructorId, instructorDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, instructorDb.getEmail());
+        assertEquals(email.toLowerCase(), instructorDb.getEmail());
         assertEquals(password, instructorDb.getPassword());
         assertEquals(name, instructorDb.getName());
         assertEquals(imageURL, instructorDb.getImageURL());
@@ -156,7 +156,7 @@ public class AccountRepositoryTest {
         // Test if the id is the same
         assertEquals(instructorId, instructorDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, instructorDb.getEmail());
+        assertEquals(email.toLowerCase(), instructorDb.getEmail());
         assertEquals(password, instructorDb.getPassword());
         assertEquals(name, instructorDb.getName());
         assertEquals(imageURL, instructorDb.getImageURL());
@@ -191,7 +191,7 @@ public class AccountRepositoryTest {
         // Test if the id is the same
         assertEquals(customerId, customerDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, customerDb.getEmail());
+        assertEquals(email.toLowerCase(), customerDb.getEmail());
         assertEquals(password, customerDb.getPassword());
         assertEquals(name, customerDb.getName());
         assertEquals(imageURL, customerDb.getImageURL());
@@ -204,7 +204,7 @@ public class AccountRepositoryTest {
         // Test if the id is the same
         assertEquals(customerId, customerDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, customerDb.getEmail());
+        assertEquals(email.toLowerCase(), customerDb.getEmail());
         assertEquals(password, customerDb.getPassword());
         assertEquals(name, customerDb.getName());
         assertEquals(imageURL, customerDb.getImageURL());

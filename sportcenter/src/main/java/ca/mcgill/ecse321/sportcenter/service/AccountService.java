@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import jakarta.transaction.Transactional;
 
 /*
@@ -29,6 +29,9 @@ public class AccountService {
     InstructorRepository instructorRepository;
     @Autowired
     OwnerRepository ownerRepository;
+    
+    @Autowired
+    SportCenterRepository sportCenterRepository;
 
     //--------------------------// Create Account //--------------------------//
 
@@ -42,8 +45,8 @@ public class AccountService {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customerRepository.save(customer);
-        return customer;
+        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        return customerRepository.save(customer);
     }
     
     @Transactional
@@ -56,8 +59,8 @@ public class AccountService {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructorRepository.save(instructor);
-        return instructor;
+        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        return instructorRepository.save(instructor);
     }
 
     @Transactional
@@ -70,8 +73,8 @@ public class AccountService {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        ownerRepository.save(owner);
-        return owner;
+        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        return ownerRepository.save(owner);
     }
     
     //--------------------------// Update Account //--------------------------//
@@ -81,13 +84,12 @@ public class AccountService {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
 
-        Customer customer = customerRepository.findCustomerById(id);
+        Customer customer = findCustomerById(id);
         customer.setEmail(email);
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customerRepository.save(customer);
-        return customer;
+        return customerRepository.save(customer);
     }
     
     @Transactional
@@ -95,13 +97,12 @@ public class AccountService {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
 
-        Instructor instructor = instructorRepository.findInstructorById(0);
+        Instructor instructor = findInstructorById(id);
         instructor.setEmail(email);
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructorRepository.save(instructor);
-        return instructor;
+        return instructorRepository.save(instructor);
     }
 
     @Transactional
@@ -109,13 +110,12 @@ public class AccountService {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
         
-        Owner owner = ownerRepository.findOwnerById(id);
+        Owner owner = findOwnerById(id);
         owner.setEmail(email);
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        ownerRepository.save(owner);
-        return owner;
+        return ownerRepository.save(owner);
     }
     
     //--------------------------// Delete Account //--------------------------//
@@ -127,7 +127,7 @@ public class AccountService {
 
     @Transactional
     public void deleteInstructorAccount(Integer id) {
-        instructorRepository.delete(findinstructorById(id));
+        instructorRepository.delete(findInstructorById(id));
     }
 
     @Transactional
@@ -175,7 +175,7 @@ public class AccountService {
 
     @Transactional
 	public Customer findCustomerByEmail(String email) {
-		Customer customer = customerRepository.findCustomerByEmail(email);
+		Customer customer = customerRepository.findCustomerByEmail(email.toLowerCase());
         if (customer == null) {
             throw new IllegalArgumentException("There is no customer with email " + email + ".");
         }
@@ -188,7 +188,7 @@ public class AccountService {
 	}
 
     @Transactional
-	public Instructor findinstructorById(Integer id) {
+	public Instructor findInstructorById(Integer id) {
 		Instructor instructor = instructorRepository.findInstructorById(id);
         if (instructor == null) {
             throw new IllegalArgumentException("There is no instructor with ID " + id + ".");
@@ -197,8 +197,8 @@ public class AccountService {
 	}
 
     @Transactional
-	public Instructor findinstructorByEmail(String email) {
-		Instructor instructor = instructorRepository.findInstructorByEmail(email);
+	public Instructor findInstructorByEmail(String email) {
+		Instructor instructor = instructorRepository.findInstructorByEmail(email.toLowerCase());
         if (instructor == null) {
             throw new IllegalArgumentException("There is no instructor with email " + email + ".");
         }
@@ -221,7 +221,7 @@ public class AccountService {
 
     @Transactional
 	public Owner findOwnerByEmail(String email) {
-		Owner owner = ownerRepository.findOwnerByEmail(email);
+		Owner owner = ownerRepository.findOwnerByEmail(email.toLowerCase());
         if (owner == null) {
             throw new IllegalArgumentException("There is no owner with email " + email + ".");
         }
