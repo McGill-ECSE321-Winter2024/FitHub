@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * It verifies the functionalities related to persisting and loading locations.
  */
 @SpringBootTest
-public class LocationRepositoryTest {
+public class LocationRepositoryTests {
 	@Autowired
 	private LocationRepository locationRepository;
         @Autowired
