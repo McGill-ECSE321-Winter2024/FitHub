@@ -19,7 +19,6 @@ sportcenter/.gradle/file-system.probe
 sportcenter/.gradle/buildOutputCleanup/outputFiles.bin
 sportcenter/.gradle/buildOutputCleanup/cache.properties
 sportcenter/.gradle/buildOutputCleanup/buildOutputCleanup.lock
-sportcenter/build/classes/java/main/ca/mcgill/ecse321/sportcenter/SportCenterService.class
 sportcenter/build/jacoco/test.exec
 sportcenter/build/reports/jacoco/test/html/ca.mcgill.ecse321.sportcenter.model/Account.html
 sportcenter/build/reports/jacoco/test/html/ca.mcgill.ecse321.sportcenter.model/Account.java.html
@@ -129,7 +128,6 @@ sportcenter/build/test-results/test/TEST-ca.mcgill.ecse321.sportcenter.Sportcent
 sportcenter/build/tmp/compileJava/previous-compilation-data.bin
 sportcenter/build/tmp/compileTestJava/previous-compilation-data.bin
 *.html
-*.xml
 sportcenter/.gradle/file-system.probe
 sportcenter/.gradle/buildOutputCleanup/outputFiles.bin
 sportcenter/.gradle/buildOutputCleanup/cache.properties
