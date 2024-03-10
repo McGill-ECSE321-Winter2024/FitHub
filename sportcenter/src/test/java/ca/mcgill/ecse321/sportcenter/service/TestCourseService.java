@@ -47,6 +47,8 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
+import ca.mcgill.ecse321.sportcenter.model.Owner;
+import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 
@@ -93,7 +95,8 @@ public class TestCourseService {
     }
 
 
-    /* Create tests */
+    //--------------------------// Create Course Tests //--------------------------//
+
     @Test
 	public void testCreateCourse() {
 		assertEquals(0, service.getAllCourses().size());
@@ -222,7 +225,68 @@ public class TestCourseService {
 		assertEquals("Course name cannot be empty!", error);
 	}
 
-    /* Reading tests */
+    //--------------------------// Update Course Tests //--------------------------//
+
+
+    //--------------------------// Find Course Tests //--------------------------//
+
+    @Test
+    public void testCourseOwnerByValidId() {
+        // Set up test
+        int id = 3;
+        String name = "aName";
+        String description = "a Description";
+        Difficulty diff = Difficulty.Advanced;
+        Status status = Status.Closed;
+        
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        when(courseDao.findCourseById(id)).thenReturn(course);
+
+        // Use the CourseService
+        Course foundCourse = service.findCourseById(id);
+    
+        // Assert
+        assertNotNull(foundCourse);
+		assertEquals(name, foundCourse.getName());
+        assertEquals(description, foundCourse.getDescription());
+        assertEquals(diff, foundCourse.getDifficulty());
+        assertEquals(status, foundCourse.getStatus());
+    }
+
+    @Test
+    public void testReadCourseByValidName() {
+        // Set up test
+        String name = "aName";
+        String description = "a Description";
+        Difficulty diff = Difficulty.Advanced;
+        Status status = Status.Closed;
+        
+        Course course = new Course();
+        course.setName(name.toLowerCase());
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        when(courseDao.findCourseByName(name.toLowerCase())).thenReturn(course);
+
+        // Use the CourseService
+        Course foundCourse = service.findCourseByName(name.toLowerCase());
+    
+        // Assert
+        assertNotNull(foundCourse);
+		assertEquals(name, foundCourse.getName());
+        assertEquals(description, foundCourse.getDescription());
+        assertEquals(diff, foundCourse.getDifficulty());
+        assertEquals(status, foundCourse.getStatus());
+    }
+
     @Test
     public void testReadCourseByInvalidId() {
         // Set up test
