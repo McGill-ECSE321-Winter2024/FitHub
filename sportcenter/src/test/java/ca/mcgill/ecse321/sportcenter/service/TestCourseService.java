@@ -47,6 +47,7 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
@@ -93,7 +94,6 @@ public class TestCourseService {
         // Save sportCenterRepo
         sportCenter = sportCenterRepo.save(sportCenter);
     }
-
 
     //--------------------------// Create Course Tests //--------------------------//
 
@@ -227,6 +227,85 @@ public class TestCourseService {
 
     //--------------------------// Update Course Tests //--------------------------//
 
+    @Test
+    public void testUpdateValidCourse() {
+        Integer id = 3;
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        when(courseDao.findCourseById(id)).thenReturn(course);
+
+        String newName = "new Name";
+        String newDescription = "new Description.";
+        Difficulty newDiff = Difficulty.Advanced;
+        Status newStatus = Status.Closed;
+
+        Course updatedCourse = new Course();
+        updatedCourse.setName(newName);
+        updatedCourse.setDescription(newDescription);
+        updatedCourse.setDifficulty(newDiff);
+        updatedCourse.setStatus(newStatus);
+
+        when(courseDao.save(any(Course.class))).thenReturn(updatedCourse);
+
+        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+    
+        // Assert
+        verify(courseDao, times(1)).findCourseById(id);
+        verify(courseDao, times(1)).save(any(Course.class));
+        assertNotNull(savedCourse);
+        assertEquals(newName.toLowerCase(), savedCourse.getName());
+        assertEquals(newDescription, savedCourse.getDescription());
+        assertEquals(newDiff, savedCourse.getDifficulty());
+        assertEquals(newStatus, savedCourse.getStatus());
+    }
+
+    @Test
+    public void testUpdateInvalidCourse() {
+        Integer id = 3;
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        String newName = "";
+        String newDescription = "new Description.";
+        Difficulty newDiff = Difficulty.Advanced;
+        Status newStatus = Status.Closed;
+
+        Course updatedCourse = new Course();
+        updatedCourse.setName(newName);
+        updatedCourse.setDescription(newDescription);
+        updatedCourse.setDifficulty(newDiff);
+        updatedCourse.setStatus(newStatus);
+
+        String error = "";
+        try {
+			Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		// check error
+		assertEquals("Course name cannot be empty!", error);
+        
+    }
+
 
     //--------------------------// Find Course Tests //--------------------------//
 
@@ -268,7 +347,7 @@ public class TestCourseService {
         Status status = Status.Closed;
         
         Course course = new Course();
-        course.setName(name.toLowerCase());
+        course.setName(name);
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
