@@ -3,53 +3,29 @@ package ca.mcgill.ecse321.sportcenter.service;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.description;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
-import ca.mcgill.ecse321.sportcenter.model.Instructor;
-import ca.mcgill.ecse321.sportcenter.model.Owner;
-import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 
