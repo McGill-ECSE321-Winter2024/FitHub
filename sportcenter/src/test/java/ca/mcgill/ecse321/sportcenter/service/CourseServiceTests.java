@@ -31,7 +31,7 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 @ExtendWith(MockitoExtension.class)
 
-public class TestCourseService {
+public class CourseServiceTests {
     @Mock
     private CourseRepository courseDao;
 
