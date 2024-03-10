@@ -18,11 +18,12 @@ public class SportCenterDTO {
   private String phoneNumber;
   private List<CourseDTO> courses;
   private List<LocationDTO> locations;
+  private AccountListDTO accounts;
 
   public SportCenterDTO() {
   }
 
-  public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, List<CourseDTO> courses, List<LocationDTO> locations) {
+  public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, List<CourseDTO> courses, List<LocationDTO> locations, AccountListDTO accounts) {
     this.name = name;
     this.openingTime = openingTime;
     this.closingTime = closingTime;
@@ -31,6 +32,7 @@ public class SportCenterDTO {
     this.phoneNumber = phoneNumber;
     this.courses = courses;
     this.locations = locations;
+    this.accounts = accounts;
   }
 
   public String getName() {
@@ -93,4 +95,11 @@ public class SportCenterDTO {
     this.locations = locations;
   }
 
+  public AccountListDTO getAccounts() {
+    return accounts;
+  }
+
+  public void setAccounts(AccountListDTO accounts) {
+    this.accounts = accounts;
+  }
 }
