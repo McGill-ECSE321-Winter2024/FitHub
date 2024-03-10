@@ -57,11 +57,20 @@ public class CourseService {
     }    
 
     @Transactional 
-    public Course getCourse(Integer id){
+    public Course findCourseById(Integer id){
         if (!courseRepository.existsById(id)){
-            throw new IllegalArgumentException("Course doesn't exist! ");
+            throw new IllegalArgumentException("There is no course with ID " + id +".");
         }
         Course course = courseRepository.findCourseById(id);
+        return course;
+    }
+
+    @Transactional 
+    public Course findCourseByName(String name){
+        if (!courseRepository.existsByName(name)){
+            throw new IllegalArgumentException("There is no course with name " + name +".");
+        }
+        Course course = courseRepository.findCourseByName(name);
         return course;
     }
 
@@ -71,6 +80,7 @@ public class CourseService {
         return toList(courseRepository.findAll());
     }
 
+    
     @Transactional
     public List<Course> findCoursesByDifficulty(Course.Difficulty difficulty){
         List<Course> coursesByDifficulty = new ArrayList<>();
@@ -101,6 +111,7 @@ public class CourseService {
         }
         return coursesByStatus;
     }
+     
 
     private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
