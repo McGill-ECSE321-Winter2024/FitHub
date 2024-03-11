@@ -27,7 +27,7 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
  * It verifies the functionalities related to creating and reading registrations.
  */
 @SpringBootTest
-public class RegistrationRepositoryTest {
+public class RegistrationRepositoryTests {
 
     @Autowired
     private CustomerRepository customerRepo;
@@ -108,7 +108,7 @@ public class RegistrationRepositoryTest {
         location.setRoom( "aRoom");
         location.setCenter(sportCenter);
         // Save into database
-        Location savedLocation = locationRepo.save(location);
+        location = locationRepo.save(location);
 
         //create a course
         Course course = new Course();
