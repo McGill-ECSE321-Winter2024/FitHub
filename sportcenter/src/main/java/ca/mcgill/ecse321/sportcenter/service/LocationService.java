@@ -40,7 +40,7 @@ public class LocationService {
         return location;
     }
 
-    //--------------------------// Update Account //--------------------------//
+    //--------------------------// Update Location //--------------------------//
     
     @Transactional
     public Location updateLocation(Integer id, String floor, String room) {
@@ -53,10 +53,10 @@ public class LocationService {
         return locationRepository.save(location);
     }
 
-    //--------------------------// Delete Account //--------------------------//
+    //--------------------------// Delete Location //--------------------------//
     
     @Transactional
-    public void deleteCustomerAccount(Integer id) {
+    public void deleteLocation(Integer id) {
         locationRepository.delete(findLocationById(id));
     }
 

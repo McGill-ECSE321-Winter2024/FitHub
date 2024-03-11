@@ -115,7 +115,7 @@ public class LocationServiceTests {
         assertEquals("The location already exists.", e.getMessage());
     }
 
-    //--------------------------// Update Account Tests //--------------------------//
+    //--------------------------// Update Location Tests //--------------------------//
 
     @Test
     public void updateValidLocation() {
@@ -146,7 +146,7 @@ public class LocationServiceTests {
         assertEquals(newRoom, savedLocation.getRoom());
     }
 
-    //--------------------------// Find Account Tests //--------------------------//
+    //--------------------------// Find Location Tests //--------------------------//
 
     @Test
     public void testReadLocationByValidId() {
