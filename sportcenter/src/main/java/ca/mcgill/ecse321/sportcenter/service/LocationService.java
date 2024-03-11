@@ -8,33 +8,62 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.Location;
-//import ca.mcgill.ecse321.sportcenter.model.SportCenter;;
 
+/*
+* <p>Service class in charge of managing locations. It implements following use cases: </p>
+* <p>Create, update, delete a location.</p>
+* @author Tayba
+*/
 @Service
 public class LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
 
-    //@Autowired
-    //private SportCenter sportCenter;
+    @Autowired
+    private SportCenterRepository sportCenterRepository;
+
+    //--------------------------// Create Location //--------------------------//
 
     @Transactional
     public Location createLocation(String floor, String room) {
-        if (!isValidInteger(floor) || !isValidInteger(room)) {
-            throw new IllegalArgumentException("The floor or room number is invalid.");
-        }
+        validLocationInfo(floor, room);
+        uniqueFloorAndRoom(floor, room);
+
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        //location.setCenter(sportCenter);
+        location.setCenter(sportCenterRepository.findSportCenterById(0));
         locationRepository.save(location);
         return location;
     }
 
+    //--------------------------// Update Account //--------------------------//
+    
     @Transactional
-    public Location findLocationById(int id) {
+    public Location updateLocation(Integer id, String floor, String room) {
+        validLocationInfo(floor, room);
+        uniqueFloorAndRoom(floor, room);
+
+        Location location = findLocationById(id);
+        location.setFloor(floor);
+        location.setRoom(room);
+        return locationRepository.save(location);
+    }
+
+    //--------------------------// Delete Account //--------------------------//
+    
+    @Transactional
+    public void deleteCustomerAccount(Integer id) {
+        locationRepository.delete(findLocationById(id));
+    }
+
+    //--------------------------// Getters //--------------------------//
+
+    @Transactional
+    public Location findLocationById(Integer id) {
         Location location = locationRepository.findLocationById(id);
 
         if (location == null) {
@@ -61,6 +90,8 @@ public class LocationService {
         return toList(locationRepository.findAll());
     }
 
+    //--------------------------// Helper functions //--------------------------//
+
     private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
@@ -68,6 +99,8 @@ public class LocationService {
 		}
 		return resultList;
 	}
+
+    //--------------------------// Input validations //--------------------------//
 
     private boolean isValidInteger(String strNum) {
         if (strNum == null) {
@@ -87,5 +120,17 @@ public class LocationService {
         }
 
         return true;
+    }
+
+    private void validLocationInfo(String floor, String room) {
+        if (!isValidInteger(floor) || !isValidInteger(room)) {
+            throw new IllegalArgumentException("The floor or room number is invalid.");
+        }
+    } 
+
+    private void uniqueFloorAndRoom(String floor, String room) {
+        if (locationRepository.findLocationByFloorAndRoom(floor, room) != null) {
+            throw new IllegalArgumentException("The location already exists.");
+        }
     }
 }
