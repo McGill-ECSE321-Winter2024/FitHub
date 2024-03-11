@@ -27,8 +27,8 @@ public class LocationServiceTests {
 
     @Test
     public void testCreateValidLocation() {
-        String floor = "aFloor";
-        String room = "aRoom";
+        String floor = "2";
+        String room = "200";
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
@@ -41,6 +41,16 @@ public class LocationServiceTests {
         assertEquals(floor, createdLocation.getFloor());
         assertEquals(room, createdLocation.getRoom());
         verify(locationRepository, times(1)).save(createdLocation);
+    }
+
+    @Test
+    public void testCreateInvalidLocation() {
+        String floor = "aFloor";
+        String room = "aRoom";
+    
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> locationService.createLocation(floor, room));
+        assertEquals("The floor or room number is invalid.", e.getMessage());
+
     }
 
     @Test
