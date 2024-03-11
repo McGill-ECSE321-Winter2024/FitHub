@@ -71,6 +71,7 @@ public class SportCenterManagementServiceTests {
 
     @Test
     public void testUpdateOpeningTime() {
+        int id = 1;
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("0:0:0");
@@ -78,19 +79,23 @@ public class SportCenterManagementServiceTests {
         String email = "aEmail";
         String phoneNumber = "aPhoneNumber";
 
-        Time newOpeningTime = Time.valueOf("9:0:0");
-
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
-        
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
-        SportCenter updatedSportCenter = sportCenterManagementService.updateOpeningTime(sportCenter.getId(), newOpeningTime);
+        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
         
-        assertEquals(newOpeningTime, updatedSportCenter.getOpeningTime());
+        Time newOpeningTime = Time.valueOf("9:0:0");
+        SportCenter updatedSportCenter = newSportCenter(name, newOpeningTime, closingTime, address, email, phoneNumber);
+        
+        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(updatedSportCenter);
+
+        SportCenter savedSportCenter = sportCenterManagementService.updateOpeningTime(id, newOpeningTime);
+        
+        assertEquals(newOpeningTime, savedSportCenter.getOpeningTime());
     }
 
     @Test
     public void testUpdateClosingTime() {
+        int id = 1;
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("0:0:0");
@@ -98,15 +103,18 @@ public class SportCenterManagementServiceTests {
         String email = "aEmail";
         String phoneNumber = "aPhoneNumber";
 
-        Time newClosingTime = Time.valueOf("22:0:0");
-
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
-        
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
-        SportCenter updatedSportCenter = sportCenterManagementService.updateClosingTime(sportCenter.getId(), newClosingTime);
+        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
         
-        assertEquals(newClosingTime, updatedSportCenter.getClosingTime());
+        Time newClosingTime = Time.valueOf("22:0:0");
+        SportCenter updatedSportCenter = newSportCenter(name, openingTime, newClosingTime, address, email, phoneNumber);
+        
+        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(updatedSportCenter);
+
+        SportCenter savedSportCenter = sportCenterManagementService.updateClosingTime(id, newClosingTime);
+        
+        assertEquals(newClosingTime, savedSportCenter.getClosingTime());
     }
 
     @Test

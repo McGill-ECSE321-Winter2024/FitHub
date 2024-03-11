@@ -19,6 +19,7 @@ public class SportCenterManagementService {
 
     @Transactional
 	public SportCenter createSportCenter(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber) {
+        validSportCentertInfo(name, address, email, phoneNumber);
 		SportCenter sportCenter = new SportCenter();
 		sportCenter.setName(name);
         sportCenter.setOpeningTime(openingTime);
@@ -73,5 +74,14 @@ public class SportCenterManagementService {
 		}
 		return resultList;
 	}
+
+    private void validSportCentertInfo(String name, String address, String email, String phoneNumber) {
+        if (name.isEmpty() || address.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()) {
+            throw new IllegalArgumentException("Empty fields for name, address, email or phone number are not valid");
+        }
+        if (!email.contains("@")) {
+            throw new IllegalArgumentException("Email has to contain the character @");
+        }
+    }
 
 }
