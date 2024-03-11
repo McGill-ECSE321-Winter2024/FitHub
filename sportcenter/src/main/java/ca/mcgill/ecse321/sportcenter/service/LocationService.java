@@ -22,6 +22,9 @@ public class LocationService {
 
     @Transactional
     public Location createLocation(String floor, String room) {
+        if (!isValidInteger(floor) || !isValidInteger(room)) {
+            throw new IllegalArgumentException("The floor or room number is invalid.");
+        }
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
@@ -65,4 +68,24 @@ public class LocationService {
 		}
 		return resultList;
 	}
+
+    private boolean isValidInteger(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+
+        int num;
+        try {
+            num = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+
+        // Check if the number is negative
+        if (num < 0) {
+            return false;
+        }
+
+        return true;
+    }
 }
