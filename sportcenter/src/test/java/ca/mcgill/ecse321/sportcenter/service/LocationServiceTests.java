@@ -17,7 +17,6 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Time;
 
-import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
