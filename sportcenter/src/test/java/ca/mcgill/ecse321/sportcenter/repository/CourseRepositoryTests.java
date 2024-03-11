@@ -21,7 +21,7 @@ import ca.mcgill.ecse321.sportcenter.model.Course.Status;
  * It verifies the functionalities related to creating and reading courses.
  */
 @SpringBootTest
-public class CourseRepositoryTest {
+public class CourseRepositoryTests {
     @Autowired
     private CourseRepository courseRepo;
     @Autowired
