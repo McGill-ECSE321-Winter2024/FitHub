@@ -27,7 +27,7 @@ public class SessionService {
     //--------------------------// Create Session //--------------------------//
 
     @Transactional
-    public Session createSession(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation){
+    public Session proposeSuperviseSession(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation){
         //Input Validation
         if(aCapacity<=0){
             throw new IllegalArgumentException("Capacity should be greater than 0");
