@@ -26,7 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class SessionRepositoryTest {
+public class SessionRepositoryTests {
 	@Autowired
 	private SessionRepository sessionRepository;
 
