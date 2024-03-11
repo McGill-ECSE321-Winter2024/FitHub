@@ -62,7 +62,7 @@ public class SessionResponseDTO {
         return supervisor;
     }
 
-    public LocationDTO getLocationDTO(){
+    public LocationDTO getLocation(){
         return location;
     }
 
@@ -96,7 +96,7 @@ public class SessionResponseDTO {
         this.supervisor = supervisor;
     }
 
-    public void setLocationDTO(LocationDTO locationDTO){
+    public void setLocation(LocationDTO locationDTO){
         this.location = locationDTO;
     }
 

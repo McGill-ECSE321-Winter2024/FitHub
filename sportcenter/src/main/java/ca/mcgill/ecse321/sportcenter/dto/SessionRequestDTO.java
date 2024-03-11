@@ -55,7 +55,7 @@ public class SessionRequestDTO {
         return supervisor;
     }
 
-    public LocationDTO getLocationDTO(){
+    public LocationDTO getLocation(){
         return location;
     }
 
@@ -85,7 +85,7 @@ public class SessionRequestDTO {
         this.supervisor = supervisor;
     }
 
-    public void setLocationDTO(LocationDTO locationDTO){
+    public void setLocation(LocationDTO locationDTO){
         this.location = locationDTO;
     }
     
