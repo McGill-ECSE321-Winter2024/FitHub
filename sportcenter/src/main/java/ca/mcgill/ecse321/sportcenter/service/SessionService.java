@@ -13,22 +13,19 @@ import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import jakarta.transaction.Transactional;
 
+/*
+* <p>Service class in charge of managing sessions. It implements following use cases: </p>
+* <p>Create, update, delete a session </p>
+* @author Émilia
+*/
 @Service
 public class SessionService {
 
     @Autowired
     private SessionRepository sessionRepo;
 
-    @Transactional
-    public Iterable<Session> findAllSession() {
-        return sessionRepo.findAll();
-    }
+    //--------------------------// Create Session //--------------------------//
 
-    @Transactional
-    public Session findSessionById(int sid) {
-        return sessionRepo.findSessionById(sid);
-    }
- 
     @Transactional
     public Session createSession(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation){
         //Input Validation
@@ -39,13 +36,52 @@ public class SessionService {
         return sessionRepo.save(sessionToCreate);
     }
 
+    //--------------------------// Update Session //--------------------------//
+
+    @Transactional
+    public Session updateSession(int sid, Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation){
+        Session sessionToUpdate = findSessionById(sid);
+        sessionToUpdate.setStartTime(aStartTime);
+        sessionToUpdate.setEndTime(aEndTime);
+        sessionToUpdate.setDate(aDate);
+        sessionToUpdate.setCapacity(aCapacity);
+        sessionToUpdate.setSupervisor(aSupervisor);
+        sessionToUpdate.setCourseType(aCourseType);
+        sessionToUpdate.setLocation(aLocation);
+        return sessionRepo.save(sessionToUpdate);
+    }
+
+    //--------------------------// Delete Session //--------------------------//
+
+    @Transactional
+    //An instructor or an owner cancel a session
+    public void cancelSession(int sid){
+        Session sessionToCancel = sessionRepo.findSessionById(sid);
+        sessionRepo.delete(sessionToCancel);
+        //I am unsure if this line is necessary
+        sessionToCancel.delete();
+
+    }
+
+    //--------------------------// Getters //--------------------------//
+
+    @Transactional
+    public Iterable<Session> findAllSessions() {
+        return sessionRepo.findAll();
+    }
+
+    @Transactional
+    public Session findSessionById(int sid) {
+        return sessionRepo.findSessionById(sid);
+    }
+
     @Transactional
     public Iterable<Session> findSessionsByInstructor(Instructor supervisor){
         return sessionRepo.findSessionsByInstructor(supervisor);
     }
 
     @Transactional
-    public Iterable<Session> findSessionByCourse(Course course){
+    public Iterable<Session> findSessionsByCourse(Course course){
         return sessionRepo.findSessionsByCourse(course);
     }
     
