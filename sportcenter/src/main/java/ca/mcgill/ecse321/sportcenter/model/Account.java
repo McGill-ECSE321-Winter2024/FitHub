@@ -43,7 +43,7 @@ public abstract class Account
   public boolean setEmail(String aEmail)
   {
     boolean wasSet = false;
-    email = aEmail;
+    email = aEmail.toLowerCase();
     wasSet = true;
     return wasSet;
   }

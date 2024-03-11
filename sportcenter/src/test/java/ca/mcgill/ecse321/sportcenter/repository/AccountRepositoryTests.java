@@ -23,9 +23,13 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
  * Specifically, it tests the creation and retrieval of Owner, Instructor, and Customer entities.
  */
 @SpringBootTest
-public class AccountRepositoryTest {
+public class AccountRepositoryTests {
     @Autowired
-    private AccountRepository accountRepo;
+    private CustomerRepository customerRepo;
+    @Autowired
+    private InstructorRepository instructorRepo;
+    @Autowired
+    private OwnerRepository ownerRepo;
     @Autowired
     private SportCenterRepository sportCenterRepo;
 
@@ -37,7 +41,9 @@ public class AccountRepositoryTest {
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
-        accountRepo.deleteAll();
+        customerRepo.deleteAll();
+        instructorRepo.deleteAll();
+        ownerRepo.deleteAll();
         sportCenterRepo.deleteAll();
     }
 
@@ -73,20 +79,35 @@ public class AccountRepositoryTest {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
+        owner.setCenter(sportCenter);
         
         // Save into database
-        owner = accountRepo.save(owner);
+        owner = ownerRepo.save(owner);
         Integer ownerId = owner.getId();
         
         // Read back from database
-        Owner ownerDb = (Owner) accountRepo.findAccountById(owner.getId());
+        Owner ownerDb = (Owner) ownerRepo.findOwnerById(owner.getId());
 
         // Test if we found the owner
         assertNotNull(ownerDb);
         // Test if the id is the same
         assertEquals(ownerId, ownerDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, ownerDb.getEmail());
+        assertEquals(email.toLowerCase(), ownerDb.getEmail());
+        assertEquals(password, ownerDb.getPassword());
+        assertEquals(name, ownerDb.getName());
+        assertEquals(imageURL, ownerDb.getImageURL());
+
+        
+        // Read back from database
+        ownerDb = (Owner) ownerRepo.findOwnerByEmail(owner.getEmail());
+
+        // Test if we found the owner
+        assertNotNull(ownerDb);
+        // Test if the id is the same
+        assertEquals(ownerId, ownerDb.getId());
+        // Test if other attributes are the same
+        assertEquals(email.toLowerCase(), ownerDb.getEmail());
         assertEquals(password, ownerDb.getPassword());
         assertEquals(name, ownerDb.getName());
         assertEquals(imageURL, ownerDb.getImageURL());
@@ -107,20 +128,35 @@ public class AccountRepositoryTest {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setCenter(sportCenter);
         
         // Save into database
-        instructor = accountRepo.save(instructor);
+        instructor = instructorRepo.save(instructor);
         Integer instructorId = instructor.getId();
         
         // Read back from database
-        Instructor instructorDb = (Instructor) accountRepo.findAccountById(instructor.getId());
+        Instructor instructorDb = (Instructor) instructorRepo.findInstructorById(instructor.getId());
 
         // Test if we found the instructor
         assertNotNull(instructorDb);
         // Test if the id is the same
         assertEquals(instructorId, instructorDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, instructorDb.getEmail());
+        assertEquals(email.toLowerCase(), instructorDb.getEmail());
+        assertEquals(password, instructorDb.getPassword());
+        assertEquals(name, instructorDb.getName());
+        assertEquals(imageURL, instructorDb.getImageURL());
+
+        
+        // Read back from database
+        instructorDb = (Instructor) instructorRepo.findInstructorByEmail(instructor.getEmail());
+
+        // Test if we found the instructor
+        assertNotNull(instructorDb);
+        // Test if the id is the same
+        assertEquals(instructorId, instructorDb.getId());
+        // Test if other attributes are the same
+        assertEquals(email.toLowerCase(), instructorDb.getEmail());
         assertEquals(password, instructorDb.getPassword());
         assertEquals(name, instructorDb.getName());
         assertEquals(imageURL, instructorDb.getImageURL());
@@ -141,20 +177,34 @@ public class AccountRepositoryTest {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setCenter(sportCenter);
         
         // Save into database
-        customer = accountRepo.save(customer);
+        customer = customerRepo.save(customer);
         Integer customerId = customer.getId();
         
         // Read back from database
-        Customer customerDb = (Customer) accountRepo.findAccountById(customer.getId());
+        Customer customerDb = (Customer) customerRepo.findCustomerById(customer.getId());
 
         // Test if we found the customer
         assertNotNull(customerDb);
         // Test if the id is the same
         assertEquals(customerId, customerDb.getId());
         // Test if other attributes are the same
-        assertEquals(email, customerDb.getEmail());
+        assertEquals(email.toLowerCase(), customerDb.getEmail());
+        assertEquals(password, customerDb.getPassword());
+        assertEquals(name, customerDb.getName());
+        assertEquals(imageURL, customerDb.getImageURL());
+        
+        // Read back from database
+        customerDb = (Customer) customerRepo.findCustomerByEmail(customer.getEmail());
+
+        // Test if we found the customer
+        assertNotNull(customerDb);
+        // Test if the id is the same
+        assertEquals(customerId, customerDb.getId());
+        // Test if other attributes are the same
+        assertEquals(email.toLowerCase(), customerDb.getEmail());
         assertEquals(password, customerDb.getPassword());
         assertEquals(name, customerDb.getName());
         assertEquals(imageURL, customerDb.getImageURL());
