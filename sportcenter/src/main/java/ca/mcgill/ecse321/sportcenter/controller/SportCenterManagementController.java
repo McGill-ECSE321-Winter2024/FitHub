@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
@@ -34,14 +35,14 @@ public class SportCenterManagementController {
 
     // Creating a sport center
     @PostMapping("/sportCenters")
-    public sportCenter createSportCenter(@RequestBody SportCenter sportCenter){
+    public sportCenter createSportCenter(@RequestBody SportCenterDTO sportCenter){
         return sportCenterManagementService.createSportCenter(sportCenter.getName(), sportCenter.getOpeningTime(), sportCenter.getClosingTime(), sportCenter.getAddress(), sportCenter.getEmail(), sportCenter.getPhoneNumber());
     }
 
     // updating opening/closing hours? is that how we do it?
     @PutMapping("/sportCenters/{id}")
-    public SportCenter updateSportCenter(@RequestBody Time newOpeningTime, @RequestBody Time newClosingTime, @PathVariable int id){
-        sportCenterManagementService.updateOpeningTime(id, newOpeningTime);
-        return sportCenterManagementService.updateClosingTime(id, newClosingTime);
+    public SportCenter updateSportCenter(@RequestBody SportCenterDTO sportCenter, @PathVariable int id){
+        sportCenterManagementService.updateOpeningTime(id, sportCenter.getOpeningTime());
+        return sportCenterManagementService.updateClosingTime(id, sportCenter.getClosingTime());
     }
 }
