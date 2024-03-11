@@ -31,8 +31,22 @@ public class SessionService {
  
     @Transactional
     public Session createSession(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation){
+        //Input Validation
+        if(aCapacity<=0){
+            throw new IllegalArgumentException("Capacity should be greater than 0");
+        }
         Session sessionToCreate = new Session(aStartTime, aEndTime, aDate, aCapacity, aSupervisor, aCourseType, aLocation);
         return sessionRepo.save(sessionToCreate);
+    }
+
+    @Transactional
+    public Iterable<Session> findSessionsByInstructor(Instructor supervisor){
+        return sessionRepo.findSessionsByInstructor(supervisor);
+    }
+
+    @Transactional
+    public Iterable<Session> findSessionByCourse(Course course){
+        return sessionRepo.findSessionsByCourse(course);
     }
     
 }
