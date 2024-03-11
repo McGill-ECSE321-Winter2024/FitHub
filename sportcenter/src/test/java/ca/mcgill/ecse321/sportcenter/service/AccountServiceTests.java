@@ -265,10 +265,10 @@ public class AccountServiceTests {
         String newName = "Lory";
         String newURL = "pfp.jpeg";
         Customer updatedCustomer = new Customer();
-        updatedCustomer.setEmail(email);
-        updatedCustomer.setPassword(password);
-        updatedCustomer.setName(name);
-        updatedCustomer.setImageURL(imageURL);
+        updatedCustomer.setEmail(newEmail);
+        updatedCustomer.setPassword(newPassword);
+        updatedCustomer.setName(newName);
+        updatedCustomer.setImageURL(newURL);
         when(customerRepository.save(any(Customer.class))).thenReturn(updatedCustomer);
 
         Customer savedCustomer = accountService.updateCustomerAccount(id, newEmail, newPassword, newName, newURL);
@@ -277,12 +277,12 @@ public class AccountServiceTests {
         verify(customerRepository, times(1)).findCustomerById(id);
         verify(customerRepository, times(1)).save(any(Customer.class));
         assertNotNull(savedCustomer);
-        assertEquals(email.toLowerCase(), savedCustomer.getEmail());
-        assertEquals(password, savedCustomer.getPassword());
-        assertEquals(name, savedCustomer.getName());
-        assertEquals(imageURL, savedCustomer.getImageURL());
+        assertEquals(newEmail.toLowerCase(), savedCustomer.getEmail());
+        assertEquals(newPassword, savedCustomer.getPassword());
+        assertEquals(newName, savedCustomer.getName());
+        assertEquals(newURL, savedCustomer.getImageURL());
     }
-    
+
     @Test
     public void testUpdateValidInstructorAccount() {
         // Set up test
@@ -307,10 +307,10 @@ public class AccountServiceTests {
         String newName = "Lory";
         String newURL = "pfp.jpeg";
         Instructor updatedInstructor = new Instructor();
-        updatedInstructor.setEmail(email);
-        updatedInstructor.setPassword(password);
-        updatedInstructor.setName(name);
-        updatedInstructor.setImageURL(imageURL);
+        updatedInstructor.setEmail(newEmail);
+        updatedInstructor.setPassword(newPassword);
+        updatedInstructor.setName(newName);
+        updatedInstructor.setImageURL(newURL);
         when(instructorRepository.save(any(Instructor.class))).thenReturn(updatedInstructor);
 
         Instructor savedInstructor = accountService.updateInstructorAccount(id, newEmail, newPassword, newName, newURL);
@@ -319,10 +319,10 @@ public class AccountServiceTests {
         verify(instructorRepository, times(1)).findInstructorById(id);
         verify(instructorRepository, times(1)).save(any(Instructor.class));
         assertNotNull(savedInstructor);
-        assertEquals(email.toLowerCase(), savedInstructor.getEmail());
-        assertEquals(password, savedInstructor.getPassword());
-        assertEquals(name, savedInstructor.getName());
-        assertEquals(imageURL, savedInstructor.getImageURL());
+        assertEquals(newEmail.toLowerCase(), savedInstructor.getEmail());
+        assertEquals(newPassword, savedInstructor.getPassword());
+        assertEquals(newName, savedInstructor.getName());
+        assertEquals(newURL, savedInstructor.getImageURL());
     }
 
     @Test
@@ -349,10 +349,10 @@ public class AccountServiceTests {
         String newName = "Lory";
         String newURL = "pfp.jpeg";
         Owner updatedOwner = new Owner();
-        updatedOwner.setEmail(email);
-        updatedOwner.setPassword(password);
-        updatedOwner.setName(name);
-        updatedOwner.setImageURL(imageURL);
+        updatedOwner.setEmail(newEmail);
+        updatedOwner.setPassword(newPassword);
+        updatedOwner.setName(newName);
+        updatedOwner.setImageURL(newURL);
         when(ownerRepository.save(any(Owner.class))).thenReturn(updatedOwner);
 
         Owner savedOwner = accountService.updateOwnerAccount(id, newEmail, newPassword, newName, newURL);
@@ -361,10 +361,10 @@ public class AccountServiceTests {
         verify(ownerRepository, times(1)).findOwnerById(id);
         verify(ownerRepository, times(1)).save(any(Owner.class));
         assertNotNull(savedOwner);
-        assertEquals(email.toLowerCase(), savedOwner.getEmail());
-        assertEquals(password, savedOwner.getPassword());
-        assertEquals(name, savedOwner.getName());
-        assertEquals(imageURL, savedOwner.getImageURL());
+        assertEquals(newEmail.toLowerCase(), savedOwner.getEmail());
+        assertEquals(newPassword, savedOwner.getPassword());
+        assertEquals(newName, savedOwner.getName());
+        assertEquals(newURL, savedOwner.getImageURL());
     }
 
     //--------------------------// Find Account Tests //--------------------------//
