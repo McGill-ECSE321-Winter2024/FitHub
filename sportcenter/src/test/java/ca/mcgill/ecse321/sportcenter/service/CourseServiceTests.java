@@ -58,7 +58,7 @@ public class CourseServiceTests {
     }
 
     private static final String PERSON_KEY = "TestPerson";
-
+/*
     @BeforeEach
     public void setMockOutput() {
         lenient().when(service.findCoursesByDifficulty(any())).thenAnswer( (InvocationOnMock invocation) -> {
@@ -81,7 +81,7 @@ public class CourseServiceTests {
             }
         });
     }
-
+*/
     /**
      * Create and save a SportCenter instance before each test.
      */
