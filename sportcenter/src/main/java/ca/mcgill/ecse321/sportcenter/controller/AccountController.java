@@ -92,17 +92,17 @@ public class AccountController {
         return new AccountResponseDTO((Account) accountService.findOwnerById(id));
     }
     
-    @GetMapping(value={"/customers", "/customers/"})
+    @GetMapping(value={"/customers/email", "/customers/email/"})
     public AccountResponseDTO findCustomerByEmail(@RequestParam("email") String email) {
         return new AccountResponseDTO((Account) accountService.findCustomerByEmail(email));
     }
     
-    @GetMapping(value={"/instructors", "/instructors/"})
+    @GetMapping(value={"/instructors/email", "/instructors/email/"})
     public AccountResponseDTO findInstructorByEmail(@RequestParam("email") String email) {
         return new AccountResponseDTO((Account) accountService.findInstructorByEmail(email));
     }
     
-    @GetMapping(value={"/owners", "/owners/"})
+    @GetMapping(value={"/owners/email", "/owners/email/"})
     public AccountResponseDTO findOwnerByEmail(@RequestParam("email") String email) {
         return new AccountResponseDTO((Account) accountService.findOwnerByEmail(email));
     }
