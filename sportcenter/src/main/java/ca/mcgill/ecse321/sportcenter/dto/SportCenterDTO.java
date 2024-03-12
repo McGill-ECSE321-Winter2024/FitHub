@@ -4,10 +4,6 @@ import java.sql.Time;
 
 import java.util.List;
 
-import ca.mcgill.ecse321.sportcenter.model.Account;
-import ca.mcgill.ecse321.sportcenter.model.Course;
-import ca.mcgill.ecse321.sportcenter.model.Location;
-
 public class SportCenterDTO {
     
   private String name;
