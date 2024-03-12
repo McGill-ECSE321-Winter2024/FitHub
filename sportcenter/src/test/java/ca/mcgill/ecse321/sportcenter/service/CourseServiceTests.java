@@ -6,12 +6,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,6 +55,31 @@ public class CourseServiceTests {
     @AfterEach
     public void clearDatabase() {
         courseDao.deleteAll();
+    }
+
+    private static final String PERSON_KEY = "TestPerson";
+
+    @BeforeEach
+    public void setMockOutput() {
+        lenient().when(service.findCoursesByDifficulty(any())).thenAnswer( (InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(Course.Difficulty.Beginner) {
+                return null;
+            } else {
+                return null;
+            }
+
+
+        }); 
+
+        lenient().when(personDao.findPersonByName(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+            if(invocation.getArgument(0).equals(PERSON_KEY)) {
+                Person person = new Person();
+                person.setName(PERSON_KEY);
+                return person;
+            } else {
+                return null;
+            }
+        });
     }
 
     /**
@@ -332,7 +360,7 @@ public class CourseServiceTests {
         when(courseDao.findCourseByName(name.toLowerCase())).thenReturn(course);
 
         // Use the CourseService
-        Course foundCourse = service.findCourseByName(name.toLowerCase());
+        Course foundCourse = service.findCourseByName(name);
     
         // Assert
         assertNotNull(foundCourse);
