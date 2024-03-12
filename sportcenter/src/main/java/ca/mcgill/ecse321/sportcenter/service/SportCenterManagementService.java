@@ -11,11 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
+/*
+* <p>Service class in charge of managing accounts. It implements following use cases: </p>
+* <p>Create, find, update, delete a sport center</p>
+* @author James
+*/
 @Service
 public class SportCenterManagementService {
 
     @Autowired
     private SportCenterRepository sportCenterRepository;
+
+    //--------------------------// Create Sport Center //--------------------------//
 
     @Transactional
 	public SportCenter createSportCenter(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber) {
@@ -30,6 +37,8 @@ public class SportCenterManagementService {
 		sportCenterRepository.save(sportCenter);
 		return sportCenter;
 	}
+
+    //--------------------------// Find Sport Center(s) //--------------------------//
 
     @Transactional
     public SportCenter findSportCenterById(int id) {
@@ -46,6 +55,8 @@ public class SportCenterManagementService {
     public List<SportCenter> getAllSportCenters() {
         return toList(sportCenterRepository.findAll());
     }
+
+    //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional
     public SportCenter updateOpeningTime(int id, Time openingTime) {
@@ -67,6 +78,14 @@ public class SportCenterManagementService {
         return sportCenter;
     }
 
+    //--------------------------// Delete Sport Center //--------------------------//
+
+    @Transactional
+    public void deleteSportCenter(int id) {
+        SportCenter sportCenter = findSportCenterById(id);
+        sportCenterRepository.delete(sportCenter);
+    }
+
     private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
@@ -74,6 +93,8 @@ public class SportCenterManagementService {
 		}
 		return resultList;
 	}
+
+    //--------------------------// Input Validation //--------------------------//
 
     private void validSportCentertInfo(String name, String address, String email, String phoneNumber) {
         if (name.isEmpty() || address.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()) {
