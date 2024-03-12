@@ -1,20 +1,55 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.Account;
+import ca.mcgill.ecse321.sportcenter.model.Customer;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
+import ca.mcgill.ecse321.sportcenter.model.Owner;
 
 public class AccountResponseDTO {
     private Integer id;
+    private AccountType type;
     private String email;
     private String password;
     private String name;
     private String imageURL;
 
-    public AccountResponseDTO(Account account) {
-        this.id = account.getId();
-        this.email = account.getEmail();
-        this.password = account.getPassword();
-        this.name = account.getName();
-        this.imageURL = account.getImageURL();
+    public AccountResponseDTO(Customer customer) {
+        this.id = customer.getId();
+        this.type = AccountType.CUSTOMER;
+        this.email = customer.getEmail();
+        this.password = customer.getPassword();
+        this.name = customer.getName();
+        this.imageURL = customer.getImageURL();
+    }
+
+    public AccountResponseDTO(Instructor instructor) {
+        this.id = instructor.getId();
+        this.type = AccountType.INSTRUCTOR;
+        this.email = instructor.getEmail();
+        this.password = instructor.getPassword();
+        this.name = instructor.getName();
+        this.imageURL = instructor.getImageURL();
+    }
+
+    public AccountResponseDTO(Owner owner) {
+        this.id = owner.getId();
+        this.type = AccountType.OWNER;
+        this.email = owner.getEmail();
+        this.password = owner.getPassword();
+        this.name = owner.getName();
+        this.imageURL = owner.getImageURL();
+    }
+
+    public static AccountResponseDTO create(Account account) {
+        if (account instanceof Customer) {
+            return new CustomerResponseDTO((Customer) account);
+        } else if (account instanceof Instructor) {
+            return new InstructorResponseDTO((Instructor) account);
+        } else if (account instanceof Owner) {
+            return new OwnerResponseDTO((Owner) account);
+        } else {
+            throw new IllegalArgumentException("Unknown account type.");
+        }
     }
 
     public Integer getId() {
