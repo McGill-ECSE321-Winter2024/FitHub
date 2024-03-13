@@ -3,7 +3,9 @@ package ca.mcgill.ecse321.sportcenter.service;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -58,51 +60,57 @@ public class CourseServiceTests {
     public void clearDatabase() {
         courseDao.deleteAll();
     }
-    Course course1 = new Course();
-    course1.setName("Course 1");
-    course1.setDescription("Description for Course 1");
-    course1.setDifficulty(Course.Difficulty.Beginner);
-    course1.setStatus(Course.Status.Closed);
-    courseDao.save(course1);
+    
 
-    Course course3 = new Course();
-    course3.setName("Course 3");
-    course3.setDescription("Description for Course 3");
-    course3.setDifficulty(Course.Difficulty.Beginner);
-    course3.setStatus(Course.Status.Closed);
-    courseDao.save(course1);
+    private static final List<Course> COURSES = new ArrayList<>();
 
-    Course course2 = new Course();
-    course2.setName("Course 2");
-    course2.setDescription("Description for Course 2");
-    course2.setDifficulty(Course.Difficulty.Intermediate);
-    course2.setStatus(Course.Status.Pending);
-    courseDao.save(course2);
-
-    private static final List<Course> COURSES = 
 
     @BeforeEach
     public void setMockOutput() {
+        Course course1 = new Course();
+        course1.setName("Course 1");
+        course1.setDescription("Description for Course 1");
+        course1.setDifficulty(Course.Difficulty.Beginner);
+        course1.setStatus(Course.Status.Closed);
+        courseDao.save(course1);
+        COURSES.add(course1); // Add course1 to COURSES list
+
+        Course course3 = new Course();
+        course3.setName("Course 3");
+        course3.setDescription("Description for Course 3");
+        course3.setDifficulty(Course.Difficulty.Beginner);
+        course3.setStatus(Course.Status.Closed);
+        courseDao.save(course3);
+        COURSES.add(course3); // Add course3 to COURSES list
+
+        Course course2 = new Course();
+        course2.setName("Course 2");
+        course2.setDescription("Description for Course 2");
+        course2.setDifficulty(Course.Difficulty.Intermediate);
+        course2.setStatus(Course.Status.Pending);
+        courseDao.save(course2);
+        COURSES.add(course2); // Add course2 to COURSES list
+
+        lenient().when(service.findCoursesByDifficulty(any())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(Course.Difficulty.Beginner)) {
+                return COURSES.stream().filter(course -> course.getDifficulty() == Course.Difficulty.Beginner).collect(Collectors.toList());
+            } else {
+                return null;
+            }
+        });
+
+        /*
         lenient().when(service.findCoursesByDifficulty(any())).thenAnswer( (InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(Course.Difficulty.Beginner) {
                 return null;
             } else {
                 return null;
             }
-
-
-        }); 
-
-        lenient().when(personDao.findPersonByName(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
-            if(invocation.getArgument(0).equals(PERSON_KEY)) {
-                Person person = new Person();
-                person.setName(PERSON_KEY);
-                return person;
-            } else {
-                return null;
-            }
         });
+         */
     }
+
+
     /**
      * Create and save a SportCenter instance before each test.
      */
@@ -411,7 +419,6 @@ public class CourseServiceTests {
         assertEquals("There is no course with name " + name + ".", e.getMessage());
     }
     
-    /*
     @Test
     public void testFindCoursesByDifficulty() {
         service.createCourse("Course 1", "Description for Course 1", Course.Difficulty.Beginner, Course.Status.Closed);
@@ -463,6 +470,5 @@ public class CourseServiceTests {
         List<Course> pending = service.findCoursesByStatus(Course.Status.Pending);
         assertTrue(pending.size() == 1);
     }
-     */
 
 }
