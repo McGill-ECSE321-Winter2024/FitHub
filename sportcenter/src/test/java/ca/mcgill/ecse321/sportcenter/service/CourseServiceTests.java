@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.sportcenter.service;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -56,9 +58,29 @@ public class CourseServiceTests {
     public void clearDatabase() {
         courseDao.deleteAll();
     }
+    Course course1 = new Course();
+    course1.setName("Course 1");
+    course1.setDescription("Description for Course 1");
+    course1.setDifficulty(Course.Difficulty.Beginner);
+    course1.setStatus(Course.Status.Closed);
+    courseDao.save(course1);
 
-    private static final String PERSON_KEY = "TestPerson";
-/*
+    Course course3 = new Course();
+    course3.setName("Course 3");
+    course3.setDescription("Description for Course 3");
+    course3.setDifficulty(Course.Difficulty.Beginner);
+    course3.setStatus(Course.Status.Closed);
+    courseDao.save(course1);
+
+    Course course2 = new Course();
+    course2.setName("Course 2");
+    course2.setDescription("Description for Course 2");
+    course2.setDifficulty(Course.Difficulty.Intermediate);
+    course2.setStatus(Course.Status.Pending);
+    courseDao.save(course2);
+
+    private static final List<Course> COURSES = 
+
     @BeforeEach
     public void setMockOutput() {
         lenient().when(service.findCoursesByDifficulty(any())).thenAnswer( (InvocationOnMock invocation) -> {
@@ -81,7 +103,6 @@ public class CourseServiceTests {
             }
         });
     }
-*/
     /**
      * Create and save a SportCenter instance before each test.
      */
