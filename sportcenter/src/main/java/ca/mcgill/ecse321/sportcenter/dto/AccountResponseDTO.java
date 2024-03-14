@@ -20,6 +20,7 @@ public class AccountResponseDTO {
         this.password = customer.getPassword();
         this.name = customer.getName();
         this.imageURL = customer.getImageURL();
+        this.type = AccountType.CUSTOMER;
     }
 
     public AccountResponseDTO(Instructor instructor) {
@@ -29,6 +30,7 @@ public class AccountResponseDTO {
         this.password = instructor.getPassword();
         this.name = instructor.getName();
         this.imageURL = instructor.getImageURL();
+        this.type = AccountType.INSTRUCTOR;
     }
 
     public AccountResponseDTO(Owner owner) {
@@ -38,6 +40,7 @@ public class AccountResponseDTO {
         this.password = owner.getPassword();
         this.name = owner.getName();
         this.imageURL = owner.getImageURL();
+        this.type = AccountType.OWNER;
     }
 
     public static AccountResponseDTO create(Account account) {
@@ -50,6 +53,10 @@ public class AccountResponseDTO {
         } else {
             throw new IllegalArgumentException("Unknown account type.");
         }
+    }
+
+    public AccountType getType() {
+        return this.type;
     }
 
     public Integer getId() {
@@ -70,6 +77,10 @@ public class AccountResponseDTO {
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    public void setType(AccountType type) {
+        this.type = type;
     }
 
     public void setId(Integer id) {

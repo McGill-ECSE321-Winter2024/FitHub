@@ -15,7 +15,7 @@ public class AccountListDTO {
     public static <T> List<AccountResponseDTO> accountListToAccountResponseDTOList(List<T> accounts) {
         List<AccountResponseDTO> list = new ArrayList<>();
         for (T account : accounts) {
-            list.add(new AccountResponseDTO((Account) account));
+            list.add(AccountResponseDTO.create((Account) account));
         }
         return list;
     }

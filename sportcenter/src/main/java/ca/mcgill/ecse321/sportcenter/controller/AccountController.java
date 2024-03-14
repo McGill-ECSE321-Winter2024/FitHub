@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
-import ca.mcgill.ecse321.sportcenter.model.Account;
+import ca.mcgill.ecse321.sportcenter.model.Customer;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
+import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 public class AccountController {
@@ -26,39 +28,39 @@ public class AccountController {
     @PostMapping(value={"/customers", "/customers/"})
     @ResponseStatus(HttpStatus.CREATED)
     public AccountResponseDTO createCustomerAccount(@RequestBody AccountRequestDTO account) {
-        Account createdAccount = (Account) accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+        Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
         return new AccountResponseDTO(createdAccount);
     }
     
     @PostMapping(value={"/instructors", "/instructors/"})
     @ResponseStatus(HttpStatus.CREATED)
     public AccountResponseDTO createInstructorAccount(@RequestBody AccountRequestDTO account) {
-        Account createdAccount = (Account) accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+        Instructor createdAccount = accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
         return new AccountResponseDTO(createdAccount);
     }
     
     @PostMapping(value={"/owners", "/owners/"})
     @ResponseStatus(HttpStatus.CREATED)
     public AccountResponseDTO createOwnerAccount(@RequestBody AccountRequestDTO account) {
-        Account createdAccount = (Account) accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+        Owner createdAccount = accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
         return new AccountResponseDTO(createdAccount);
     }
 
     @PutMapping(value={"/customers/{id}", "/customers/{id}/"})
     public AccountResponseDTO updateCustomerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
-        Account updatedAccount = (Account) accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+        Customer updatedAccount = accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
         return new AccountResponseDTO(updatedAccount);
     }
     
     @PutMapping(value={"/instructors/{id}", "/instructors/{id}/"})
     public AccountResponseDTO updateInstructorAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
-        Account updatedAccount = (Account) accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+        Instructor updatedAccount = accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
         return new AccountResponseDTO(updatedAccount);
     }
     
     @PutMapping(value={"/owners/{id}", "/owners/{id}/"})
     public AccountResponseDTO updateOwnerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
-        Account updatedAccount = (Account) accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+        Owner updatedAccount = accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
         return new AccountResponseDTO(updatedAccount);
     }
 
@@ -79,32 +81,32 @@ public class AccountController {
     
     @GetMapping(value={"/customers/{id}", "/customers/{id}/"})
     public AccountResponseDTO findCustomerById(@PathVariable Integer id) {
-        return new AccountResponseDTO((Account) accountService.findCustomerById(id));
+        return new AccountResponseDTO(accountService.findCustomerById(id));
     }
     
     @GetMapping(value={"/instructors/{id}", "/instructors/{id}/"})
     public AccountResponseDTO findInstructorById(@PathVariable Integer id) {
-        return new AccountResponseDTO((Account) accountService.findInstructorById(id));
+        return new AccountResponseDTO(accountService.findInstructorById(id));
     }
     
     @GetMapping(value={"/owners/{id}", "/owners/{id}/"})
     public AccountResponseDTO findOwnerById(@PathVariable Integer id) {
-        return new AccountResponseDTO((Account) accountService.findOwnerById(id));
+        return new AccountResponseDTO(accountService.findOwnerById(id));
     }
     
     @GetMapping(value={"/customers/email", "/customers/email/"})
     public AccountResponseDTO findCustomerByEmail(@RequestParam("email") String email) {
-        return new AccountResponseDTO((Account) accountService.findCustomerByEmail(email));
+        return new AccountResponseDTO(accountService.findCustomerByEmail(email));
     }
     
     @GetMapping(value={"/instructors/email", "/instructors/email/"})
     public AccountResponseDTO findInstructorByEmail(@RequestParam("email") String email) {
-        return new AccountResponseDTO((Account) accountService.findInstructorByEmail(email));
+        return new AccountResponseDTO(accountService.findInstructorByEmail(email));
     }
     
     @GetMapping(value={"/owners/email", "/owners/email/"})
     public AccountResponseDTO findOwnerByEmail(@RequestParam("email") String email) {
-        return new AccountResponseDTO((Account) accountService.findOwnerByEmail(email));
+        return new AccountResponseDTO(accountService.findOwnerByEmail(email));
     }
 
     @GetMapping(value={"/customers", "/customers/"})
