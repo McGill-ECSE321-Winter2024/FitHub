@@ -10,20 +10,28 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
-import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 
 /*
-* <p>Service class in charge of managing courses. It implements following use cases: </p>
-* <p>Create, update, delete a course</p>
+* <p> Service class in charge of managing courses. It implements following use cases: </p>
+* <p> Create, update, delete a course</p>
+* <p> Getting courses according to their difficuly and their status.</p>
+* <p> Propose new type of courses </p>
+* <p> Approve a new course </p>
+* <p> Disapprove a pending course </p>
+* <p> Close an approved ourse </p>
+* <p> User views course detail </p>
+* <p> Getting all approved courses </p>
 * @author Sahar
 */
+
 @Service
 public class CourseService {
     @Autowired
 	CourseRepository courseRepository;
 
     //--------------------------// Create Course //--------------------------//
+    
     @Transactional
     public Course createCourse(String name, String description, Difficulty diff, Status status) {
         // Accumulate error messages
@@ -153,7 +161,50 @@ public class CourseService {
         }
         return coursesByStatus;
     }
-     
+
+    @Transactional
+    public List<Course> findApprovedCourses(){
+        List<Course> approvedCourses = new ArrayList<>();
+        for (Course course : courseRepository.findAll()) {
+            if (course.getStatus().equals(Course.Status.Approved)){
+                approvedCourses.add(course);
+            }
+        }
+        //If there are no approved courses existing, then stop the query. 
+        if (approvedCourses.size() == 0){
+            throw new IllegalArgumentException("No approved courses exist!");
+        }
+        return approvedCourses;
+    }
+
+    //--------------------------// Propose course //--------------------------//
+
+    @Transactional
+    public void approveCourse(Course course){
+        if (course.getStatus() == Course.Status.Pending){
+            updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty(), Course.Status.Approved);
+        } 
+    }
+
+    //--------------------------// Disapprove course //--------------------------//
+
+    @Transactional
+    public void disapproveCourse(Course course) {
+        if (course.getStatus() == Course.Status.Pending){
+            updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty(), Course.Status.Disaproved);
+        } 
+        //do we have the note thing to add? 
+    }
+
+    //--------------------------// Close course //--------------------------//
+
+    @Transactional
+    public void closeCourse(Course course){
+        if (course.getStatus() == Course.Status.Approved){
+            updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty(), Course.Status.Closed);
+        }
+    }
+
     //--------------------------// Helper functions //--------------------------//
 
     private <T> List<T> toList(Iterable<T> iterable){
