@@ -389,7 +389,7 @@ public class CourseServiceTests {
 
 
     @Test
-    public void testFindBeginnerCoursesByDifficulty() {
+    public void testFindCoursesByDifficulty() {
         //Clear the previous course list used in tests and create the new instances.
         COURSES.clear();
         Course course1 = new Course();
@@ -435,7 +435,7 @@ public class CourseServiceTests {
     }
 
     @Test
-    public void testFindBeginnerCoursesByStatus() {
+    public void testFindCoursesByStatus() {
         //Clear the previous course list used in tests and create the new instances.
         COURSES.clear();
         Course course1 = new Course();
@@ -479,6 +479,7 @@ public class CourseServiceTests {
         assertEquals(Course.Difficulty.Intermediate, pending.get(0).getDifficulty());
         assertEquals(Course.Status.Pending, pending.get(0).getStatus());
     }
+
 
 
 }

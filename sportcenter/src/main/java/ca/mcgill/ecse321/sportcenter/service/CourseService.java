@@ -31,7 +31,7 @@ public class CourseService {
 	CourseRepository courseRepository;
 
     //--------------------------// Create Course //--------------------------//
-    
+
     @Transactional
     public Course createCourse(String name, String description, Difficulty diff, Status status) {
         // Accumulate error messages
@@ -160,21 +160,6 @@ public class CourseService {
             throw new IllegalArgumentException("No courses of that status exist!");
         }
         return coursesByStatus;
-    }
-
-    @Transactional
-    public List<Course> findApprovedCourses(){
-        List<Course> approvedCourses = new ArrayList<>();
-        for (Course course : courseRepository.findAll()) {
-            if (course.getStatus().equals(Course.Status.Approved)){
-                approvedCourses.add(course);
-            }
-        }
-        //If there are no approved courses existing, then stop the query. 
-        if (approvedCourses.size() == 0){
-            throw new IllegalArgumentException("No approved courses exist!");
-        }
-        return approvedCourses;
     }
 
     //--------------------------// Propose course //--------------------------//
