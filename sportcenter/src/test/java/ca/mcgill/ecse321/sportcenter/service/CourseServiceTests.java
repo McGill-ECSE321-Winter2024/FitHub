@@ -226,6 +226,86 @@ public class CourseServiceTests {
 		assertEquals("Course name cannot be empty!", error);
 	}
 
+    //--------------------------// Approve/Disapprove/Close Course Tests //--------------------------//
+
+    @Test
+    public void testApproveCourse() {
+        Integer id = 3;
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Pending;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        when(courseDao.save(any(Course.class))).thenReturn(course);
+
+        service.approveCourse(course);
+        
+        assertEquals(Course.Status.Approved, course.getStatus());
+		assertEquals(name, course.getName());
+        assertEquals(description, course.getDescription());
+        assertEquals(diff, course.getDifficulty());
+        verify(courseDao, times(1)).save(any(Course.class));
+    }
+
+    @Test
+    public void testDisapproveCourse() {
+        Integer id = 3;
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Pending;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        when(courseDao.save(any(Course.class))).thenReturn(course);
+
+        service.disapproveCourse(course);
+        
+        assertEquals(Course.Status.Disapproved, course.getStatus());
+		assertEquals(name, course.getName());
+        assertEquals(description, course.getDescription());
+        assertEquals(diff, course.getDifficulty());
+        verify(courseDao, times(1)).save(any(Course.class));
+    }
+
+    @Test
+    public void testCloseCourse() {
+        Integer id = 3;
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        when(courseDao.save(any(Course.class))).thenReturn(course);
+
+        service.closeCourse(course);
+        
+        assertEquals(Course.Status.Closed, course.getStatus());
+		assertEquals(name, course.getName());
+        assertEquals(description, course.getDescription());
+        assertEquals(diff, course.getDifficulty());
+        verify(courseDao, times(1)).save(any(Course.class));
+    }
+
     //--------------------------// Update Course Tests //--------------------------//
 
     @Test
@@ -479,7 +559,5 @@ public class CourseServiceTests {
         assertEquals(Course.Difficulty.Intermediate, pending.get(0).getDifficulty());
         assertEquals(Course.Status.Pending, pending.get(0).getStatus());
     }
-
-
 
 }

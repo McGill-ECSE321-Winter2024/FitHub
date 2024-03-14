@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.sportcenter.dto;
 public class CourseDTO {
 
   public enum Difficulty { Beginner, Intermediate, Advanced }
-  public enum Status { Approved, Pending, Closed, Disaproved }
+  public enum Status { Approved, Pending, Closed, Disapproved }
 
   private int id;
   private String name;

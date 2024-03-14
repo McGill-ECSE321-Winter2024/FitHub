@@ -21,7 +21,6 @@ import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 * <p> Disapprove a pending course </p>
 * <p> Close an approved ourse </p>
 * <p> User views course detail </p>
-* <p> Getting all approved courses </p>
 * @author Sahar
 */
 
@@ -167,7 +166,8 @@ public class CourseService {
     @Transactional
     public void approveCourse(Course course){
         if (course.getStatus() == Course.Status.Pending){
-            updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty(), Course.Status.Approved);
+            course.setStatus(Course.Status.Approved);
+            courseRepository.save(course);
         } 
     }
 
@@ -176,7 +176,8 @@ public class CourseService {
     @Transactional
     public void disapproveCourse(Course course) {
         if (course.getStatus() == Course.Status.Pending){
-            updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty(), Course.Status.Disaproved);
+            course.setStatus(Course.Status.Disapproved);
+            courseRepository.save(course);
         } 
         //do we have the note thing to add? 
     }
@@ -186,7 +187,8 @@ public class CourseService {
     @Transactional
     public void closeCourse(Course course){
         if (course.getStatus() == Course.Status.Approved){
-            updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty(), Course.Status.Closed);
+            course.setStatus(Course.Status.Closed);
+            courseRepository.save(course);
         }
     }
 
