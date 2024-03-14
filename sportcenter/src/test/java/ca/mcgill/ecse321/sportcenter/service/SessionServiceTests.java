@@ -154,12 +154,14 @@ public class SessionServiceTests {
     //---------------
     @Test
     public void testCreateInvalidSession1() { // Capacity of zero
+        int id=50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
+
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -167,7 +169,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -175,7 +177,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -188,12 +190,13 @@ public class SessionServiceTests {
 
     @Test
     public void testCreateInvalidSession2() { // No start time
+        int id = 50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -201,7 +204,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -209,7 +212,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = null;
         Time endTime = Time.valueOf("09:00:00");
@@ -223,12 +226,13 @@ public class SessionServiceTests {
 
     @Test
     public void testCreateInvalidSession3() { // No date
+        int id = 50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -236,7 +240,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -244,7 +248,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime =  Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -257,12 +261,13 @@ public class SessionServiceTests {
 
     @Test
     public void testCreateInvalidSession4() { // No supervisor
+        int id = 50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
         
         int nonExistentSupervisorId = 4;
         // Create and save the course
@@ -271,7 +276,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime =  Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -284,12 +289,13 @@ public class SessionServiceTests {
 
     @Test
     public void testCreateInvalidSession5() { // No courseType
+        int id = 50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
         
         int nonExistentCourseId = 4;
 
@@ -299,7 +305,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
 
         Time startTime =  Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -313,13 +319,13 @@ public class SessionServiceTests {
     //To implement
     @Test
     public void testCreateInvalidOverlappedLocationSession() { // Session location has conflicting time with another session on the same location, same day.
-        
+        int id = 50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -327,7 +333,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -335,7 +341,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime1 = Time.valueOf("08:00:00");
         Time endTime1 = Time.valueOf("09:00:00");
@@ -356,17 +362,18 @@ public class SessionServiceTests {
      @Test
      public void testCreateInvalidOverlappedSupervisorSession() { // Supervisor already supervise a session that overlap with that time 
          // Set up test
+        int id = 50;
         Location location1 = new Location();
         location1.setFloor("501D");
         location1.setRoom("50");
         location1.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location1);
+        when(locationRepository.findLocationById(id)).thenReturn(location1);
 
         Location location2 = new Location();
         location2.setFloor("501D");
         location2.setRoom("50");
         location2.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location1);
+        when(locationRepository.findLocationById(id)).thenReturn(location2);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -374,7 +381,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -382,7 +389,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime1 = Time.valueOf("08:00:00");
         Time endTime1 = Time.valueOf("09:00:00");
@@ -411,7 +418,7 @@ public class SessionServiceTests {
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -419,7 +426,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -427,7 +434,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -451,7 +458,7 @@ public class SessionServiceTests {
         newLocation.setFloor("501D");
         newLocation.setRoom("50");
         newLocation.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor newInstructor = new Instructor();
@@ -459,7 +466,7 @@ public class SessionServiceTests {
         newInstructor.setPassword("sportcenter");
         newInstructor.setName("Sahar");
         newInstructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course newCourseType = new Course();
@@ -467,7 +474,7 @@ public class SessionServiceTests {
         newCourseType.setDescription("Martial art beginner course");
         newCourseType.setDifficulty(Difficulty.Beginner);
         newCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time newStartTime = Time.valueOf("08:00:00");
         Time newEndTime = Time.valueOf("09:00:00");
@@ -525,7 +532,7 @@ public class SessionServiceTests {
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -533,7 +540,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -541,7 +548,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -605,7 +612,7 @@ public class SessionServiceTests {
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -613,7 +620,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -621,7 +628,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -671,13 +678,14 @@ public class SessionServiceTests {
     
     @Test
     public void testReadSessionByInvalidInstructor() {
+        int id = 50;
         // Set up test
         Instructor instructor = new Instructor();
         instructor.setEmail("Jumijabasali@fithub.com");
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
 
         when(sessionRepository.findBySupervisor(instructor)).thenReturn(null);
 
@@ -695,23 +703,23 @@ public class SessionServiceTests {
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
-
+        when(locationRepository.findLocationById(id)).thenReturn(location);
+    
         // Create and save the instructor 
         Instructor instructor = new Instructor();
         instructor.setEmail("Jumijabasali@fithub.com");
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
-        
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
+
         // Create and save the course
         Course aCourseType = new Course();
         aCourseType.setName("Kung Fu I");
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -760,12 +768,13 @@ public class SessionServiceTests {
     @Test
     public void testReadSessionByInvalidCourse(){
 
+        int id = 50;
         Course aCourseType = new Course();
         aCourseType.setName("Kung Fu I");
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         when(sessionRepository.findByCourseType(aCourseType)).thenReturn(null);
 
