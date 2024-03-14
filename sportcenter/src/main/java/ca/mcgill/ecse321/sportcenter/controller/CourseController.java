@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 //import ca.mcgill.ecse321.sportcenter.service.CourseService;
+import ca.mcgill.ecse321.sportcenter.model.Customer;
 
 @RestController
 public class CourseController {
@@ -28,9 +32,29 @@ public class CourseController {
     public CourseResponseDTO createCourse(@RequestBody CourseRequestDTO course) { 
         Course createdCourse = courseService.createCourse();
         return new CourseResponseDTO(createdCourse);
-        )
-
     }
+
+    @PutMapping(value={"/courses/{id}", "/courses/{id}/"})
+    public CourseResponseDTO updateCourse(@PathVariable Integer id, @RequestBody CourseRequestDTO course) {
+        Course updatedCourse = courseService.updateCourse();
+        return new CourseResponseDTO(updatedCourse);
+    }
+
+    @GetMapping(value={"/courses/{id}", "/courses/{id}/"})
+    public CourseResponseDTO findCourseById(@PathVariable Integer id) {
+        return new CourseResponseDTO(courseService.findCourseById(id));
+    }
+
+    @GetMapping(value={"/courses/name", "/courses/name/"})
+    public CourseResponseDTO findCourseByName(@RequestParam("name") String name){
+        return new CourseResponseDTO(courseService.findCourseByName(name));
+    }
+
+    @GetMapping(value={"/customers", "/customers/"})
+    public AccountListDTO findAllCustomers() {
+        return new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllCustomers()));
+    }
+
 
 
 }

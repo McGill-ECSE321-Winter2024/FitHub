@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import ca.mcgill.ecse321.sportcenter.model.Course;
 
 public class CourseListDTO {
     
@@ -13,4 +16,13 @@ public class CourseListDTO {
     public List<CourseResponseDTO> getCourses() {
         return courses;
     }
+
+    public static <T> List<CourseResponseDTO> courseListToCourseResponseDTOList(List<T> courses) {
+    List<CourseResponseDTO> list = new ArrayList<>();
+    for (T course : courses) {
+        CourseResponseDTO dto = new CourseResponseDTO((Course) course);
+        list.add(dto);
+    }
+    return list;
+}
 }
