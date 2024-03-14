@@ -14,7 +14,7 @@ import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 
 /*
 * <p> Service class in charge of managing courses. It implements following use cases: </p>
-* <p> Create, update, delete a course</p>
+* <p> Create and update a course</p>
 * <p> Getting courses according to their difficuly and their status.</p>
 * <p> Propose new type of courses </p>
 * <p> Approve a new course </p>
