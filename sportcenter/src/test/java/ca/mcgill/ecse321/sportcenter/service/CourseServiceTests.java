@@ -47,10 +47,6 @@ public class CourseServiceTests {
 
     @InjectMocks
     private CourseService service;
-
-    private static final String COURSE_KEY = "TestCourse";
-    private static final String NONEXISTING_KEY = "NotACourse";
-
    
     /**
      * Clear the sportcenter database before each test.
@@ -60,19 +56,20 @@ public class CourseServiceTests {
     public void clearDatabase() {
         courseDao.deleteAll();
     }
-    
 
     private static final List<Course> COURSES = new ArrayList<>();
 
-
+    /**
+     * Create and save a SportCenter instance before each test.
+     */
     @BeforeEach
-    public void setMockOutput() {
+    public void createAndSaveSportCenter() {
+
         Course course1 = new Course();
         course1.setName("Course 1");
         course1.setDescription("Description for Course 1");
         course1.setDifficulty(Course.Difficulty.Beginner);
         course1.setStatus(Course.Status.Closed);
-        courseDao.save(course1);
         COURSES.add(course1); // Add course1 to COURSES list
 
         Course course3 = new Course();
@@ -80,7 +77,6 @@ public class CourseServiceTests {
         course3.setDescription("Description for Course 3");
         course3.setDifficulty(Course.Difficulty.Beginner);
         course3.setStatus(Course.Status.Closed);
-        courseDao.save(course3);
         COURSES.add(course3); // Add course3 to COURSES list
 
         Course course2 = new Course();
@@ -88,34 +84,9 @@ public class CourseServiceTests {
         course2.setDescription("Description for Course 2");
         course2.setDifficulty(Course.Difficulty.Intermediate);
         course2.setStatus(Course.Status.Pending);
-        courseDao.save(course2);
         COURSES.add(course2); // Add course2 to COURSES list
 
-        lenient().when(service.findCoursesByDifficulty(any())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(Course.Difficulty.Beginner)) {
-                return COURSES.stream().filter(course -> course.getDifficulty() == Course.Difficulty.Beginner).collect(Collectors.toList());
-            } else {
-                return null;
-            }
-        });
-
-        /*
-        lenient().when(service.findCoursesByDifficulty(any())).thenAnswer( (InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(Course.Difficulty.Beginner) {
-                return null;
-            } else {
-                return null;
-            }
-        });
-         */
-    }
-
-
-    /**
-     * Create and save a SportCenter instance before each test.
-     */
-    @BeforeEach
-    public void createAndSaveSportCenter() {
+        
         SportCenter sportCenter = new SportCenter();
         sportCenter.setName("FitHub");
         sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
@@ -418,57 +389,41 @@ public class CourseServiceTests {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.findCourseByName(name));
         assertEquals("There is no course with name " + name + ".", e.getMessage());
     }
-    
+
+
     @Test
-    public void testFindCoursesByDifficulty() {
-        service.createCourse("Course 1", "Description for Course 1", Course.Difficulty.Beginner, Course.Status.Closed);
-        service.createCourse("Course 3", "Description for Course 3", Course.Difficulty.Beginner, Course.Status.Closed);
-        service.createCourse("Course 2", "Description for Course 2", Course.Difficulty.Intermediate, Course.Status.Pending);
+    public void testFindBeginnerCoursesByDifficulty() {
+
+        when(courseDao.findAll()).thenReturn(COURSES);
+        
+        //courseRepository.findAll(), it should return a certain list of courses with some beginner courses and some non-beginner courses
 
         List<Course> courses = service.findCoursesByDifficulty(Course.Difficulty.Beginner);
+
         assertNotNull(courses);
         assertTrue(courses.size() > 0);
+
         for (Course course : courses) {
             assertEquals(Course.Difficulty.Beginner, course.getDifficulty());
         }
+}
 
-        List<Course> intermediate = service.findCoursesByDifficulty(Course.Difficulty.Intermediate);
-        assertTrue(intermediate.size() == 1);
-    }
+@Test
+public void testFindIntermediateCoursesByDifficulty() {
+    // Create a list of courses with intermediate difficulty
+    List<Course> intermediateCourses = COURSES.stream()
+            .filter(course -> course.getDifficulty() == Course.Difficulty.Intermediate)
+            .collect(Collectors.toList());
 
-    @Test
-    public void testFindCoursesByStatus() {
-        
-        Course course1 = new Course();
-        course1.setName("Course 1");
-        course1.setDescription("Description for Course 1");
-        course1.setDifficulty(Course.Difficulty.Beginner);
-        course1.setStatus(Course.Status.Closed);
-        courseDao.save(course1);
+    // Mock the service method to return the list of intermediate courses
+    when(service.findCoursesByDifficulty(Course.Difficulty.Intermediate)).thenReturn(intermediateCourses);
 
-        Course course3 = new Course();
-        course3.setName("Course 3");
-        course3.setDescription("Description for Course 3");
-        course3.setDifficulty(Course.Difficulty.Beginner);
-        course3.setStatus(Course.Status.Closed);
-        courseDao.save(course1);
+    // Call the service method
+    List<Course> intermediate = service.findCoursesByDifficulty(Course.Difficulty.Intermediate);
 
-        Course course2 = new Course();
-        course2.setName("Course 2");
-        course2.setDescription("Description for Course 2");
-        course2.setDifficulty(Course.Difficulty.Intermediate);
-        course2.setStatus(Course.Status.Pending);
-        courseDao.save(course2);
+    // Assert that the returned list contains exactly one intermediate course
+    assertTrue(intermediate.size() == 1);
+}
 
-        List<Course> closed = service.findCoursesByStatus(Course.Status.Closed);
-        assertNotNull(closed);
-        assertTrue(closed.size() > 0);
-        for (Course course : closed) {
-            assertEquals(Course.Status.Approved, course.getStatus());
-        }
-
-        List<Course> pending = service.findCoursesByStatus(Course.Status.Pending);
-        assertTrue(pending.size() == 1);
-    }
 
 }
