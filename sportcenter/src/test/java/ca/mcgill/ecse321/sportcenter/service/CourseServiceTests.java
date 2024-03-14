@@ -5,12 +5,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -393,37 +390,95 @@ public class CourseServiceTests {
 
     @Test
     public void testFindBeginnerCoursesByDifficulty() {
+        //Clear the previous course list used in tests and create the new instances.
+        COURSES.clear();
+        Course course1 = new Course();
+        course1.setName("Course 1");
+        course1.setDescription("Description for Course 1");
+        course1.setDifficulty(Course.Difficulty.Beginner);
+        course1.setStatus(Course.Status.Closed);
+        COURSES.add(course1); // Add course1 to COURSES list
+
+        Course course3 = new Course();
+        course3.setName("Course 3");
+        course3.setDescription("Description for Course 3");
+        course3.setDifficulty(Course.Difficulty.Beginner);
+        course3.setStatus(Course.Status.Closed);
+        COURSES.add(course3); // Add course3 to COURSES list
+
+        Course course2 = new Course();
+        course2.setName("Course 2");
+        course2.setDescription("Description for Course 2");
+        course2.setDifficulty(Course.Difficulty.Intermediate);
+        course2.setStatus(Course.Status.Pending);
+        COURSES.add(course2); // Add course2 to COURSES list
+
+        when(courseDao.findAll()).thenReturn(COURSES);
+
+        List<Course> beginner = service.findCoursesByDifficulty(Course.Difficulty.Beginner);
+
+        assertNotNull(beginner);
+        assertTrue(beginner.size() > 0);
+
+        //Assert that all the courses found were the correct difficulty. 
+        for (Course course : beginner) {
+            assertEquals(Course.Difficulty.Beginner, course.getDifficulty());
+        }
+
+        //Assert that the course found of that difficulty was the correct course. 
+        List<Course> intermediate = service.findCoursesByDifficulty(Course.Difficulty.Intermediate);
+        assertEquals(intermediate.size(), 1);
+        assertEquals("Course 2", intermediate.get(0).getName());
+        assertEquals("Description for Course 2", intermediate.get(0).getDescription());
+        assertEquals(Course.Difficulty.Intermediate, intermediate.get(0).getDifficulty());
+        assertEquals(Course.Status.Pending, intermediate.get(0).getStatus());
+    }
+
+    @Test
+    public void testFindBeginnerCoursesByStatus() {
+        //Clear the previous course list used in tests and create the new instances.
+        COURSES.clear();
+        Course course1 = new Course();
+        course1.setName("Course 1");
+        course1.setDescription("Description for Course 1");
+        course1.setDifficulty(Course.Difficulty.Beginner);
+        course1.setStatus(Course.Status.Closed);
+        COURSES.add(course1); // Add course1 to COURSES list
+
+        Course course3 = new Course();
+        course3.setName("Course 3");
+        course3.setDescription("Description for Course 3");
+        course3.setDifficulty(Course.Difficulty.Beginner);
+        course3.setStatus(Course.Status.Closed);
+        COURSES.add(course3); // Add course3 to COURSES list
+
+        Course course2 = new Course();
+        course2.setName("Course 2");
+        course2.setDescription("Description for Course 2");
+        course2.setDifficulty(Course.Difficulty.Intermediate);
+        course2.setStatus(Course.Status.Pending);
+        COURSES.add(course2); // Add course2 to COURSES list
 
         when(courseDao.findAll()).thenReturn(COURSES);
         
-        //courseRepository.findAll(), it should return a certain list of courses with some beginner courses and some non-beginner courses
+        List<Course> closed = service.findCoursesByStatus(Course.Status.Closed);
 
-        List<Course> courses = service.findCoursesByDifficulty(Course.Difficulty.Beginner);
+        assertNotNull(closed);
+        assertTrue(closed.size() > 0);
 
-        assertNotNull(courses);
-        assertTrue(courses.size() > 0);
-
-        for (Course course : courses) {
-            assertEquals(Course.Difficulty.Beginner, course.getDifficulty());
+        //Assert that all the courses found were the correct status. 
+        for (Course course : closed) {
+            assertEquals(Course.Status.Closed, course.getStatus());
         }
-}
 
-@Test
-public void testFindIntermediateCoursesByDifficulty() {
-    // Create a list of courses with intermediate difficulty
-    List<Course> intermediateCourses = COURSES.stream()
-            .filter(course -> course.getDifficulty() == Course.Difficulty.Intermediate)
-            .collect(Collectors.toList());
-
-    // Mock the service method to return the list of intermediate courses
-    when(service.findCoursesByDifficulty(Course.Difficulty.Intermediate)).thenReturn(intermediateCourses);
-
-    // Call the service method
-    List<Course> intermediate = service.findCoursesByDifficulty(Course.Difficulty.Intermediate);
-
-    // Assert that the returned list contains exactly one intermediate course
-    assertTrue(intermediate.size() == 1);
-}
+        //Assert that the course found of that status was the correct course. 
+        List<Course> pending = service.findCoursesByStatus(Course.Status.Pending);
+        assertEquals(pending.size(), 1);
+        assertEquals("Course 2", pending.get(0).getName());
+        assertEquals("Description for Course 2", pending.get(0).getDescription());
+        assertEquals(Course.Difficulty.Intermediate, pending.get(0).getDifficulty());
+        assertEquals(Course.Status.Pending, pending.get(0).getStatus());
+    }
 
 
 }
