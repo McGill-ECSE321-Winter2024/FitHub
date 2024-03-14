@@ -12,6 +12,7 @@ import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 
 /*
 * <p>Service class in charge of managing sessions. It implements following use cases: </p>
@@ -76,13 +77,13 @@ public class SessionService {
     }
 
     @Transactional
-    public Iterable<Session> findSessionsByInstructor(Instructor supervisor){
-        return sessionRepo.findSessionsByInstructor(supervisor);
+    public List<Session> findSessionsByInstructor(Instructor supervisor){
+        return sessionRepo.findBySupervisor(supervisor);
     }
 
     @Transactional
-    public Iterable<Session> findSessionsByCourse(Course course){
-        return sessionRepo.findSessionsByCourse(course);
+    public List<Session> findSessionsByCourse(Course course){
+        return sessionRepo.findByCourseType(course);
     }
     
 }
