@@ -50,9 +50,9 @@ public class CourseController {
         return new CourseResponseDTO(courseService.findCourseByName(name));
     }
 
-    @GetMapping(value={"/customers", "/customers/"})
-    public AccountListDTO findAllCustomers() {
-        return new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllCustomers()));
+    @GetMapping(value={"/courses", "/courses/"})
+    public CourseListDTO findAllCourses() {
+        return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses()));
     }
 
 
