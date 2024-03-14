@@ -23,9 +23,14 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
-    @PostMapping(value={})
+    @PostMapping(value={"/courses", "/courses/"})
     @ResponseStatus(HttpStatus.CREATED)
-    public CourseResponseDTO 
+    public CourseResponseDTO createCourse(@RequestBody CourseRequestDTO course) { 
+        Course createdCourse = courseService.createCourse();
+        return new CourseResponseDTO(createdCourse);
+        )
+
+    }
 
 
 }
