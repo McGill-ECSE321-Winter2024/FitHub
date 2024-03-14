@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
+import ca.mcgill.ecse321.sportcenter.model.Course;
+
 public class CourseDTO {
 
   public enum Difficulty { Beginner, Intermediate, Advanced }
@@ -21,6 +23,14 @@ public class CourseDTO {
     difficulty = aDifficulty;
     status = aStatus;
     description = aDescription;
+  }
+
+  public CourseDTO(Course course)
+  {
+    name = course.getName();
+    difficulty = Difficulty.valueOf(course.getDifficulty().toString());
+    status = Status.valueOf(course.getStatus().toString());
+    description = course.getDescription();
   }
 
   public boolean setName(String aName)
