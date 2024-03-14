@@ -86,12 +86,13 @@ public class SessionServiceTests {
 
     @Test
     public void testCreateValidSession() {
+        int id = 50;
         // Set up test
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
         location.setCenter(sportCenterRepo.findSportCenterById(0));
-        locationRepository.save(location);
+        when(locationRepository.findLocationById(id)).thenReturn(location);
 
         // Create and save the instructor 
         Instructor instructor = new Instructor();
@@ -99,7 +100,7 @@ public class SessionServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        supervisorRepository.save(instructor);
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
         // Create and save the course
         Course aCourseType = new Course();
@@ -107,7 +108,7 @@ public class SessionServiceTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        courseRepository.save(aCourseType);
+        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
@@ -122,11 +123,10 @@ public class SessionServiceTests {
         aSession.setSupervisor(instructor);
         aSession.setCourseType(aCourseType);
         aSession.setLocation(location);
-
         when(sessionRepository.save(any(Session.class))).thenReturn(aSession);
 
         // Act
-        Session createdSession = sessionService.proposeSuperviseSession(startTime, endTime, date, capacity, instructor.getId(), aCourseType.getId(), location.getId());
+        Session createdSession = sessionService.proposeSuperviseSession(startTime, endTime, date, capacity, id, id, id);
     
         // Assert
         assertNotNull(createdSession);
