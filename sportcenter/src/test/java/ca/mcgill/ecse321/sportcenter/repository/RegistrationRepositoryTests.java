@@ -148,8 +148,8 @@ public class RegistrationRepositoryTests {
         assertEquals(aSession.getId(), regFromDb.getKey().getSession().getId());
 
         //Assert that the information in the customer association has been saved.
-        assertNotNull(regFromDb.getKey().getAccount());
-        assertEquals(customer.getId(), regFromDb.getKey().getAccount().getId());
+        assertNotNull(regFromDb.getKey().getCustomer());
+        assertEquals(customer.getId(), regFromDb.getKey().getCustomer().getId());
         
     }
 }

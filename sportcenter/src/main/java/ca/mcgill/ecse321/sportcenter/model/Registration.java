@@ -31,28 +31,28 @@ public class Registration {
     @Embeddable
     public static class Key implements Serializable {
         @ManyToOne
-        private Account account;
+        private Customer customer;
         @ManyToOne
         private Session session;
 
         public Key() {
         }
 
-        public Key(Account account, Session session) {
-            this.account = account;
+        public Key(Customer customer, Session session) {
+            this.customer = customer;
             this.session = session;
         }
 
-        public Account getAccount() {
-            return account;
+        public Customer getCustomer() {
+            return customer;
         }
 
         public Session getSession() {
             return session;
         }
 
-        public void setAccount(Account account) {
-            this.account = account;
+        public void setCustomer(Customer customer) {
+            this.customer = customer;
         }
 
         public void setSession(Session session) {
@@ -65,13 +65,13 @@ public class Registration {
                 return false;
             }
             Key other = (Key) obj;
-            return this.getAccount().getId() == other.getAccount().getId()
+            return this.getCustomer().getId() == other.getCustomer().getId()
                     && this.getSession().getId() == other.getSession().getId();
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.getAccount().getId(), this.getSession().getId());
+            return Objects.hash(this.getCustomer().getId(), this.getSession().getId());
         }
     }
 }
