@@ -110,12 +110,7 @@ public class RegistrationService {
         Customer customer = accountService.findCustomerById(customerId);
         Session session = sessionService.findSessionById(sessionId);
         Registration registration = findRegistration(customer, session);
-
-        if (registration == null) {
-            throw new IllegalArgumentException("The registration does not exist.");
-        } else {
-            deleteRegistration(registration.getKey());
-        }
+        deleteRegistration(registration.getKey());
     }
 
     //--------------------------// Helper functions //--------------------------//

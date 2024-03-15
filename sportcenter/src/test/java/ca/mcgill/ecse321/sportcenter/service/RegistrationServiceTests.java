@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -129,6 +130,18 @@ public class RegistrationServiceTests {
         verify(registrationRepository, times(1)).save(createdRegistration);
     }
 
+    @Test
+    public void testCreateDuplicateRegistration() {
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
+
+        Registration registration = new Registration(new Registration.Key(customer, session));
+        when(registrationRepository.findRegistrationByKey(any())).thenReturn(registration);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> registrationService.createRegistration(customer, session));
+        assertEquals("Customer " + customer.getId() + " has already registered for session " + session.getId(), e.getMessage());
+    }
+
     //--------------------------// Update Registration Tests //--------------------------//
 
     @Test
@@ -177,6 +190,18 @@ public class RegistrationServiceTests {
         verify(registrationRepository, times(1)).delete(any(Registration.class));
     }
 
+    @Test
+    public void cancelInvalidRegistration() {
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
+
+        Registration.Key key = new Registration.Key(customer, session);
+        when(registrationRepository.findRegistrationByKey(key)).thenReturn(null);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> registrationService.deleteRegistration(key));
+        assertEquals("There is no registration with key " + key + ".", e.getMessage());
+    }
+
     //--------------------------// Find Registration Tests //--------------------------//
 
     @Test
@@ -193,5 +218,17 @@ public class RegistrationServiceTests {
         assertNotNull(foundRegistration);
         assertEquals(registration.getKey().getCustomer(), foundRegistration.getKey().getCustomer());
         assertEquals(registration.getKey().getSession(), foundRegistration.getKey().getSession());
+    }
+
+    @Test
+    public void testReadRegistrationByInvalidKey() {
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
+
+        Registration.Key key = new Registration.Key(customer, session);
+        when(registrationRepository.findRegistrationByKey(key)).thenReturn(null);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> registrationService.findRegistrationByKey(key));
+        assertEquals("There is no registration with key " + key + ".", e.getMessage());
     }
 }
