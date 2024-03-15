@@ -1,12 +1,21 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.sportcenter.model.Account;
+import ca.mcgill.ecse321.sportcenter.model.AccountPrincipal;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
@@ -21,8 +30,10 @@ import jakarta.transaction.Transactional;
 * <p>Create, update, delete a customer/instructor/owner account and login to account</p>
 * @author Julia
 */
-@Service
-public class AccountService {
+@Service("userDetailsService")
+public class AccountService implements UserDetailsService {
+    //get user from the database, via Hibernate
+    
     @Autowired
     CustomerRepository customerRepository;
     @Autowired
@@ -32,6 +43,25 @@ public class AccountService {
     
     @Autowired
     SportCenterRepository sportCenterRepository;
+    
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        Instructor instructor = instructorRepository.findInstructorByEmail(email);
+        Owner owner = ownerRepository.findOwnerByEmail(email);
+
+        if (customer != null) {
+            return new AccountPrincipal(customer);
+        }
+        else if (instructor != null) {
+            return new AccountPrincipal(instructor);
+        }
+        else if (owner != null) {
+            return new AccountPrincipal(owner);
+        }
+        
+        throw new UnsupportedOperationException("No account in the system exists with this email");
+    }
 
     //--------------------------// Create Account //--------------------------//
 

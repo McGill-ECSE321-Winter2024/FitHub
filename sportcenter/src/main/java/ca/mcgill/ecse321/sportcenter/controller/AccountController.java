@@ -2,6 +2,11 @@ package ca.mcgill.ecse321.sportcenter.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
@@ -24,6 +31,39 @@ import ca.mcgill.ecse321.sportcenter.service.AccountService;
 public class AccountController {
     @Autowired
     AccountService accountService;
+    
+    private final AuthenticationManager authenticationManager;
+    private final SecurityContextRepository securityContextRepository;
+
+    @Autowired
+    public AccountController(AuthenticationManager authenticationManager,
+                             SecurityContextRepository securityContextRepository) {
+        this.authenticationManager = authenticationManager;
+        this.securityContextRepository = securityContextRepository;
+    }
+
+    @PostMapping(value={"/login", "/login/"})
+    public LoginResponseDTO loginToAccount(@RequestBody LoginRequestDTO login) {
+        try {
+            Authentication authenticationRequest =
+                UsernamePasswordAuthenticationToken.unauthenticated(login.getEmail(), login.getPassword());
+            Authentication authenticationResponse =
+                this.authenticationManager.authenticate(authenticationRequest);
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
+            
+            securityContextRepository.saveContext(SecurityContextHolder.getContext(), null, null);
+                
+            accountService.loginToAccount(login.getEmail(), login.getPassword());
+            
+            LoginResponseDTO valid = new LoginResponseDTO(true);
+            return valid;
+        } catch (Exception e) {
+            LoginResponseDTO valid = new LoginResponseDTO(false);
+            return valid;
+        }
+        
+    }
     
     @PostMapping(value={"/customers", "/customers/"})
     @ResponseStatus(HttpStatus.CREATED)

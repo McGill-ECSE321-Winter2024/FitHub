@@ -6,6 +6,13 @@ public class AccountRequestDTO {
     private String name;
     private String imageURL;
 
+    public AccountRequestDTO(String email, String password, String name, String imageURL) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.imageURL = imageURL;
+    }
+
     public String getEmail() {
         return email;
     }
