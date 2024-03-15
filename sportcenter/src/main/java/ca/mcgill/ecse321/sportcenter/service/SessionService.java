@@ -43,20 +43,27 @@ public class SessionService {
     @Transactional
     public Session proposeSuperviseSession(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int iId, int cId, int lId){
         //Input Validation
-        if(aCapacity<=0){
-            throw new IllegalArgumentException("Capacity should be greater than 0");
+        //Things left to implement: make sure aEndTime is after aStartTime and that it is inside the opnening hours
+        if(aCapacity<=0 || aDate == null || aStartTime == null || aEndTime == null){
+            throw new IllegalArgumentException();
         }
         Instructor aSupervisor = instructRepo.findInstructorById(iId);
         Location aLocation = locationRepo.findLocationById(lId);
         Course aCourseType = courseRepo.findCourseById(cId);
+        if(aSupervisor == null || aLocation == null || aCourseType == null){
+            throw new IllegalArgumentException();
+        }
         Session sessionToCreate = new Session(aStartTime, aEndTime, aDate, aCapacity, aSupervisor, aCourseType, aLocation);
         return sessionRepo.save(sessionToCreate);
     }
+
+    
 
     //--------------------------// Update Session //--------------------------//
 
     @Transactional
     public Session updateSession(int sid, Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int iId, int cId, int lId){
+        //Things left to implement: make sure aEndTime is after aStartTime and that it is inside the opnening hours
         Session sessionToUpdate = findSessionById(sid);
         Instructor aSupervisor = instructRepo.findInstructorById(iId);
         Location aLocation = locationRepo.findLocationById(lId);
@@ -93,16 +100,26 @@ public class SessionService {
 
     @Transactional
     public Session findSessionById(int sid) {
-        return sessionRepo.findById(sid);
+        Session session =  sessionRepo.findById(sid);
+        if(session == null){
+            throw new IllegalArgumentException();
+        }
+        return session;
     }
 
     @Transactional
     public List<Session> findSessionsByInstructor(Instructor supervisor){
+        if(supervisor == null){
+            throw new IllegalArgumentException();
+        }
         return sessionRepo.findBySupervisor(supervisor);
     }
 
     @Transactional
     public List<Session> findSessionsByCourse(Course course){
+        if(course == null){
+            throw new IllegalArgumentException();
+        }
         return sessionRepo.findByCourseType(course);
     }
 
