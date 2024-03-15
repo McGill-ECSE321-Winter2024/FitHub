@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.controller;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Location;
+import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CourseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LocationDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
@@ -24,36 +32,53 @@ public class SportCenterManagementController {
     @Autowired
     private SportCenterManagementService sportCenterManagementService;
 
-    // Get sport center by id
-    @GetMapping("/sportCenters/{id}")
-    public SportCenter findSportCenterById(@PathVariable int id){
-        return sportCenterManagementService.findSportCenterById(id);
-    }
-
-    // Get all sport centers
-    @GetMapping("/sportCenters")
-    public Iterable<SportCenter> getAllSportCenters(){
-        return sportCenterManagementService.getAllSportCenters();
-    }
-
     // Creating a sport center
-    @PostMapping("/sportCenters")
+    @PostMapping(value={"/sportCenter/", "/sportCenter"})
     @ResponseStatus(HttpStatus.CREATED)
     public SportCenterDTO createSportCenter(@RequestBody SportCenterDTO sportCenter){
+        // Create empty lists
+        List<CourseDTO> courses = new ArrayList<>();
+        List<LocationDTO> locations = new ArrayList<>();
+        List<Account> centerAccounts = new ArrayList<>();
+        List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(centerAccounts);
+        AccountListDTO accounts = new AccountListDTO(accountResponseList);
+
         SportCenter createdSportCenter = sportCenterManagementService.createSportCenter(sportCenter.getName(), sportCenter.getOpeningTime(), sportCenter.getClosingTime(), sportCenter.getAddress(), sportCenter.getEmail(), sportCenter.getPhoneNumber());
-        return new SportCenterDTO();
+
+        return new SportCenterDTO(createdSportCenter.getName(), createdSportCenter.getOpeningTime(), createdSportCenter.getClosingTime(), createdSportCenter.getAddress(), createdSportCenter.getEmail(), createdSportCenter.getPhoneNumber(), courses, locations, accounts);
     }
 
     // updating opening/closing hours? is that how we do it?
-    @PutMapping("/sportCenters/{id}")
-    public SportCenter updateSportCenter(@RequestBody SportCenterDTO sportCenter, @PathVariable int id){
-        sportCenterManagementService.updateOpeningTime(id, sportCenter.getOpeningTime());
-        return sportCenterManagementService.updateClosingTime(id, sportCenter.getClosingTime());
+    @PutMapping(value={"/sportCenter/", "/sportCenter"})
+    public SportCenterDTO updateSportCenter(@RequestBody SportCenterDTO sportCenter){
+        SportCenter updatedSportCenter = sportCenterManagementService.updateTime(sportCenter.getOpeningTime(), sportCenter.getClosingTime());
+        
+        // Convert list of Course into list of CourseDTO
+        List<CourseDTO> courses = new ArrayList<>();
+        CourseDTO courseDTO;
+        for(Course course : updatedSportCenter.getCourses()) {
+            courseDTO = new CourseDTO(course);
+            courses.add(courseDTO);
+        }
+
+        // Convert list of Location into list of LocationDTO
+        List<LocationDTO> locations = new ArrayList<>();
+        LocationDTO locationDTO;
+        for(Location location : updatedSportCenter.getLocations()) {
+            locationDTO = new LocationDTO(location.getFloor(), location.getRoom());
+            locations.add(locationDTO);
+        }
+
+        // Convert list of Account into AccountListDTO
+        List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(updatedSportCenter.getAccounts());
+        AccountListDTO accounts = new AccountListDTO(accountResponseList);
+
+        return new SportCenterDTO(updatedSportCenter.getName(), updatedSportCenter.getOpeningTime(), updatedSportCenter.getClosingTime(), updatedSportCenter.getAddress(), updatedSportCenter.getEmail(), updatedSportCenter.getPhoneNumber(), courses, locations, accounts);
     }
 
     // Deleting a sport center
-    @DeleteMapping(value={"/sportCenters/{id}", "/sportCenters/{id}/"})
-    public void deleteSportCenter(@PathVariable int id) {
-        sportCenterManagementService.deleteSportCenter(id);
+    @DeleteMapping(value={"/sportCenter/", "/sportCenter"})
+    public void deleteSportCenter() {
+        sportCenterManagementService.deleteSportCenter();
     }
 }

@@ -26,52 +26,30 @@ public class SportCenterManagementService {
 
     @Transactional
 	public SportCenter createSportCenter(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber) {
-        validSportCentertInfo(name, address, email, phoneNumber);
-		SportCenter sportCenter = new SportCenter();
-		sportCenter.setName(name);
-        sportCenter.setOpeningTime(openingTime);
-        sportCenter.setClosingTime(closingTime);
-        sportCenter.setAddress(address);
-        sportCenter.setEmail(email);
-        sportCenter.setPhoneNumber(phoneNumber);
-		sportCenterRepository.save(sportCenter);
-		return sportCenter;
-	}
-
-    //--------------------------// Find Sport Center(s) //--------------------------//
-
-    @Transactional
-    public SportCenter findSportCenterById(int id) {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(id);
-
-        if (sportCenter == null) {
-            throw new IllegalArgumentException("There is no sport center with ID " + id + ".");
+        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
+        if (sportCenter != null) {
+            throw new IllegalArgumentException("Sport center already exists.");
         }
-
-        return sportCenter;
-    }
-
-    @Transactional
-    public List<SportCenter> getAllSportCenters() {
-        return toList(sportCenterRepository.findAll());
-    }
+        validSportCentertInfo(name, address, email, phoneNumber);
+        validPhoneNumber(phoneNumber);
+		SportCenter createdSportCenter = new SportCenter();
+		createdSportCenter.setName(name);
+        createdSportCenter.setOpeningTime(openingTime);
+        createdSportCenter.setClosingTime(closingTime);
+        createdSportCenter.setAddress(address);
+        createdSportCenter.setEmail(email);
+        createdSportCenter.setPhoneNumber(phoneNumber);
+		sportCenterRepository.save(createdSportCenter);
+		return createdSportCenter;
+	}
 
     //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional
-    public SportCenter updateOpeningTime(int id, Time openingTime) {
-        SportCenter sportCenter = findSportCenterById(id);
+    public SportCenter updateTime(Time openingTime, Time closingTime) {
+        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
 
         sportCenter.setOpeningTime(openingTime);
-        sportCenterRepository.save(sportCenter);
-
-        return sportCenter;
-    }
-
-    @Transactional
-    public SportCenter updateClosingTime(int id, Time closingTime) {
-        SportCenter sportCenter = findSportCenterById(id);
-
         sportCenter.setClosingTime(closingTime);
         sportCenterRepository.save(sportCenter);
 
@@ -81,18 +59,13 @@ public class SportCenterManagementService {
     //--------------------------// Delete Sport Center //--------------------------//
 
     @Transactional
-    public void deleteSportCenter(int id) {
-        SportCenter sportCenter = findSportCenterById(id);
+    public void deleteSportCenter() {
+        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
+        if (sportCenter == null) {
+            throw new IllegalArgumentException("Sport center does not exist.");
+        }
         sportCenterRepository.delete(sportCenter);
     }
-
-    private <T> List<T> toList(Iterable<T> iterable){
-		List<T> resultList = new ArrayList<T>();
-		for (T t : iterable) {
-			resultList.add(t);
-		}
-		return resultList;
-	}
 
     //--------------------------// Input Validation //--------------------------//
 
@@ -102,6 +75,15 @@ public class SportCenterManagementService {
         }
         if (!email.contains("@")) {
             throw new IllegalArgumentException("Email has to contain the character @");
+        }
+    }
+
+    private void validPhoneNumber(String phoneNumber) {
+        for (int i = 0; i < phoneNumber.length(); i++) {
+            char c = phoneNumber.charAt(i); 
+            if (!Character.isDigit(c) && c != '-') {
+                throw new IllegalArgumentException("Phone number has to contain digits and dashes only");
+            }
         }
     }
 
