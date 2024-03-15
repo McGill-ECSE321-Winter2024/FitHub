@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -101,14 +101,17 @@ public class BillingAccountService {
     //--------------------------// Input validations //--------------------------//
 
     private void validBillingAccountInfo(Integer cardNumber, String cardHolder, String billingAddress, Integer cvv, Date expirationDate, Customer customer){
-        if (cardNumber == null || cardHolder.isEmpty() || billingAddress.isEmpty() || cvv == null || expirationDate == null){
-            throw new IllegalArgumentException("Empty fields for cardNumber, cardHolder, billingAddress, cvv or name are not valid");
+        if (cardNumber == null || cardHolder.isEmpty() || cardHolder.trim().length() == 0 || billingAddress.isEmpty() || billingAddress.trim().length() == 0 || cvv == null || expirationDate == null){
+            throw new IllegalArgumentException("Empty fields for cardNumber, cardHolder, billingAddress, cvv or expirationDate are not valid");
         }
         if (Integer.toString(cardNumber).length() != 16){
             throw new IllegalArgumentException("Invalid cardNumber; needs to be exactly 16 digits");
         }
         if (Integer.toString(cvv).length() != 3){
             throw new IllegalArgumentException("Invalid cvv; needs to be exactly 3 digits");
+        }
+        if (expirationDate.before(java.sql.Date.valueOf(LocalDate.now()))){
+            throw new IllegalArgumentException("Invalid expirationDate");
         }
         if (customer == null){
             throw new IllegalArgumentException("Customer account does not exist");
