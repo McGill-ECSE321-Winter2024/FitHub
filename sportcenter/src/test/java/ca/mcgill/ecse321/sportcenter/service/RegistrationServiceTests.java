@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,108 +62,61 @@ public class RegistrationServiceTests {
     @InjectMocks
     private RegistrationService registrationService;
 
-    /**
-     * Clear the sportcenter database before each test.
-     */
-    @BeforeEach
-    @AfterEach
-    public void clearDatabase() {
-        registrationRepository.deleteAll();
-        customerRepository.deleteAll();
-        sessionRepository.deleteAll();
-        instructorRepository.deleteAll();
-        locationRepository.deleteAll();
-        courseRepository.deleteAll();
-        sportCenterRepository.deleteAll();
-    }
-
-    /**
-     * Method to create and save a sport center before each test.
-     */
-    @BeforeEach
-    public void createAndSaveSportCenter() {
-        SportCenter sportCenter = new SportCenter();
-        sportCenter.setName("FitHub");
-        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
-        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
-        sportCenter.setEmail("info@fithub.com");
-        sportCenter.setPhoneNumber("421-436-4444");
-        sportCenter.setAddress("2011, University Street, Montreal");
-
-        // Save sportCenterRepo
-        sportCenter = sportCenterRepository.save(sportCenter);
-    }
+    private SportCenter sportCenter;
+    private Customer customer;
+    private Session session;
+    private Instructor instructor;
+    private Location location;
+    private Course course;
 
     /**
      * Create and save a Customer and Session instance before each test.
      */
     @BeforeEach
     public void createAndSaveCustomerAndSession() {
-        SportCenter sportCenter = new SportCenter();
-        sportCenter.setName("FitHub");
-        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
-        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
-        sportCenter.setEmail("info@fithub.com");
-        sportCenter.setPhoneNumber("421-436-4444");
-        sportCenter.setAddress("2011, University Street, Montreal");
-
-        // Save sportCenterRepo
-        sportCenter = sportCenterRepository.save(sportCenter);
-
         //create a customer 
-        Customer customer = new Customer();
+        customer = new Customer();
         customer.setEmail("bob@gmail.com");
         customer.setPassword("12345");
         customer.setName("Bob");
         customer.setImageURL("pfp123.com");
-        // Save into database
-        customer = customerRepository.save(customer);
 
         //create a supervisor(instructor)
-        Instructor instructor = new Instructor();
+        instructor = new Instructor();
         instructor.setEmail("Jumijabasali@fithub.com");
         instructor.setPassword("sportcenter");
         instructor.setName("Jumijabasali");
         instructor.setImageURL("pfp.com");
-        // Save into database
-        instructor = instructorRepository.save(instructor);
         
         //create a location
-        Location location = new Location();
+        location = new Location();
         location.setFloor( "aFloor");
         location.setRoom( "aRoom");
-        location.setCenter(sportCenter);
-        // Save into database
-        location = locationRepository.save(location);
 
         //create a course
-        Course course = new Course();
+        course = new Course();
         course.setName("Cardio");
         course.setDescription("Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope");
         course.setDifficulty(Difficulty.Beginner);
         course.setStatus(Status.Approved);
-        // Save into database
-        course = courseRepository.save(course);
 
         //create a session
-        Session aSession = new Session();
-        aSession.setStartTime(Time.valueOf("08:00:00"));
-        aSession.setEndTime(Time.valueOf("09:00:00"));
-        aSession.setDate(Date.valueOf("2024-02-18"));
-        aSession.setCapacity(50);
-        aSession.setSupervisor(instructor);
-        aSession.setCourseType(course);
-        aSession.setLocation(location);
-        // Save into database
-        aSession = sessionRepository.save(aSession);
+        session = new Session();
+        session.setStartTime(Time.valueOf("08:00:00"));
+        session.setEndTime(Time.valueOf("09:00:00"));
+        session.setDate(Date.valueOf("2024-02-18"));
+        session.setCapacity(50);
+        session.setSupervisor(instructor);
+        session.setCourseType(course);
+        session.setLocation(location);
     }
 
     //--------------------------// Create Registration Tests //--------------------------//
 
     @Test
     public void testCreateValidRegistration() {
-        Customer customer = customerRepository.findCustomerById(0);
-        Session session = sessionRepository.findSessionById(0);
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
 
         Registration registration = new Registration(new Registration.Key(customer, session));
         when(registrationRepository.save(any(Registration.class))).thenReturn(registration);
@@ -179,8 +133,8 @@ public class RegistrationServiceTests {
 
     @Test
     public void updateValidRegistration() {
-        Customer customer = customerRepository.findCustomerById(0);
-        Session session = sessionRepository.findSessionById(0);
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         Registration registration = new Registration(key);
@@ -207,12 +161,28 @@ public class RegistrationServiceTests {
         assertEquals(newSession, savedRegistration.getKey().getSession());
     }
 
+    //--------------------------// Cancel Registration Tests //--------------------------//
+
+    @Test
+    public void cancelValidRegistration() {
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
+
+        Registration.Key key = new Registration.Key(customer, session);
+        Registration registration = new Registration(key);
+        when(registrationRepository.findRegistrationByKey(key)).thenReturn(registration);
+
+        registrationService.deleteRegistration(registration.getKey());
+
+        verify(registrationRepository, times(1)).delete(any(Registration.class));
+    }
+
     //--------------------------// Find Registration Tests //--------------------------//
 
     @Test
     public void testReadRegistrationByValidKey() {
-        Customer customer = customerRepository.findCustomerById(0);
-        Session session = sessionRepository.findSessionById(0);
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        when(sessionRepository.findSessionById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         Registration registration = new Registration(key);
