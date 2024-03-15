@@ -35,7 +35,7 @@ public class AccountServiceTests {
     @Mock
     private OwnerRepository ownerRepository;
     @Mock
-    private SportCenterRepository sportCenterRepo;
+    private SportCenterRepository sportCenterRepository;
 
     @InjectMocks
     private AccountService accountService;
@@ -49,7 +49,7 @@ public class AccountServiceTests {
         customerRepository.deleteAll();
         instructorRepository.deleteAll();
         ownerRepository.deleteAll();
-        sportCenterRepo.deleteAll();
+        sportCenterRepository.deleteAll();
     }
 
     /**
@@ -66,7 +66,7 @@ public class AccountServiceTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        sportCenter = sportCenterRepo.save(sportCenter);
+        sportCenter = sportCenterRepository.save(sportCenter);
     }
 
     
@@ -85,7 +85,7 @@ public class AccountServiceTests {
         julia.setPassword(password);
         julia.setName(name);
         julia.setImageURL(imageURL);
-        julia.setCenter(sportCenterRepo.findSportCenterById(0));
+        julia.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(customerRepository.save(any(Customer.class))).thenReturn(julia);
 
@@ -114,7 +114,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepo.findSportCenterById(0));
+        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
 
@@ -143,7 +143,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepo.findSportCenterById(0));
+        owner.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(ownerRepository.save(any(Owner.class))).thenReturn(owner);
 
@@ -172,7 +172,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepo.findSportCenterById(0));
+        customer.setCenter(sportCenterRepository.findSportCenterById(0));
 
         // Use Account Service and Assert
         assertThrows(IllegalArgumentException.class, () -> accountService.createCustomerAccount(email, password, name, imageURL));
@@ -191,7 +191,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepo.findSportCenterById(0));
+        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
 
         // Use Account Service and Assert
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
@@ -211,7 +211,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepo.findSportCenterById(0));
+        owner.setCenter(sportCenterRepository.findSportCenterById(0));
 
         // Use Account Service and Assert
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
@@ -255,7 +255,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepo.findSportCenterById(0));
+        customer.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(customerRepository.findCustomerById(id)).thenReturn(customer);
 
@@ -297,7 +297,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepo.findSportCenterById(0));
+        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(instructorRepository.findInstructorById(id)).thenReturn(instructor);
 
@@ -339,7 +339,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepo.findSportCenterById(0));
+        owner.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(ownerRepository.findOwnerById(id)).thenReturn(owner);
 
@@ -383,7 +383,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepo.findSportCenterById(0));
+        customer.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(customerRepository.findCustomerById(id)).thenReturn(customer);
 
@@ -412,7 +412,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepo.findSportCenterById(0));
+        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(instructorRepository.findInstructorById(id)).thenReturn(instructor);
 
@@ -441,7 +441,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepo.findSportCenterById(0));
+        owner.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(ownerRepository.findOwnerById(id)).thenReturn(owner);
 
@@ -506,7 +506,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepo.findSportCenterById(0));
+        customer.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(customerRepository.findCustomerByEmail(email.toLowerCase())).thenReturn(customer);
 
@@ -534,7 +534,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepo.findSportCenterById(0));
+        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(instructorRepository.findInstructorByEmail(email.toLowerCase())).thenReturn(instructor);
 
@@ -562,7 +562,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepo.findSportCenterById(0));
+        owner.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(ownerRepository.findOwnerByEmail(email.toLowerCase())).thenReturn(owner);
 
