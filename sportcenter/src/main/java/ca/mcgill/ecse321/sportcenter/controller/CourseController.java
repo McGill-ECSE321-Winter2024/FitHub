@@ -55,6 +55,11 @@ public class CourseController {
         return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses()));
     }
 
+    @GetMapping(value={"/courses/difficulty", "/courses/difficulty"})
+    public CourseListDTO findCoursesByDiffiiculty(@RequestParam("difficulty") String difficulty) {
+        return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses()));
+    }
+
 
 
 }
