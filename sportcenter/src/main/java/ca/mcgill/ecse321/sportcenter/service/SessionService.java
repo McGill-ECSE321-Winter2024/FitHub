@@ -47,12 +47,25 @@ public class SessionService {
         if(aCapacity<=0 || aDate == null || aStartTime == null || aEndTime == null){
             throw new IllegalArgumentException();
         }
+        if(aStartTime.after(aEndTime)){
+            throw new IllegalArgumentException("Start time must be before end time");
+        }
+        
+        
         Instructor aSupervisor = instructRepo.findInstructorById(iId);
         Location aLocation = locationRepo.findLocationById(lId);
         Course aCourseType = courseRepo.findCourseById(cId);
         if(aSupervisor == null || aLocation == null || aCourseType == null){
             throw new IllegalArgumentException();
         }
+        if(!isSupervisorAvailable(aDate, aStartTime, aEndTime, aSupervisor)){
+            throw new IllegalArgumentException("Supervisor is already supervising a session on day " + aDate.toString() + "between time " + aStartTime.toString() + "and time " + aEndTime.toString() + ".");
+
+        }
+        if(!isLocationAvailable(aLocation, aDate, aStartTime, aEndTime)){
+            throw new IllegalArgumentException("The location is already reserved for another session on day " + aDate.toString() + "between time " + aStartTime.toString() + "and time " + aEndTime.toString() + ".");
+        }
+        
         Session sessionToCreate = new Session(aStartTime, aEndTime, aDate, aCapacity, aSupervisor, aCourseType, aLocation);
         return sessionRepo.save(sessionToCreate);
     }
@@ -140,4 +153,41 @@ public class SessionService {
     public Instructor getInstructorById(int id){
         return instructRepo.findInstructorById(id);
     }
+
+    private boolean isLocationAvailable(Location location, Date date, Time aStartTime, Time aEndTime){
+
+        // Get the sessions associated with given location and date
+        //For each session in sessions, check if there is overlap with the given time
+        List<Session> sessions = sessionRepo.findByLocationAndDate(location, date);
+        return !isTimeOverlap(sessions, aStartTime, aEndTime);
+
+    }
+
+    private boolean isSupervisorAvailable(Date date, Time aStartTime, Time aEndTime, Instructor supervisor){
+        //get the sessions associated with the given date and supervisor
+        //For each session, check if there is overlap with the given time
+        List<Session> session = sessionRepo.findBySupervisorAndDate(supervisor, date);
+        return !isTimeOverlap(session, aStartTime, aEndTime);
+    }
+
+    private boolean isTimeOverlap(List<Session> sessions, Time startTime1, Time endTime1){
+        //Two case of Overlap:
+        // Case 1 diagram: [s1   [s2      e1]      e2] s1 is before s2 and e1 is after s2
+        // Case 2 diagram: [s2   [s1      e2]      e1] s2 is before s1 and e2 is after s1
+
+       for(Session session:sessions){
+            Time startTime2 = session.getStartTime();
+            Time endTime2 = session.getEndTime();
+            if(startTime1.before(startTime2) && endTime1.after(startTime2)){
+                return true;
+            }
+            if(startTime2.before(startTime1) && endTime2.after(startTime1)){
+                return true;
+            }
+        }
+       
+        return false;
+
+    }
+
 }

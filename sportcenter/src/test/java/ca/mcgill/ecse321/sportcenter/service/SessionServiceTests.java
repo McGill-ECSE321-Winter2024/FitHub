@@ -350,12 +350,35 @@ public class SessionServiceTests {
         Date date = Date.valueOf("2024-02-18");
         Integer capacity = 10;
 
-        // Use Account Service and Assert
-        sessionService.proposeSuperviseSession(startTime1, endTime1, date, capacity, instructor.getId(), aCourseType.getId(), location.getId());
-        
+               
         Time startTime2 = Time.valueOf("08:30:00");
         Time endTime2 = Time.valueOf("09:30:00");
-        
+
+        Session session1 = new Session();
+        session1.setStartTime(startTime1);
+        session1.setEndTime(endTime1);
+        session1.setDate(date);
+        session1.setCapacity(capacity);
+        session1.setSupervisor(instructor);
+        session1.setCourseType(aCourseType);
+        session1.setLocation(location);
+
+        Session session2 = new Session();
+        session2.setStartTime(startTime2);
+        session2.setEndTime(endTime2);
+        session2.setDate(date);
+        session2.setCapacity(capacity);
+        session2.setSupervisor(instructor);
+        session2.setCourseType(aCourseType);
+        session2.setLocation(location);
+
+        List<Session> sessions = new ArrayList<Session>();
+        sessions.add(session1);
+        sessions.add(session2);
+
+        when(sessionRepository.findByLocationAndDate(location,date)).thenReturn(sessions);
+
+        // Use Account Service and Assert 
 
         assertThrows(IllegalArgumentException.class, () -> sessionService.proposeSuperviseSession(startTime2, endTime2, date, capacity, instructor.getId(), aCourseType.getId(), location.getId()));
     }
@@ -398,11 +421,38 @@ public class SessionServiceTests {
         Date date = Date.valueOf("2024-02-18");
         Integer capacity = 10;
 
-        // Use Account Service and Assert
-        sessionService.proposeSuperviseSession(startTime1, endTime1, date, capacity, instructor.getId(), aCourseType.getId(), location1.getId());
-        
         Time startTime2 = Time.valueOf("08:30:00");
         Time endTime2 = Time.valueOf("09:30:00");
+
+
+        Session session1 = new Session();
+        session1.setStartTime(startTime1);
+        session1.setEndTime(endTime1);
+        session1.setDate(date);
+        session1.setCapacity(capacity);
+        session1.setSupervisor(instructor);
+        session1.setCourseType(aCourseType);
+        session1.setLocation(location1);
+
+        Session session2 = new Session();
+        session2.setStartTime(startTime2);
+        session2.setEndTime(endTime2);
+        session2.setDate(date);
+        session2.setCapacity(capacity);
+        session2.setSupervisor(instructor);
+        session2.setCourseType(aCourseType);
+        session2.setLocation(location2);
+
+        List<Session> sessions = new ArrayList<Session>();
+        sessions.add(session1);
+        sessions.add(session2);
+
+        when(sessionRepository.findBySupervisorAndDate(instructor, date)).thenReturn(sessions);
+
+        // Use Account Service and Assert
+        //sessionService.proposeSuperviseSession(startTime1, endTime1, date, capacity, instructor.getId(), aCourseType.getId(), location1.getId());
+        
+        
         
 
         assertThrows(IllegalArgumentException.class, () -> sessionService.proposeSuperviseSession(startTime2, endTime2, date, capacity, instructor.getId(), aCourseType.getId(), location2.getId()));
