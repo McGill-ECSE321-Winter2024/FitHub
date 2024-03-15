@@ -17,6 +17,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
@@ -68,6 +69,9 @@ public class SportCenterManagementServiceTests {
         String email = "a@Email";
         String phoneNumber = "1234567890";
         String expectedMessage = "Sport center already exists.";
+
+        SportCenter sportCenter = sportCenterManagementService.createSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
+        when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
         
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.createSportCenter(name, openingTime, closingTime, address, email, phoneNumber));
         assertEquals(expectedMessage, e.getMessage());
@@ -167,7 +171,6 @@ public class SportCenterManagementServiceTests {
 
     @Test
     public void testUpdateOpeningTime() {
-        int id = 1;
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("0:0:0");
@@ -175,23 +178,22 @@ public class SportCenterManagementServiceTests {
         String email = "a@Email";
         String phoneNumber = "aPhoneNumber";
 
+        Time newOpeningTime = Time.valueOf("9:0:0");
+
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
-        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
-        
-        Time newOpeningTime = Time.valueOf("9:0:0");
-        SportCenter updatedSportCenter = newSportCenter(name, newOpeningTime, closingTime, address, email, phoneNumber);
-        
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(updatedSportCenter);
+        when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
+        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
         SportCenter savedSportCenter = sportCenterManagementService.updateTime(newOpeningTime, closingTime);
         
         assertEquals(newOpeningTime, savedSportCenter.getOpeningTime());
+
     }
+
 
     @Test
     public void testUpdateClosingTime() {
-        int id = 1;
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("0:0:0");
@@ -199,14 +201,12 @@ public class SportCenterManagementServiceTests {
         String email = "a@Email";
         String phoneNumber = "aPhoneNumber";
 
+        Time newClosingTime = Time.valueOf("22:0:0");
+
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
-        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
-        
-        Time newClosingTime = Time.valueOf("22:0:0");
-        SportCenter updatedSportCenter = newSportCenter(name, openingTime, newClosingTime, address, email, phoneNumber);
-        
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(updatedSportCenter);
+        when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
+        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
         SportCenter savedSportCenter = sportCenterManagementService.updateTime(openingTime, newClosingTime);
         
