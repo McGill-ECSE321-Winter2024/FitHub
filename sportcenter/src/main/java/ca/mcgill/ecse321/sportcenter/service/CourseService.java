@@ -179,7 +179,6 @@ public class CourseService {
             course.setStatus(Course.Status.Disapproved);
             courseRepository.save(course);
         } 
-        //do we have the note thing to add? 
     }
 
     //--------------------------// Close course //--------------------------//
