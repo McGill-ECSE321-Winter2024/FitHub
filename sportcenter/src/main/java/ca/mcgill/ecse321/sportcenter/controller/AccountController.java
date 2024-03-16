@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,18 +37,16 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
-    private final CustomAuthenticationManager authenticationManager;
-
     @Autowired
-    public AccountController(CustomAuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
+    CustomAuthenticationManager authenticationManager;
+    
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO>  loginToAccount(@RequestBody LoginRequestDTO loginRequest) {
+    public ResponseEntity<LoginResponseDTO> loginToAccount(@RequestBody LoginRequestDTO loginRequest) {
         try {
             // Create an authentication request with username and password
             Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+
+            System.out.println("Authentication Julia");
 
             // Authenticate the user using the AuthenticationManager
             Authentication authenticationResponse = authenticationManager.authenticate(authenticationRequest);
@@ -55,9 +54,10 @@ public class AccountController {
             // Update the SecurityContext with the authenticated authentication object
             SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
             
-            return ResponseEntity.ok(new LoginResponseDTO(true));
+            return new ResponseEntity<LoginResponseDTO>(new LoginResponseDTO(true), HttpStatus.FOUND);
         } catch (Exception e) {
-            return ResponseEntity.ok(new LoginResponseDTO(false));
+            System.out.println("Failed");
+            return new ResponseEntity<LoginResponseDTO>(new LoginResponseDTO(false), HttpStatus.UNAUTHORIZED);
         }
         
     }

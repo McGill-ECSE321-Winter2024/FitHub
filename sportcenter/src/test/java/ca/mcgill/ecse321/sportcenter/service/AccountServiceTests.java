@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
@@ -37,8 +41,14 @@ public class AccountServiceTests {
     @Mock
     private SportCenterRepository sportCenterRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private AccountService accountService;
+
+    @InjectMocks
+    private SportCenterManagementService sportCenterManagementService;
     
     /**
      * Clear the sportcenter database before each test.
@@ -66,7 +76,9 @@ public class AccountServiceTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        sportCenter = sportCenterRepository.save(sportCenter);
+        List<SportCenter> listSportCenter = new ArrayList<>();
+        listSportCenter.add(sportCenter);
+        when(sportCenterRepository.findAll()).thenReturn(listSportCenter);
     }
 
     
@@ -85,7 +97,7 @@ public class AccountServiceTests {
         julia.setPassword(password);
         julia.setName(name);
         julia.setImageURL(imageURL);
-        julia.setCenter(sportCenterRepository.findSportCenterById(0));
+        julia.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(customerRepository.save(any(Customer.class))).thenReturn(julia);
 
@@ -114,7 +126,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
 
@@ -143,7 +155,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(ownerRepository.save(any(Owner.class))).thenReturn(owner);
 
@@ -172,7 +184,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         // Use Account Service and Assert
         assertThrows(IllegalArgumentException.class, () -> accountService.createCustomerAccount(email, password, name, imageURL));
@@ -191,7 +203,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         // Use Account Service and Assert
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
@@ -211,7 +223,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         // Use Account Service and Assert
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
@@ -255,7 +267,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(customerRepository.findCustomerById(id)).thenReturn(customer);
 
@@ -297,7 +309,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(instructorRepository.findInstructorById(id)).thenReturn(instructor);
 
@@ -339,7 +351,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(ownerRepository.findOwnerById(id)).thenReturn(owner);
 
@@ -383,7 +395,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(customerRepository.findCustomerById(id)).thenReturn(customer);
 
@@ -412,7 +424,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(instructorRepository.findInstructorById(id)).thenReturn(instructor);
 
@@ -441,7 +453,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(ownerRepository.findOwnerById(id)).thenReturn(owner);
 
@@ -506,7 +518,7 @@ public class AccountServiceTests {
         customer.setPassword(password);
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(customerRepository.findCustomerByEmail(email.toLowerCase())).thenReturn(customer);
 
@@ -534,7 +546,7 @@ public class AccountServiceTests {
         instructor.setPassword(password);
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(instructorRepository.findInstructorByEmail(email.toLowerCase())).thenReturn(instructor);
 
@@ -562,7 +574,7 @@ public class AccountServiceTests {
         owner.setPassword(password);
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(ownerRepository.findOwnerByEmail(email.toLowerCase())).thenReturn(owner);
 
@@ -613,4 +625,15 @@ public class AccountServiceTests {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.findOwnerByEmail(email));
         assertEquals("There is no owner with email " + email + ".", e.getMessage());
     }
+
+    
+    //--------------------------// Helper functions //--------------------------//
+
+    private <T> List<T> toList(Iterable<T> iterable){
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
 }

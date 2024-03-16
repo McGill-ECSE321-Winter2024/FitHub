@@ -56,6 +56,11 @@ public class SportCenterManagementService {
         return toList(sportCenterRepository.findAll());
     }
 
+    @Transactional
+    public SportCenter getSportCenter() {
+        return getAllSportCenters().get(0);
+    }
+
     //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional

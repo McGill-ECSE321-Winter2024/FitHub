@@ -2,10 +2,10 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.sportcenter.model.Customer;
@@ -23,6 +23,9 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     InstructorRepository instructorRepository;
     @Autowired
     OwnerRepository ownerRepository;
+
+    @Autowired    
+    PasswordEncoder passwordEncoder;
 
     //--------------------------// Login to Account //--------------------------//
 
@@ -44,13 +47,20 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         Instructor instructor = instructorRepository.findInstructorByEmail(email);
         Owner owner = ownerRepository.findOwnerByEmail(email);
 
-        if (customer != null && customer.getPassword().equals(password)) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(password);
+        stringBuilder.append(" andddd ");
+        stringBuilder.append(customer.getPassword());
+        stringBuilder.append(passwordEncoder.matches(password, customer.getPassword()));
+        System.out.println(stringBuilder.toString());
+
+        if (customer != null && passwordEncoder.matches(password, customer.getPassword())) {
             return new UsernamePasswordAuthenticationToken(customer, password, customer.getAuthorities());
         }
-        else if (instructor != null && customer.getPassword().equals(password)) {
+        else if (instructor != null && passwordEncoder.matches(password, instructor.getPassword())) {
             return new UsernamePasswordAuthenticationToken(instructor, password, instructor.getAuthorities());
         }
-        else if (owner != null && owner.getPassword().equals(password)) {
+        else if (owner != null && passwordEncoder.matches(password, owner.getPassword())) {
             return new UsernamePasswordAuthenticationToken(owner, password, owner.getAuthorities());
         }
         

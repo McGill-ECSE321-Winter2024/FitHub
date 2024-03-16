@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.sportcenter.model.Account;
@@ -43,6 +44,9 @@ public class AccountService implements UserDetailsService {
     
     @Autowired
     SportCenterRepository sportCenterRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -72,10 +76,10 @@ public class AccountService implements UserDetailsService {
 
         Customer customer = new Customer();
         customer.setEmail(email);
-        customer.setPassword(password);
+        customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
@@ -86,10 +90,10 @@ public class AccountService implements UserDetailsService {
 
         Instructor instructor = new Instructor();
         instructor.setEmail(email);
-        instructor.setPassword(password);
+        instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
@@ -100,10 +104,10 @@ public class AccountService implements UserDetailsService {
 
         Owner owner = new Owner();
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return ownerRepository.save(owner);
     }
     
@@ -116,9 +120,10 @@ public class AccountService implements UserDetailsService {
 
         Customer customer = findCustomerById(id);
         customer.setEmail(email);
-        customer.setPassword(password);
+        customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
@@ -129,9 +134,10 @@ public class AccountService implements UserDetailsService {
 
         Instructor instructor = findInstructorById(id);
         instructor.setEmail(email);
-        instructor.setPassword(password);
+        instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
@@ -142,9 +148,10 @@ public class AccountService implements UserDetailsService {
         
         Owner owner = findOwnerById(id);
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);
         owner.setImageURL(imageURL);
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return ownerRepository.save(owner);
     }
     
