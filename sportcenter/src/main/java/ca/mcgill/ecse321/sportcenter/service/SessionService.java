@@ -12,10 +12,12 @@ import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
@@ -39,6 +41,9 @@ public class SessionService {
     @Autowired
     private LocationRepository locationRepo;
 
+    @Autowired
+    private SportCenterRepository sportCenterRepository;
+
     //--------------------------// Create Session //--------------------------//
 
     @Transactional
@@ -51,7 +56,9 @@ public class SessionService {
         if(aStartTime.after(aEndTime)){
             throw new IllegalArgumentException("Start time must be before end time");
         }
-        
+        if(isTimeOutsideOpeningHours(aStartTime, aEndTime)){
+            throw new IllegalArgumentException("Proposed time is outside opening hours");
+        }
         
         Instructor aSupervisor = instructRepo.findInstructorById(iId);
         Location aLocation = locationRepo.findLocationById(lId);
@@ -77,6 +84,16 @@ public class SessionService {
 
     @Transactional
     public Session updateSession(int sid, Time aStartTime, Time aEndTime, Date aDate, int aCapacity){
+        if(aCapacity<=0 || aDate == null || aStartTime == null || aEndTime == null){
+            throw new IllegalArgumentException();
+        }
+        if(aStartTime.after(aEndTime)){
+            throw new IllegalArgumentException("Start time must be before end time");
+        }
+        if(isTimeOutsideOpeningHours(aStartTime, aEndTime)){
+            throw new IllegalArgumentException("Proposed time is outside opening hours");
+        }
+
         Session sessionToUpdate = findSessionById(sid);
         sessionToUpdate.setStartTime(aStartTime);
         sessionToUpdate.setEndTime(aEndTime);
@@ -87,8 +104,15 @@ public class SessionService {
 
     @Transactional 
     public Session updateSessionSupervisor(int sid, int iId){
-        Instructor newSupervisor = instructRepo.findInstructorById(iId);
         Session sessionToUpdate = findSessionById(sid);
+        Instructor newSupervisor = instructRepo.findInstructorById(iId);
+        if(newSupervisor == null){
+            throw new IllegalArgumentException();
+        }
+        if(!isSupervisorAvailable(sessionToUpdate.getDate(), sessionToUpdate.getStartTime(), sessionToUpdate.getEndTime(), newSupervisor)){
+            throw new IllegalArgumentException("Supervisor is already supervising a session on day " + sessionToUpdate.getDate().toString() + "between time " + sessionToUpdate.getStartTime().toString() + "and time " + sessionToUpdate.getEndTime().toString() + ".");
+
+        }
         sessionToUpdate.setSupervisor(newSupervisor);
         return sessionRepo.save(sessionToUpdate);
     }
@@ -96,7 +120,13 @@ public class SessionService {
     @Transactional 
     public Session updateSessionLocation(int sid, int lId){
         Location newLocation = locationRepo.findLocationById(lId);
+        if(newLocation == null){
+            throw new IllegalArgumentException("Location does not exist");
+        }
         Session sessionToUpdate = findSessionById(sid);
+        if(!isLocationAvailable(newLocation, sessionToUpdate.getDate(), sessionToUpdate.getStartTime(), sessionToUpdate.getEndTime())){
+            throw new IllegalArgumentException("The location is already reserved for another session on day " + sessionToUpdate.getDate().toString() + "between time " + sessionToUpdate.getStartTime().toString() + "and time " + sessionToUpdate.getEndTime().toString() + ".");
+        }
         sessionToUpdate.setLocation(newLocation);
         return sessionRepo.save(sessionToUpdate);
     }
@@ -197,6 +227,16 @@ public class SessionService {
        
         return false;
 
+    }
+
+    public boolean isTimeOutsideOpeningHours(Time startTime, Time endTime){
+
+        List<SportCenter> sportCenters = sportCenterRepository.findAll();
+        //There will only be one sportCenter in the whole database, which is why I can get 
+        //the first element and be sure it will be the corresponding sportCenter to the Session object
+        SportCenter sportCenter = sportCenters.get(0);
+        return sportCenter.getClosingTime().before(endTime) || sportCenter.getOpeningTime().after(startTime);
+        
     }
 
 }

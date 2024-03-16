@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -23,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
+import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Session;
@@ -77,8 +79,13 @@ public class SessionServiceTests {
         sportCenter.setPhoneNumber("421-436-4444");
         sportCenter.setAddress("2011, University Street, Montreal");
 
+        List<SportCenter> sportCenters = new ArrayList<SportCenter>();
+        sportCenters.add(sportCenter);
+
+        when(sportCenterRepo.save(any(SportCenter.class))).thenReturn(sportCenter);
+        when(sportCenterRepo.findAll()).thenReturn(sportCenters);
         // Save sportCenterRepo
-        sportCenter = sportCenterRepo.save(sportCenter);
+        //sportCenter = sportCenterRepo.save(sportCenter);
     }
 
     
@@ -88,6 +95,8 @@ public class SessionServiceTests {
     public void testCreateValidSession() {
         int id = 50;
         // Set up test
+
+
         Location location = new Location();
         location.setFloor("501D");
         location.setRoom("50");
@@ -463,31 +472,8 @@ public class SessionServiceTests {
     @Test
     public void testUpdateValidSession() {
         
-        // Set up test
         int id = 64;
-
-        Location location = new Location();
-        location.setFloor("501D");
-        location.setRoom("50");
-        location.setCenter(sportCenterRepo.findSportCenterById(0));
-        when(locationRepository.findLocationById(id)).thenReturn(location);
-
-        // Create and save the instructor 
-        Instructor instructor = new Instructor();
-        instructor.setEmail("Jumijabasali@fithub.com");
-        instructor.setPassword("sportcenter");
-        instructor.setName("Sahar");
-        instructor.setImageURL("pfp.com");
-        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
         
-        // Create and save the course
-        Course aCourseType = new Course();
-        aCourseType.setName("Kung Fu I");
-        aCourseType.setDescription("Martial art beginner course");
-        aCourseType.setDifficulty(Difficulty.Beginner);
-        aCourseType.setStatus(Status.Pending);
-        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
-
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
         Date date = Date.valueOf("2024-02-18");
@@ -498,56 +484,23 @@ public class SessionServiceTests {
         aSession.setEndTime(endTime);
         aSession.setDate(date);
         aSession.setCapacity(capacity);
-        aSession.setSupervisor(instructor);
-        aSession.setCourseType(aCourseType);
-        aSession.setLocation(location);
-        aSession.setId(64);
 
         when(sessionRepository.findById(id)).thenReturn(aSession);
 
-        // Use the SessionService
-        Location newLocation = new Location();
-        newLocation.setFloor("501D");
-        newLocation.setRoom("50");
-        newLocation.setCenter(sportCenterRepo.findSportCenterById(0));
-        when(locationRepository.findLocationById(id)).thenReturn(location);
-
-        // Create and save the instructor 
-        Instructor newInstructor = new Instructor();
-        newInstructor.setEmail("Jumijabasali@fithub.com");
-        newInstructor.setPassword("sportcenter");
-        newInstructor.setName("Sahar");
-        newInstructor.setImageURL("pfp.com");
-        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
-        
-        // Create and save the course
-        Course newCourseType = new Course();
-        newCourseType.setName("Kung Fu I");
-        newCourseType.setDescription("Martial art beginner course");
-        newCourseType.setDifficulty(Difficulty.Beginner);
-        newCourseType.setStatus(Status.Pending);
-        when(courseRepository.findCourseById(id)).thenReturn(aCourseType);
-
-        Time newStartTime = Time.valueOf("08:00:00");
-        Time newEndTime = Time.valueOf("09:00:00");
-        Date newDate = Date.valueOf("2024-02-18");
-        Integer newCapacity = 10;
-
+        Time newStartTime = Time.valueOf("09:00:00");
+        Time newEndTime = Time.valueOf("011:00:00");
+        Date newDate = Date.valueOf("2024-02-19");
+        Integer newCapacity = 20;
 
         Session updatedSession = new Session();
-        updatedSession.setStartTime(startTime);
-        updatedSession.setEndTime(endTime);
-        updatedSession.setDate(date);
-        updatedSession.setCapacity(capacity);
-        updatedSession.setSupervisor(instructor);
-        updatedSession.setCourseType(aCourseType);
-        updatedSession.setLocation(location);
-        updatedSession.setId(64);
+        updatedSession.setStartTime(newStartTime);
+        updatedSession.setEndTime(newEndTime);
+        updatedSession.setDate(newDate);
+        updatedSession.setCapacity(newCapacity);
+        when(sessionRepository.save(any(Session.class))).thenReturn(updatedSession);
 
-        when(sessionRepository.findById(id)).thenReturn(updatedSession);
+        Session savedSession = sessionService.updateSession(id, newStartTime, newEndTime, newDate, newCapacity);
 
-        Session savedSession = sessionService.updateSession(id, newStartTime, newEndTime, newDate, newCapacity, newInstructor.getId(), newCourseType.getId(), newLocation.getId());
-    
         // Assert
         verify(sessionRepository, times(1)).findById(id);
         verify(sessionRepository, times(1)).save(any(Session.class));
@@ -556,22 +509,175 @@ public class SessionServiceTests {
         assertNotNull(savedSession);
         
         assertNotNull(savedSession);
-        assertEquals(startTime.toString(), savedSession.getStartTime().toString());
-        assertEquals(endTime.toString(), savedSession.getEndTime().toString());
-        assertEquals(capacity, savedSession.getCapacity());
+        assertEquals(newStartTime.toString(), savedSession.getStartTime().toString());
+        assertEquals(newEndTime.toString(), savedSession.getEndTime().toString());
+        assertEquals(newDate.toString(), savedSession.getDate().toString());
+        assertEquals(newCapacity, savedSession.getCapacity());
 
+    }
+
+
+    @Test
+    public void testUpdateValidSessionInstructor() {
+        
+        // Set up test
+        int id = 64;
+
+        // Create and save the instructor 
+        Instructor instructor = new Instructor();
+        instructor.setEmail("Jumijabasali@fithub.com");
+        instructor.setPassword("sportcenter");
+        instructor.setName("Sahar");
+        instructor.setImageURL("pfp.com");
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
+        
+
+        Session aSession = new Session();
+        aSession.setSupervisor(instructor);
+        when(sessionRepository.save(any(Session.class))).thenReturn(aSession);
+
+        when(sessionRepository.findById(id)).thenReturn(aSession);
+
+         // Create and save the instructor 
+        Instructor newInstructor = new Instructor();
+        newInstructor.setEmail("julie@fithub.com");
+        newInstructor.setPassword("badpassword");
+        newInstructor.setName("Julie");
+        newInstructor.setImageURL("pdp.com");
+        when(supervisorRepository.findInstructorById(id)).thenReturn(newInstructor);
+
+        Session updatedSession = new Session();
+        updatedSession.setSupervisor(newInstructor);
+        when(sessionRepository.save(any(Session.class))).thenReturn(updatedSession);
+
+        Session savedSession = sessionService.updateSessionSupervisor(id, newInstructor.getId());
+    
+        // Assert
+        verify(sessionRepository, times(1)).findById(id);
+        verify(sessionRepository, times(1)).save(any(Session.class));
+        
+        // Assert
+        assertNotNull(savedSession);
+        
         //making sure the other objects match.
         assertNotNull(savedSession.getSupervisor());
-        assertEquals(instructor.getId(), savedSession.getSupervisor().getId());
+        assertEquals(newInstructor.getId(), savedSession.getSupervisor().getId());
+        assertEquals(newInstructor.getName(), savedSession.getSupervisor().getName());
+    }
 
-        //Assert that the information in the course association match. 
-        assertNotNull(savedSession.getCourseType());
-        assertEquals(aCourseType.getId(), savedSession.getCourseType().getId());
+    @Test
+    public void testUpdateValidSessionLocation() {
+        
+        // Set up test
+        int id = 64;
+
+        Location location = new Location();
+        location.setFloor("501D");
+        location.setRoom("50");
+        location.setCenter(sportCenterRepo.findSportCenterById(0));
+        when(locationRepository.findLocationById(id)).thenReturn(location);
+
+
+        Session aSession = new Session();
+        aSession.setLocation(location);
+        when(sessionRepository.save(any(Session.class))).thenReturn(aSession);
+
+        when(sessionRepository.findById(id)).thenReturn(aSession);
+
+        // Use the SessionService
+        Location newLocation = new Location();
+        newLocation.setFloor("501D");
+        newLocation.setRoom("50");
+        newLocation.setCenter(sportCenterRepo.findSportCenterById(0));
+        when(locationRepository.findLocationById(id)).thenReturn(newLocation);
+
+        Session updatedSession = new Session();
+        updatedSession.setLocation(newLocation);
+        when(sessionRepository.save(any(Session.class))).thenReturn(updatedSession);
+      
+        when(locationRepository.findLocationById(id)).thenReturn(newLocation);
+        Session savedSession = sessionService.updateSessionLocation(id, newLocation.getId());
+    
+        // Assert
+        verify(sessionRepository, times(1)).findById(id);
+        verify(sessionRepository, times(1)).save(any(Session.class));
+        
+        // Assert
+        assertNotNull(savedSession);
 
         //Assert that the information in the location association match.
         assertNotNull(savedSession.getLocation());
         assertEquals(location.getId(), savedSession.getLocation().getId()); 
+        assertEquals(location.getFloor(), savedSession.getLocation().getFloor()); 
+        assertEquals(location.getRoom(), savedSession.getLocation().getRoom()); 
     }
+
+    @Test
+    public void testUpdateInvalidSessionIntructor(){ //New instructor is busy at that time
+        // Set up test
+        int id = 64;
+
+        // Create and save the instructor 
+        Instructor instructor = new Instructor();
+        instructor.setEmail("Jumijabasali@fithub.com");
+        instructor.setPassword("sportcenter");
+        instructor.setName("Sahar");
+        instructor.setImageURL("pfp.com");
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
+        
+
+        Session aSession = new Session();
+        aSession.setSupervisor(instructor);
+
+        when(sessionRepository.findById(id)).thenReturn(aSession);
+
+         // Create and save the instructor 
+        Instructor newInstructor = new Instructor();
+        newInstructor.setEmail("julie@fithub.com");
+        newInstructor.setPassword("badpassword");
+        newInstructor.setName("Julie");
+        newInstructor.setImageURL("pdp.com");
+        when(supervisorRepository.findInstructorById(id)).thenReturn(instructor);
+
+        Session updatedSession = new Session();
+        updatedSession.setSupervisor(newInstructor);
+        when(sessionRepository.save(any(Session.class))).thenReturn(updatedSession);
+        assertThrows(IllegalArgumentException.class, () -> sessionService.updateSessionSupervisor(id, newInstructor.getId()));
+    }
+
+    @Test
+    public void testUpdateInvalidSessionHours(){ //New hours are outside the opening hours
+        // Set up test
+        int id = 64;
+        
+        Time startTime = Time.valueOf("08:00:00");
+        Time endTime = Time.valueOf("09:00:00");
+        Date date = Date.valueOf("2024-02-18");
+        Integer capacity = 10;
+
+        Session aSession = new Session();
+        aSession.setStartTime(startTime);
+        aSession.setEndTime(endTime);
+        aSession.setDate(date);
+        aSession.setCapacity(capacity);
+
+        when(sessionRepository.findById(id)).thenReturn(aSession);
+
+        Time newStartTime = Time.valueOf("06:00:00");
+        Time newEndTime = Time.valueOf("07:00:00");
+        Date newDate = Date.valueOf("2024-02-19");
+        Integer newCapacity = 20;
+
+        Session updatedSession = new Session();
+        updatedSession.setStartTime(newStartTime);
+        updatedSession.setEndTime(newEndTime);
+        updatedSession.setDate(newDate);
+        updatedSession.setCapacity(newCapacity);
+        when(sessionRepository.save(any(Session.class))).thenReturn(updatedSession);
+
+        assertThrows(IllegalArgumentException.class, () -> sessionService.updateSession(id, newStartTime, newEndTime, newDate, newCapacity));
+    }
+    
 
     //--------------------------// Find Session Tests //--------------------------//
 
