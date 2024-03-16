@@ -64,6 +64,11 @@ public class SportCenterManagementService {
     //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional
+    public SportCenter updateSportCenter(SportCenter sportCenter) {
+        return sportCenterRepository.save(sportCenter);
+    }
+
+    @Transactional
     public SportCenter updateOpeningTime(int id, Time openingTime) {
         SportCenter sportCenter = findSportCenterById(id);
 

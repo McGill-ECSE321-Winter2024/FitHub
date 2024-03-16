@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.sportcenter.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.sql.Time;
 
 import org.junit.jupiter.api.AfterEach;
@@ -41,10 +40,10 @@ public class AccountRepositoryTests {
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
+        sportCenterRepo.deleteAll();
         customerRepo.deleteAll();
         instructorRepo.deleteAll();
         ownerRepo.deleteAll();
-        sportCenterRepo.deleteAll();
     }
 
     /**

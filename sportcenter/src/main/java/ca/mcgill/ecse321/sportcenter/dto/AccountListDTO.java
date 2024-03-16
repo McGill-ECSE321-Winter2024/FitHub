@@ -8,6 +8,10 @@ import ca.mcgill.ecse321.sportcenter.model.Account;
 public class AccountListDTO {
     private List<AccountResponseDTO> accounts;
 
+    public AccountListDTO() {
+        this.accounts = new ArrayList<>();
+    }
+
     public AccountListDTO(List<AccountResponseDTO> accounts) {
         this.accounts = accounts;
     }

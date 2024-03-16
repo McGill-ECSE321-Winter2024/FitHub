@@ -20,6 +20,7 @@ import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
@@ -47,7 +48,11 @@ public class AccountService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired SportCenterManagementService sportCenterManagementService;
     
+    //--------------------------// UserDetailsService overriding //--------------------------//
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Customer customer = customerRepository.findCustomerByEmail(email);
@@ -158,18 +163,39 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Delete Account //--------------------------//
     
     @Transactional
-    public void deleteCustomerAccount(Integer id) {
-        customerRepository.delete(findCustomerById(id));
+    public boolean deleteCustomerAccount(Integer id) {
+        Account account = customerRepository.findCustomerById(id);
+        if (account == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeAccount(account);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
     }
 
     @Transactional
-    public void deleteInstructorAccount(Integer id) {
-        instructorRepository.delete(findInstructorById(id));
+    public boolean deleteInstructorAccount(Integer id) {
+        Account account = instructorRepository.findInstructorById(id);
+        if (account == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeAccount(account);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
     }
 
     @Transactional
-    public void deleteOwnerAccount(Integer id) {
-        ownerRepository.delete(findOwnerById(id));
+    public boolean deleteOwnerAccount(Integer id) {
+        Account account = ownerRepository.findOwnerById(id);
+        if (account == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeAccount(account);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
     }
     
     //--------------------------// Getters //--------------------------//
