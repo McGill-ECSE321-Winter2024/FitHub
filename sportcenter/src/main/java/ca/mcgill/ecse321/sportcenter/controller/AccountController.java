@@ -2,20 +2,23 @@ package ca.mcgill.ecse321.sportcenter.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
@@ -26,41 +29,35 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
+import ca.mcgill.ecse321.sportcenter.service.CustomAuthenticationManager;
 
 @RestController
 public class AccountController {
     @Autowired
     AccountService accountService;
-    
-    private final AuthenticationManager authenticationManager;
-    private final SecurityContextRepository securityContextRepository;
+
+    private final CustomAuthenticationManager authenticationManager;
 
     @Autowired
-    public AccountController(AuthenticationManager authenticationManager,
-                             SecurityContextRepository securityContextRepository) {
+    public AccountController(CustomAuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
-        this.securityContextRepository = securityContextRepository;
     }
 
-    @PostMapping(value={"/login", "/login/"})
-    public LoginResponseDTO loginToAccount(@RequestBody LoginRequestDTO login) {
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO>  loginToAccount(@RequestBody LoginRequestDTO loginRequest) {
         try {
-            Authentication authenticationRequest =
-                UsernamePasswordAuthenticationToken.unauthenticated(login.getEmail(), login.getPassword());
-            Authentication authenticationResponse =
-                this.authenticationManager.authenticate(authenticationRequest);
+            // Create an authentication request with username and password
+            Authentication authenticationRequest = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
 
+            // Authenticate the user using the AuthenticationManager
+            Authentication authenticationResponse = authenticationManager.authenticate(authenticationRequest);
+
+            // Update the SecurityContext with the authenticated authentication object
             SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
             
-            securityContextRepository.saveContext(SecurityContextHolder.getContext(), null, null);
-                
-            accountService.loginToAccount(login.getEmail(), login.getPassword());
-            
-            LoginResponseDTO valid = new LoginResponseDTO(true);
-            return valid;
+            return ResponseEntity.ok(new LoginResponseDTO(true));
         } catch (Exception e) {
-            LoginResponseDTO valid = new LoginResponseDTO(false);
-            return valid;
+            return ResponseEntity.ok(new LoginResponseDTO(false));
         }
         
     }

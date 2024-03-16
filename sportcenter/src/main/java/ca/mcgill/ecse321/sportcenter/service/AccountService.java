@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.sportcenter.model.Account;
-import ca.mcgill.ecse321.sportcenter.model.AccountPrincipal;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
@@ -51,13 +51,13 @@ public class AccountService implements UserDetailsService {
         Owner owner = ownerRepository.findOwnerByEmail(email);
 
         if (customer != null) {
-            return new AccountPrincipal(customer);
+            return customer;
         }
         else if (instructor != null) {
-            return new AccountPrincipal(instructor);
+            return instructor;
         }
         else if (owner != null) {
-            return new AccountPrincipal(owner);
+            return owner;
         }
         
         throw new UnsupportedOperationException("No account in the system exists with this email");
@@ -165,33 +165,6 @@ public class AccountService implements UserDetailsService {
         ownerRepository.delete(findOwnerById(id));
     }
     
-    //--------------------------// Login to Account //--------------------------//
-
-    /*
-     * <p>Verify that the account with the email and the associated password exists in the system</p>
-     * @param email of the account and its password
-     * @return an error if no account in the system exist with this email and password else, returns the type of account it is
-     * @author Julia
-     */
-    @Transactional
-    public String loginToAccount(String email, String password) {
-        Customer customer = customerRepository.findCustomerByEmail(email);
-        Instructor instructor = instructorRepository.findInstructorByEmail(email);
-        Owner owner = ownerRepository.findOwnerByEmail(email);
-
-        if (customer != null && customer.getPassword().equals(password)) {
-            return "customer";
-        }
-        else if (instructor != null && customer.getPassword().equals(password)) {
-            return "instructor";
-        }
-        else if (owner != null && owner.getPassword().equals(password)) {
-            return "owner";
-        }
-        
-        throw new IllegalArgumentException("No account in the system exists with this email and password");
-    }
-
     //--------------------------// Getters //--------------------------//
 
     @Transactional
