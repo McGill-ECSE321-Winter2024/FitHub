@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,10 +28,14 @@ public class BillingAccountService {
     //--------------------------// Create Billing Account //--------------------------//
 
     @Transactional
-    public BillingAccount createBillingAccount(Integer cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, Customer customer){
+    public BillingAccount createBillingAccount(BigInteger cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, Customer customer){
         
         //Input validation check
-        validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate, customer);
+        validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate);
+
+        if (customer == null){
+            throw new IllegalArgumentException("Customer account does not exist");
+        }
 
         BillingAccount billingAccount = new BillingAccount();
         billingAccount.setBillingAddress(billingAddress);
@@ -48,9 +53,9 @@ public class BillingAccountService {
     //--------------------------// Update Account //--------------------------//
 
     @Transactional
-    public BillingAccount updateBillingAccount(Integer id, Integer cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, Customer customer){
+    public BillingAccount updateBillingAccount(Integer id, BigInteger cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate){
         
-        validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate, customer);
+        validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate);
 
         BillingAccount account = findBillingAccountById(id);
 
@@ -59,7 +64,6 @@ public class BillingAccountService {
         account.setBillingAddress(billingAddress);
         account.setCvv(cvv);
         account.setExpirationDate(expirationDate);
-        account.setCustomer(customer);
         account.setIsDefault(isDefault);
 
         return billingAccountRepo.save(account);
@@ -100,11 +104,11 @@ public class BillingAccountService {
 
     //--------------------------// Input validations //--------------------------//
 
-    private void validBillingAccountInfo(Integer cardNumber, String cardHolder, String billingAddress, Integer cvv, Date expirationDate, Customer customer){
+    private void validBillingAccountInfo(BigInteger cardNumber, String cardHolder, String billingAddress, Integer cvv, Date expirationDate){
         if (cardNumber == null || cardHolder.isEmpty() || cardHolder.trim().length() == 0 || billingAddress.isEmpty() || billingAddress.trim().length() == 0 || cvv == null || expirationDate == null){
             throw new IllegalArgumentException("Empty fields for cardNumber, cardHolder, billingAddress, cvv or expirationDate are not valid");
         }
-        if (Integer.toString(cardNumber).length() != 16){
+        if (cardNumber.toString().length() != 16){
             throw new IllegalArgumentException("Invalid cardNumber; needs to be exactly 16 digits");
         }
         if (Integer.toString(cvv).length() != 3){
@@ -112,9 +116,6 @@ public class BillingAccountService {
         }
         if (expirationDate.before(java.sql.Date.valueOf(LocalDate.now()))){
             throw new IllegalArgumentException("Invalid expirationDate");
-        }
-        if (customer == null){
-            throw new IllegalArgumentException("Customer account does not exist");
         }
 
     }

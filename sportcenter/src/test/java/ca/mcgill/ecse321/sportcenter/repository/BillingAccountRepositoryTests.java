@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.sportcenter.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -87,7 +88,7 @@ public class BillingAccountRepositoryTests {
         customer = accountRepo.save(customer);
 
         // Then create the billing account
-        int aCardNumber = 0;
+        BigInteger aCardNumber = new BigInteger("1234567891234567");
         String aCardHolder = "Bobby Bob";
         String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
         int aCCV = 374;
