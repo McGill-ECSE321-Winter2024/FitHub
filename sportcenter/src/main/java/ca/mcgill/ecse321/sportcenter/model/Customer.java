@@ -1,6 +1,4 @@
 package ca.mcgill.ecse321.sportcenter.model;
-import org.springframework.security.core.GrantedAuthority;
-
 import jakarta.persistence.Entity;
 
 @Entity
