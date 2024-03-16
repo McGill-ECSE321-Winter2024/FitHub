@@ -27,7 +27,7 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
 @SpringBootTest
 public class BillingAccountServiceTests {
-    
+
     @Mock
     private CustomerRepository customerRepository;
     @Mock
@@ -62,8 +62,8 @@ public class BillingAccountServiceTests {
         sportCenter.setPhoneNumber("421-436-4444");
         sportCenter.setAddress("2011, University Street, Montreal");
 
-        // Save sportCenterRepo
-        //sportCenter = sportCenterRepository.save(sportCenter);
+        //Save sportCenterRepo
+        sportCenter = sportCenterRepository.save(sportCenter);
     }
 
 
@@ -77,7 +77,7 @@ public class BillingAccountServiceTests {
        customer.setImageURL("pfp123.com");
        customer.setCenter(sportCenterRepository.findSportCenterById(0));
        // Save into database
-       customer = customerRepository.save(customer);
+       //customer = customerRepository.save(customer);
     }
 
 
@@ -92,7 +92,13 @@ public class BillingAccountServiceTests {
         Integer cvv = 372;
         boolean isDefault = true;
         Date expirationDate = Date.valueOf("2026-02-18");
-        Customer customer = customerRepository.findCustomerById(0);
+
+        Customer customer = new Customer();
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+        //Customer customer = customerRepository.findCustomerById(0);
+        //if (customer==null){
+        //    System.out.println("customer null");
+        //}
 
         BillingAccount account = new BillingAccount();
         account.setCardHolder(cardHolder);
@@ -101,7 +107,7 @@ public class BillingAccountServiceTests {
         account.setCvv(cvv);
         account.setIsDefault(isDefault);
         account.setExpirationDate(expirationDate);
-        account.setCustomer(customer);
+        //account.setCustomer(customer);
 
         when(billingAccountRepository.save(any(BillingAccount.class))).thenReturn(account);
 
