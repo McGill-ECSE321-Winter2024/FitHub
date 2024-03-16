@@ -1,19 +1,17 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 public class CourseDTO {
 
   public enum Difficulty { Beginner, Intermediate, Advanced }
-  public enum Status { Approved, Pending, Closed, Disaproved }
+  public enum Status { Approved, Pending, Closed, Disapproved }
 
   private int id;
   private String name;
   private Difficulty difficulty;
   private Status status;
   private String description;
-  private SportCenter center;
   
   public CourseDTO() {
     
@@ -100,12 +98,6 @@ public class CourseDTO {
     return id;
   }
 
-  public SportCenter getCenter()
-  {
-    return center;
-  }
-
-
   public String toString()
   {
     return super.toString() + "["+
@@ -113,7 +105,6 @@ public class CourseDTO {
             "description" + ":" + getDescription()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "difficulty" + "=" + (getDifficulty() != null ? !getDifficulty().equals(this)  ? getDifficulty().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "center = "+(getCenter()!=null?Integer.toHexString(System.identityHashCode(getCenter())):"null");
+            "  " + "status" + "=" + (getStatus() != null ? !getStatus().equals(this)  ? getStatus().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator");
   }
 }

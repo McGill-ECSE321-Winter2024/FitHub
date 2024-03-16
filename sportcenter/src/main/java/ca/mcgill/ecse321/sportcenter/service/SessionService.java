@@ -17,6 +17,7 @@ import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 
 /*
 * <p>Service class in charge of managing sessions. It implements following use cases: </p>

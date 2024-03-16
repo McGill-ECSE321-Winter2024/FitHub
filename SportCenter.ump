@@ -48,7 +48,7 @@ class Course {
   description;
   Integer id;
   enum Difficulty {Beginner, Intermediate, Advanced}
-  enum Status {Approved, Pending, Closed, Disaproved}
+  enum Status {Approved, Pending, Closed, Disapproved}
 }
 
 class BillingAccount {
