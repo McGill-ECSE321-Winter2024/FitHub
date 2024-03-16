@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
-//DELETE UNUSED IMPORT
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Session;
@@ -80,10 +79,21 @@ public class SessionController {
     }
     //--------------------------// Update Session //--------------------------//
     //TO CONFIRM WITH TA
-    @PutMapping("/sessions/{id}/{iId}/{cId}/{lId}")
-    public Session updatSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id, @PathVariable int iId, @PathVariable int cId, @PathVariable int lId){
-        return sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity(), iId, cId, lId);
+    @PutMapping("/sessions/{id}/")
+    public Session updateSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id){
+        return sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity());
     }
+
+    @PutMapping("/session/{sId}/{lId}")
+    public Session updateSessionLocation(@PathVariable int sId, @PathVariable int lId){
+        return sessionService.updateSessionLocation(sId, lId);
+    }
+
+    @PutMapping("/session/{sId}/{iId}")
+    public Session updateSessionSupervisor(@PathVariable int sId, @PathVariable int iId){
+        return sessionService.updateSessionSupervisor(sId, iId);
+    }
+
     //--------------------------// Delete Session //--------------------------//
     @DeleteMapping("/sessions/{id}")
     public void cancelSession(@PathVariable int id){
