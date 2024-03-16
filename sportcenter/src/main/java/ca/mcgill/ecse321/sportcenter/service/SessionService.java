@@ -76,20 +76,28 @@ public class SessionService {
     //--------------------------// Update Session //--------------------------//
 
     @Transactional
-    public Session updateSession(int sid, Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int iId, int cId, int lId){
-        //Things left to implement: make sure aEndTime is after aStartTime and that it is inside the opnening hours
+    public Session updateSession(int sid, Time aStartTime, Time aEndTime, Date aDate, int aCapacity){
         Session sessionToUpdate = findSessionById(sid);
-        Instructor aSupervisor = instructRepo.findInstructorById(iId);
-        Location aLocation = locationRepo.findLocationById(lId);
-        Course aCourseType = courseRepo.findCourseById(cId);
-
         sessionToUpdate.setStartTime(aStartTime);
         sessionToUpdate.setEndTime(aEndTime);
         sessionToUpdate.setDate(aDate);
         sessionToUpdate.setCapacity(aCapacity);
-        sessionToUpdate.setSupervisor(aSupervisor);
-        sessionToUpdate.setCourseType(aCourseType);
-        sessionToUpdate.setLocation(aLocation);
+        return sessionRepo.save(sessionToUpdate);
+    }
+
+    @Transactional 
+    public Session updateSessionSupervisor(int sid, int iId){
+        Instructor newSupervisor = instructRepo.findInstructorById(iId);
+        Session sessionToUpdate = findSessionById(sid);
+        sessionToUpdate.setSupervisor(newSupervisor);
+        return sessionRepo.save(sessionToUpdate);
+    }
+
+    @Transactional 
+    public Session updateSessionLocation(int sid, int lId){
+        Location newLocation = locationRepo.findLocationById(lId);
+        Session sessionToUpdate = findSessionById(sid);
+        sessionToUpdate.setLocation(newLocation);
         return sessionRepo.save(sessionToUpdate);
     }
 
