@@ -49,24 +49,6 @@ public class BillingAccountServiceTests {
         sportCenterRepository.deleteAll();
     }
 
-    /**
-     * Create and save a SportCenter instance before each test.
-     */
-    @BeforeEach
-    public void createAndSaveSportCenter() {
-        SportCenter sportCenter = new SportCenter();
-        sportCenter.setName("FitHub");
-        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
-        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
-        sportCenter.setEmail("info@fithub.com");
-        sportCenter.setPhoneNumber("421-436-4444");
-        sportCenter.setAddress("2011, University Street, Montreal");
-
-        //Save sportCenterRepo
-        sportCenter = sportCenterRepository.save(sportCenter);
-    }
-
-
     @BeforeEach
     public void createAndSaveCustomer() {
        //create a customer 
@@ -75,7 +57,7 @@ public class BillingAccountServiceTests {
        customer.setPassword("12345");
        customer.setName("Bob");
        customer.setImageURL("pfp123.com");
-       customer.setCenter(sportCenterRepository.findSportCenterById(0));
+       //customer.setCenter(sportCenterRepository.findSportCenterById(0));
        // Save into database
        //customer = customerRepository.save(customer);
     }
