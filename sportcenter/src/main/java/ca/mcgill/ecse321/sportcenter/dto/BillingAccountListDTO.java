@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 
 public class BillingAccountListDTO {
 
@@ -18,6 +21,12 @@ public class BillingAccountListDTO {
         this.accounts = accounts;
     }
 
-
+    public static <T> List<BillingAccountResponseDTO> billingAccountListToBillingAccountResponseDTOList(List<T> accounts) {
+        List<BillingAccountResponseDTO> list = new ArrayList<>();
+        for (T account : accounts) {
+            list.add(new BillingAccountResponseDTO((BillingAccount)account));
+        }
+        return list;
+    }
     
 }
