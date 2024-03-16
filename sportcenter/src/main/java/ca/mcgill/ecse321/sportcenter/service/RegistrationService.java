@@ -47,8 +47,8 @@ public class RegistrationService {
     //--------------------------// Update Registration //--------------------------//
     
     @Transactional
-    public Registration updateRegistration(Registration.Key key, Customer customer, Session session) {
-        Registration registration = findRegistrationByKey(key);
+    public Registration updateRegistration(Customer customer, Session session) {
+        Registration registration = findRegistration(customer, session);
         registration.getKey().setCustomer(customer);
         registration.getKey().setSession(session);
         return registrationRepository.save(registration);
@@ -106,10 +106,8 @@ public class RegistrationService {
     //--------------------------// Cancel a Registration //--------------------------//
 
     @Transactional
-    public void cancelRegistration(Integer customerId, Integer sessionId) {
-        Customer customer = accountService.findCustomerById(customerId);
-        Session session = sessionService.findSessionById(sessionId);
-        Registration registration = findRegistration(customer, session);
+    public void cancelRegistration(Registration registration) {
+
         deleteRegistration(registration.getKey());
     }
 

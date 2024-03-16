@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -158,16 +156,11 @@ public class RegistrationServiceTests {
         newCustomer.setEmail("newCustomer@gmail.com");
         Session newSession = new Session();
         newSession.setCapacity(64);
-
-        Registration.Key newKey = key;
-        newKey.setCustomer(newCustomer);
-        newKey.setSession(newSession);
-        Registration newRegistration = new Registration(key);
+        Registration newRegistration = new Registration(new Registration.Key(newCustomer, newSession));
         
         when(registrationRepository.save(any(Registration.class))).thenReturn(newRegistration);
-        Registration savedRegistration = registrationService.updateRegistration(newKey, newCustomer, newSession);
+        Registration savedRegistration = registrationService.updateRegistration(newCustomer, newSession);
 
-        verify(registrationRepository, times(1)).findRegistrationByKey(newKey);
         verify(registrationRepository, times(1)).save(any(Registration.class));
         assertNotNull(savedRegistration);
         assertEquals(newCustomer, savedRegistration.getKey().getCustomer());
@@ -185,7 +178,7 @@ public class RegistrationServiceTests {
         Registration registration = new Registration(key);
         when(registrationRepository.findRegistrationByKey(key)).thenReturn(registration);
 
-        registrationService.deleteRegistration(registration.getKey());
+        registrationService.cancelRegistration(registration);
 
         verify(registrationRepository, times(1)).delete(any(Registration.class));
     }
@@ -196,9 +189,10 @@ public class RegistrationServiceTests {
         when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
+        Registration registrationToDelete = new Registration(key);
         when(registrationRepository.findRegistrationByKey(key)).thenReturn(null);
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> registrationService.deleteRegistration(key));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> registrationService.cancelRegistration(registrationToDelete));
         assertEquals("There is no registration with key " + key + ".", e.getMessage());
     }
 
