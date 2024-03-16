@@ -37,6 +37,24 @@ public class BillingAccountService {
             throw new IllegalArgumentException("Customer account does not exist");
         }
 
+        List<BillingAccount> accounts = findBillingAccountByCustomer(customer);
+        if (accounts.size() != 0){
+            for (BillingAccount account : accounts){
+                
+                //check if the same card number exists for the given customer account
+                if (account.getCardNumber().compareTo(cardNumber)==0){
+                    throw new IllegalArgumentException("This card already exists");
+                }
+
+                //if another billing account is default, instead make this default
+                if (isDefault == true){
+                    if(account.getIsDefault() == true){
+                        account.setIsDefault(false);
+                    }
+                }      
+            }
+        }
+
         BillingAccount billingAccount = new BillingAccount();
         billingAccount.setBillingAddress(billingAddress);
         billingAccount.setCardNumber(cardNumber);
@@ -58,6 +76,24 @@ public class BillingAccountService {
         validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate);
 
         BillingAccount account = findBillingAccountById(id);
+
+        List<BillingAccount> accounts = findBillingAccountByCustomer(account.getCustomer());
+        if (accounts.size() != 0){
+            for (BillingAccount acc : accounts){
+                
+                //check if the same card number exists for the given customer account
+                if (acc.getCardNumber().compareTo(cardNumber)==0){
+                    throw new IllegalArgumentException("This card already exists");
+                }
+
+                //if another billing account is default, instead make this default
+                if (isDefault == true){
+                    if(account.getIsDefault() == true){
+                        account.setIsDefault(false);
+                    }
+                }      
+            }
+        }
 
         account.setCardNumber(cardNumber);
         account.setCardHolder(cardHolder);
@@ -98,6 +134,17 @@ public class BillingAccountService {
     }
 
     @Transactional
+    public BillingAccount findDefaultBillingAccountOFCustomer(Customer customer){
+        List<BillingAccount> accounts = findBillingAccountByCustomer(customer);
+        for (BillingAccount account: accounts){
+            if (account.getIsDefault() == true){
+                return account;
+            }
+        }
+        return null;
+    }
+
+    @Transactional
     public Iterable<BillingAccount> findAllBillingAccounts() {
         return billingAccountRepo.findAll();
     }
@@ -119,4 +166,5 @@ public class BillingAccountService {
         }
 
     }
+
 }

@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,6 +39,8 @@ public class BillingAccountServiceTests {
     @InjectMocks
     private BillingAccountService billingAccountService;
     
+    private Customer customer;
+
     /**
      * Clear the sportcenter database before each test.
      */
@@ -52,14 +55,11 @@ public class BillingAccountServiceTests {
     @BeforeEach
     public void createAndSaveCustomer() {
        //create a customer 
-       Customer customer = new Customer();
+       customer = new Customer();
        customer.setEmail("bob@gmail.com");
        customer.setPassword("12345");
        customer.setName("Bob");
        customer.setImageURL("pfp123.com");
-       //customer.setCenter(sportCenterRepository.findSportCenterById(0));
-       // Save into database
-       //customer = customerRepository.save(customer);
     }
 
 
@@ -75,12 +75,7 @@ public class BillingAccountServiceTests {
         boolean isDefault = true;
         Date expirationDate = Date.valueOf("2026-02-18");
 
-        Customer customer = new Customer();
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        //Customer customer = customerRepository.findCustomerById(0);
-        //if (customer==null){
-        //    System.out.println("customer null");
-        //}
 
         BillingAccount account = new BillingAccount();
         account.setCardHolder(cardHolder);
@@ -89,7 +84,7 @@ public class BillingAccountServiceTests {
         account.setCvv(cvv);
         account.setIsDefault(isDefault);
         account.setExpirationDate(expirationDate);
-        //account.setCustomer(customer);
+        account.setCustomer(customer);
 
         when(billingAccountRepository.save(any(BillingAccount.class))).thenReturn(account);
 
@@ -109,10 +104,186 @@ public class BillingAccountServiceTests {
         verify(billingAccountRepository, times(1)).save(any(BillingAccount.class));
     }
 
-   // @Test
-   // public void testAndCreateInvalidCardNumber(){
+    @Test
+    public void testAndCreateBillingAccountWithInvalidCardNumber(){
 
-    //}
+        String cardHolder = "Bob";
+        String billingAddress = "1234, Sherbrooke Street, Montreal";
+        BigInteger cardNumber =  new BigInteger("12345");
+        Integer cvv = 123;
+        boolean isDefault = true;
+        Date expirationDate = Date.valueOf("2026-07-23");
+
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.createBillingAccount(cardNumber, cardHolder, billingAddress, cvv, isDefault, expirationDate, customer));
+        assertEquals("Invalid cardNumber; needs to be exactly 16 digits", e.getMessage());
+
+    }
+
+    @Test
+    public void testAndCreateBillingAccountWithInvalidCvv(){
+
+        String cardHolder = "Bob";
+        String billingAddress = "1234, Sherbrooke Street, Montreal";
+        BigInteger cardNumber =  new BigInteger("1234567891234567");
+        Integer cvv = 1;
+        boolean isDefault = true;
+        Date expirationDate = Date.valueOf("2026-07-23");
+
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.createBillingAccount(cardNumber, cardHolder, billingAddress, cvv, isDefault, expirationDate, customer));
+        assertEquals("Invalid cvv; needs to be exactly 3 digits", e.getMessage());
+
+    }
+
+    @Test
+    public void testAndCreateBillingAccountWithInvalidExpirationDate(){
+
+        String cardHolder = "Bob";
+        String billingAddress = "1234, Sherbrooke Street, Montreal";
+        BigInteger cardNumber =  new BigInteger("1234567891234567");
+        Integer cvv = 123;
+        boolean isDefault = true;
+        Date expirationDate = Date.valueOf("2020-07-23");
+
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.createBillingAccount(cardNumber, cardHolder, billingAddress, cvv, isDefault, expirationDate, customer));
+        assertEquals("Invalid expirationDate", e.getMessage());
+
+    }
+
+    @Test
+    public void testAndCreateBillingAccountWithInvalidCustomer(){
+
+        String cardHolder = "Bob";
+        String billingAddress = "1234, Sherbrooke Street, Montreal";
+        BigInteger cardNumber =  new BigInteger("1234567891234567");
+        Integer cvv = 123;
+        boolean isDefault = true;
+        Date expirationDate = Date.valueOf("2027-07-23");
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.createBillingAccount(cardNumber, cardHolder, billingAddress, cvv, isDefault, expirationDate, null));
+        assertEquals("Customer account does not exist", e.getMessage());
+
+    }
+
+
+    //--------------------------// Update Billing Account Tests //--------------------------//
+
+    @Test
+    public void testAndUpdateValidBillingAccount(){
+        //Set up test
+        int id = 55;
+        String cardHolder = "Mary Jane";
+        String billingAddress = "1234, Sherbrooke Street, Montreal";
+        BigInteger cardNumber =  new BigInteger("1234567891234567");
+        Integer cvv = 372;
+        boolean isDefault = true;
+        Date expirationDate = Date.valueOf("2026-02-18");
+
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        BillingAccount account = new BillingAccount();
+        account.setCardHolder(cardHolder);
+        account.setBillingAddress(billingAddress);
+        account.setCardNumber(cardNumber);
+        account.setCvv(cvv);
+        account.setIsDefault(isDefault);
+        account.setExpirationDate(expirationDate);
+        account.setCustomer(customer);
+
+        when(billingAccountRepository.findBillingAccountById(id)).thenReturn(account);
+
+        String newCardHolder = "Bob Smith";
+        String newBillingAddress = "9, Wellington Street, Montreal";
+        BigInteger newCardNumber =  new BigInteger("2000007891234000");
+        Integer newCvv = 407;
+        boolean newIsDefault = false;
+        Date newExpirationDate = Date.valueOf("2028-11-01");
+        BillingAccount newAccount = new BillingAccount();
+        newAccount.setCardHolder(newCardHolder);
+        newAccount.setBillingAddress(newBillingAddress);
+        newAccount.setCardNumber(newCardNumber);
+        newAccount.setCvv(newCvv);
+        newAccount.setIsDefault(newIsDefault);
+        newAccount.setExpirationDate(newExpirationDate);
+        newAccount.setCustomer(customer);
+
+        when(billingAccountRepository.save(any(BillingAccount.class))).thenReturn(newAccount);
+
+        // Act
+        BillingAccount updatedAccount = billingAccountService.updateBillingAccount(id, newCardNumber, newCardHolder, newBillingAddress, newCvv, newIsDefault, newExpirationDate);
+    
+        // Assert
+        verify(billingAccountRepository, times(1)).findBillingAccountById(id);
+        verify(billingAccountRepository, times(1)).save(any(BillingAccount.class));
+
+        assertNotNull(updatedAccount);
+        assertEquals(newCardHolder.toLowerCase(), updatedAccount.getCardHolder().toLowerCase());
+        assertEquals(newCardNumber,  updatedAccount.getCardNumber());
+        assertEquals(newBillingAddress.toLowerCase(), updatedAccount.getBillingAddress().toLowerCase());
+        assertEquals(newCvv, updatedAccount.getCvv());
+        assertEquals(newIsDefault, updatedAccount.getIsDefault());
+        assertEquals(newExpirationDate, updatedAccount.getExpirationDate());
+        assertEquals(customer, updatedAccount.getCustomer());
+    }
+
+
+    //--------------------------// Find Billing Account Tests //--------------------------//
+
+    @Test
+    public void testReadBillingaccountByValidId(){
+        //Set up test
+        int id = 55;
+        String cardHolder = "Mary Jane";
+        String billingAddress = "1234, Sherbrooke Street, Montreal";
+        BigInteger cardNumber =  new BigInteger("1234567891234567");
+        Integer cvv = 372;
+        boolean isDefault = true;
+        Date expirationDate = Date.valueOf("2026-02-18");
+
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        BillingAccount account = new BillingAccount();
+        account.setCardHolder(cardHolder);
+        account.setBillingAddress(billingAddress);
+        account.setCardNumber(cardNumber);
+        account.setCvv(cvv);
+        account.setIsDefault(isDefault);
+        account.setExpirationDate(expirationDate);
+        account.setCustomer(customer);
+
+        when(billingAccountRepository.findBillingAccountById(id)).thenReturn(account);
+
+        // Act
+        BillingAccount foundBillingAccount = billingAccountService.findBillingAccountById(id);
+    
+        // Assert
+        assertNotNull(foundBillingAccount);
+        assertEquals(cardHolder.toLowerCase(), foundBillingAccount.getCardHolder().toLowerCase());
+        assertEquals(cardNumber,  foundBillingAccount.getCardNumber());
+        assertEquals(billingAddress.toLowerCase(), foundBillingAccount.getBillingAddress().toLowerCase());
+        assertEquals(cvv, foundBillingAccount.getCvv());
+        assertEquals(isDefault, foundBillingAccount.getIsDefault());
+        assertEquals(expirationDate, foundBillingAccount.getExpirationDate());
+        assertEquals(customer, foundBillingAccount.getCustomer());
+
+    }
+
+    @Test
+    public void testReadBillingAccountByInvalidId(){
+        //when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        int id = 55;
+        when(billingAccountRepository.findBillingAccountById(id)).thenReturn(null);
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.findBillingAccountById(id));
+        assertEquals("There is no billing account with ID " + id + ".", e.getMessage());
+    }
+
 
     
 
