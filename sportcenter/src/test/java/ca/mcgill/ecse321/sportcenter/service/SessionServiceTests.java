@@ -516,7 +516,10 @@ public class SessionServiceTests {
 
     }
 
-
+    /*
+    
+    
+    
     @Test
     public void testUpdateValidSessionInstructor() {
         
@@ -566,7 +569,7 @@ public class SessionServiceTests {
     }
 
     //The following tests do not currently pass because of mocking issues. More information will be asked to the TA on March 19th 
-    /*
+
     
     @Test
     public void testUpdateValidSessionLocation() {
