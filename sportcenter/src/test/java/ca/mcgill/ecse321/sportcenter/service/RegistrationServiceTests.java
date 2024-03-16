@@ -117,7 +117,7 @@ public class RegistrationServiceTests {
     @Test
     public void testCreateValidRegistration() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration registration = new Registration(new Registration.Key(customer, session));
         when(registrationRepository.save(any(Registration.class))).thenReturn(registration);
@@ -133,7 +133,7 @@ public class RegistrationServiceTests {
     @Test
     public void testCreateDuplicateRegistration() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration registration = new Registration(new Registration.Key(customer, session));
         when(registrationRepository.findRegistrationByKey(any())).thenReturn(registration);
@@ -147,7 +147,7 @@ public class RegistrationServiceTests {
     @Test
     public void updateValidRegistration() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         Registration registration = new Registration(key);
@@ -179,7 +179,7 @@ public class RegistrationServiceTests {
     @Test
     public void cancelValidRegistration() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         Registration registration = new Registration(key);
@@ -193,7 +193,7 @@ public class RegistrationServiceTests {
     @Test
     public void cancelInvalidRegistration() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         when(registrationRepository.findRegistrationByKey(key)).thenReturn(null);
@@ -207,7 +207,7 @@ public class RegistrationServiceTests {
     @Test
     public void testReadRegistrationByValidKey() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         Registration registration = new Registration(key);
@@ -223,7 +223,7 @@ public class RegistrationServiceTests {
     @Test
     public void testReadRegistrationByInvalidKey() {
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
-        when(sessionRepository.findSessionById(0)).thenReturn(session);
+        when(sessionRepository.findById(0)).thenReturn(session);
 
         Registration.Key key = new Registration.Key(customer, session);
         when(registrationRepository.findRegistrationByKey(key)).thenReturn(null);
