@@ -22,7 +22,6 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
 @SpringBootTest
 public class BillingAccountServiceTests {
@@ -31,15 +30,13 @@ public class BillingAccountServiceTests {
     private CustomerRepository customerRepository;
     @Mock
     private BillingAccountRepository billingAccountRepository;
-    @Mock
-    private SportCenterRepository sportCenterRepository;
 
     @InjectMocks
     private BillingAccountService billingAccountService;
     
     private Customer customer;
 
-    /**
+     /**
      * Clear the sportcenter database before each test.
      */
     @BeforeEach
@@ -47,9 +44,11 @@ public class BillingAccountServiceTests {
     public void clearDatabase() {
         billingAccountRepository.deleteAll();
         customerRepository.deleteAll();
-        sportCenterRepository.deleteAll();
     }
 
+    /**
+     * Create and save a customer instance before each test.
+     */
     @BeforeEach
     public void createAndSaveCustomer() {
        //create a customer 

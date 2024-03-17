@@ -123,5 +123,58 @@ public class BillingAccountRepositoryTests {
         assertEquals(billingAccount.getCustomer().getId(),billingAccountFromDb.getCustomer().getId());
         
     }
+
+    @Test
+    public void testCreateAndReadBillingAccountByCustomer(){
+        // Create the customer 
+        String email = "Jumijabasali@fithub.com";
+        String password = "sportcenter";
+        String name = "Jumijabasali";
+        String imageURL = "pfp.com";
+        Customer customer = new Customer();
+        customer.setEmail(email);
+        customer.setPassword(password);
+        customer.setName(name);
+        customer.setImageURL(imageURL);
+        customer.setCenter(sportCenter);
+        
+        // Save into database
+        customer = accountRepo.save(customer);
+
+         // Then create the billing account
+         BigInteger aCardNumber = new BigInteger("1234567891234567");
+         String aCardHolder = "Bobby Bob";
+         String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
+         int aCCV = 374;
+         Date expDate = new Date(4);
+         boolean isDefault = false;
+ 
+         BillingAccount billingAccount = new BillingAccount();
+         billingAccount.setCardNumber(aCardNumber);
+         billingAccount.setCardHolder(aCardHolder);
+         billingAccount.setBillingAddress(aBillingAdress);
+         billingAccount.setCvv(aCCV);
+         billingAccount.setExpirationDate(expDate);
+         billingAccount.setIsDefault(isDefault);
+         billingAccount.setCustomer(customer);
+ 
+        billingAccount = billingRepo.save(billingAccount);
+
+        // Retrieve session from the database
+        BillingAccount billingAccountFromDb = billingRepo.findBillingAccountByCustomer(billingAccount.getCustomer()).get(0);
+ 
+         // Testing
+         assertNotNull(billingAccountFromDb);
+         assertEquals(aCardNumber, billingAccountFromDb.getCardNumber());
+         assertEquals(aCardHolder, billingAccountFromDb.getCardHolder());
+         assertEquals(aBillingAdress, billingAccountFromDb.getBillingAddress());
+         assertEquals(aCCV, billingAccountFromDb.getCvv());
+         assertEquals(expDate.toString(), billingAccountFromDb.getExpirationDate().toString());
+         assertEquals(isDefault, billingAccountFromDb.getIsDefault());
+         assertNotNull(billingAccountFromDb.getId());
+         assertNotNull(billingAccountFromDb.getCustomer().getId());
+         assertEquals(billingAccount.getCustomer().getId(),billingAccountFromDb.getCustomer().getId());
+         
+    }
     
 }
