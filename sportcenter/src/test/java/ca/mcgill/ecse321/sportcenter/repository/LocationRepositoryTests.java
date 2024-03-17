@@ -78,23 +78,4 @@ public class LocationRepositoryTests {
                 assertEquals(floor, locationFromDb.getFloor());
 
 	}
-
-        @Test
-        public void testPersistAndLoadLocation2() {
-                String floor = "aFloor";
-                String room = "aRoom";
-
-                Location location = new Location();
-                location.setFloor(floor);
-                location.setRoom(room);
-                location.setCenter(sportCenter);
-
-                Location savedLocation = locationRepository.save(location);
-
-                Location locationFromDb = locationRepository.findLocationByFloorAndRoom(savedLocation.getFloor(), savedLocation.getRoom());
-
-                assertNotNull(locationFromDb);
-                assertEquals(room, locationFromDb.getRoom());
-                assertEquals(floor, locationFromDb.getFloor());
-        }
 }

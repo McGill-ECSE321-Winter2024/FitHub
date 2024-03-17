@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Location
@@ -16,8 +17,9 @@ public class Location
   @GeneratedValue
   private int id;
 
-  @ManyToOne 
-  private SportCenter center;
+  @ManyToOne
+  @JoinColumn(name="sport_center_id")
+  private SportCenter sport_center;
 
   //------------------------
   // CONSTRUCTOR
@@ -79,7 +81,7 @@ public class Location
 
   public SportCenter getCenter()
   {
-    return center;
+    return sport_center;
   }
   public boolean setCenter(SportCenter aCenter)
   {
@@ -89,21 +91,21 @@ public class Location
       return wasSet;
     }
 
-    SportCenter existingCenter = center;
-    center = aCenter;
+    SportCenter existingCenter = sport_center;
+    sport_center = aCenter;
     if (existingCenter != null && !existingCenter.equals(aCenter))
     {
       existingCenter.removeLocation(this);
     }
-    center.addLocation(this);
+    sport_center.addLocation(this);
     wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    SportCenter placeholderCenter = center;
-    this.center = null;
+    SportCenter placeholderCenter = sport_center;
+    this.sport_center = null;
     if(placeholderCenter != null)
     {
       placeholderCenter.removeLocation(this);

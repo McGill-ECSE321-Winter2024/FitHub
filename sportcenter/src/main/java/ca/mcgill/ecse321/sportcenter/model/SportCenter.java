@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.sportcenter.model;
 import java.sql.Time;
 import java.util.*;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,15 +26,17 @@ public class SportCenter
   private String email;
   private String phoneNumber;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Course> courses;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Location> locations;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Account> accounts;
   
   public SportCenter() {
-    
+    courses = new ArrayList<Course>();
+    locations = new ArrayList<Location>();
+    accounts = new ArrayList<Account>();
   }
 
   public SportCenter(String aName, Time aOpeningTime, Time aClosingTime, String aAddress, String aEmail, String aPhoneNumber)
