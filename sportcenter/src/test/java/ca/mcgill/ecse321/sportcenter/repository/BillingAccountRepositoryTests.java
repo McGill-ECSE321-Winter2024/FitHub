@@ -44,10 +44,10 @@ public class BillingAccountRepositoryTests {
     @BeforeEach
     @AfterEach
     public void clearDatabase(){
+        sportCenterRepo.deleteAll();
         billingRepo.deleteAll();
         customerRepo.deleteAll();
         accountRepo.deleteAll();
-        sportCenterRepo.deleteAll();
     }
 
     /**

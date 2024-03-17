@@ -22,15 +22,11 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
-import ca.mcgill.ecse321.sportcenter.service.CustomAuthenticationManager;
 
 @RestController
 public class AccountController {
     @Autowired
     AccountService accountService;
-
-    @Autowired
-    CustomAuthenticationManager authenticationManager;
     
     //--------------------------// Create Account //--------------------------//
     
