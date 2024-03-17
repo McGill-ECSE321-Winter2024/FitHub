@@ -160,7 +160,7 @@ public class SessionServiceTests {
         verify(sessionRepository, times(1)).save(any(Session.class));
     }
     
-    //---------------
+    
     @Test
     public void testCreateInvalidSession1() { // Capacity of zero
         int id=50;
@@ -467,7 +467,7 @@ public class SessionServiceTests {
         assertThrows(IllegalArgumentException.class, () -> sessionService.proposeSuperviseSession(startTime2, endTime2, date, capacity, instructor.getId(), aCourseType.getId(), location2.getId()));
      }
 
-    //--------------------------// Update Account Tests //--------------------------//
+    //--------------------------// Update Session Tests //--------------------------//
 
     @Test
     public void testUpdateValidSession() {
@@ -849,8 +849,6 @@ public class SessionServiceTests {
         int id = 50;
         // Set up test
         Instructor instructor = null;
-
-        //when(sessionRepository.findBySupervisor(instructor)).thenReturn(null);
 
         // Use the AccountService and Assert
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByInstructor(instructor));
