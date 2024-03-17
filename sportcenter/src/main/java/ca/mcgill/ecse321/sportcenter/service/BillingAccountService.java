@@ -134,7 +134,7 @@ public class BillingAccountService {
     }
 
     @Transactional
-    public BillingAccount findDefaultBillingAccountOFCustomer(Customer customer){
+    public BillingAccount findDefaultBillingAccountOfCustomer(Customer customer){
         List<BillingAccount> accounts = findBillingAccountByCustomer(customer);
         for (BillingAccount account: accounts){
             if (account.getIsDefault() == true){
