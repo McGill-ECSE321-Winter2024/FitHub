@@ -102,40 +102,6 @@ public class BillingAccountServiceTests {
         verify(billingAccountRepository, times(1)).save(any(BillingAccount.class));
     }
 
-
-    /*
-    @Test
-    public void testAndCreateDuplicateBillingAccount(){
-        String cardHolder = "Mary Jane";
-        String billingAddress = "1234, Sherbrooke Street, Montreal";
-        BigInteger cardNumber =  new BigInteger("1234567891234567");
-        Integer cvv = 372;
-        boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2026-02-18");
-
-        when(customerRepository.findCustomerById(0)).thenReturn(customer);
-
-        BillingAccount account = new BillingAccount();
-        account.setCardHolder(cardHolder);
-        account.setBillingAddress(billingAddress);
-        account.setCardNumber(cardNumber);
-        account.setCvv(cvv);
-        account.setIsDefault(isDefault);
-        account.setExpirationDate(expirationDate);
-        account.setCustomer(customer);
-
-        //when(billingAccountRepository.save(any(BillingAccount.class))).thenReturn(account);
-        when(billingAccountRepository.save(any(BillingAccount.class))).thenReturn(account);
-
-        // Act
-       BillingAccount createdAccount = billingAccountService.createBillingAccount(cardNumber, cardHolder, billingAddress, cvv, isDefault, expirationDate, customer);
-    
-        //when(billingAccountRepository.findBillingAccountById(any())).thenReturn(account);
-
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.createBillingAccount(new BigInteger("1234567891234567"), "Bob Smith","1234, Sherbrooke Street, Montreal", 372, true,  Date.valueOf("2026-02-18"), customer));
-        assertEquals("This card already exists", e.getMessage());
-    }
-
     @Test
     public void testAndCreateBillingAccountWithInvalidCardNumber(){
 
@@ -152,7 +118,7 @@ public class BillingAccountServiceTests {
         assertEquals("Invalid cardNumber; needs to be exactly 16 digits", e.getMessage());
 
     }
-    */
+
 
     @Test
     public void testAndCreateBillingAccountWithInvalidCvv(){
