@@ -13,6 +13,9 @@ public class AccountResponseDTO {
     private String name;
     private String imageURL;
 
+    public AccountResponseDTO() {  
+    }
+
     public AccountResponseDTO(Customer customer) {
         this.id = customer.getId();
         this.type = AccountType.CUSTOMER;

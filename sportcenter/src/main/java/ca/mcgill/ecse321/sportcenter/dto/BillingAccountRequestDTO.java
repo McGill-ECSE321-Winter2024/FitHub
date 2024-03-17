@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
+import java.math.BigInteger;
 import java.sql.Date;
 
 //import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
@@ -7,7 +8,7 @@ import java.sql.Date;
 
 public class BillingAccountRequestDTO {
 
-    private Integer cardNumber;
+    private BigInteger cardNumber;
     private String cardHolder;
     private String billingAddress;
     private Integer cvv; 
@@ -16,7 +17,7 @@ public class BillingAccountRequestDTO {
     private CustomerResponseDTO customer;
 
 
-    public BillingAccountRequestDTO(Integer cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, CustomerResponseDTO customer){
+    public BillingAccountRequestDTO(BigInteger cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, CustomerResponseDTO customer){
 
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
@@ -30,7 +31,7 @@ public class BillingAccountRequestDTO {
 
     //--------------------- Getters -------------------//
 
-    public Integer getCardNumber(){
+    public BigInteger getCardNumber(){
         return cardNumber;
     }
 
@@ -64,7 +65,7 @@ public class BillingAccountRequestDTO {
         this.cardHolder = aCardHolder;
     }
 
-    public void setCardNumber(Integer aCardNumber){
+    public void setCardNumber(BigInteger aCardNumber){
         this.cardNumber = aCardNumber;
     }
 
