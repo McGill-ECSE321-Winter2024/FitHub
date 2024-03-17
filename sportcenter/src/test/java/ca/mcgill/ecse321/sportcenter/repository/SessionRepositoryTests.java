@@ -24,6 +24,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+//Incomplete: need to include two new tests: findBySupervisorAndDate, findByLocationAndDate
+
 /**
  * This class represents the JUnit test cases for the SessionRepository.
  * It ensures the correctness of CRUD operations related to sessions.
@@ -277,4 +279,6 @@ public class SessionRepositoryTests {
         assertEquals(location.getId(), sessionFromDb.getLocation().getId()); 
 	
     }
+
+    
 }
