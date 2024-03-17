@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
@@ -21,8 +26,10 @@ import jakarta.transaction.Transactional;
 * <p>Create, update, delete a customer/instructor/owner account and login to account</p>
 * @author Julia
 */
-@Service
-public class AccountService {
+@Service("userDetailsService")
+public class AccountService implements UserDetailsService {
+    //get user from the database, via Hibernate
+    
     @Autowired
     CustomerRepository customerRepository;
     @Autowired
@@ -33,6 +40,32 @@ public class AccountService {
     @Autowired
     SportCenterRepository sportCenterRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired SportCenterManagementService sportCenterManagementService;
+    
+    //--------------------------// UserDetailsService overriding //--------------------------//
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Customer customer = customerRepository.findCustomerByEmail(email);
+        Instructor instructor = instructorRepository.findInstructorByEmail(email);
+        Owner owner = ownerRepository.findOwnerByEmail(email);
+
+        if (customer != null) {
+            return customer;
+        }
+        else if (instructor != null) {
+            return instructor;
+        }
+        else if (owner != null) {
+            return owner;
+        }
+        
+        throw new UnsupportedOperationException("No account in the system exists with this email");
+    }
+
     //--------------------------// Create Account //--------------------------//
 
     @Transactional
@@ -42,10 +75,10 @@ public class AccountService {
 
         Customer customer = new Customer();
         customer.setEmail(email);
-        customer.setPassword(password);
+        customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
-        customer.setCenter(sportCenterRepository.findSportCenterById(0));
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
@@ -56,10 +89,10 @@ public class AccountService {
 
         Instructor instructor = new Instructor();
         instructor.setEmail(email);
-        instructor.setPassword(password);
+        instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
-        instructor.setCenter(sportCenterRepository.findSportCenterById(0));
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
@@ -70,10 +103,10 @@ public class AccountService {
 
         Owner owner = new Owner();
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);
         owner.setImageURL(imageURL);
-        owner.setCenter(sportCenterRepository.findSportCenterById(0));
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return ownerRepository.save(owner);
     }
     
@@ -86,9 +119,10 @@ public class AccountService {
 
         Customer customer = findCustomerById(id);
         customer.setEmail(email);
-        customer.setPassword(password);
+        customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
@@ -99,9 +133,10 @@ public class AccountService {
 
         Instructor instructor = findInstructorById(id);
         instructor.setEmail(email);
-        instructor.setPassword(password);
+        instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
@@ -112,56 +147,51 @@ public class AccountService {
         
         Owner owner = findOwnerById(id);
         owner.setEmail(email);
-        owner.setPassword(password);
+        owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);
         owner.setImageURL(imageURL);
+        owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return ownerRepository.save(owner);
     }
     
     //--------------------------// Delete Account //--------------------------//
     
     @Transactional
-    public void deleteCustomerAccount(Integer id) {
-        customerRepository.delete(findCustomerById(id));
+    public boolean deleteCustomerAccount(Integer id) {
+        Account account = customerRepository.findCustomerById(id);
+        if (account == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeAccount(account);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
     }
 
     @Transactional
-    public void deleteInstructorAccount(Integer id) {
-        instructorRepository.delete(findInstructorById(id));
+    public boolean deleteInstructorAccount(Integer id) {
+        Account account = instructorRepository.findInstructorById(id);
+        if (account == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeAccount(account);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
     }
 
     @Transactional
-    public void deleteOwnerAccount(Integer id) {
-        ownerRepository.delete(findOwnerById(id));
+    public boolean deleteOwnerAccount(Integer id) {
+        Account account = ownerRepository.findOwnerById(id);
+        if (account == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeAccount(account);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
     }
     
-    //--------------------------// Login to Account //--------------------------//
-
-    /*
-     * <p>Verify that the account with the email and the associated password exists in the system</p>
-     * @param email of the account and its password
-     * @return an error if no account in the system exist with this email and password else, returns the type of account it is
-     * @author Julia
-     */
-    @Transactional
-    public String loginToAccount(String email, String password) {
-        Customer customer = customerRepository.findCustomerByEmail(email);
-        Instructor instructor = instructorRepository.findInstructorByEmail(email);
-        Owner owner = ownerRepository.findOwnerByEmail(email);
-
-        if (customer != null && customer.getPassword().equals(password)) {
-            return "customer";
-        }
-        else if (instructor != null && customer.getPassword().equals(password)) {
-            return "instructor";
-        }
-        else if (owner != null && owner.getPassword().equals(password)) {
-            return "owner";
-        }
-        
-        throw new IllegalArgumentException("No account in the system exists with this email and password");
-    }
-
     //--------------------------// Getters //--------------------------//
 
     @Transactional

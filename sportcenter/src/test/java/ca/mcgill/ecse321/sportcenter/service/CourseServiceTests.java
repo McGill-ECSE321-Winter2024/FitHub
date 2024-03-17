@@ -230,7 +230,6 @@ public class CourseServiceTests {
 
     @Test
     public void testApproveCourse() {
-        Integer id = 3;
         String name = "a Name";
         String description = "a Description.";
         Difficulty diff = Difficulty.Beginner;
@@ -256,7 +255,6 @@ public class CourseServiceTests {
 
     @Test
     public void testDisapproveCourse() {
-        Integer id = 3;
         String name = "a Name";
         String description = "a Description.";
         Difficulty diff = Difficulty.Beginner;
@@ -282,7 +280,6 @@ public class CourseServiceTests {
 
     @Test
     public void testCloseCourse() {
-        Integer id = 3;
         String name = "a Name";
         String description = "a Description.";
         Difficulty diff = Difficulty.Beginner;
@@ -378,7 +375,7 @@ public class CourseServiceTests {
 
         String error = "";
         try {
-			Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+			service.updateCourse(id, newName, newDescription, newDiff, newStatus);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
