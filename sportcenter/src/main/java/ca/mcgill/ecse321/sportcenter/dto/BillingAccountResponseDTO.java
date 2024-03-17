@@ -2,12 +2,13 @@ package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 
+import java.math.BigInteger;
 import java.sql.Date;
 
 public class BillingAccountResponseDTO {
     
 
-    private Integer cardNumber;
+    private BigInteger cardNumber;
     private String cardHolder;
     private String billingAddress;
     private Integer cvv; 
@@ -31,7 +32,7 @@ public class BillingAccountResponseDTO {
 
     //--------------------- Getters -------------------//
 
-    public Integer getCardNumber(){
+    public BigInteger getCardNumber(){
         return cardNumber;
     }
 
@@ -69,7 +70,7 @@ public class BillingAccountResponseDTO {
         this.cardHolder = aCardHolder;
     }
 
-    public void setCardNumber(Integer aCardNumber){
+    public void setCardNumber(BigInteger aCardNumber){
         this.cardNumber = aCardNumber;
     }
 
