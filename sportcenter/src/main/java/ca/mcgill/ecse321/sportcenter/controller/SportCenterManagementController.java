@@ -33,7 +33,7 @@ public class SportCenterManagementController {
     private SportCenterManagementService sportCenterManagementService;
 
     // Creating a sport center
-    @PostMapping(value={"/sportCenter/", "/sportCenter"})
+    @PostMapping("/sportCenter")
     @ResponseStatus(HttpStatus.CREATED)
     public SportCenterDTO createSportCenter(@RequestBody SportCenterDTO sportCenter){
         // Create empty lists
@@ -49,9 +49,9 @@ public class SportCenterManagementController {
     }
 
     // updating opening/closing hours? is that how we do it?
-    @PutMapping(value={"/sportCenter/", "/sportCenter"})
-    public SportCenterDTO updateSportCenter(@RequestBody SportCenterDTO sportCenter){
-        SportCenter updatedSportCenter = sportCenterManagementService.updateTime(sportCenter.getOpeningTime(), sportCenter.getClosingTime());
+    @PutMapping("/sportCenter")
+    public SportCenterDTO updateSportCenter(@RequestBody SportCenterDTO newSportCenter){
+        SportCenter updatedSportCenter = sportCenterManagementService.updateSportCenter(newSportCenter.getOpeningTime(), newSportCenter.getClosingTime(), newSportCenter.getAddress());
         
         // Convert list of Course into list of CourseDTO
         List<CourseDTO> courses = new ArrayList<>();
@@ -77,8 +77,9 @@ public class SportCenterManagementController {
     }
 
     // Deleting a sport center
-    @DeleteMapping(value={"/sportCenter/", "/sportCenter"})
+    @DeleteMapping("/sportCenter")
     public void deleteSportCenter() {
         sportCenterManagementService.deleteSportCenter();
     }
+
 }

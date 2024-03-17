@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
+import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Location;
+import ca.mcgill.ecse321.sportcenter.model.Account;
 
 /*
 * <p>Service class in charge of managing accounts. It implements following use cases: </p>
@@ -46,11 +49,16 @@ public class SportCenterManagementService {
     //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional
-    public SportCenter updateTime(Time openingTime, Time closingTime) {
+    public SportCenter updateSportCenter(Time newOpeningTime, Time newClosingTime, String newAddress) {
+        if (newAddress.isEmpty()) {
+            throw new IllegalArgumentException("Empty address is not valid");
+        }
+
         SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
 
-        sportCenter.setOpeningTime(openingTime);
-        sportCenter.setClosingTime(closingTime);
+        sportCenter.setOpeningTime(newOpeningTime);
+        sportCenter.setClosingTime(newClosingTime);
+        sportCenter.setAddress(newAddress);
         sportCenterRepository.save(sportCenter);
 
         return sportCenter;

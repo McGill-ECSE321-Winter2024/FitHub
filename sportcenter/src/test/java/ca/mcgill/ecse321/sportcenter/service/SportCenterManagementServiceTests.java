@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.sql.Time;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
@@ -170,47 +173,41 @@ public class SportCenterManagementServiceTests {
     //--------------------------// Update Sport Center Tests //--------------------------//
 
     @Test
-    public void testUpdateOpeningTime() {
+    public void testUpdateSportCenter() {
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
 
-        Time newOpeningTime = Time.valueOf("9:0:0");
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("22:0:0");
+        String newAddress = "newAddress";
 
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
         when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
         when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
-        SportCenter savedSportCenter = sportCenterManagementService.updateTime(newOpeningTime, closingTime);
+        SportCenter savedSportCenter = sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress);
         
         assertEquals(newOpeningTime, savedSportCenter.getOpeningTime());
+        assertEquals(newClosingTime, savedSportCenter.getClosingTime());
+        assertEquals(newAddress, savedSportCenter.getAddress());
 
     }
 
-
     @Test
-    public void testUpdateClosingTime() {
-        String name = "aName";
-        Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
-        String address = "aAddress";
-        String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
-
+    public void testUpdateSportCenterWithEmptyAddress() {
+        Time newOpeningTime = Time.valueOf("8:0:0");
         Time newClosingTime = Time.valueOf("22:0:0");
-
-        SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
-
-        when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
-
-        SportCenter savedSportCenter = sportCenterManagementService.updateTime(openingTime, newClosingTime);
+        String newAddress = "";
+        String expectedMessage = "Empty address is not valid";
         
-        assertEquals(newClosingTime, savedSportCenter.getClosingTime());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress));
+        assertEquals(expectedMessage, e.getMessage());
+
     }
 
     //--------------------------// Helper methods //--------------------------//
