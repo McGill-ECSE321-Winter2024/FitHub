@@ -57,9 +57,39 @@ public class CourseController {
 
     @GetMapping(value={"/courses/difficulty", "/courses/difficulty"})
     public CourseListDTO findCoursesByDiffiiculty(@RequestParam("difficulty") String difficulty) {
-        return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses()));
+        Course.Difficulty diff;
+        switch (difficulty){
+            case "Beginner":
+                diff = Course.Difficulty.Beginner;
+                break;
+            case "Intermediate":
+                diff = Course.Difficulty.Intermediate;
+                break;
+            case "Advanced":
+                diff = Course.Difficulty.Advanced;
+                break;
+        }
+        return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findCoursesByDiffiiculty(diff)));
     }
 
+    @GetMapping(value={"/courses/status", "/courses/status"})
+    public CourseListDTO findCoursesByStatus(@RequestParam("status") String status) {
+        Course.Status stat;
+        switch (status){
+            case "Approved":
+                stat = Course.Status.Approved;
+                break;
+            case "Pending":
+                stat = Course.Status.Pending;
+                break;
+            case "Closed":
+                stat = Course.Status.Closed;
+                break;
+            case "Disaproved":
+                stat = Course.Status.Disaproved;
+        }
+        return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findCoursesByStatus(stat)));
+    }
 
 
 }
