@@ -65,4 +65,36 @@ public class SportCenterRepositoryTests {
         assertEquals(phone, sportCenterFromDb.getPhoneNumber());
         assertEquals(address, sportCenterFromDb.getAddress());
     }  
+
+    @Test
+    public void createAndReadAllSportCenter(){
+
+        String name = "FitHub";
+		Time openTime = Time.valueOf("08:00:00");
+        Time closeTime = Time.valueOf("18:00:00");
+		String email = "info@fithub.com";
+		String phone = "421-436-4444";
+		String address = "2011, University Street, Montreal";
+		
+		SportCenter sportsCenter = new SportCenter();
+        sportsCenter.setName(name);
+        sportsCenter.setOpeningTime(openTime);
+        sportsCenter.setClosingTime(closeTime);
+        sportsCenter.setEmail(email);
+        sportsCenter.setPhoneNumber(phone);
+        sportsCenter.setAddress(address);
+
+		sportsCenter = sportCenterRepo.save(sportsCenter);
+
+        SportCenter sportCenterFromDb = sportCenterRepo.findAll().get(0);
+
+        assertNotNull(sportCenterFromDb);
+        assertEquals(name, sportCenterFromDb.getName());
+        assertEquals(openTime.toString(),sportCenterFromDb.getOpeningTime().toString());
+        assertEquals(closeTime.toString(), sportCenterFromDb.getClosingTime().toString());
+        assertEquals(email, sportCenterFromDb.getEmail());
+        assertEquals(phone, sportCenterFromDb.getPhoneNumber());
+        assertEquals(address, sportCenterFromDb.getAddress());
+
+    }
 }

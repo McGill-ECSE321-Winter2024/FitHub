@@ -1,16 +1,19 @@
 package ca.mcgill.ecse321.sportcenter.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
@@ -25,107 +28,159 @@ public class AccountController {
     @Autowired
     AccountService accountService;
     
+    //--------------------------// Create Account //--------------------------//
+    
     @PostMapping(value={"/customers", "/customers/"})
-    @ResponseStatus(HttpStatus.CREATED)
-    public AccountResponseDTO createCustomerAccount(@RequestBody AccountRequestDTO account) {
+    public ResponseEntity<AccountResponseDTO> createCustomerAccount(@RequestBody AccountRequestDTO account) {
         Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
-        return new AccountResponseDTO(createdAccount);
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
     }
     
     @PostMapping(value={"/instructors", "/instructors/"})
-    @ResponseStatus(HttpStatus.CREATED)
-    public AccountResponseDTO createInstructorAccount(@RequestBody AccountRequestDTO account) {
+    public ResponseEntity<AccountResponseDTO> createInstructorAccount(@RequestBody AccountRequestDTO account) {
         Instructor createdAccount = accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
-        return new AccountResponseDTO(createdAccount);
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
     }
     
     @PostMapping(value={"/owners", "/owners/"})
-    @ResponseStatus(HttpStatus.CREATED)
-    public AccountResponseDTO createOwnerAccount(@RequestBody AccountRequestDTO account) {
+    public ResponseEntity<AccountResponseDTO>  createOwnerAccount(@RequestBody AccountRequestDTO account) {
         Owner createdAccount = accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
-        return new AccountResponseDTO(createdAccount);
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
     }
 
+    //--------------------------// Update Account //--------------------------//
+
     @PutMapping(value={"/customers/{id}", "/customers/{id}/"})
-    public AccountResponseDTO updateCustomerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
+    public ResponseEntity<AccountResponseDTO> updateCustomerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         Customer updatedAccount = accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
-        return new AccountResponseDTO(updatedAccount);
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
     }
     
     @PutMapping(value={"/instructors/{id}", "/instructors/{id}/"})
-    public AccountResponseDTO updateInstructorAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
+    public ResponseEntity<AccountResponseDTO> updateInstructorAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         Instructor updatedAccount = accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
-        return new AccountResponseDTO(updatedAccount);
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
     }
     
     @PutMapping(value={"/owners/{id}", "/owners/{id}/"})
-    public AccountResponseDTO updateOwnerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
+    public ResponseEntity<AccountResponseDTO> updateOwnerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         Owner updatedAccount = accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
-        return new AccountResponseDTO(updatedAccount);
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
     }
+    
+    //--------------------------// Delete Account //--------------------------//
 
     @DeleteMapping(value={"/customers/{id}", "/customers/{id}/"})
-    public void deleteCustomerAccount(@PathVariable Integer id) {
-        accountService.deleteCustomerAccount(id);
+    public ResponseEntity<Void> deleteCustomerAccount(@PathVariable Integer id) {
+        boolean deletionSuccessful = accountService.deleteCustomerAccount(id);
+        if (deletionSuccessful) {
+            return ResponseEntity.noContent().build(); // 204 NO_CONTENT
+        } else {
+            return ResponseEntity.notFound().build(); // 404 NOT_FOUND if the customer with the specified ID was not found
+        }
     }
     
     @DeleteMapping(value={"/instructors/{id}", "/instructors/{id}/"})
-    public void deleteInstructorAccount(@PathVariable Integer id) {
-        accountService.deleteInstructorAccount(id);
+    public ResponseEntity<Void> deleteInstructorAccount(@PathVariable Integer id) {
+        boolean deletionSuccessful = accountService.deleteInstructorAccount(id);
+        if (deletionSuccessful) {
+            return ResponseEntity.noContent().build(); // 204 NO_CONTENT
+        } else {
+            return ResponseEntity.notFound().build(); // 404 NOT_FOUND if the customer with the specified ID was not found
+        }
     }
     
     @DeleteMapping(value={"/owners/{id}", "/owners/{id}/"})
-    public void deleteOwnerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
-        accountService.deleteOwnerAccount(id);
+    public ResponseEntity<Void> deleteOwnerAccount(@PathVariable Integer id) {
+        boolean deletionSuccessful = accountService.deleteOwnerAccount(id);
+        if (deletionSuccessful) {
+            return ResponseEntity.noContent().build(); // 204 NO_CONTENT
+        } else {
+            return ResponseEntity.notFound().build(); // 404 NOT_FOUND if the customer with the specified ID was not found
+        }
     }
     
+    //--------------------------// Getters //--------------------------//
+
     @GetMapping(value={"/customers/{id}", "/customers/{id}/"})
-    public AccountResponseDTO findCustomerById(@PathVariable Integer id) {
-        return new AccountResponseDTO(accountService.findCustomerById(id));
+    public ResponseEntity<AccountResponseDTO> findCustomerById(@PathVariable Integer id) {
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(accountService.findCustomerById(id)), HttpStatus.FOUND);
     }
     
     @GetMapping(value={"/instructors/{id}", "/instructors/{id}/"})
-    public AccountResponseDTO findInstructorById(@PathVariable Integer id) {
-        return new AccountResponseDTO(accountService.findInstructorById(id));
+    public ResponseEntity<AccountResponseDTO> findInstructorById(@PathVariable Integer id) {
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(accountService.findInstructorById(id)), HttpStatus.FOUND);
     }
     
     @GetMapping(value={"/owners/{id}", "/owners/{id}/"})
-    public AccountResponseDTO findOwnerById(@PathVariable Integer id) {
-        return new AccountResponseDTO(accountService.findOwnerById(id));
-    }
-    
-    @GetMapping(value={"/customers/email", "/customers/email/"})
-    public AccountResponseDTO findCustomerByEmail(@RequestParam("email") String email) {
-        return new AccountResponseDTO(accountService.findCustomerByEmail(email));
-    }
-    
-    @GetMapping(value={"/instructors/email", "/instructors/email/"})
-    public AccountResponseDTO findInstructorByEmail(@RequestParam("email") String email) {
-        return new AccountResponseDTO(accountService.findInstructorByEmail(email));
-    }
-    
-    @GetMapping(value={"/owners/email", "/owners/email/"})
-    public AccountResponseDTO findOwnerByEmail(@RequestParam("email") String email) {
-        return new AccountResponseDTO(accountService.findOwnerByEmail(email));
+    public ResponseEntity<AccountResponseDTO> findOwnerById(@PathVariable Integer id) {
+        return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(accountService.findOwnerById(id)), HttpStatus.FOUND);
     }
 
+    // Can either get all customer with /customers
+    // Or get a specific customer with its email /customers?email=julia@mail.com
     @GetMapping(value={"/customers", "/customers/"})
-    public AccountListDTO findAllCustomers() {
-        return new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllCustomers()));
+    public ResponseEntity<AccountListDTO> findAllCustomers(@RequestParam(name = "email", required = false) String email) {
+        AccountListDTO accountList = new AccountListDTO(null);
+
+        if (email!=null) {
+            List<Customer> list = new ArrayList<>();
+            list.add(accountService.findCustomerByEmail(email));
+            accountList.setAccounts(AccountListDTO.accountListToAccountResponseDTOList(list));
+        }
+        else {
+            accountList.setAccounts(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllCustomers()));
+        }
+
+        if (accountList.getAccounts().size() > 0)
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.OK);
+        else
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value={"/instructors", "/instructors/"})
-    public AccountListDTO findAllInstructors() {
-        return new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllInstructors()));
+    public ResponseEntity<AccountListDTO> findAllInstructors(@RequestParam(name = "email", required = false) String email) {
+        AccountListDTO accountList = new AccountListDTO(null);
+        if (email!=null) {
+            List<Instructor> list = new ArrayList<>();
+            list.add(accountService.findInstructorByEmail(email));
+            accountList.setAccounts(AccountListDTO.accountListToAccountResponseDTOList(list));
+        }
+        else {
+            accountList.setAccounts(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllInstructors()));
+        }
+
+        if (accountList.getAccounts().size() > 0)
+        return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.OK);
+        else
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value={"/owners", "/owners/"})
-    public AccountListDTO findAllOwners() {
-        return new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllOwners()));
+    public ResponseEntity<AccountListDTO> findAllOwners(@RequestParam(name = "email", required = false) String email) {
+        AccountListDTO accountList = new AccountListDTO(null);
+        if (email!=null) {
+            List<Owner> list = new ArrayList<>();
+            list.add(accountService.findOwnerByEmail(email));
+            accountList.setAccounts(AccountListDTO.accountListToAccountResponseDTOList(list));
+        }
+        else {
+            accountList.setAccounts(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllOwners()));
+        }
+
+        if (accountList.getAccounts().size() > 0)
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.OK);
+        else
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value={"/accounts", "/accounts/"})
-    public AccountListDTO findAllAccounts() {
-        return new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllAccounts()));
+    public ResponseEntity<AccountListDTO> findAllAccounts() {
+        AccountListDTO accountList = new AccountListDTO(AccountListDTO.accountListToAccountResponseDTOList(accountService.findAllAccounts()));
+
+        if (accountList.getAccounts().size() > 0)
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.OK);
+        else
+            return new ResponseEntity<AccountListDTO>(accountList, HttpStatus.NO_CONTENT);
     }
 }
