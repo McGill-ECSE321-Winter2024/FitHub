@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 
@@ -12,7 +13,7 @@ public class Course
 {
   
   public enum Difficulty { Beginner, Intermediate, Advanced }
-  public enum Status { Approved, Pending, Closed, Disaproved }
+  public enum Status { Approved, Pending, Closed, Disapproved }
 
   @Id
   @GeneratedValue
@@ -26,8 +27,9 @@ public class Course
   private Status status;
   private String description;
   
-  @ManyToOne 
-  private SportCenter center;
+  @ManyToOne
+  @JoinColumn(name="sport_center_id")
+  private SportCenter sport_center;
   
   public Course() {
     
@@ -113,7 +115,7 @@ public class Course
 
   public SportCenter getCenter()
   {
-    return center;
+    return sport_center;
   }
   
   public boolean setCenter(SportCenter aCenter)
@@ -124,21 +126,21 @@ public class Course
       return wasSet;
     }
 
-    SportCenter existingCenter = center;
-    center = aCenter;
+    SportCenter existingCenter = sport_center;
+    sport_center = aCenter;
     if (existingCenter != null && !existingCenter.equals(aCenter))
     {
       existingCenter.removeCourse(this);
     }
-    center.addCourse(this);
+    sport_center.addCourse(this);
     wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    SportCenter placeholderCenter = center;
-    this.center = null;
+    SportCenter placeholderCenter = sport_center;
+    this.sport_center = null;
     if(placeholderCenter != null)
     {
       placeholderCenter.removeCourse(this);

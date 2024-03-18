@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.model;
+import java.math.BigInteger;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ public class BillingAccount
   @Id
   @GeneratedValue
   private int id;
-  private int cardNumber;
+  private BigInteger cardNumber;
   private String cardHolder;
   private String billingAddress;
   private int cvv;
@@ -31,7 +32,7 @@ public class BillingAccount
 
   }
 
-  public BillingAccount(int aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, Customer aCustomer)
+  public BillingAccount(BigInteger aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, Customer aCustomer)
   {
     cardNumber = aCardNumber;
     cardHolder = aCardHolder;
@@ -45,7 +46,7 @@ public class BillingAccount
     }
   }
 
-  public boolean setCardNumber(int aCardNumber)
+  public boolean setCardNumber(BigInteger aCardNumber)
   {
     boolean wasSet = false;
     cardNumber = aCardNumber;
@@ -101,7 +102,7 @@ public class BillingAccount
     return wasSet;
   }
 
-  public int getCardNumber()
+  public BigInteger getCardNumber()
   {
     return cardNumber;
   }

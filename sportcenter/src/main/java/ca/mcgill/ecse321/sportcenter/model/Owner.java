@@ -15,12 +15,13 @@ public class Owner extends Account
   //------------------------
 
   public Owner() {
-    
+    setAuthority(Authority.ROLE_OWNER);
   }
 
   public Owner(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
   {
     super(aEmail, aPassword, aName, aImageURL, aCenter);
+    setAuthority(Authority.ROLE_OWNER);
   }
   
   public void delete()

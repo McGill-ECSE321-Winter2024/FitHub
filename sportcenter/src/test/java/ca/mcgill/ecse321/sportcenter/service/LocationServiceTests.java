@@ -101,7 +101,7 @@ public class LocationServiceTests {
     }
 
     @Test
-    public void testCreateDuplicationLocation() {   // location with this floor and room already exists
+    public void testCreateDuplicateLocation() {   // location with this floor and room already exists
         String floor = "4";
         String room = "401";
 
