@@ -33,8 +33,7 @@ public class CourseController {
     }
 
     @PutMapping(value={"/courses/{id}", "/courses/{id}/"})
-    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Integer id) {
-        CourseResponseDTO course = new CourseResponseDTO(courseService.findCourseById(id));
+    public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Integer id, @RequestBody CourseRequestDTO course) {
         Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), Course.Difficulty.valueOf(course.getDifficulty().toString()), Course.Status.valueOf(course.getStatus().toString()));
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(updatedCourse), HttpStatus.ACCEPTED);
     }
