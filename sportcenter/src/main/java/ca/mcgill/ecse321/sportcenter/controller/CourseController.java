@@ -43,8 +43,8 @@ public class CourseController {
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseById(id)), HttpStatus.FOUND);
     }
 
-    @GetMapping(value={"/courses/{name}", "/courses/{name}/"})
-    public ResponseEntity<CourseResponseDTO> findCourseByName(@PathVariable String name){
+    @GetMapping(value={"/courses", "/courses/"})
+    public ResponseEntity<CourseResponseDTO> findCourseByName(@RequestParam(name = "name", required = false) String name){
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseByName(name)), HttpStatus.FOUND);
     }
 
@@ -56,8 +56,8 @@ public class CourseController {
             return new ResponseEntity<CourseListDTO>(new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses())), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value={"/courses/{difficulty}", "/courses/{difficulty}/"})
-    public ResponseEntity<CourseListDTO> findCoursesByDifficulty(@PathVariable String difficulty) {
+    @GetMapping(value={"/courses", "/courses/"})
+    public ResponseEntity<CourseListDTO> findCoursesByDifficulty(@RequestParam(name = "difficulty", required = false) String difficulty) {
         if (courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(difficulty)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
             CourseListDTO.courseListToCourseResponseDTOList(
@@ -70,8 +70,8 @@ public class CourseController {
                 HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value={"/courses/{status}", "/courses/{status}/"})
-    public ResponseEntity<CourseListDTO> findCoursesByStatus(@PathVariable String status) {
+    @GetMapping(value={"/courses", "/courses/"})
+    public ResponseEntity<CourseListDTO> findCoursesByStatus(@RequestParam(name = "status", required = false) String status)  {
         if (courseService.findCoursesByStatus(Course.Status.valueOf(status)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
             CourseListDTO.courseListToCourseResponseDTOList(
@@ -84,21 +84,21 @@ public class CourseController {
                 HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value={"/course-approve/{id}", "/course-approve/{id}/"})
+    @PutMapping(value={"/course-approval/{id}", "/course-approve/{id}/"})
     public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id) {
         Course course = courseService.findCourseById(id);
         courseService.approveCourse(course);
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
     }
 
-    @PutMapping(value={"/course-disapprove/{id}", "/course-disapprove/{id}/"})
+    @PutMapping(value={"/course-disapproval/{id}", "/course-disapprove/{id}/"})
     public ResponseEntity<CourseResponseDTO> disapproveCourse(@PathVariable Integer id) {
         Course course = courseService.findCourseById(id);
         courseService.disapproveCourse(course);
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
     }
 
-    @PutMapping(value={"/course-close/{id}", "/course-close/{id}/"})
+    @PutMapping(value={"/course-closing/{id}", "/course-close/{id}/"})
     public ResponseEntity<CourseResponseDTO> closeCourse(@PathVariable Integer id) {
         Course course = courseService.findCourseById(id);
         courseService.closeCourse(course);
