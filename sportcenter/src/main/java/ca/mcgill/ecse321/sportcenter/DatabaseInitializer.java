@@ -19,10 +19,11 @@ public class DatabaseInitializer implements CommandLineRunner {
     private void initializeDatabase() {
         // Create a default if it isnt already in the database
         try {
-            accountService.findOwnerByEmail("@");
-            accountService.createOwnerAccount("@", "password", "Admin", "");
-        } catch (Exception e) {
+            accountService.findOwnerByEmail("@"); // If it throws an error here then create one
             System.out.println("Default account @ is already created");
+        } catch (Exception e) {
+            System.out.println("Created default owner account with email: \"@\" and password: \"password\"");
+            accountService.createOwnerAccount("@", "password", "Admin", "");
         }
 
         // Add more initialization logic as needed
