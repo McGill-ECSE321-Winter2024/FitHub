@@ -61,17 +61,25 @@ public class SessionController {
     @GetMapping("/sessions/supervisors/{iId}")
     public ResponseEntity<SessionListDTO> findSessionsByInstructor(@PathVariable int iId){
         Instructor instructor = sessionService.getInstructorById(iId);
-        SessionListDTO sessions = new SessionListDTO(null);
+        if(instructor == null){
+            throw new IllegalArgumentException("Instructor does not exist");
+        }
+        SessionListDTO sessions = new SessionListDTO();
+        List<SessionResponseDTO> responseDTOs = new ArrayList<SessionResponseDTO>();
 
         List<Session> list = sessionService.findSessionsByInstructor(instructor);
-        sessions.setSessions(SessionListDTO.sessionListToSessionResponseDTOList(list));
-
-        if(sessions.getSessions().isEmpty()){
+        
+        if(list.isEmpty()){
             return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.NO_CONTENT);
         }
-        else{
-            return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.OK);
+
+        for(Session s : list){
+            responseDTOs.add(new SessionResponseDTO(s));
         }
+   
+        sessions.setSessions(responseDTOs);
+        return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.OK);
+        
     }
 
     @GetMapping("/sessions/courses/{cId}")

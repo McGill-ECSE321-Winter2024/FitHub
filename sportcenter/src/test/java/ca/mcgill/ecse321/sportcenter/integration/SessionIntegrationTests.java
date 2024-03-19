@@ -29,6 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
@@ -52,6 +54,8 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 //@TestInstance(Lifecycle.PER_CLASS)
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(Lifecycle.PER_CLASS)
 public class SessionIntegrationTests {
 
     @Autowired
@@ -81,6 +85,9 @@ public class SessionIntegrationTests {
 	@Autowired
 	private CourseRepository courseRepository;
 
+	@Autowired
+	private SportCenterRepository sportCenterRepository;
+
 	//---------------------Headers------------------------------
 
 	private String LOGIN_EMAIL = "julia@mail.com";
@@ -91,12 +98,14 @@ public class SessionIntegrationTests {
     String password = "secretPassword";
     String instructorName = "Olivia";
     String imageURL = "pfp.png";
+	Instructor supervisor;
 
 
 	//------------------------ Location ------------------------
 
 	String floor = "2";
     String room = "200";
+	Location location;
 
 
 	//------------------------ CourseType ----------------------
@@ -105,6 +114,7 @@ public class SessionIntegrationTests {
     String description = "a Description.";
     Difficulty diff = Difficulty.Beginner;
     Status status = Status.Approved;
+	Course course;
 
 
 	//------------------------ Session -------------------------
@@ -113,14 +123,29 @@ public class SessionIntegrationTests {
     Time endTime = Time.valueOf("09:00:00");
     Date date = Date.valueOf("2024-02-18");
     Integer capacity = 10;
+	int validId = 0;
+
 
 
 	private final int INVALID_ID = 0;
 
-	@BeforeEach
-    @AfterEach
+    @BeforeAll
+    @AfterTestClass
 	public void clearDatabase() {
+		sportCenterRepository.deleteAll();
 		sessionRepository.deleteAll();
+		courseRepository.deleteAll();
+		instructorRepository.deleteAll();
+		locationRepository.deleteAll();
+
+		
+	}
+
+	@BeforeAll
+	public void createAssociations() {
+		location = locationService.createLocation(floor, room);
+		course = courseService.createCourse(courseName, description, diff, status);
+		supervisor = accountService.createInstructorAccount(email, password, courseName, imageURL);
 	}
 
 	//--------------------------// General Empty Result Tests //--------------------------//
@@ -148,7 +173,7 @@ public class SessionIntegrationTests {
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-		Instructor supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL);
+		
 		String url = "/sessions/instructors/" + supervisor.getId();
 
 		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
@@ -165,9 +190,9 @@ public class SessionIntegrationTests {
 		HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-		Course courseType = courseService.createCourse(courseName, description, diff, status);
+		
 
-		String url = "/sessions/courses/" + courseType.getId();
+		String url = "/sessions/courses/" + course.getId();
 		
 		
 		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
@@ -176,6 +201,88 @@ public class SessionIntegrationTests {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
 
 	}
+
+	//------------------------------ Create ------------------------------
+
+	@Test
+	@Order(3)
+	public void testCreateValidSession(){
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+		SessionRequestDTO sessionParam = new SessionRequestDTO();
+		sessionParam.setCapacity(capacity);
+		sessionParam.setDate(date);
+		sessionParam.setEndTime(endTime);
+		sessionParam.setStartTime(startTime);
+        HttpEntity<SessionRequestDTO> requestEntity = new HttpEntity<>(sessionParam, headers);
+
+		///sessions/{iId}/{cId}/{lId}"
+		String url = "/sessions/" + supervisor.getId() + "/" + course.getId() + "/" + location.getId();
+
+		ResponseEntity<SessionResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, SessionResponseDTO.class);
+		assertNotNull(response);
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        SessionResponseDTO createdSession = response.getBody();
+		
+
+	}
+
+	//---------------------------------- Read by Id, Instructor, Course  ---------------------------
+	@Test
+    @Order(4)
+    public void testReadSessionByValidId() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        
+        // Act
+        ResponseEntity<SessionResponseDTO> response = client.exchange("/sessions/" + validId, HttpMethod.GET, requestEntity, SessionResponseDTO.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+	}
+
+	@Test
+    @Order(5)
+    public void testReadSessionByInstructor() {
+	}
+
+	@Test
+    @Order(6)
+    public void testReadSessionByCourse() {
+	}
+
+	//---------------------------------- Update ---------------------------
+
+	@Test
+	@Order(7)
+	public void testUpdateValidSession(){
+
+	}
+
+	@Test
+	@Order(8)
+	public void testUpdateValidSessionInstructor(){
+
+	}
+
+	@Test
+	@Order(9)
+	public void testUpdateValidSessionLocation(){
+
+	}
+
+	// ----------------------- Delete -----------------
+
+	@Test
+	@Order(10)
+	public void testDeleteValidSession(){
+
+	}
+
+
 
     
 }
