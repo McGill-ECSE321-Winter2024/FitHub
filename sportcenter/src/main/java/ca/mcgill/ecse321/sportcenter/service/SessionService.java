@@ -135,18 +135,22 @@ public class SessionService {
 
     @Transactional
     //An instructor or an owner cancel a session
-    public void cancelSession(int sid){
+    public boolean cancelSession(int sid){
         Session sessionToCancel = sessionRepo.findById(sid);
+        if(sessionToCancel == null){
+            return false;
+        }
         sessionRepo.delete(sessionToCancel);
         //I am unsure if this line is necessary
         sessionToCancel.delete();
+        return true;
 
     }
 
     //--------------------------// Getters //--------------------------//
 
     @Transactional
-    public List<Session> findAllSessions() {
+    public List<Session> findAllSessions() { 
         return toList(sessionRepo.findAll());
     }
 
@@ -162,7 +166,7 @@ public class SessionService {
     @Transactional
     public List<Session> findSessionsByInstructor(Instructor supervisor){
         if(supervisor == null){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Instructor does not exist");
         }
         return sessionRepo.findBySupervisor(supervisor);
     }
