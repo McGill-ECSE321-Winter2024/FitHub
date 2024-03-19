@@ -31,6 +31,8 @@ import org.springframework.test.context.event.annotation.AfterTestClass;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
@@ -69,6 +71,9 @@ public class SessionIntegrationTests {
 
 	@Autowired
     private LocationService locationService;
+
+	@Autowired
+	private SportCenterManagementService sportCenterService;
 
 	@Autowired
     private CourseService courseService;
@@ -130,28 +135,49 @@ public class SessionIntegrationTests {
 	private final int INVALID_ID = 0;
 
     @BeforeAll
-    @AfterTestClass
-	public void clearDatabase() {
+    //@AfterTestClass
+	public void intializeDatabase() {
 		sportCenterRepository.deleteAll();
 		sessionRepository.deleteAll();
 		courseRepository.deleteAll();
 		instructorRepository.deleteAll();
 		locationRepository.deleteAll();
 
-		
-	}
-
-	@BeforeAll
-	public void createAssociations() {
+		Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("0:0:0");
+        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		location = locationService.createLocation(floor, room);
 		course = courseService.createCourse(courseName, description, diff, status);
 		supervisor = accountService.createInstructorAccount(email, password, courseName, imageURL);
+
+		
 	}
+
+	//---------------login -------------------------------
+
+	@Test
+    @Order(0)
+    public void login() {
+        // Save one account in the system
+       
+        
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        
+        // Login into that account
+        LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
+        ResponseEntity<LoginResponseDTO> response = client.postForEntity("/login", request, LoginResponseDTO.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+    }
+
 
 	//--------------------------// General Empty Result Tests //--------------------------//
 
+
+
 	@Test
-	@Order(0)
+	@Order(1)
 	public void testFindAllSessionEmptyResult(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -166,7 +192,7 @@ public class SessionIntegrationTests {
 	}
 
 	@Test
-	@Order(1)
+	@Order(2)
 	public void testFindSessionsByInstructorEmptyResult(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -184,7 +210,7 @@ public class SessionIntegrationTests {
 	}
 
 	@Test
-	@Order(2)
+	@Order(3)
 	public void testFindSessionsByCourseEmptyResult(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -205,7 +231,7 @@ public class SessionIntegrationTests {
 	//------------------------------ Create ------------------------------
 
 	@Test
-	@Order(3)
+	@Order(4)
 	public void testCreateValidSession(){
 		HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -229,7 +255,7 @@ public class SessionIntegrationTests {
 
 	//---------------------------------- Read by Id, Instructor, Course  ---------------------------
 	@Test
-    @Order(4)
+    @Order(5)
     public void testReadSessionByValidId() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -245,9 +271,11 @@ public class SessionIntegrationTests {
 	}
 
 	@Test
-    @Order(5)
+    @Order(6)
     public void testReadSessionByInstructor() {
 	}
+
+	/*
 
 	@Test
     @Order(6)
@@ -281,6 +309,7 @@ public class SessionIntegrationTests {
 	public void testDeleteValidSession(){
 
 	}
+	*/
 
 
 
