@@ -43,7 +43,7 @@ public class CourseController {
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseById(id)), HttpStatus.FOUND);
     }
 
-    @GetMapping(value={"/courses/name", "/courses/name/"})
+    @GetMapping(value={"/courses/{name}", "/courses/{name}/"})
     public ResponseEntity<CourseResponseDTO> findCourseByName(@RequestParam("name") String name){
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseByName(name)), HttpStatus.FOUND);
     }
@@ -56,7 +56,7 @@ public class CourseController {
             return new ResponseEntity<CourseListDTO>(new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses())), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value={"/courses/difficulty", "/courses/difficulty/"})
+    @GetMapping(value={"/courses/{difficulty}", "/courses/{difficulty}/"})
     public ResponseEntity<CourseListDTO> findCoursesByDifficulty(@RequestParam("difficulty") String difficulty) {
         if (courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(difficulty)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
@@ -70,7 +70,7 @@ public class CourseController {
                 HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value={"/courses/status", "/courses/status/"})
+    @GetMapping(value={"/courses/{status}", "/courses/{status}/"})
     public ResponseEntity<CourseListDTO> findCoursesByStatus(@RequestParam("status") String status) {
         if (courseService.findCoursesByStatus(Course.Status.valueOf(status)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
