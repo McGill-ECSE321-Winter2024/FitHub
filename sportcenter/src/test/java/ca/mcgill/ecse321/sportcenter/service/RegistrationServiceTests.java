@@ -16,6 +16,8 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
+import java.util.ArrayList;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
@@ -61,7 +63,6 @@ public class RegistrationServiceTests {
     @InjectMocks
     private RegistrationService registrationService;
 
-    private SportCenter sportCenter;
     private Customer customer;
     private Session session;
     private Instructor instructor;
@@ -225,4 +226,49 @@ public class RegistrationServiceTests {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> registrationService.findRegistrationByKey(key));
         assertEquals("There is no registration with key " + key + ".", e.getMessage());
     }
+
+    @Test
+    public void testGetAllRegistrationsFromSession() {
+        when(sessionRepository.findById(0)).thenReturn(session);
+
+        // Create registrations
+        Registration registration1 = new Registration();
+        Registration registration2 = new Registration();
+        List<Registration> registrations = new ArrayList<>();
+        registrations.add(registration1);
+        registrations.add(registration2);
+
+        // Mock repository call
+        when(registrationRepository.findAllByKeySession(any(Session.class))).thenReturn(registrations);
+
+        // Call service method
+        List<Registration> resultRegistrations = registrationService.getAllRegistrationsFromSession(session);
+
+        // Assertions
+        assertEquals(registrations.size(), resultRegistrations.size());
+        assertEquals(registrations, resultRegistrations);
+    }
+
+    @Test
+    public void testGetAllRegistrationsFromCustomer() {
+        when(customerRepository.findCustomerById(0)).thenReturn(customer);
+
+        // Create registrations
+        Registration registration1 = new Registration();
+        Registration registration2 = new Registration();
+        List<Registration> registrations = new ArrayList<>();
+        registrations.add(registration1);
+        registrations.add(registration2);
+
+        // Mock repository call
+        when(registrationRepository.findAllByKeyCustomer(any(Customer.class))).thenReturn(registrations);
+
+        // Call service method
+        List<Registration> resultRegistrations = registrationService.getAllRegistrationsFromCustomer(customer);
+
+        // Assertions
+        assertEquals(registrations.size(), resultRegistrations.size());
+        assertEquals(registrations, resultRegistrations);
+    }
+
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.model.Registration;
+import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
 
 /*
@@ -28,6 +30,9 @@ public class RegistrationService {
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private SportCenterManagementService sportCenterManagementService;
 
     //--------------------------// Create Registration //--------------------------//
 
@@ -61,6 +66,15 @@ public class RegistrationService {
         registrationRepository.delete(findRegistrationByKey(key));
     }
 
+    @Transactional
+    public boolean cancelRegistration(Registration registration) {
+        if (registration == null) {
+            return false;
+        }
+        deleteRegistration(registration.getKey());
+        return true;
+    }
+
     //--------------------------// Getters //--------------------------//
 
     @Transactional
@@ -86,30 +100,15 @@ public class RegistrationService {
         return toList(registrationRepository.findAll());
     }
 
-    //--------------------------// Register to a Session //--------------------------//
-
     @Transactional
-    public Registration register(Integer customerId, Integer sessionId) {
-        Customer customer = accountService.findCustomerById(customerId);
-        Session session = sessionService.findSessionById(sessionId);
-        Registration existingRegistration = findRegistration(customer, session);
-
-        if (existingRegistration != null) {
-            // Already registered
-            return existingRegistration;
-        } else {
-            Registration newRegistration = new Registration(new Registration.Key(customer, session));
-            return registrationRepository.save(newRegistration);
-        }
+    public List<Registration> getAllRegistrationsFromSession(Session session) {
+        return toList(registrationRepository.findAllByKeySession(session));
     }
 
-    //--------------------------// Cancel a Registration //--------------------------//
-
     @Transactional
-    public void cancelRegistration(Registration registration) {
-
-        deleteRegistration(registration.getKey());
-    }
+    public List<Registration> getAllRegistrationsFromCustomer(Customer customer) {
+        return toList(registrationRepository.findAllByKeyCustomer(customer));
+    }  
 
     //--------------------------// Helper functions //--------------------------//
 
