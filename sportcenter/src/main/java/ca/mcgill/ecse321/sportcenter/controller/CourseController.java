@@ -57,7 +57,7 @@ public class CourseController {
     }
 
     @GetMapping(value={"/courses/difficulty", "/courses/difficulty/"})
-    public ResponseEntity<CourseListDTO> findCoursesByDiffiiculty(@RequestParam("difficulty") String difficulty) {
+    public ResponseEntity<CourseListDTO> findCoursesByDifficulty(@RequestParam("difficulty") String difficulty) {
         if (courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(difficulty)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
             CourseListDTO.courseListToCourseResponseDTOList(
