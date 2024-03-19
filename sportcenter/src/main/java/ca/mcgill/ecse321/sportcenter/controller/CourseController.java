@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
-import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
@@ -73,29 +71,38 @@ public class CourseController {
     }
 
     @GetMapping(value={"/courses/status", "/courses/status"})
-    public CourseListDTO findCoursesByStatus(@RequestParam("status") String status) {
-        return new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findCoursesByStatus(Course.Status.valueOf(status))));
+    public ResponseEntity<CourseListDTO> findCoursesByStatus(@RequestParam("status") String status) {
+        if (courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(status)).size() > 0)
+        return new ResponseEntity<CourseListDTO>(new CourseListDTO(
+            CourseListDTO.courseListToCourseResponseDTOList(
+                courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(status)))), 
+                HttpStatus.OK);
+    else
+        return new ResponseEntity<CourseListDTO>(new CourseListDTO(
+            CourseListDTO.courseListToCourseResponseDTOList(
+                courseService.findCoursesByStatus(Course.Status.valueOf(status)))), 
+                HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(value={"/course-approve/{id}", "/course-approve/{id}/"})
-    public CourseResponseDTO approveCourse(@PathVariable Integer id) {
+    public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id) {
         Course course = courseService.findCourseById(id);
         courseService.approveCourse(course);
-        return new CourseResponseDTO(course);
+        return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
     }
 
     @PutMapping(value={"/course-disapprove/{id}", "/course-disapprove/{id}/"})
-    public CourseResponseDTO disapproveCourse(@PathVariable Integer id) {
+    public ResponseEntity<CourseResponseDTO> disapproveCourse(@PathVariable Integer id) {
         Course course = courseService.findCourseById(id);
         courseService.disapproveCourse(course);
-        return new CourseResponseDTO(course);
+        return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
     }
 
     @PutMapping(value={"/course-close/{id}", "/course-close/{id}/"})
-    public CourseResponseDTO closeCourse(@PathVariable Integer id) {
+    public ResponseEntity<CourseResponseDTO> closeCourse(@PathVariable Integer id) {
         Course course = courseService.findCourseById(id);
         courseService.closeCourse(course);
-        return new CourseResponseDTO(course);
+        return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
     }
 
 
