@@ -59,11 +59,12 @@ public class SessionServiceTests {
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
+
         sessionRepository.deleteAll();
+        sportCenterRepo.deleteAll();
         supervisorRepository.deleteAll();
         locationRepository.deleteAll();
         courseRepository.deleteAll();
-        sportCenterRepo.deleteAll();
     }
 
     /**
@@ -89,7 +90,7 @@ public class SessionServiceTests {
     }
 
     
-    //--------------------------// Create Account Tests //--------------------------//
+    //--------------------------// Create Session Tests //--------------------------//
 
     @Test
     public void testCreateValidSession() {

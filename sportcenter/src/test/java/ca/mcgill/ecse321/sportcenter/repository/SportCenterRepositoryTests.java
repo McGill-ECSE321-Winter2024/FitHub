@@ -23,6 +23,7 @@ public class SportCenterRepositoryTests {
     @Autowired
     private SportCenterRepository sportCenterRepo;
 
+
     /**
      * Method to clear the database before and after each test.
      */

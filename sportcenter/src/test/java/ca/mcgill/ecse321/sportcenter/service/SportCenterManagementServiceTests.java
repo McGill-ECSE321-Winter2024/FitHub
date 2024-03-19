@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
+import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
 @SpringBootTest
@@ -25,6 +26,7 @@ public class SportCenterManagementServiceTests {
 
     @Mock
     private SportCenterRepository sportCenterRepository;
+
 
     @InjectMocks
     private SportCenterManagementService sportCenterManagementService;

@@ -44,6 +44,7 @@ import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
+import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
@@ -88,6 +89,9 @@ public class SessionIntegrationTests {
 	private LocationRepository locationRepository;
 
 	@Autowired
+	private RegistrationRepository registrationRepository;
+
+	@Autowired
 	private CourseRepository courseRepository;
 
 	@Autowired
@@ -105,12 +109,22 @@ public class SessionIntegrationTests {
     String imageURL = "pfp.png";
 	Instructor supervisor;
 
+	String newEmail = "dada@mail.com";
+    String newPassword = "notsosecretPassword";
+    String newInstructorName = "Dada";
+    String newImageURL = "dada.png";
+	Instructor newSupervisor;
+
 
 	//------------------------ Location ------------------------
 
 	String floor = "2";
     String room = "200";
 	Location location;
+
+	String newFloor = "6";
+    String newRoom = "600";
+	Location newLocation;
 
 
 	//------------------------ CourseType ----------------------
@@ -130,27 +144,51 @@ public class SessionIntegrationTests {
     Integer capacity = 10;
 	int validId = 0;
 
+	Time newStartTime = Time.valueOf("10:00:00");
+    Time newEndTime = Time.valueOf("11:00:00");
+    Date newDate = Date.valueOf("2024-02-19");
+    Integer newCapacity = 20;
 
 
 	private final int INVALID_ID = 0;
 
     @BeforeAll
-    //@AfterTestClass
 	public void intializeDatabase() {
-		sportCenterRepository.deleteAll();
+
+		registrationRepository.deleteAll();
 		sessionRepository.deleteAll();
-		courseRepository.deleteAll();
-		instructorRepository.deleteAll();
+		sportCenterRepository.deleteAll();
 		locationRepository.deleteAll();
+		instructorRepository.deleteAll();
+		courseRepository.deleteAll();
 
 		Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
+		if(openingTime.after(closingTime)){
+			String test = "Midnight is before 6:00";
+			System.out.println("Midnight is before 6:00");
+		}
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		location = locationService.createLocation(floor, room);
 		course = courseService.createCourse(courseName, description, diff, status);
-		supervisor = accountService.createInstructorAccount(email, password, courseName, imageURL);
+		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL);
+		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL);
+		newLocation = locationService.createLocation(newFloor, newRoom);
 
 		
+	}
+
+	@AfterTestClass
+	public void clearDatabase() {
+
+		registrationRepository.deleteAll();
+		sessionRepository.deleteAll();
+		sportCenterRepository.deleteAll();
+		locationRepository.deleteAll();
+		instructorRepository.deleteAll();
+		courseRepository.deleteAll();
+
+
 	}
 
 	//---------------login -------------------------------
@@ -199,6 +237,7 @@ public class SessionIntegrationTests {
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
+		assertNotNull(instructorRepository.findInstructorById(supervisor.getId()));
 		
 		String url = "/sessions/instructors/" + supervisor.getId();
 
@@ -249,6 +288,7 @@ public class SessionIntegrationTests {
 		assertNotNull(response);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         SessionResponseDTO createdSession = response.getBody();
+		validId = createdSession.getId();
 		
 
 	}
@@ -273,43 +313,115 @@ public class SessionIntegrationTests {
 	@Test
     @Order(6)
     public void testReadSessionByInstructor() {
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(instructorRepository.findInstructorById(supervisor.getId()));
+		
+		String url = "/sessions/instructors/" + supervisor.getId();
+
+		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should not be empty
+
 	}
 
-	/*
-
 	@Test
-    @Order(6)
-    public void testReadSessionByCourse() {
+	@Order(7)
+	public void testReadSessionByCourse(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+		
+
+		String url = "/sessions/courses/" + course.getId();
+		
+		
+		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
+
 	}
 
 	//---------------------------------- Update ---------------------------
 
-	@Test
-	@Order(7)
-	public void testUpdateValidSession(){
-
-	}
 
 	@Test
 	@Order(8)
-	public void testUpdateValidSessionInstructor(){
+	public void testUpdateValidSession(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+		SessionRequestDTO sessionParam = new SessionRequestDTO();
+		sessionParam.setCapacity(newCapacity);
+		sessionParam.setDate(newDate);
+		sessionParam.setEndTime(newEndTime);
+		sessionParam.setStartTime(newStartTime);
+        HttpEntity<SessionRequestDTO> requestEntity = new HttpEntity<>(sessionParam,headers);
+
+		String url = "/sessions/" + validId +"/attributes";
+		ResponseEntity<SessionResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, SessionResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+
+		
 
 	}
 
 	@Test
 	@Order(9)
-	public void testUpdateValidSessionLocation(){
+	public void testUpdateValidSessionInstructor(){
 
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		String url = "/sessions/" + validId +  "/instructors/" + newSupervisor.getId();
+		ResponseEntity<SessionResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, SessionResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 	}
 
-	// ----------------------- Delete -----------------
-
+	
 	@Test
 	@Order(10)
-	public void testDeleteValidSession(){
+	public void testUpdateValidSessionLocation(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		String url = "/sessions/" + validId +  "/locations/" + newLocation.getId();
+		ResponseEntity<SessionResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, SessionResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 
 	}
-	*/
+
+	@Test
+	@Order(11)
+	public void testDeleteValidSession(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		String url = "/sessions/" + validId ;
+		ResponseEntity<SessionResponseDTO> response = client.exchange(url, HttpMethod.DELETE, requestEntity, SessionResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+
+	}
+	
 
 
 

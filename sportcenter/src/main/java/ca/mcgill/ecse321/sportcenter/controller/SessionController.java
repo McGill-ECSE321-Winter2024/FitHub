@@ -58,7 +58,7 @@ public class SessionController {
         }
     }
     
-    @GetMapping("/sessions/supervisors/{iId}")
+    @GetMapping("/sessions/instructors/{iId}")
     public ResponseEntity<SessionListDTO> findSessionsByInstructor(@PathVariable int iId){
         Instructor instructor = sessionService.getInstructorById(iId);
         if(instructor == null){
@@ -105,17 +105,17 @@ public class SessionController {
     }
     //--------------------------// Update Session //--------------------------//
     //TO CONFIRM WITH TA
-    @PutMapping("/sessions/{id}/")
+    @PutMapping("/sessions/{id}/attributes")
     public ResponseEntity<SessionResponseDTO> updateSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id){
         return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity())),HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/session/{sId}/{lId}")
+    @PutMapping("/sessions/{sId}/locations/{lId}")
     public ResponseEntity<SessionResponseDTO> updateSessionLocation(@PathVariable int sId, @PathVariable int lId){
         return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionLocation(sId, lId)),HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/session/{sId}/{iId}")
+    @PutMapping("/sessions/{sId}/instructors/{iId}")
     public ResponseEntity<SessionResponseDTO> updateSessionSupervisor(@PathVariable int sId, @PathVariable int iId){
         return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionSupervisor(sId, iId)),HttpStatus.ACCEPTED);
     }
