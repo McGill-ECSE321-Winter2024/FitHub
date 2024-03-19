@@ -72,10 +72,10 @@ public class CourseController {
 
     @GetMapping(value={"/courses/status", "/courses/status/"})
     public ResponseEntity<CourseListDTO> findCoursesByStatus(@RequestParam("status") String status) {
-        if (courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(status)).size() > 0)
+        if (courseService.findCoursesByStatus(Course.Status.valueOf(status)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
             CourseListDTO.courseListToCourseResponseDTOList(
-                courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(status)))), 
+                courseService.findCoursesByStatus(Course.Status.valueOf(status)))), 
                 HttpStatus.OK);
     else
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
