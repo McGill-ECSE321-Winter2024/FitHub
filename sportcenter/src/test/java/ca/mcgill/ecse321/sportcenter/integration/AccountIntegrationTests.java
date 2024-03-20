@@ -94,7 +94,7 @@ public class AccountIntegrationTests {
     public void login() {
         // Save one account in the system
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:59:0");
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
         
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
