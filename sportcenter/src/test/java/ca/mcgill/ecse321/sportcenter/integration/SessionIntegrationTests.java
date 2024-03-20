@@ -355,7 +355,7 @@ public class SessionIntegrationTests {
 		sessionParam.setStartTime(newStartTime);
         HttpEntity<SessionRequestDTO> requestEntity = new HttpEntity<>(sessionParam,headers);
 
-		String url = "/sessions/" + validId +"/attributes";
+		String url = "/sessions/" + validId;
 		ResponseEntity<SessionResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, SessionResponseDTO.class);
 
 		assertNotNull(response);

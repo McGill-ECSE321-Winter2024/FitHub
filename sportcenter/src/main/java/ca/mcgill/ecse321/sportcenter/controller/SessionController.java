@@ -102,7 +102,7 @@ public class SessionController {
     }
     //--------------------------// Update Session //--------------------------//
     //TO CONFIRM WITH TA
-    @PutMapping("/sessions/{id}/attributes")
+    @PutMapping("/sessions/{id}")
     public ResponseEntity<SessionResponseDTO> updateSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id){
         return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity())),HttpStatus.ACCEPTED);
     }
