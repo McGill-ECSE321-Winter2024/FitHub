@@ -50,6 +50,9 @@ public class SessionServiceTests {
 
     @InjectMocks
     private SessionService sessionService;
+
+    @InjectMocks
+    private SessionService courseService;
     
     /**
      * Clear the sportcenter database before each test.
