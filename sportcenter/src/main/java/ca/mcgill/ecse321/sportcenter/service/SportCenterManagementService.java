@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
-import ca.mcgill.ecse321.sportcenter.model.Course;
-import ca.mcgill.ecse321.sportcenter.model.Location;
-import ca.mcgill.ecse321.sportcenter.model.Account;
 
 /*
 * <p>Service class in charge of managing accounts. It implements following use cases: </p>
@@ -29,8 +26,7 @@ public class SportCenterManagementService {
 
     @Transactional
 	public SportCenter createSportCenter(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber) {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
-        if (sportCenter != null) {
+        if (getAllSportCenters().size() > 0) {
             throw new IllegalArgumentException("Sport center already exists.");
         }
         validSportCentertInfo(name, address, email, phoneNumber);
@@ -54,11 +50,27 @@ public class SportCenterManagementService {
             throw new IllegalArgumentException("Empty address is not valid");
         }
 
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
+        SportCenter sportCenter = getSportCenter();
 
         sportCenter.setOpeningTime(newOpeningTime);
         sportCenter.setClosingTime(newClosingTime);
         sportCenter.setAddress(newAddress);
+        sportCenterRepository.save(sportCenter);
+
+        return sportCenter;
+    }
+
+    @Transactional
+    public SportCenter updateSportCenter(SportCenter updatedSportCenter) {
+        if (updatedSportCenter.getAddress().isEmpty()) {
+            throw new IllegalArgumentException("Empty address is not valid");
+        }
+
+        SportCenter sportCenter = getSportCenter();
+
+        sportCenter.setOpeningTime(updatedSportCenter.getOpeningTime());
+        sportCenter.setClosingTime(updatedSportCenter.getClosingTime());
+        sportCenter.setAddress(updatedSportCenter.getAddress());
         sportCenterRepository.save(sportCenter);
 
         return sportCenter;
@@ -74,6 +86,27 @@ public class SportCenterManagementService {
         }
         sportCenterRepository.delete(sportCenter);
     }
+
+    //--------------------------// Getters Sport Center //--------------------------//
+    @Transactional
+    public List<SportCenter> getAllSportCenters() {
+        return toList(sportCenterRepository.findAll());
+    }
+
+    @Transactional
+    public SportCenter getSportCenter() {
+        return getAllSportCenters().get(0);
+    }
+
+    //--------------------------// Helper function //--------------------------//
+
+    private <T> List<T> toList(Iterable<T> iterable){
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
 
     //--------------------------// Input Validation //--------------------------//
 
