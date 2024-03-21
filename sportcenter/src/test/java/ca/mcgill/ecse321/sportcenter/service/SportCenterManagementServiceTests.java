@@ -30,6 +30,7 @@ public class SportCenterManagementServiceTests {
     @Mock
     private SportCenterRepository sportCenterRepository;
 
+
     @InjectMocks
     private SportCenterManagementService sportCenterManagementService;
 

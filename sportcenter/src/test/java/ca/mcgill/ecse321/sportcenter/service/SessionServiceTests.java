@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -24,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
-import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Session;
@@ -52,6 +50,9 @@ public class SessionServiceTests {
 
     @InjectMocks
     private SessionService sessionService;
+
+    @InjectMocks
+    private SessionService courseService;
     
     /**
      * Clear the sportcenter database before each test.
@@ -59,11 +60,12 @@ public class SessionServiceTests {
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
+
         sessionRepository.deleteAll();
+        sportCenterRepo.deleteAll();
         supervisorRepository.deleteAll();
         locationRepository.deleteAll();
         courseRepository.deleteAll();
-        sportCenterRepo.deleteAll();
     }
 
     /**
@@ -89,7 +91,7 @@ public class SessionServiceTests {
     }
 
     
-    //--------------------------// Create Account Tests //--------------------------//
+    //--------------------------// Create Session Tests //--------------------------//
 
     @Test
     public void testCreateValidSession() {
@@ -846,13 +848,11 @@ public class SessionServiceTests {
     
     @Test
     public void testReadSessionByInvalidInstructor() {
-        int id = 50;
         // Set up test
         Instructor instructor = null;
 
         // Use the AccountService and Assert
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByInstructor(instructor));
-        
+        assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByInstructor(instructor));
     }
 
     @Test
@@ -928,15 +928,13 @@ public class SessionServiceTests {
     
     @Test
     public void testReadSessionByInvalidCourse(){
-
-        int id = 50;
         Course aCourseType = null;
        
 
         when(sessionRepository.findByCourseType(aCourseType)).thenReturn(null);
 
         // Use the AccountService and Assert
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByCourse(aCourseType));
+        assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByCourse(aCourseType));
         
     }
     
