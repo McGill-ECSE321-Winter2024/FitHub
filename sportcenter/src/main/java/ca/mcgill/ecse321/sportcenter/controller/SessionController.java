@@ -22,6 +22,7 @@ import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.SessionService;
 
 /*
@@ -35,6 +36,9 @@ public class SessionController {
 
     @Autowired
     private SessionService sessionService;
+    
+    @Autowired
+    private CourseService courseService;
 
     //--------------------------// Getters //--------------------------//
     @GetMapping("/sessions/{sid}")
@@ -81,7 +85,7 @@ public class SessionController {
 
     @GetMapping("/sessions/courses/{cId}")
     public ResponseEntity<SessionListDTO> findSessionsByCourse(@PathVariable int cId){
-        Course course = sessionService.getCourseById(cId);
+        Course course = courseService.findCourseById(cId);
         List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
         for (Session model : sessionService.findSessionsByCourse(course)){
             sessions.add(new SessionResponseDTO(model));

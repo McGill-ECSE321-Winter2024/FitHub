@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.sql.Date;
 import java.sql.Time;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,14 +18,13 @@ import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Session;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 /**
  * This class provides test cases for the RegistrationRepository class.
  * It verifies the functionalities related to creating and reading registrations.
  */
 @SpringBootTest
-public class RegistrationRepositoryTests {
+public class RegistrationRepositoryTests extends CommonTestSetup {
 
     @Autowired
     private CustomerRepository customerRepo;
@@ -41,41 +38,6 @@ public class RegistrationRepositoryTests {
     private CourseRepository courseRepo;
     @Autowired
     private RegistrationRepository registrationRepo;
-    @Autowired
-    private SportCenterRepository sportCenterRepo;
-
-    private SportCenter sportCenter;
-
-    /**
-     * Method to clear the database before and after each test.
-     */
-    @BeforeEach
-    @AfterEach
-    public void clearDatabase() { 
-        registrationRepo.deleteAll();
-        customerRepo.deleteAll();
-        sessionRepo.deleteAll();
-        instructorRepo.deleteAll();
-        locationRepo.deleteAll();
-        courseRepo.deleteAll();
-    }
-
-    /**
-     * Method to create and save a sport center before each test.
-     */
-    @BeforeEach
-    public void createAndSaveSportCenter() {
-        SportCenter sportCenter = new SportCenter();
-        sportCenter.setName("FitHub");
-        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
-        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
-        sportCenter.setEmail("info@fithub.com");
-        sportCenter.setPhoneNumber("421-436-4444");
-        sportCenter.setAddress("2011, University Street, Montreal");
-
-        // Save sportCenterRepo
-        sportCenter = sportCenterRepo.save(sportCenter);
-    }
     
     /**
      * Test case to verify the creation and reading of a registration.

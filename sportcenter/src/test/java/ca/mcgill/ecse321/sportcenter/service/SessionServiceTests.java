@@ -848,13 +848,11 @@ public class SessionServiceTests {
     
     @Test
     public void testReadSessionByInvalidInstructor() {
-        int id = 50;
         // Set up test
         Instructor instructor = null;
 
         // Use the AccountService and Assert
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByInstructor(instructor));
-        
+        assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByInstructor(instructor));
     }
 
     @Test
@@ -930,15 +928,13 @@ public class SessionServiceTests {
     
     @Test
     public void testReadSessionByInvalidCourse(){
-
-        int id = 50;
         Course aCourseType = null;
        
 
         when(sessionRepository.findByCourseType(aCourseType)).thenReturn(null);
 
         // Use the AccountService and Assert
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByCourse(aCourseType));
+        assertThrows(IllegalArgumentException.class, () -> sessionService.findSessionsByCourse(aCourseType));
         
     }
     

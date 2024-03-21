@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.sportcenter.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Session;
 
 public class SessionListDTO {

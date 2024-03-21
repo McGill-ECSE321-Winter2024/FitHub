@@ -12,7 +12,6 @@ import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Session;
-import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
@@ -44,9 +43,6 @@ public class SessionService {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
-    @Autowired
-    private CourseService courseService;
-
     //--------------------------// Create Session //--------------------------//
 
     @Transactional
@@ -65,7 +61,7 @@ public class SessionService {
         
         Instructor aSupervisor = instructRepo.findInstructorById(iId);
         Location aLocation = locationRepo.findLocationById(lId);
-        Course aCourseType = getCourseById(cId);
+        Course aCourseType = courseRepo.findCourseById(cId);
         if(aSupervisor == null || aLocation == null || aCourseType == null){
             throw new IllegalArgumentException();
         }
@@ -191,10 +187,6 @@ public class SessionService {
 		}
 		return resultList;
 	}
-
-    public Course getCourseById(int id){
-        return courseService.findCourseById(id);
-    }
 
     public Instructor getInstructorById(int id){
         return instructRepo.findInstructorById(id);

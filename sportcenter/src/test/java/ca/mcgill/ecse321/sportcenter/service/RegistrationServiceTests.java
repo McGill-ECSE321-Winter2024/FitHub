@@ -25,7 +25,6 @@ import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Session;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
@@ -61,7 +60,6 @@ public class RegistrationServiceTests {
     @InjectMocks
     private RegistrationService registrationService;
 
-    private SportCenter sportCenter;
     private Customer customer;
     private Session session;
     private Instructor instructor;

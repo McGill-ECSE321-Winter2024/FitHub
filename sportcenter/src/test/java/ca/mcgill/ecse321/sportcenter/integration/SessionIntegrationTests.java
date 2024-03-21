@@ -42,7 +42,6 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
-import ca.mcgill.ecse321.sportcenter.service.SessionService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -55,9 +54,6 @@ public class SessionIntegrationTests {
 
     @Autowired
     private TestRestTemplate client;
-
-    @Autowired
-    private SessionService sessionService;
 
 	@Autowired
     private AccountService accountService;
@@ -141,9 +137,6 @@ public class SessionIntegrationTests {
     Date newDate = Date.valueOf("2024-02-19");
     Integer newCapacity = 20;
 
-
-	private final int INVALID_ID = 0;
-
     @BeforeAll
 	public void intializeDatabase() {
 
@@ -156,10 +149,7 @@ public class SessionIntegrationTests {
 
 		Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("23:0:0");
-		if(openingTime.after(closingTime)){
-			String test = "Midnight is before 6:00";
-			System.out.println("Midnight is before 6:00");
-		}
+		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		location = locationService.createLocation(floor, room);
 		course = courseService.createCourse(courseName, description, diff, status);
