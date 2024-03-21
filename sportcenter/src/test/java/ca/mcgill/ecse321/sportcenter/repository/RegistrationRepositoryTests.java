@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,5 +114,115 @@ public class RegistrationRepositoryTests extends CommonTestSetup {
         assertNotNull(regFromDb.getKey().getCustomer());
         assertEquals(customer.getId(), regFromDb.getKey().getCustomer().getId());
         
+    }
+
+    @Test
+    public void testFindAllRegistrationsBySession() {
+        // Create entities
+        Customer customer = new Customer();
+        customer.setEmail("bob@gmail.com");
+        customer.setPassword("12345");
+        customer.setName("Bob");
+        customer.setImageURL("pfp123.com");
+        customer = customerRepo.save(customer);
+
+        Instructor instructor = new Instructor();
+        instructor.setEmail("Jumijabasali@fithub.com");
+        instructor.setPassword("sportcenter");
+        instructor.setName("Jumijabasali");
+        instructor.setImageURL("pfp.com");
+        instructor.setCenter(sportCenter);
+        instructor = instructorRepo.save(instructor);
+
+        Location location = new Location();
+        location.setFloor("aFloor");
+        location.setRoom("aRoom");
+        location.setCenter(sportCenter);
+        location = locationRepo.save(location);
+
+        Course course = new Course();
+        course.setName("Cardio");
+        course.setDescription("Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope");
+        course.setDifficulty(Course.Difficulty.Beginner);
+        course.setStatus(Course.Status.Approved);
+        course = courseRepo.save(course);
+
+        Session session = new Session();
+        session.setStartTime(Time.valueOf("08:00:00"));
+        session.setEndTime(Time.valueOf("09:00:00"));
+        session.setDate(Date.valueOf("2024-02-18"));
+        session.setCapacity(50);
+        session.setSupervisor(instructor);
+        session.setCourseType(course);
+        session.setLocation(location);
+        session = sessionRepo.save(session);
+
+        Registration.Key key = new Registration.Key(customer, session);
+        Registration registration = new Registration(key);
+        registrationRepo.save(registration);
+
+        // Find all registrations for the session
+        List<Registration> registrations = registrationRepo.findAllByKeySession(session);
+
+        // Assertions
+        assertNotNull(registrations);
+        assertEquals(1, registrations.size());
+        assertEquals(customer.getId(), registrations.get(0).getKey().getCustomer().getId());
+        assertEquals(session.getId(), registrations.get(0).getKey().getSession().getId());
+    }
+
+    @Test
+    public void testFindAllRegistrationsByCustomer() {
+        // Create entities
+        Customer customer = new Customer();
+        customer.setEmail("bob@gmail.com");
+        customer.setPassword("12345");
+        customer.setName("Bob");
+        customer.setImageURL("pfp123.com");
+        customer = customerRepo.save(customer);
+
+        Instructor instructor = new Instructor();
+        instructor.setEmail("Jumijabasali@fithub.com");
+        instructor.setPassword("sportcenter");
+        instructor.setName("Jumijabasali");
+        instructor.setImageURL("pfp.com");
+        instructor.setCenter(sportCenter);
+        instructor = instructorRepo.save(instructor);
+
+        Location location = new Location();
+        location.setFloor("aFloor");
+        location.setRoom("aRoom");
+        location.setCenter(sportCenter);
+        location = locationRepo.save(location);
+
+        Course course = new Course();
+        course.setName("Cardio");
+        course.setDescription("Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope");
+        course.setDifficulty(Course.Difficulty.Beginner);
+        course.setStatus(Course.Status.Approved);
+        course = courseRepo.save(course);
+
+        Session session = new Session();
+        session.setStartTime(Time.valueOf("08:00:00"));
+        session.setEndTime(Time.valueOf("09:00:00"));
+        session.setDate(Date.valueOf("2024-02-18"));
+        session.setCapacity(50);
+        session.setSupervisor(instructor);
+        session.setCourseType(course);
+        session.setLocation(location);
+        session = sessionRepo.save(session);
+
+        Registration.Key key = new Registration.Key(customer, session);
+        Registration registration = new Registration(key);
+        registrationRepo.save(registration);
+
+        // Find all registrations for the customer
+        List<Registration> registrations = registrationRepo.findAllByKeyCustomer(customer);
+
+        // Assertions
+        assertNotNull(registrations);
+        assertEquals(1, registrations.size());
+        assertEquals(customer.getId(), registrations.get(0).getKey().getCustomer().getId());
+        assertEquals(session.getId(), registrations.get(0).getKey().getSession().getId());
     }
 }
