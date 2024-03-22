@@ -109,8 +109,13 @@ public class BillingAccountService {
     //--------------------------// Delete Account //--------------------------//
 
     @Transactional
-    public void deleteBillingAccount(Integer id){
-        billingAccountRepo.delete(findBillingAccountById(id));
+    public boolean deleteBillingAccount(Integer id){
+        BillingAccount account = billingAccountRepo.findBillingAccountById(id);
+        if(account == null){
+            return false;
+        }
+        billingAccountRepo.delete(account);
+        return true;
     }
 
     //--------------------------// Getters //--------------------------//
