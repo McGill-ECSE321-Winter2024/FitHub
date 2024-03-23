@@ -114,8 +114,8 @@ public class BillingAccountIntegreationTests {
 	public void intializeDatabase() {
         
         billingAccountRepository.deleteAll();
-		sportCenterRepository.deleteAll();
-		//customerRepository.deleteAll();
+		//sportCenterRepository.deleteAll();
+		customerRepository.deleteAll();
 
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
 		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
@@ -126,8 +126,8 @@ public class BillingAccountIntegreationTests {
     @AfterTestClass
 	public void clearDatabase() {
         billingAccountRepository.deleteAll();
-		sportCenterRepository.deleteAll();
-		customerRepository.deleteAll();
+		//sportCenterRepository.deleteAll();
+		//customerRepository.deleteAll();
     }
 
     //---------------login -------------------------------
