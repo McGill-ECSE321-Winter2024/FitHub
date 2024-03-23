@@ -30,6 +30,10 @@ public class BillingAccountResponseDTO {
 
     }
 
+    public BillingAccountResponseDTO(){
+        
+    }
+
     //--------------------- Getters -------------------//
 
     public BigInteger getCardNumber(){

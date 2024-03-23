@@ -14,7 +14,7 @@ public class BillingAccountListDTO {
     }
 
     public BillingAccountListDTO(){
-
+        this.accounts = new ArrayList<>();
     }
 
     public List<BillingAccountResponseDTO> getBillingAccounts(){

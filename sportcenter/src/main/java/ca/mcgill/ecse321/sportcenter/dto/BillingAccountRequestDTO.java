@@ -29,6 +29,10 @@ public class BillingAccountRequestDTO {
 
     }
 
+    public BillingAccountRequestDTO(){
+        
+    }
+
     //--------------------- Getters -------------------//
 
     public BigInteger getCardNumber(){

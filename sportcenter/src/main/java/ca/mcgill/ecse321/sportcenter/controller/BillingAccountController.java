@@ -87,41 +87,35 @@ public class BillingAccountController {
 
    @GetMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"})
    public ResponseEntity<BillingAccountListDTO> findBillingAccountsByCustomer(@PathVariable int cId){
-       
+
         Customer customer = accountService.findCustomerById(cId);
-       if (customer == null){
-            throw new IllegalArgumentException("Customer does not exist");
-       }
-
-       BillingAccountListDTO accounts = new BillingAccountListDTO();
-        List<BillingAccountResponseDTO> responseDTOs = new ArrayList<BillingAccountResponseDTO>();
-
-        List<BillingAccount> list = billingService.findBillingAccountByCustomer(customer);
-         
-        if(list.isEmpty()){
-            return new ResponseEntity<BillingAccountListDTO>(accounts,HttpStatus.NO_CONTENT);
-        }
-
-        for(BillingAccount acc : list){
-            responseDTOs.add(new BillingAccountResponseDTO(acc));
-        }
-   
-        accounts.setBillingAccounts(responseDTOs);
-        return new ResponseEntity<BillingAccountListDTO>(accounts,HttpStatus.OK);
-        
-        /* 
+      
+       
        List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
        for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
            accounts.add(new BillingAccountResponseDTO(account));
        }
-       return new BillingAccountListDTO(accounts);
-       */
+       
+       if(accounts.isEmpty())
+           return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.NO_CONTENT);
+       else{
+           return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.OK);
+       }
+       
    }
 
-   @GetMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"})
+   @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         Customer customer = accountService.findCustomerById(cId);
-        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(billingService.findDefaultBillingAccountOfCustomer(customer)), HttpStatus.FOUND);
+        
+        BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
+        if (account==null){
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account),HttpStatus.NO_CONTENT);
+        }
+        else{
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.FOUND);
+        }
+    
     }
 
 }

@@ -30,9 +30,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
@@ -110,7 +115,7 @@ public class BillingAccountIntegreationTests {
         
         billingAccountRepository.deleteAll();
 		sportCenterRepository.deleteAll();
-		//customerRepository.deleteAll();
+		customerRepository.deleteAll();
 
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
 		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
@@ -169,7 +174,7 @@ public class BillingAccountIntegreationTests {
 
 		assertNotNull(customerRepository.findCustomerById(customer.getId()));
 		
-		String url = "/customers/" + customer.getId() + "billing-accounts";
+		String url = "/customers/" + customer.getId() + "/billing-accounts";
 
 		ResponseEntity<BillingAccountListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, BillingAccountListDTO.class);
         // Assert
@@ -178,7 +183,96 @@ public class BillingAccountIntegreationTests {
 
 	}
 
-    
+    @Test
+	@Order(3)
+	public void testFindDefaultBillingAccountByCustomerEmptyResult(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(customerRepository.findCustomerById(customer.getId()));
+		
+		String url = "/customers/" + customer.getId() + "/billing-account";
+
+		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, BillingAccountResponseDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
+
+	}
+
+    //------------------------------ Create ------------------------------
+
+	@Test
+	@Order(4)
+	public void testCreateValidSession(){
+		
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+		
+        BillingAccountRequestDTO accountParam = new BillingAccountRequestDTO();
+
+        assertNotNull(customerRepository.findCustomerById(customer.getId()));
+		
+        accountParam.setBillingAddress(billingAddress);
+        accountParam.setCardHolder(cardHolder);
+        accountParam.setCardNumber(cardNumber);
+        //accountParam.setCustomer(new CustomerResponseDTO(customerRepository.findCustomerById(customer.getId())));
+        accountParam.setCvv(cvv);
+        accountParam.setIsDefault(isDefault);
+        accountParam.setExpirationDate(expirationDate);
+
+        HttpEntity<BillingAccountRequestDTO> requestEntity = new HttpEntity<BillingAccountRequestDTO>(accountParam, headers);
+
+		String url = "/customers/" + customer.getId() + "/billing-accounts";
+
+		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, BillingAccountResponseDTO.class);
+		
+        assertNotNull(response);
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+		validId = createdBillingaccount.getId();
+		
+	}
+
+    @Test
+    @Order(5)
+    public void testReadBillingAccountByValidId() {
+        
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        
+        // Act
+        ResponseEntity<BillingAccountResponseDTO> response = client.exchange("/billing-accounts/" + validId, HttpMethod.GET, requestEntity, BillingAccountResponseDTO.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+	}
+
+    /* 
+	@Test
+    @Order(6)
+    public void testReadSessionByCustomer() {
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(customerRepository.findCustomerById(customer.getId()));
+		
+		String url = "/customers/" + customer.getId() + "/billing-accounts";
+
+		ResponseEntity<BillingAccountListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, BillingAccountListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should not be empty
+
+	}
+    */
+
 
 
 
