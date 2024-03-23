@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.model.Registration;
-import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Session;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
 
 /*
@@ -30,9 +28,6 @@ public class RegistrationService {
 
     @Autowired
     private SessionService sessionService;
-
-    @Autowired
-    private SportCenterManagementService sportCenterManagementService;
 
     //--------------------------// Create Registration //--------------------------//
 

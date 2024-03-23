@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +19,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ca.mcgill.ecse321.sportcenter.model.Course;
-import ca.mcgill.ecse321.sportcenter.model.Location;
-import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
@@ -29,6 +27,7 @@ public class SportCenterManagementServiceTests {
 
     @Mock
     private SportCenterRepository sportCenterRepository;
+
 
     @InjectMocks
     private SportCenterManagementService sportCenterManagementService;
@@ -73,8 +72,10 @@ public class SportCenterManagementServiceTests {
         String phoneNumber = "1234567890";
         String expectedMessage = "Sport center already exists.";
 
-        SportCenter sportCenter = sportCenterManagementService.createSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
-        when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
+        SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
+        List<SportCenter> sportCenterList = new ArrayList<>();
+        sportCenterList.add(sportCenter);
+        when(sportCenterRepository.findAll()).thenReturn(sportCenterList);
         
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.createSportCenter(name, openingTime, closingTime, address, email, phoneNumber));
         assertEquals(expectedMessage, e.getMessage());
@@ -204,7 +205,9 @@ public class SportCenterManagementServiceTests {
 
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
-        when(sportCenterRepository.findSportCenterById(0)).thenReturn(sportCenter);
+        List<SportCenter> sportCenterList = new ArrayList<>();
+        sportCenterList.add(sportCenter);
+        when(sportCenterRepository.findAll()).thenReturn(sportCenterList);
         when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
         SportCenter savedSportCenter = sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress);

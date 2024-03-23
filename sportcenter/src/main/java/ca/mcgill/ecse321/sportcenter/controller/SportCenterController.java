@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.controller;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
