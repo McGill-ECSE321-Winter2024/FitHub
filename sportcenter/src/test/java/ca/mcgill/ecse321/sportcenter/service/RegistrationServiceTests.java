@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -70,45 +69,16 @@ public class RegistrationServiceTests {
     private Course course;
 
     /**
-     * Clear the sportcenter database before each test.
-     */
-    @BeforeEach
-    @AfterEach
-    public void clearDatabase() {
-        registrationRepository.deleteAll();
-        customerRepository.deleteAll();
-        sessionRepository.deleteAll();
-        instructorRepository.deleteAll();
-        locationRepository.deleteAll();
-        courseRepository.deleteAll();
-        sportCenterRepository.deleteAll();
-    }
-
-    /**
      * Create and save a Customer and Session instance before each test.
      */
     @BeforeEach
     public void createAndSaveCustomerAndSession() {
-        SportCenter sportCenter = new SportCenter();
-        sportCenter.setName("FitHub");
-        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
-        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
-        sportCenter.setEmail("info@fithub.com");
-        sportCenter.setPhoneNumber("421-436-4444");
-        sportCenter.setAddress("2011, University Street, Montreal");
-
-        // Save sportCenterRepo
-        List<SportCenter> listSportCenter = new ArrayList<>();
-        listSportCenter.add(sportCenter);
-        when(sportCenterRepository.findAll()).thenReturn(listSportCenter);
-
         //create a customer 
         customer = new Customer();
         customer.setEmail("bob@gmail.com");
         customer.setPassword("12345");
         customer.setName("Bob");
         customer.setImageURL("pfp123.com");
-        customer.setCenter(sportCenterRepository.findAll().get(0));
 
         //create a supervisor(instructor)
         instructor = new Instructor();
@@ -116,13 +86,11 @@ public class RegistrationServiceTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Jumijabasali");
         instructor.setImageURL("pfp.com");
-        instructor.setCenter(sportCenterRepository.findAll().get(0));
         
         //create a location
         location = new Location();
         location.setFloor( "aFloor");
         location.setRoom( "aRoom");
-        location.setCenter(sportCenterRepository.findAll().get(0));
 
         //create a course
         course = new Course();
@@ -130,7 +98,6 @@ public class RegistrationServiceTests {
         course.setDescription("Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope");
         course.setDifficulty(Difficulty.Beginner);
         course.setStatus(Status.Approved);
-        course.setCenter(sportCenterRepository.findAll().get(0));
 
         //create a session
         session = new Session();

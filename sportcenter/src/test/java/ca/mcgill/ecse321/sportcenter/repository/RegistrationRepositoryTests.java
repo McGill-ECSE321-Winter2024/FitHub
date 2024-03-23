@@ -52,7 +52,6 @@ public class RegistrationRepositoryTests extends CommonTestSetup {
         customer.setPassword("12345");
         customer.setName("Bob");
         customer.setImageURL("pfp123.com");
-        customer.setCenter(sportCenter);
         // Save into database
         customer = customerRepo.save(customer);
         
@@ -80,7 +79,6 @@ public class RegistrationRepositoryTests extends CommonTestSetup {
         course.setDescription("Your instructor will have your heart rate up while you move through a variety of different exercises like running, jump rope");
         course.setDifficulty(Difficulty.Beginner);
         course.setStatus(Status.Approved);
-        course.setCenter(sportCenter);
         // Save into database
         course = courseRepo.save(course);
 

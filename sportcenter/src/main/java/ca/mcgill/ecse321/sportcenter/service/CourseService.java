@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
 /*
 * <p> Service class in charge of managing courses. It implements following use cases: </p>
@@ -30,12 +28,6 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 public class CourseService {
     @Autowired
 	CourseRepository courseRepository;
-
-    @Autowired
-    SportCenterRepository sportCenterRepository;
-
-    @Autowired
-    SportCenterManagementService sportCenterManagementService;
 
     //--------------------------// Create Course //--------------------------//
 
@@ -73,7 +65,6 @@ public class CourseService {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(toList(sportCenterRepository.findAll()).get(0));
         courseRepository.save(course);
         return course;
     }    
@@ -110,22 +101,8 @@ public class CourseService {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(toList(sportCenterRepository.findAll()).get(0));
         courseRepository.save(course);
         return course;
-    }
-
-    //--------------------------// Delete Course //--------------------------//
-    @Transactional
-    public boolean deleteCourse(Integer id) {
-        Course course = courseRepository.findCourseById(id);
-        if (course == null) {
-            return false;
-        }
-        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
-        sportCenter.removeCourse(course);
-        sportCenterManagementService.updateSportCenter(sportCenter);
-        return true;
     }
 
     //--------------------------// Getters //--------------------------//  

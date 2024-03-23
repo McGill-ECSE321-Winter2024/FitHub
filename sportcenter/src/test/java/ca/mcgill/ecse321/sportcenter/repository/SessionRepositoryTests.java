@@ -60,7 +60,6 @@ public class SessionRepositoryTests extends CommonTestSetup {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        instructor.setCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
         
         // Create and save the course
@@ -69,7 +68,6 @@ public class SessionRepositoryTests extends CommonTestSetup {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        aCourseType.setCenter(sportCenter);
         aCourseType = courseRepository.save(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
@@ -128,7 +126,6 @@ public class SessionRepositoryTests extends CommonTestSetup {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        instructor.setCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
         
         // Create and save the course
@@ -137,7 +134,6 @@ public class SessionRepositoryTests extends CommonTestSetup {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        aCourseType.setCenter(sportCenter);
         aCourseType = courseRepository.save(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
@@ -197,7 +193,6 @@ public class SessionRepositoryTests extends CommonTestSetup {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
-        instructor.setCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
         
         // Create and save the course
@@ -206,7 +201,6 @@ public class SessionRepositoryTests extends CommonTestSetup {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
-        aCourseType.setCenter(sportCenter);
         aCourseType = courseRepository.save(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");

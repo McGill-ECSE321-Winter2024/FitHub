@@ -16,8 +16,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
@@ -60,9 +58,7 @@ public class LocationServiceTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        List<SportCenter> listSportCenter = new ArrayList<>();
-        listSportCenter.add(sportCenter);
-        when(sportCenterRepository.findAll()).thenReturn(listSportCenter);
+        sportCenter = sportCenterRepository.save(sportCenter);
     }
 
     //--------------------------// Create Location Tests //--------------------------//
@@ -74,7 +70,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findAll().get(0));
+        location.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(locationRepository.save(any(Location.class))).thenReturn(location);
 
@@ -130,7 +126,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findAll().get(0));
+        location.setCenter(sportCenterRepository.findSportCenterById(0));
 
         when(locationRepository.findLocationById(id)).thenReturn(location);
 
@@ -158,7 +154,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor("aFloor");
         location.setRoom("aRoom");
-        location.setCenter(sportCenterRepository.findAll().get(0));
+        location.setCenter(sportCenterRepository.findSportCenterById(0));
         when(locationRepository.findLocationById(id)).thenReturn(location);
 
         Location foundLocation = locationService.findLocationById(id);
@@ -184,7 +180,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findAll().get(0));
+        location.setCenter(sportCenterRepository.findSportCenterById(0));
         when(locationRepository.findLocationByFloorAndRoom(floor, room)).thenReturn(location);
 
         Location foundLocation = locationService.findLocationByFloorAndRoom(floor, room);

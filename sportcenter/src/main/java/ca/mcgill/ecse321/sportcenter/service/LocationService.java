@@ -9,9 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
-import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Location;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 /*
 * <p>Service class in charge of managing locations. It implements following use cases: </p>
@@ -27,9 +25,6 @@ public class LocationService {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
-    @Autowired
-    private SportCenterManagementService sportCenterManagementService;
-
     //--------------------------// Create Location //--------------------------//
 
     @Transactional
@@ -40,7 +35,7 @@ public class LocationService {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
+        location.setCenter(sportCenterRepository.findSportCenterById(0));
         locationRepository.save(location);
         return location;
     }
@@ -55,22 +50,14 @@ public class LocationService {
         Location location = findLocationById(id);
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return locationRepository.save(location);
     }
 
     //--------------------------// Delete Location //--------------------------//
     
     @Transactional
-    public boolean deleteLocation(Integer id) {
-        Location location = locationRepository.findLocationById(id);
-        if (location == null) {
-            return false;
-        }
-        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
-        sportCenter.removeLocation(location);
-        sportCenterManagementService.updateSportCenter(sportCenter);
-        return true;
+    public void deleteLocation(Integer id) {
+        locationRepository.delete(findLocationById(id));
     }
 
     //--------------------------// Getters //--------------------------//
