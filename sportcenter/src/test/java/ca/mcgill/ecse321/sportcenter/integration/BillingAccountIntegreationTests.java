@@ -115,7 +115,7 @@ public class BillingAccountIntegreationTests {
         
         billingAccountRepository.deleteAll();
 		sportCenterRepository.deleteAll();
-		customerRepository.deleteAll();
+		//customerRepository.deleteAll();
 
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
 		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
@@ -225,7 +225,7 @@ public class BillingAccountIntegreationTests {
 
         HttpEntity<BillingAccountRequestDTO> requestEntity = new HttpEntity<BillingAccountRequestDTO>(accountParam, headers);
 
-		String url = "/customers/" + customer.getId() + "/billing-accounts";
+		String url = "/customers/" + customer.getId() + "/billingaccounts";
 
 		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, BillingAccountResponseDTO.class);
 		
