@@ -19,7 +19,7 @@ public class SportCenterDTO {
   public SportCenterDTO() {
   }
 
-  public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, List<CourseDTO> courses, List<LocationDTO> locations, AccountListDTO accounts) {
+  public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, CourseListDTO courses, List<LocationDTO> locations, AccountListDTO accounts) {
     this.name = name;
     this.openingTime = openingTime;
     this.closingTime = closingTime;
