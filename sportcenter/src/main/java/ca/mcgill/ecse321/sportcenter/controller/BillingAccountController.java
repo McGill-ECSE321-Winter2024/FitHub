@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
+import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
 
@@ -83,13 +86,36 @@ public class BillingAccountController {
    }
 
    @GetMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"})
-   public BillingAccountListDTO findBillingAccountByCustomer(@PathVariable int cId){
-       Customer customer = accountService.findCustomerById(cId);
+   public ResponseEntity<BillingAccountListDTO> findBillingAccountsByCustomer(@PathVariable int cId){
+       
+        Customer customer = accountService.findCustomerById(cId);
+       if (customer == null){
+            throw new IllegalArgumentException("Customer does not exist");
+       }
+
+       BillingAccountListDTO accounts = new BillingAccountListDTO();
+        List<BillingAccountResponseDTO> responseDTOs = new ArrayList<BillingAccountResponseDTO>();
+
+        List<BillingAccount> list = billingService.findBillingAccountByCustomer(customer);
+         
+        if(list.isEmpty()){
+            return new ResponseEntity<BillingAccountListDTO>(accounts,HttpStatus.NO_CONTENT);
+        }
+
+        for(BillingAccount acc : list){
+            responseDTOs.add(new BillingAccountResponseDTO(acc));
+        }
+   
+        accounts.setBillingAccounts(responseDTOs);
+        return new ResponseEntity<BillingAccountListDTO>(accounts,HttpStatus.OK);
+        
+        /* 
        List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
        for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
            accounts.add(new BillingAccountResponseDTO(account));
        }
        return new BillingAccountListDTO(accounts);
+       */
    }
 
    @GetMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"})

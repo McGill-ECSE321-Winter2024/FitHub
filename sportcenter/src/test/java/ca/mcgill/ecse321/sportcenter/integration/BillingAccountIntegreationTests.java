@@ -110,7 +110,7 @@ public class BillingAccountIntegreationTests {
         
         billingAccountRepository.deleteAll();
 		sportCenterRepository.deleteAll();
-		customerRepository.deleteAll();
+		//customerRepository.deleteAll();
 
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
 		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
@@ -131,10 +131,7 @@ public class BillingAccountIntegreationTests {
     @Order(0)
     public void login() {
         // Save one account in the system
-        Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("23:59:0");
-        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
-        
+            
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
         
         // Login into that account
@@ -180,6 +177,9 @@ public class BillingAccountIntegreationTests {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
 
 	}
+
+    
+
 
 
 }
