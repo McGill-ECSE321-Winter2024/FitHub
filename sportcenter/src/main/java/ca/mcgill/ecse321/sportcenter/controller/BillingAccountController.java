@@ -45,7 +45,6 @@ public class BillingAccountController {
     //--------------------------// Update Account //--------------------------//
 
     @PutMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"} )
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BillingAccountResponseDTO> updateBillingAccount(@RequestBody BillingAccountRequestDTO account, @PathVariable int id, @PathVariable int cId){
         return new ResponseEntity<BillingAccountResponseDTO>( new BillingAccountResponseDTO(billingService.updateBillingAccount(id, account.getCardNumber(), account.getCardHolder(), account.getBillingAddress(), account.getCvv(), account.getIsDefault(), account.getExpirationDate())), HttpStatus.ACCEPTED);
     }
