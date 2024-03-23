@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.SessionService;
 
 /*
@@ -34,70 +36,100 @@ public class SessionController {
 
     @Autowired
     private SessionService sessionService;
+    
+    @Autowired
+    private CourseService courseService;
 
     //--------------------------// Getters //--------------------------//
     @GetMapping("/sessions/{sid}")
-    public Session findSessionById(@PathVariable int sid){
-        return sessionService.findSessionById(sid);
+    public ResponseEntity<SessionResponseDTO> findSessionById(@PathVariable int sid){
+        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.findSessionById(sid)), HttpStatus.FOUND);
     }
 
     @GetMapping(value = { "/sessions", "/sessions/" })
-    public SessionListDTO findAllSessions(){
+    public ResponseEntity<SessionListDTO> findAllSessions(){
         List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
         for (Session model : sessionService.findAllSessions()){
             sessions.add(new SessionResponseDTO(model));
         }
-        return new SessionListDTO(sessions);
+        if(sessions.isEmpty())
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
+        else{
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+        }
     }
     
-    @GetMapping("/sessions/{iId}")
-    public SessionListDTO findSessionsByInstructor(@PathVariable int iId){
+    @GetMapping("/sessions/instructors/{iId}")
+    public ResponseEntity<SessionListDTO> findSessionsByInstructor(@PathVariable int iId){
         Instructor instructor = sessionService.getInstructorById(iId);
-        List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
-        for (Session model : sessionService.findSessionsByInstructor(instructor)){
-            sessions.add(new SessionResponseDTO(model));
+        if(instructor == null){
+            throw new IllegalArgumentException("Instructor does not exist");
         }
-        return new SessionListDTO(sessions);
+        SessionListDTO sessions = new SessionListDTO();
+        List<SessionResponseDTO> responseDTOs = new ArrayList<SessionResponseDTO>();
+
+        List<Session> list = sessionService.findSessionsByInstructor(instructor);
+        
+        if(list.isEmpty()){
+            return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.NO_CONTENT);
+        }
+
+        for(Session s : list){
+            responseDTOs.add(new SessionResponseDTO(s));
+        }
+   
+        sessions.setSessions(responseDTOs);
+        return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.OK);
+        
     }
 
-    @GetMapping("/sessions/{cId}")
-    public SessionListDTO findSessionsByCourse(@PathVariable int cId){
-        Course course = sessionService.getCourseById(cId);
+    @GetMapping("/sessions/courses/{cId}")
+    public ResponseEntity<SessionListDTO> findSessionsByCourse(@PathVariable int cId){
+        Course course = courseService.findCourseById(cId);
         List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
         for (Session model : sessionService.findSessionsByCourse(course)){
             sessions.add(new SessionResponseDTO(model));
         }
-        return new SessionListDTO(sessions);
+        if(sessions.isEmpty())
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
+        else{
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+        }
     }
 
     //--------------------------// Create Session //--------------------------//
     //TO CONFIRM WITH TA
     @PostMapping("/sessions/{iId}/{cId}/{lId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public SessionResponseDTO proposeSuperviseSession(@RequestBody SessionRequestDTO session, @PathVariable int iId, @PathVariable int cId, @PathVariable int lId){
-        return new SessionResponseDTO(sessionService.proposeSuperviseSession(session.getStartTime(), session.getEndTime(), session.getDate(), session.getCapacity(), iId, cId, lId));
+    public ResponseEntity<SessionResponseDTO> proposeSuperviseSession(@RequestBody SessionRequestDTO session, @PathVariable int iId, @PathVariable int cId, @PathVariable int lId){
+        return new ResponseEntity<SessionResponseDTO>( new SessionResponseDTO(sessionService.proposeSuperviseSession(session.getStartTime(), session.getEndTime(), session.getDate(), session.getCapacity(), iId, cId, lId)),HttpStatus.CREATED);
     }
     //--------------------------// Update Session //--------------------------//
     //TO CONFIRM WITH TA
-    @PutMapping("/sessions/{id}/")
-    public Session updateSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id){
-        return sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity());
+    @PutMapping("/sessions/{id}")
+    public ResponseEntity<SessionResponseDTO> updateSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id){
+        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity())),HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/session/{sId}/{lId}")
-    public Session updateSessionLocation(@PathVariable int sId, @PathVariable int lId){
-        return sessionService.updateSessionLocation(sId, lId);
+    @PutMapping("/sessions/{sId}/locations/{lId}")
+    public ResponseEntity<SessionResponseDTO> updateSessionLocation(@PathVariable int sId, @PathVariable int lId){
+        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionLocation(sId, lId)),HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/session/{sId}/{iId}")
-    public Session updateSessionSupervisor(@PathVariable int sId, @PathVariable int iId){
-        return sessionService.updateSessionSupervisor(sId, iId);
+    @PutMapping("/sessions/{sId}/instructors/{iId}")
+    public ResponseEntity<SessionResponseDTO> updateSessionSupervisor(@PathVariable int sId, @PathVariable int iId){
+        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionSupervisor(sId, iId)),HttpStatus.ACCEPTED);
     }
 
     //--------------------------// Delete Session //--------------------------//
     @DeleteMapping("/sessions/{id}")
-    public void cancelSession(@PathVariable int id){
-        sessionService.cancelSession(id);
+    public ResponseEntity<Void> cancelSession(@PathVariable int id){
+        boolean deletionSuccessful = sessionService.cancelSession(id);
+        if (deletionSuccessful) {
+            return ResponseEntity.noContent().build(); // 204 NO_CONTENT
+        } else {
+            return ResponseEntity.notFound().build(); // 404 NOT_FOUND if the customer with the specified ID was not found
+        }
     }
     
 }

@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.sql.Time;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,18 +16,16 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
  * It verifies the functionalities related to creating and reading sport centers.
  */
 @SpringBootTest
-public class SportCenterRepositoryTests {
+public class SportCenterRepositoryTests extends CommonTestSetup {
 
     @Autowired
     private SportCenterRepository sportCenterRepo;
 
     /**
-     * Method to clear the database before and after each test.
+     * Avoid using this method in the CommonTestSetup since we want to tests if creating a sportCenter has issues
      */
-    @BeforeEach
-    @AfterEach
-    public void clearDatabase(){
-        sportCenterRepo.deleteAll();
+    @Override
+    public void createAndSaveSportCenter() {
     }
 
     /**

@@ -3,16 +3,11 @@ package ca.mcgill.ecse321.sportcenter.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Time;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
-import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 
@@ -21,41 +16,9 @@ import ca.mcgill.ecse321.sportcenter.model.Course.Status;
  * It verifies the functionalities related to creating and reading courses.
  */
 @SpringBootTest
-public class CourseRepositoryTests {
+public class CourseRepositoryTests extends CommonTestSetup {
     @Autowired
     private CourseRepository courseRepo;
-    @Autowired
-    private SportCenterRepository sportCenterRepo;
-
-    private SportCenter sportCenter;
-
-    /**
-     * Method to clear the database before and after each test.
-     */
-    @BeforeEach
-    @AfterEach
-    public void clearDatabase() {
-        courseRepo.deleteAll();
-        sportCenterRepo.deleteAll();
-    }
-
-    /**
-     * Method to create and save a sport center before each test.
-     */
-    @BeforeEach
-    public void createAndSaveSportCenter() {
-        SportCenter sportCenter = new SportCenter();
-        sportCenter.setName("FitHub");
-        sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
-        sportCenter.setClosingTime(Time.valueOf("18:00:00"));
-        sportCenter.setEmail("info@fithub.com");
-        sportCenter.setPhoneNumber("421-436-4444");
-        sportCenter.setAddress("2011, University Street, Montreal");
-
-        // Save sportCenterRepo
-        this.sportCenterRepo.save(sportCenter);
-    }
-
     /**
      * Test case to verify the creation and reading of a course.
      */
