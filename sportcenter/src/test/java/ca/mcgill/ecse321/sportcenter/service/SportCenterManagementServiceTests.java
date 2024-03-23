@@ -179,7 +179,7 @@ public class SportCenterManagementServiceTests {
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
         String expectedError = "Opening time must be before closing time";
 
         // Use Sport Center Management Service and Assert
