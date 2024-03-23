@@ -39,7 +39,7 @@ public class BillingAccountController {
 
     //--------------------------// Create Account //--------------------------//
 
-    @PostMapping(value={"/customers/{cId}/billingaccounts", "/customers/{cId}/billingaccounts/"} )
+    @PostMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"} )
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BillingAccountResponseDTO> createBillingAccount(@RequestBody BillingAccountRequestDTO account, @PathVariable int cId){
         Customer customer = accountService.findCustomerById(cId);

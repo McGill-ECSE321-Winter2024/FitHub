@@ -225,7 +225,7 @@ public class BillingAccountIntegreationTests {
 
         HttpEntity<BillingAccountRequestDTO> requestEntity = new HttpEntity<BillingAccountRequestDTO>(accountParam, headers);
 
-		String url = "/customers/" + customer.getId() + "/billingaccounts";
+		String url = "/customers/" + customer.getId() + "/billing-accounts";
 
 		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, BillingAccountResponseDTO.class);
 		
