@@ -44,6 +44,9 @@ public class SessionRepositoryTests {
     
     @Autowired
 	private LocationRepository locationRepository;
+
+    @Autowired
+    private RegistrationRepository registrationRepository;
     
     @Autowired
     private SportCenterRepository sportCenterRepo;
@@ -56,6 +59,7 @@ public class SessionRepositoryTests {
 	@AfterEach
     @BeforeEach
 	public void clearDatabase() {
+        registrationRepository.deleteAll();
 		sessionRepository.deleteAll();
         instructorRepository.deleteAll();
         courseRepository.deleteAll();
@@ -77,7 +81,7 @@ public class SessionRepositoryTests {
             sportCenter.setAddress("2011, University Street, Montreal");
 
             // Save sportCenterRepo
-            sportCenter = sportCenterRepo.save(sportCenter);
+            this.sportCenter = sportCenterRepo.save(sportCenter);
     }
 
 	/**
@@ -98,6 +102,7 @@ public class SessionRepositoryTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
+        instructor.setCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
         
         // Create and save the course
@@ -106,6 +111,7 @@ public class SessionRepositoryTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
+        aCourseType.setCenter(sportCenter);
         aCourseType = courseRepository.save(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
@@ -164,6 +170,7 @@ public class SessionRepositoryTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
+        instructor.setCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
         
         // Create and save the course
@@ -172,6 +179,7 @@ public class SessionRepositoryTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
+        aCourseType.setCenter(sportCenter);
         aCourseType = courseRepository.save(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");
@@ -231,6 +239,7 @@ public class SessionRepositoryTests {
         instructor.setPassword("sportcenter");
         instructor.setName("Sahar");
         instructor.setImageURL("pfp.com");
+        instructor.setCenter(sportCenter);
         instructor = instructorRepository.save(instructor);
         
         // Create and save the course
@@ -239,6 +248,7 @@ public class SessionRepositoryTests {
         aCourseType.setDescription("Martial art beginner course");
         aCourseType.setDifficulty(Difficulty.Beginner);
         aCourseType.setStatus(Status.Pending);
+        aCourseType.setCenter(sportCenter);
         aCourseType = courseRepository.save(aCourseType);
 
         Time startTime = Time.valueOf("08:00:00");

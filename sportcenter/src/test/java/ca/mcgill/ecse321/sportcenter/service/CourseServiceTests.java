@@ -44,6 +44,9 @@ public class CourseServiceTests {
 
     @InjectMocks
     private CourseService service;
+
+    @InjectMocks
+    private SportCenterManagementService sportCenterManagementService;
    
     /**
      * Clear the sportcenter database before each test.
@@ -57,33 +60,10 @@ public class CourseServiceTests {
     private static final List<Course> COURSES = new ArrayList<>();
 
     /**
-     * Create and save a SportCenter instance before each test.
+     * Create a list of courses to test.
      */
     @BeforeEach
-    public void createAndSaveSportCenter() {
-
-        Course course1 = new Course();
-        course1.setName("Course 1");
-        course1.setDescription("Description for Course 1");
-        course1.setDifficulty(Course.Difficulty.Beginner);
-        course1.setStatus(Course.Status.Closed);
-        COURSES.add(course1); // Add course1 to COURSES list
-
-        Course course3 = new Course();
-        course3.setName("Course 3");
-        course3.setDescription("Description for Course 3");
-        course3.setDifficulty(Course.Difficulty.Beginner);
-        course3.setStatus(Course.Status.Closed);
-        COURSES.add(course3); // Add course3 to COURSES list
-
-        Course course2 = new Course();
-        course2.setName("Course 2");
-        course2.setDescription("Description for Course 2");
-        course2.setDifficulty(Course.Difficulty.Intermediate);
-        course2.setStatus(Course.Status.Pending);
-        COURSES.add(course2); // Add course2 to COURSES list
-
-        
+    public void createTestCourses() {
         SportCenter sportCenter = new SportCenter();
         sportCenter.setName("FitHub");
         sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
@@ -93,7 +73,33 @@ public class CourseServiceTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        sportCenter = sportCenterRepo.save(sportCenter);
+        List<SportCenter> listSportCenter = new ArrayList<>();
+        listSportCenter.add(sportCenter);
+        when(sportCenterRepo.findAll()).thenReturn(listSportCenter);
+
+        Course course1 = new Course();
+        course1.setName("Course 1");
+        course1.setDescription("Description for Course 1");
+        course1.setDifficulty(Course.Difficulty.Beginner);
+        course1.setStatus(Course.Status.Closed);
+        course1.setCenter(sportCenterRepo.findAll().get(0));
+        COURSES.add(course1); // Add course1 to COURSES list
+
+        Course course3 = new Course();
+        course3.setName("Course 3");
+        course3.setDescription("Description for Course 3");
+        course3.setDifficulty(Course.Difficulty.Beginner);
+        course3.setStatus(Course.Status.Closed);
+        course3.setCenter(sportCenterRepo.findAll().get(0));
+        COURSES.add(course3); // Add course3 to COURSES list
+
+        Course course2 = new Course();
+        course2.setName("Course 2");
+        course2.setDescription("Description for Course 2");
+        course2.setDifficulty(Course.Difficulty.Intermediate);
+        course2.setStatus(Course.Status.Pending);
+        course2.setCenter(sportCenterRepo.findAll().get(0));
+        COURSES.add(course2); // Add course2 to COURSES list
     }
 
     //--------------------------// Create Course Tests //--------------------------//
@@ -112,7 +118,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
@@ -240,7 +246,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
@@ -265,7 +271,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
@@ -290,7 +296,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
@@ -318,7 +324,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.findCourseById(id)).thenReturn(course);
 
@@ -332,6 +338,7 @@ public class CourseServiceTests {
         updatedCourse.setDescription(newDescription);
         updatedCourse.setDifficulty(newDiff);
         updatedCourse.setStatus(newStatus);
+        updatedCourse.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.save(any(Course.class))).thenReturn(updatedCourse);
 
@@ -360,7 +367,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         String newName = "";
         String newDescription = "new Description.";
@@ -372,6 +379,7 @@ public class CourseServiceTests {
         updatedCourse.setDescription(newDescription);
         updatedCourse.setDifficulty(newDiff);
         updatedCourse.setStatus(newStatus);
+        updatedCourse.setCenter(sportCenterRepo.findAll().get(0));
 
         String error = "";
         try {
@@ -401,7 +409,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.findCourseById(id)).thenReturn(course);
 
@@ -429,7 +437,7 @@ public class CourseServiceTests {
         course.setDescription(description);
         course.setDifficulty(diff);
         course.setStatus(status);
-        course.setCenter(sportCenterRepo.findSportCenterById(0));
+        course.setCenter(sportCenterRepo.findAll().get(0));
 
         when(courseDao.findCourseByName(name.toLowerCase())).thenReturn(course);
 

@@ -64,7 +64,7 @@ public class BillingAccountRepositoryTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        sportCenter = sportCenterRepo.save(sportCenter);
+        this.sportCenter = sportCenterRepo.save(sportCenter);
     }
 
     /**
