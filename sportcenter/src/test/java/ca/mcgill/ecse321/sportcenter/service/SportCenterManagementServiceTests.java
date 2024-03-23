@@ -48,7 +48,7 @@ public class SportCenterManagementServiceTests {
     public void testCreateValidSportCenter() {
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "a@Email";
         String phoneNumber = "1234567890";
@@ -67,7 +67,7 @@ public class SportCenterManagementServiceTests {
     public void testCreateSportCenterWhenAlreadyExists() {
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "a@Email";
         String phoneNumber = "1234567890";
@@ -85,7 +85,7 @@ public class SportCenterManagementServiceTests {
         // Set up test
         String name = "";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "a@Email";
         String phoneNumber = "1234567890";
@@ -100,7 +100,7 @@ public class SportCenterManagementServiceTests {
         // Set up test
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "";
         String email = "a@Email";
         String phoneNumber = "1234567890";
@@ -115,7 +115,7 @@ public class SportCenterManagementServiceTests {
         // Set up test
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "a@Email";
         String phoneNumber = "";
@@ -130,7 +130,7 @@ public class SportCenterManagementServiceTests {
         // Set up test
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "";
         String phoneNumber = "1234567890";
@@ -145,7 +145,7 @@ public class SportCenterManagementServiceTests {
         // Set up test
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "aEmail";
         String phoneNumber = "1234567890";
@@ -160,7 +160,7 @@ public class SportCenterManagementServiceTests {
         // Set up test
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "a@Email";
         String phoneNumber = "aPhoneNumber";
@@ -170,13 +170,30 @@ public class SportCenterManagementServiceTests {
         checkCreationErrorAssertion(name, openingTime, closingTime, address, email, phoneNumber, expectedError);
     }
 
+    @Test
+    public void testCreateSportCenterWithInvalidSchedule() {
+        // Set up test
+        String name = "aName";
+        Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("0:0:0");
+        String address = "aAddress";
+        String email = "a@Email";
+        String phoneNumber = "aPhoneNumber";
+        String expectedError = "Opening time must be before closing time";
+
+        // Use Sport Center Management Service and Assert
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.createSportCenter(name, openingTime, closingTime, address, email, phoneNumber));
+        assertEquals(expectedError, e.getMessage());
+    }
+
+
     //--------------------------// Update Sport Center Tests //--------------------------//
 
     @Test
     public void testUpdateSportCenter() {
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
         String address = "aAddress";
         String email = "a@Email";
         String phoneNumber = "1234567890";
@@ -204,6 +221,18 @@ public class SportCenterManagementServiceTests {
         Time newClosingTime = Time.valueOf("22:0:0");
         String newAddress = "";
         String expectedMessage = "Empty address is not valid";
+        
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress));
+        assertEquals(expectedMessage, e.getMessage());
+
+    }
+
+    @Test
+    public void testUpdateSportCenterWithInvalidSchedule() {
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("2:0:0");
+        String newAddress = "newAddress";
+        String expectedMessage = "Opening time must be before closing time";
         
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress));
         assertEquals(expectedMessage, e.getMessage());

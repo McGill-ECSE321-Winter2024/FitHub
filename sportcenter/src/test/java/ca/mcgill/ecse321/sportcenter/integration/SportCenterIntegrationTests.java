@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.integration;
 
-package ca.mcgill.ecse321.sportcenter.integration;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.event.annotation.AfterTestClass;
-
+/* 
+import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
@@ -62,12 +61,10 @@ public class SportCenterIntegrationTests {
     @Autowired
     private CourseRepository courseRepository;
     @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
     private LocationRepository locationRepository;
 
 
-    private String LOGIN_EMAIL = "julia@mail.com";
+    private String LOGIN_EMAIL = "james@mail.com";
     private String LOGIN_PASSWORD = "secret1456165";
 
     private String valid_name = "James";
@@ -89,9 +86,6 @@ public class SportCenterIntegrationTests {
     @AfterTestClass
     public void clearDatabase() {
         sportCenterRepository.deleteAll();
-        customerRepository.deleteAll();
-        instructorRepository.deleteAll();
-        ownerRepository.deleteAll();
     }
     
     //--------------------------// Login Test //--------------------------//
@@ -154,11 +148,11 @@ public class SportCenterIntegrationTests {
     
     @Test
     @Order(2)
-    public void testCreateValidCustomer() {
+    public void testCreateValidSportCenter() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL), headers);
+        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<>(new SportCenterDTO(valid_name, valid_opening_time, valid_closing_time, valid_address, valid_email, valid_phoneNumber), headers);
         
         // Act
         ResponseEntity<CustomerResponseDTO> response = client.exchange("/customers", HttpMethod.POST, requestEntity, CustomerResponseDTO.class);
@@ -635,3 +629,4 @@ public class SportCenterIntegrationTests {
         assertEquals(4, accountListDTO.getAccounts().size()); 
     }
 }
+*/

@@ -35,6 +35,7 @@ public class SportCenterManagementService {
         }
         validSportCentertInfo(name, address, email, phoneNumber);
         validPhoneNumber(phoneNumber);
+        validSchedule(openingTime, closingTime);
 		SportCenter createdSportCenter = new SportCenter();
 		createdSportCenter.setName(name);
         createdSportCenter.setOpeningTime(openingTime);
@@ -53,6 +54,7 @@ public class SportCenterManagementService {
         if (newAddress.isEmpty()) {
             throw new IllegalArgumentException("Empty address is not valid");
         }
+        validSchedule(newOpeningTime, newClosingTime);
 
         SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
 
@@ -92,6 +94,12 @@ public class SportCenterManagementService {
             if (!Character.isDigit(c) && c != '-') {
                 throw new IllegalArgumentException("Phone number has to contain digits and dashes only");
             }
+        }
+    }
+
+    private void validSchedule(Time openingTime, Time closingTime) {
+        if (closingTime.before(openingTime)) {
+            throw new IllegalArgumentException("Opening time must be before closing time");
         }
     }
 
