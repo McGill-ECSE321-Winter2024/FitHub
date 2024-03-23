@@ -146,7 +146,7 @@ public class BillingAccountService {
                 return account;
             }
         }
-        return null;
+        throw new IllegalArgumentException("There is no default billing account for this set for this customer");
     }
 
     @Transactional
