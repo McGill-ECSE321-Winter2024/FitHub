@@ -7,13 +7,20 @@ import ca.mcgill.ecse321.sportcenter.model.Account;
 
 public class AccountListDTO {
     private List<AccountResponseDTO> accounts;
+    private String error;
 
     public AccountListDTO() {
         this.accounts = new ArrayList<>();
+        this.error = "";
+    }
+
+    public AccountListDTO(String error) {
+        this.error = error;
     }
 
     public AccountListDTO(List<AccountResponseDTO> accounts) {
         this.accounts = accounts;
+        this.error = "";
     }
 
     public static <T> List<AccountResponseDTO> accountListToAccountResponseDTOList(List<T> accounts) {
@@ -28,7 +35,15 @@ public class AccountListDTO {
         return accounts;
     }
 
+    public String getError() {
+        return this.error;
+    }
+
     public void setAccounts(List<AccountResponseDTO> accounts) {
         this.accounts = accounts;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
