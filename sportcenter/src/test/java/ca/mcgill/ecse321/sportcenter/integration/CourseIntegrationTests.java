@@ -176,6 +176,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
 
 
     @Test
+    @Order(1)
     public void testCreateCourse() {
         // Given
         HttpHeaders headers = new HttpHeaders();
@@ -204,7 +205,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(4)
+    @Order(1)
     public void testUpdateValidCourse() {
         COURSES.clear();
         // First, create a course in the database

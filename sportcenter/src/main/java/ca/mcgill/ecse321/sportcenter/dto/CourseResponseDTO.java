@@ -6,7 +6,7 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 public class CourseResponseDTO {
 
   public enum Difficulty { Beginner, Intermediate, Advanced }
-  public enum Status { Approved, Pending, Closed, Disaproved }
+  public enum Status { Approved, Pending, Closed, Disapproved }
 
   private int id;
   private String name;
