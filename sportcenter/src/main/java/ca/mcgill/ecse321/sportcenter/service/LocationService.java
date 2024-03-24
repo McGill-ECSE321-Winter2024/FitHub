@@ -50,13 +50,13 @@ public class LocationService {
     @Transactional
     public Location updateLocation(Integer id, String floor, String room) {
         validLocationInfo(floor, room);
-        uniqueFloorAndRoom(floor, room);
 
         Location location = findLocationById(id);
         location.setFloor(floor);
         location.setRoom(room);
         location.setCenter(toList(sportCenterRepository.findAll()).get(0));
-        return locationRepository.save(location);
+        locationRepository.save(location);
+        return location;
     }
 
     //--------------------------// Delete Location //--------------------------//

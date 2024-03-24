@@ -34,36 +34,27 @@ public class LocationController {
 
     //--------------------------// Create Location //--------------------------//
 
-    // this commented method gives me error 500 for some reason (although its valid floor and valid room)
-
      @PostMapping(value = {"/locations", "/locations/"})
      public ResponseEntity<LocationResponseDTO> createLocation(@RequestBody LocationRequestDTO location) {
-        try{ 
+        try { 
             Location createdLocation = locationService.createLocation(location.getFloor(), location.getRoom());
             return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(createdLocation), HttpStatus.CREATED);
         }
-        catch(IllegalArgumentException e){
-            return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(), HttpStatus.NO_CONTENT);
+        catch(IllegalArgumentException e) {
+            return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(), HttpStatus.BAD_REQUEST);
         }
-     }
-
-        // this one works
-    //@PostMapping(value = {"/locations", "/locations/"})
-    //public ResponseEntity<LocationResponseDTO> createLocation(@RequestParam String floor, @RequestParam String room) {
-    //    Location createdLocation = locationService.createLocation(floor, room);
-    //    return new ResponseEntity<>(new LocationResponseDTO(createdLocation), HttpStatus.CREATED);
-    //}
+    }
 
     //--------------------------// Update Location //--------------------------//
 
     @PutMapping(value = {"/locations/{id}", "/locations/{id}/"})
-    public ResponseEntity<LocationResponseDTO> updateLocation(@RequestBody LocationRequestDTO location, @PathVariable Integer id) {
-        try{
+    public ResponseEntity<LocationResponseDTO> updateLocation(@PathVariable Integer id, @RequestBody LocationRequestDTO location) {
+        try {
             Location updatedLocation = locationService.updateLocation(id, location.getFloor(), location.getRoom());
             return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(updatedLocation), HttpStatus.ACCEPTED);
         }
-        catch(IllegalArgumentException e){
-            return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(), HttpStatus.NO_CONTENT);
+        catch(IllegalArgumentException e) {
+            return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -75,8 +66,8 @@ public class LocationController {
             Location foundLocation = locationService.findLocationById(id);
             return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(foundLocation), HttpStatus.FOUND);
         }
-        catch(IllegalArgumentException e){
-            return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(), HttpStatus.NO_CONTENT);
+        catch(IllegalArgumentException e) {
+            return new ResponseEntity<LocationResponseDTO>(new LocationResponseDTO(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -102,13 +93,13 @@ public class LocationController {
         try{
             boolean deletionSuccessful = locationService.deleteLocation(id);
             if (deletionSuccessful) {
-                return ResponseEntity.noContent().build();
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
-                return ResponseEntity.notFound().build();
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
         catch(IllegalArgumentException e){
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

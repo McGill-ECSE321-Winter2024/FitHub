@@ -55,16 +55,7 @@ public class LocationIntegrationTests extends CommonTestSetup {
     private AccountService accountService;
 
     @Autowired
-    private LocationService locationService;
-
-    @Autowired
-    private LocationRepository locationRepository;
-
-    @Autowired
     private SportCenterManagementService sportCenterService;
-
-    @Autowired
-    private SportCenterRepository sportCenterRepository;
 
     private String LOGIN_EMAIL = "julia@mail.com";
     private String LOGIN_PASSWORD = "secret1456165";
@@ -173,14 +164,12 @@ public class LocationIntegrationTests extends CommonTestSetup {
        HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
 
-		LocationRequestDTO locationParam = new LocationRequestDTO();
-
-        locationParam.setFloor(NEW_FLOOR);;
-        locationParam.setRoom(NEW_ROOM);;
+		LocationRequestDTO locationParam = new LocationRequestDTO(NEW_FLOOR, NEW_ROOM);
+        System.out.println(locationParam.getFloor());
     
-        HttpEntity<LocationRequestDTO> requestEntity = new HttpEntity<LocationRequestDTO>(locationParam,headers);
+        HttpEntity<LocationRequestDTO> requestEntity = new HttpEntity<LocationRequestDTO>(locationParam, headers);
 
-		String url = "/locations/" + validId;
+		String url = "/locations/" + this.validId;
 		ResponseEntity<LocationResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, LocationResponseDTO.class);
 
 		assertNotNull(response);
@@ -203,7 +192,7 @@ public class LocationIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<LocationResponseDTO> response = client.exchange("/locations/" + validId, HttpMethod.DELETE, requestEntity, LocationResponseDTO.class);
+        ResponseEntity<LocationResponseDTO> response = client.exchange("/locations/" + this.validId, HttpMethod.DELETE, requestEntity, LocationResponseDTO.class);
 
         // Assert
         assertNotNull(response);
