@@ -3,9 +3,6 @@ package ca.mcgill.ecse321.sportcenter.dto;
 import java.math.BigInteger;
 import java.sql.Date;
 
-//import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
-
-
 public class BillingAccountRequestDTO {
 
     private BigInteger cardNumber;

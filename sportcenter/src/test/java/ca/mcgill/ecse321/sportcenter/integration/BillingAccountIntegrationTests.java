@@ -25,17 +25,11 @@ import org.springframework.http.ResponseEntity;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
-import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
-import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
 
@@ -48,9 +42,6 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     private TestRestTemplate client;
 
     @Autowired
-    private BillingAccountService billingService;
-
-    @Autowired
     private AccountService accountService;
 
     @Autowired
@@ -58,12 +49,6 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
     @Autowired
     private CustomerRepository customerRepository;
-
-    @Autowired
-    private BillingAccountRepository billingAccountRepository;
-
-    @Autowired
-    private SportCenterRepository sportCenterRepository;
 
     //---------------------Headers------------------------------
 
