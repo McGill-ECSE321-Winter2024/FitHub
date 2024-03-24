@@ -42,7 +42,7 @@ public class CourseController {
     @PutMapping(value={"/courses/{id}", "/courses/{id}/"})
     public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Integer id, @RequestBody CourseRequestDTO course) {
         try {
-            Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), Course.Difficulty.valueOf(course.getDifficulty().toString()), Course.Status.valueOf(course.getStatus().toString()));
+            Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(updatedCourse), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.NO_CONTENT);

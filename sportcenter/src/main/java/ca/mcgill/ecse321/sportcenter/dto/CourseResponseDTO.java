@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CourseResponseDTO {
 
@@ -10,8 +11,8 @@ public class CourseResponseDTO {
 
   private int id;
   private String name;
-  private Difficulty difficulty;
-  private Status status;
+  private String difficulty;
+  private String status;
   private String description;
   private SportCenter center;
   
@@ -19,8 +20,8 @@ public class CourseResponseDTO {
   public CourseResponseDTO() {
     
   }
-
-  public CourseResponseDTO(String aName, Difficulty aDifficulty, Status aStatus, String aDescription)
+  
+  public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus)
   {
     name = aName;
     difficulty = aDifficulty;
@@ -30,9 +31,10 @@ public class CourseResponseDTO {
 
     public CourseResponseDTO(Course course)
   {
+    id = course.getId();
     name = course.getName();
-    difficulty = Difficulty.valueOf(course.getDifficulty().toString());
-    status = Status.valueOf(course.getStatus().toString());
+    difficulty = course.getDifficulty().toString();
+    status = course.getStatus().toString();
     description = course.getDescription();
   }
 
@@ -43,12 +45,12 @@ public class CourseResponseDTO {
     this.name = aName;
   }
 
-  public void setDifficulty(Difficulty aDifficulty)
+  public void setDifficulty(String aDifficulty)
   {
     this.difficulty = aDifficulty;
   }
 
-  public void setStatus(Status aStatus)
+  public void setStatus(String aStatus)
   {
     this.status = aStatus;
   }
@@ -68,12 +70,12 @@ public class CourseResponseDTO {
     return name;
   }
 
-  public Difficulty getDifficulty()
+  public String getDifficulty()
   {
     return difficulty;
   }
 
-  public Status getStatus()
+  public String getStatus()
   {
     return status;
   }

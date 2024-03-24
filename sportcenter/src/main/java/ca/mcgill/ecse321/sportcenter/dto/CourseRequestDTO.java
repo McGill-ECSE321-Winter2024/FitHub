@@ -10,8 +10,8 @@ public class CourseRequestDTO {
 
   private int id;
   private String name;
-  private Difficulty difficulty;
-  private Status status;
+  private String difficulty;
+  private String status;
   private String description;
   private SportCenter center;
   
@@ -19,7 +19,7 @@ public class CourseRequestDTO {
     
   }
 
-  public CourseRequestDTO(String aName, String aDescription, Difficulty aDifficulty, Status aStatus)
+  public CourseRequestDTO(String aName, String aDescription, String aDifficulty, String aStatus)
   {
     name = aName;
     difficulty = aDifficulty;
@@ -30,8 +30,8 @@ public class CourseRequestDTO {
     public CourseRequestDTO(Course course)
   {
     name = course.getName();
-    difficulty = Difficulty.valueOf(course.getDifficulty().toString());
-    status = Status.valueOf(course.getStatus().toString());
+    difficulty = course.getDifficulty().toString();
+    status = course.getStatus().toString();
     description = course.getDescription();
   }
 
@@ -42,12 +42,12 @@ public class CourseRequestDTO {
     this.name = aName;
   }
 
-  public void setDifficulty(Difficulty aDifficulty)
+  public void setDifficulty(String aDifficulty)
   {
     this.difficulty = aDifficulty;
   }
 
-  public void setStatus(Status aStatus)
+  public void setStatus(String aStatus)
   {
     this.status = aStatus;
   }
@@ -67,12 +67,12 @@ public class CourseRequestDTO {
     return name;
   }
 
-  public Difficulty getDifficulty()
+  public String getDifficulty()
   {
     return difficulty;
   }
 
-  public Status getStatus()
+  public String getStatus()
   {
     return status;
   }

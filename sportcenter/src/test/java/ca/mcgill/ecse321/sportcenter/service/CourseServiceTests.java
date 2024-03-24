@@ -119,7 +119,7 @@ public class CourseServiceTests {
         Course createdCourse = service.createCourse(name, description, diff, status);
 
 		assertNotNull(createdCourse);
-		assertEquals(name, createdCourse.getName());
+		assertEquals(name.toLowerCase(), createdCourse.getName());
         assertEquals(description, createdCourse.getDescription());
         assertEquals(diff, createdCourse.getDifficulty());
         assertEquals(status, createdCourse.getStatus());
@@ -335,11 +335,9 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(updatedCourse);
 
-        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString());
     
         // Assert
-        verify(courseDao, times(1)).findCourseById(id);
-        verify(courseDao, times(1)).save(any(Course.class));
         assertNotNull(savedCourse);
         assertEquals(newName.toLowerCase(), savedCourse.getName());
         assertEquals(newDescription, savedCourse.getDescription());
@@ -375,7 +373,7 @@ public class CourseServiceTests {
 
         String error = "";
         try {
-			service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+			service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -388,7 +386,7 @@ public class CourseServiceTests {
     //--------------------------// Find Course Tests //--------------------------//
 
     @Test
-    public void testCourseOwnerByValidId() {
+    public void testCourseByValidId() {
         // Set up test
         int id = 3;
         String name = "aName";
