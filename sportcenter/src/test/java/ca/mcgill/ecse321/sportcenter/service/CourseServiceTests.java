@@ -116,7 +116,7 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
-        Course createdCourse = service.createCourse(name, description, diff, status);
+        Course createdCourse = service.createCourse(name, description, diff.toString(), status.toString());
 
 		assertNotNull(createdCourse);
 		assertEquals(name.toLowerCase(), createdCourse.getName());
@@ -136,7 +136,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -156,7 +156,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -176,7 +176,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -196,7 +196,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -216,7 +216,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}

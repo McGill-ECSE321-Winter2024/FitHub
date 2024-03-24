@@ -32,7 +32,7 @@ public class CourseService {
     //--------------------------// Create Course //--------------------------//
 
     @Transactional
-    public Course createCourse(String name, String description, Difficulty diff, Status status) {
+    public Course createCourse(String name, String description, String diff, String status) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -72,8 +72,8 @@ public class CourseService {
         Course course = new Course();
         course.setName(name.toLowerCase());
         course.setDescription(description);
-        course.setDifficulty(diff);
-        course.setStatus(status);
+        course.setDifficulty(Course.Difficulty.valueOf(diff));
+        course.setStatus(Course.Status.valueOf(status));
         courseRepository.save(course);
         return course;
     }    

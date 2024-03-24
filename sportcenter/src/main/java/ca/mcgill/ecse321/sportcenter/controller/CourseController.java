@@ -32,7 +32,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseRequestDTO course) { 
         try {
-            Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), Course.Difficulty.valueOf(course.getDifficulty().toString()), Course.Status.valueOf(course.getStatus().toString()));
+            Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(createdCourse), HttpStatus.CREATED);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.NO_CONTENT);
