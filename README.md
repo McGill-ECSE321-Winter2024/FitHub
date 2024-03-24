@@ -21,9 +21,9 @@ To access the Home of our project, please consult this [wiki page](https://githu
 
 | Name           | Individual Effort |
 | -------------- | ----------------- |
-| Anjali Singhal | 12.5              |
-| Sahar Fathi    | 12.0              |
-| James Luu      | 12.0              |
-| Tayba Jusab    | 12.0              |
-| Émilia Gagné   | 14.0              |
-| Julia Grenier  | 12.5              |
+| Anjali Singhal | 47.5              |
+| Sahar Fathi    | 47.5              |
+| James Luu      | 47.5              |
+| Tayba Jusab    | 47.5              |
+| Émilia Gagné   | 47.5              |
+| Julia Grenier  | 47.5              |
