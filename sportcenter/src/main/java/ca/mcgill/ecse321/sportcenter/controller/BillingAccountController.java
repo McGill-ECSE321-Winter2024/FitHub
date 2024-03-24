@@ -113,12 +113,13 @@ public class BillingAccountController {
 
         try{
             account = billingService.findDefaultBillingAccountOfCustomer(customer);
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.FOUND);
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
         }
         catch(Exception e){
             return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account),HttpStatus.NO_CONTENT);
         }
     
     }
+
 
 }

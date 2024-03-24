@@ -25,8 +25,11 @@ import org.springframework.http.ResponseEntity;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
@@ -190,7 +193,6 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         accountParam.setBillingAddress(billingAddress);
         accountParam.setCardHolder(cardHolder);
         accountParam.setCardNumber(cardNumber);
-        //accountParam.setCustomer(new CustomerResponseDTO(customerRepository.findCustomerById(customer.getId())));
         accountParam.setCvv(cvv);
         accountParam.setIsDefault(isDefault);
         accountParam.setExpirationDate(expirationDate);
@@ -244,10 +246,52 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	}
 
-    
+    //---------------------------------- Update ---------------------------
 
 
+	@Test
+	@Order(7)
+	public void testUpdateValidBillingAccount(){
 
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
 
+		BillingAccountRequestDTO accountParam = new BillingAccountRequestDTO();
+
+        assertNotNull(customerRepository.findCustomerById(customer.getId()));
+		
+        accountParam.setBillingAddress(newBillingAddress);
+        accountParam.setCardHolder(newCardHolder);
+        accountParam.setCardNumber(newCardNumber);
+        accountParam.setCvv(newCvv);
+        accountParam.setIsDefault(newIsDefault);
+        accountParam.setExpirationDate(newExpirationDate);
+
+        HttpEntity<BillingAccountRequestDTO> requestEntity = new HttpEntity<BillingAccountRequestDTO>(accountParam,headers);
+
+		String url = "/customers/" + customer.getId() + "/billing-accounts/" + validId;
+		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, BillingAccountResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+	}
+
+    @Test
+	@Order(8)
+	public void testDeleteValidBillingAccount(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        assertNotNull(customerRepository.findCustomerById(customer.getId()));
+
+		String url = "/customers/" + customer.getId() + "/billing-accounts/" + validId;
+		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.DELETE, requestEntity, BillingAccountResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+	}
 
 }
