@@ -24,8 +24,8 @@ public class CourseResponseDTO {
   public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus)
   {
     name = aName;
-    difficulty = aDifficulty;
-    status = aStatus;
+    difficulty = aDifficulty.trim();
+    status = aStatus.trim();
     description = aDescription;
   }
 
@@ -47,12 +47,12 @@ public class CourseResponseDTO {
 
   public void setDifficulty(String aDifficulty)
   {
-    this.difficulty = aDifficulty;
+    this.difficulty = aDifficulty.trim();
   }
 
   public void setStatus(String aStatus)
   {
-    this.status = aStatus;
+    this.status = aStatus.trim();
   }
 
   public void setDescription(String aDescription)
