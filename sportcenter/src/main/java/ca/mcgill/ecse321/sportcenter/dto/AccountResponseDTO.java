@@ -13,8 +13,15 @@ public class AccountResponseDTO {
     private String name;
     private String imageURL;
 
+    private String error;
+
     public AccountResponseDTO() {  
     }
+
+    public AccountResponseDTO(String error) { 
+        this.error = error;
+    }
+
 
     public AccountResponseDTO(Customer customer) {
         this.id = customer.getId();
@@ -24,6 +31,7 @@ public class AccountResponseDTO {
         this.name = customer.getName();
         this.imageURL = customer.getImageURL();
         this.type = AccountType.CUSTOMER;
+        this.error = "";
     }
 
     public AccountResponseDTO(Instructor instructor) {
@@ -34,6 +42,7 @@ public class AccountResponseDTO {
         this.name = instructor.getName();
         this.imageURL = instructor.getImageURL();
         this.type = AccountType.INSTRUCTOR;
+        this.error = "";
     }
 
     public AccountResponseDTO(Owner owner) {
@@ -44,6 +53,7 @@ public class AccountResponseDTO {
         this.name = owner.getName();
         this.imageURL = owner.getImageURL();
         this.type = AccountType.OWNER;
+        this.error = "";
     }
 
     public static AccountResponseDTO create(Account account) {
@@ -82,6 +92,10 @@ public class AccountResponseDTO {
         return imageURL;
     }
 
+    public String getError() {
+        return error;
+    }
+
     public void setType(AccountType type) {
         this.type = type;
     }
@@ -104,5 +118,9 @@ public class AccountResponseDTO {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }
