@@ -126,7 +126,7 @@ public class CourseService {
     }
 
     @Transactional
-    public List<Course> getAllCourses() {
+    public List<Course> findAllCourses() {
         return toList(courseRepository.findAll());
     }
 

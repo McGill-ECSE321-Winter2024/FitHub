@@ -100,7 +100,7 @@ public class CourseServiceTests {
 
     @Test
 	public void testCreateCourse() {
-		assertEquals(0, service.getAllCourses().size());
+		assertEquals(0, service.findAllCourses().size());
 
         String name = "a Name";
         String description = "a Description.";
