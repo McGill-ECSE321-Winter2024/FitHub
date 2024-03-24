@@ -106,14 +106,17 @@ public class BillingAccountController {
 
    @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
+        
         Customer customer = accountService.findCustomerById(cId);
         
-        BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
-        if (account==null){
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account),HttpStatus.NO_CONTENT);
-        }
-        else{
+        BillingAccount account = new BillingAccount();
+
+        try{
+            account = billingService.findDefaultBillingAccountOfCustomer(customer);
             return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.FOUND);
+        }
+        catch(Exception e){
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account),HttpStatus.NO_CONTENT);
         }
     
     }
