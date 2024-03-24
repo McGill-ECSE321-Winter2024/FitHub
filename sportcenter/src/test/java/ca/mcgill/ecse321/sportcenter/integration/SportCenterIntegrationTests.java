@@ -2,7 +2,8 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.description;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,27 +24,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
-import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.InstructorResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.OwnerResponseDTO;
-import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
-import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
-import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
-import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
@@ -53,13 +46,15 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 public class SportCenterIntegrationTests {
     @Autowired
     private TestRestTemplate client;
-
+    
+    @Autowired
+    AccountService accountService;
     @Autowired
     SportCenterManagementService sportCenterService;
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
-    private String LOGIN_EMAIL = "james@mail.com";
+    private String LOGIN_EMAIL = "julia@mail.com";
     private String LOGIN_PASSWORD = "secret1456165";
 
     private String valid_name = "James";
@@ -92,10 +87,31 @@ public class SportCenterIntegrationTests {
         sportCenterRepository.deleteAll();
     }
 
+	//--------------------------// LOGIN //--------------------------//
+
+	@Test
+    @Order(0)
+    public void loginAndPrepDatabase() {
+		Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
+		
+        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
+
+        // Save one account in the system
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        
+        // Login into that account
+        LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
+        ResponseEntity<LoginResponseDTO> response = client.postForEntity("/login", request, LoginResponseDTO.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.FOUND, response.getStatusCode());
+    }
+
     //--------------------------// Create test //--------------------------//
     
     @Test
-    @Order(0)
+    @Order(1)
     public void testCreateValidSportCenter() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -121,7 +137,7 @@ public class SportCenterIntegrationTests {
     //--------------------------// Update test //--------------------------//
 
     @Test
-    @Order(1)
+    @Order(2)
     public void testUpdateValidSportCenter() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -144,7 +160,7 @@ public class SportCenterIntegrationTests {
     //--------------------------// Delete test //--------------------------//
 
     @Test
-    @Order(2)
+    @Order(3)
     public void testDeleteValidCustomer() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
