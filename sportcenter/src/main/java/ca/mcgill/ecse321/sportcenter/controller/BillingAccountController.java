@@ -55,7 +55,7 @@ public class BillingAccountController {
 
     //--------------------------// Delete Account //--------------------------//
 
-    @DeleteMapping(value={"/customers/{cId}/billing-accounts{id}", "/customers/{cId}/billing-accounts{id}/"})
+    @DeleteMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"})
     public ResponseEntity<Void> deleteBillingAccount(@PathVariable Integer id) {
         boolean deletionSuccessful = billingService.deleteBillingAccount(id);
         if (deletionSuccessful) {
