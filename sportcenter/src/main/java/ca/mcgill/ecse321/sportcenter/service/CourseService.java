@@ -193,6 +193,9 @@ public class CourseService {
             course.setStatus(Course.Status.Approved);
             courseRepository.save(course);
         } 
+        else {
+            throw new IllegalArgumentException("You can only approve a course which has a status of pending.");
+        }
     }
 
     //--------------------------// Disapprove course //--------------------------//
@@ -203,6 +206,9 @@ public class CourseService {
             course.setStatus(Course.Status.Disapproved);
             courseRepository.save(course);
         } 
+        else {
+            throw new IllegalArgumentException("You can only disapprove a course which has a status of pending.");
+        }
     }
 
     //--------------------------// Close course //--------------------------//
@@ -212,6 +218,9 @@ public class CourseService {
         if (course.getStatus() == Course.Status.Approved){
             course.setStatus(Course.Status.Closed);
             courseRepository.save(course);
+        }
+        else {
+            throw new IllegalArgumentException("You can only close a course which has a status of approved.");
         }
     }
 
