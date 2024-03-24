@@ -3,14 +3,10 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.description;
-
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,20 +22,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.event.annotation.AfterTestClass;
-
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionRequestDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
-import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
@@ -51,7 +39,7 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class BillingAccountIntegreationTests {
+public class BillingAccountIntegrationTests extends CommonTestSetup {
 
     @Autowired
     private TestRestTemplate client;
@@ -110,33 +98,17 @@ public class BillingAccountIntegreationTests {
     boolean newIsDefault = false;
     Date newExpirationDate = Date.valueOf("2028-11-01");
 
-    @BeforeAll
-	public void intializeDatabase() {
-        
-        billingAccountRepository.deleteAll();
-		sportCenterRepository.deleteAll();
-		customerRepository.deleteAll();
-
-        sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
-		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
-		newCustomer = accountService.createCustomerAccount(newEmail, newPassword, newInstructorName, newImageURL);
-
-    }
-
-    @AfterTestClass
-	public void clearDatabase() {
-        billingAccountRepository.deleteAll();
-		sportCenterRepository.deleteAll();
-		customerRepository.deleteAll();
-    }
 
     //---------------login -------------------------------
 
     @Test
     @Order(0)
     public void login() {
+        sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
+		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
+		newCustomer = accountService.createCustomerAccount(newEmail, newPassword, newInstructorName, newImageURL);
+
         // Save one account in the system
-            
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
         
         // Login into that account
