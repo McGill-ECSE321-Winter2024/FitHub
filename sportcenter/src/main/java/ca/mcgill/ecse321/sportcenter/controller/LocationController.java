@@ -98,16 +98,16 @@ public class LocationController {
     @DeleteMapping(value = {"/locations/{id}", "/locations/{id}/"})
     public ResponseEntity<Void> deleteLocation(@PathVariable Integer id) {
         try{
-        boolean deletionSuccessful = locationService.deleteLocation(id);
-        if (deletionSuccessful) {
-            return ResponseEntity.noContent().build();
-        } else {
+            boolean deletionSuccessful = locationService.deleteLocation(id);
+            if (deletionSuccessful) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        catch(IllegalArgumentException e){
             return ResponseEntity.notFound().build();
         }
-    }
-    catch(IllegalArgumentException e){
-        return ResponseEntity.notFound().build();
-    }
     }
 
 }
