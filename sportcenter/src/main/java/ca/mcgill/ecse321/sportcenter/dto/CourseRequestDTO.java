@@ -19,7 +19,7 @@ public class CourseRequestDTO {
     
   }
 
-  public CourseRequestDTO(String aName, Difficulty aDifficulty, Status aStatus, String aDescription)
+  public CourseRequestDTO(String aName, String aDescription, Difficulty aDifficulty, Status aStatus)
   {
     name = aName;
     difficulty = aDifficulty;
