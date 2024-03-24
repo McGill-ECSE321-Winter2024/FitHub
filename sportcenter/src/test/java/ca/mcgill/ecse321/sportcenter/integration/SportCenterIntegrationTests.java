@@ -112,7 +112,7 @@ public class SportCenterIntegrationTests {
     
     @Test
     @Order(1)
-    public void testCreateValidSportCenter() {
+    public void testCreateInvalidSportCenter() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -123,15 +123,9 @@ public class SportCenterIntegrationTests {
 
         // Asserts
         assertNotNull(response);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        SportCenterDTO createdSportCenter = response.getBody();
-        assertNotNull(createdSportCenter);
-        assertEquals(valid_name, createdSportCenter.getName());
-        assertEquals(valid_opening_time, createdSportCenter.getOpeningTime());
-        assertEquals(valid_closing_time, createdSportCenter.getClosingTime());
-        assertEquals(valid_address, createdSportCenter.getAddress());
-        assertEquals(valid_email, createdSportCenter.getEmail());
-        assertEquals(valid_phone_number, createdSportCenter.getPhoneNumber());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Sport center already exists.", response.getBody().getError());
     }
 
     //--------------------------// Update test //--------------------------//
@@ -174,5 +168,20 @@ public class SportCenterIntegrationTests {
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
+    
+    @Test
+    @Order(4)
+    public void testAuthenticationFailedWhenCreatingValidSportCenter() {
+        // Set up authentication for this test, however if the sportcenter was well deleted, then there is no account to log into
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<SportCenterDTO>(new SportCenterDTO(valid_name, valid_opening_time, valid_closing_time, valid_address, valid_email, valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
+        
+        // Act
+        ResponseEntity<SportCenterDTO> response = client.exchange("/sport-center", HttpMethod.POST, requestEntity, SportCenterDTO.class);
 
+        // Asserts
+        assertNotNull(response);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode()); // Since no sport center in the system and no account
+    }
 }

@@ -3,6 +3,9 @@ package ca.mcgill.ecse321.sportcenter.dto;
 import java.sql.Time;
 
 import java.util.List;
+import java.util.ArrayList;
+
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 public class SportCenterDTO {
     
@@ -16,7 +19,50 @@ public class SportCenterDTO {
   private List<LocationDTO> locations;
   private AccountListDTO accounts;
 
+  private String error;
+
   public SportCenterDTO() {
+  }
+
+  public SportCenterDTO(String error) {
+    this.error = error;
+  }
+  
+  public SportCenterDTO(SportCenterDTO sportCenter) {
+    this.name = sportCenter.getName();
+    this.openingTime = sportCenter.getOpeningTime();
+    this.closingTime = sportCenter.getClosingTime();
+    this.address = sportCenter.getAddress();
+    this.email = sportCenter.getEmail();
+    this.phoneNumber = sportCenter.getPhoneNumber();
+    this.courses = sportCenter.getCourses();
+    this.locations = sportCenter.getLocations();
+    this.accounts = sportCenter.getAccounts();
+
+    this.error = "";
+  }
+
+  public SportCenterDTO(SportCenter sportCenter) {
+    this.name = sportCenter.getName();
+    this.openingTime = sportCenter.getOpeningTime();
+    this.closingTime = sportCenter.getClosingTime();
+    this.address = sportCenter.getAddress();
+    this.email = sportCenter.getEmail();
+    this.phoneNumber = sportCenter.getPhoneNumber();
+
+    List<CourseResponseDTO> courseResponseList = CourseListDTO.courseListToCourseResponseDTOList(sportCenter.getCourses());
+    CourseListDTO courses = new CourseListDTO(courseResponseList);
+
+    // TO DOOOOOO CONVERT LOCATION INTO LOCATIONLIST
+
+    List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(sportCenter.getAccounts());
+    AccountListDTO accounts = new AccountListDTO(accountResponseList);
+
+    this.courses = courses;
+    this.locations = new ArrayList<>();
+    this.accounts = accounts;
+
+    this.error = "";
   }
 
   public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, CourseListDTO courses, List<LocationDTO> locations, AccountListDTO accounts) {
@@ -29,6 +75,8 @@ public class SportCenterDTO {
     this.courses = courses;
     this.locations = locations;
     this.accounts = accounts;
+
+    this.error = "";
   }
 
   public String getName() {
@@ -97,5 +145,13 @@ public class SportCenterDTO {
 
   public void setAccounts(AccountListDTO accounts) {
     this.accounts = accounts;
+  }
+
+  public String getError() {
+    return error;
+  }
+
+  public void setError(String error) {
+    this.error = error;
   }
 }

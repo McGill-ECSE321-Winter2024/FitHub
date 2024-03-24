@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,54 +31,49 @@ public class SportCenterController {
     @Autowired
     private SportCenterManagementService sportCenterManagementService;
 
-    // Creating a sport center
-    @PostMapping("/sport-center")
-    public ResponseEntity<SportCenterDTO> createSportCenter(@RequestBody SportCenterDTO sportCenter){
-        // Create empty lists
-        List<LocationDTO> locations = new ArrayList<>();
-
-        List<Course> centerCourses = new ArrayList<>();
-        List<CourseResponseDTO> courseResponseList = CourseListDTO.courseListToCourseResponseDTOList(centerCourses);
-        CourseListDTO courses = new CourseListDTO(courseResponseList);
-
-        List<Account> centerAccounts = new ArrayList<>();
-        List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(centerAccounts);
-        AccountListDTO accounts = new AccountListDTO(accountResponseList);
-
-        SportCenter createdSportCenter = sportCenterManagementService.createSportCenter(sportCenter.getName(), sportCenter.getOpeningTime(), sportCenter.getClosingTime(), sportCenter.getAddress(), sportCenter.getEmail(), sportCenter.getPhoneNumber());
-
-        return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(createdSportCenter.getName(), createdSportCenter.getOpeningTime(), createdSportCenter.getClosingTime(), createdSportCenter.getAddress(), createdSportCenter.getEmail(), createdSportCenter.getPhoneNumber(), courses, locations, accounts), HttpStatus.CREATED);
+    @GetMapping("/sport-center")
+    public ResponseEntity<SportCenterDTO> getSportCenter() {
+        return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(sportCenterManagementService.getSportCenter()), HttpStatus.ACCEPTED);
     }
 
-    // updating opening/closing hours, address
-    @PutMapping("/sport-center")
-    public ResponseEntity<SportCenterDTO> updateSportCenter(@RequestBody SportCenterDTO newSportCenter){
-        SportCenter updatedSportCenter = sportCenterManagementService.updateSportCenter(newSportCenter.getOpeningTime(), newSportCenter.getClosingTime(), newSportCenter.getAddress());
-
-        // Convert list of Location into list of LocationDTO
-        List<LocationDTO> locations = new ArrayList<>();
-        LocationDTO locationDTO;
-        for(Location location : updatedSportCenter.getLocations()) {
-            locationDTO = new LocationDTO(location.getFloor(), location.getRoom());
-            locations.add(locationDTO);
+    // Since there is only a unique sportCenter, there is no POSTMapping (We do not want to risk the creation of more than one SportCenter)
+    // Create
+    @PostMapping("/sport-center")
+    public ResponseEntity<SportCenterDTO> createSportCenter(@RequestBody SportCenterDTO newSportCenterDTO){
+        try {
+            SportCenter sportCenter = sportCenterManagementService.createSportCenter(
+                newSportCenterDTO.getName(), newSportCenterDTO.getOpeningTime(), newSportCenterDTO.getClosingTime(), 
+                newSportCenterDTO.getAddress(), newSportCenterDTO.getEmail(), newSportCenterDTO.getPhoneNumber());
+            return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(sportCenter), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-        
-        // Convert list of Course into list of CourseDTO
-        List<CourseResponseDTO> courseResponseList = CourseListDTO.courseListToCourseResponseDTOList(updatedSportCenter.getCourses());
-        CourseListDTO courses = new CourseListDTO(courseResponseList);
+    }
 
-        // Convert list of Account into AccountListDTO
-        List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(updatedSportCenter.getAccounts());
-        AccountListDTO accounts = new AccountListDTO(accountResponseList);
+    // updating sportCenter
+    @PutMapping("/sport-center")
+    public ResponseEntity<SportCenterDTO> updateSportCenter(@RequestBody SportCenterDTO newSportCenterDTO){
+        try {
+            SportCenter sportCenter = new SportCenter(newSportCenterDTO.getName(), newSportCenterDTO.getOpeningTime(), 
+                newSportCenterDTO.getClosingTime(), newSportCenterDTO.getAddress(), 
+                newSportCenterDTO.getEmail(), newSportCenterDTO.getPhoneNumber());
 
-        return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(updatedSportCenter.getName(), updatedSportCenter.getOpeningTime(), updatedSportCenter.getClosingTime(), updatedSportCenter.getAddress(), updatedSportCenter.getEmail(), updatedSportCenter.getPhoneNumber(), courses, locations, accounts), HttpStatus.ACCEPTED);
+            sportCenter = sportCenterManagementService.updateSportCenter(sportCenter);
+            return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(sportCenter), HttpStatus.ACCEPTED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Deleting a sport center
     @DeleteMapping("/sport-center")
     public ResponseEntity<Void> deleteSportCenter() {
-        sportCenterManagementService.deleteSportCenter();
-        return ResponseEntity.noContent().build();
+        try {
+            sportCenterManagementService.deleteSportCenter();
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
