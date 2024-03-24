@@ -85,25 +85,31 @@ public class BillingAccountController {
    @GetMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"})
    public ResponseEntity<BillingAccountListDTO> findBillingAccountsByCustomer(@PathVariable int cId){
 
-        Customer customer = accountService.findCustomerById(cId);
+        try{     
+            Customer customer = accountService.findCustomerById(cId);
+            List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
+
+            for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
+                accounts.add(new BillingAccountResponseDTO(account));
+            }
+       
+            if(accounts.isEmpty())
+                return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.OK);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(),HttpStatus.NO_CONTENT);
+        }
       
-       
-       List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
-       for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
-           accounts.add(new BillingAccountResponseDTO(account));
-       }
-       
-       if(accounts.isEmpty())
-           return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.NO_CONTENT);
-       else{
-           return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.OK);
-       }
        
    }
 
    @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         
+    try{
         Customer customer = accountService.findCustomerById(cId);
 
         try{
@@ -113,6 +119,10 @@ public class BillingAccountController {
         catch(IllegalArgumentException e){
             return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
         }
+    }
+    catch(IllegalArgumentException e){
+        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+    }
     
     }
 
