@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,31 +26,68 @@ public class SportCenterManagementService {
 
     @Transactional
 	public SportCenter createSportCenter(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber) {
+        if (getAllSportCenters().size() > 0) {
+            throw new IllegalArgumentException("Sport center already exists.");
+        }
         validSportCentertInfo(name, address, email, phoneNumber);
-		SportCenter sportCenter = new SportCenter();
-		sportCenter.setName(name);
-        sportCenter.setOpeningTime(openingTime);
-        sportCenter.setClosingTime(closingTime);
-        sportCenter.setAddress(address);
-        sportCenter.setEmail(email);
-        sportCenter.setPhoneNumber(phoneNumber);
-		sportCenterRepository.save(sportCenter);
-		return sportCenter;
+        validPhoneNumber(phoneNumber);
+		SportCenter createdSportCenter = new SportCenter();
+		createdSportCenter.setName(name);
+        createdSportCenter.setOpeningTime(openingTime);
+        createdSportCenter.setClosingTime(closingTime);
+        createdSportCenter.setAddress(address);
+        createdSportCenter.setEmail(email);
+        createdSportCenter.setPhoneNumber(phoneNumber);
+		sportCenterRepository.save(createdSportCenter);
+		return createdSportCenter;
 	}
 
-    //--------------------------// Find Sport Center(s) //--------------------------//
+    //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional
-    public SportCenter findSportCenterById(int id) {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(id);
-
-        if (sportCenter == null) {
-            throw new IllegalArgumentException("There is no sport center with ID " + id + ".");
+    public SportCenter updateSportCenter(Time newOpeningTime, Time newClosingTime, String newAddress) {
+        if (newAddress.isEmpty()) {
+            throw new IllegalArgumentException("Empty address is not valid");
         }
+
+        SportCenter sportCenter = getSportCenter();
+
+        sportCenter.setOpeningTime(newOpeningTime);
+        sportCenter.setClosingTime(newClosingTime);
+        sportCenter.setAddress(newAddress);
+        sportCenterRepository.save(sportCenter);
 
         return sportCenter;
     }
 
+    @Transactional
+    public SportCenter updateSportCenter(SportCenter updatedSportCenter) {
+        if (updatedSportCenter.getAddress().isEmpty()) {
+            throw new IllegalArgumentException("Empty address is not valid");
+        }
+
+        SportCenter sportCenter = getSportCenter();
+
+        sportCenter.setOpeningTime(updatedSportCenter.getOpeningTime());
+        sportCenter.setClosingTime(updatedSportCenter.getClosingTime());
+        sportCenter.setAddress(updatedSportCenter.getAddress());
+        sportCenterRepository.save(sportCenter);
+
+        return sportCenter;
+    }
+
+    //--------------------------// Delete Sport Center //--------------------------//
+
+    @Transactional
+    public void deleteSportCenter() {
+        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
+        if (sportCenter == null) {
+            throw new IllegalArgumentException("Sport center does not exist.");
+        }
+        sportCenterRepository.delete(sportCenter);
+    }
+
+    //--------------------------// Getters Sport Center //--------------------------//
     @Transactional
     public List<SportCenter> getAllSportCenters() {
         return toList(sportCenterRepository.findAll());
@@ -61,40 +98,7 @@ public class SportCenterManagementService {
         return getAllSportCenters().get(0);
     }
 
-    //--------------------------// Update Sport Center //--------------------------//
-
-    @Transactional
-    public SportCenter updateSportCenter(SportCenter sportCenter) {
-        return sportCenterRepository.save(sportCenter);
-    }
-
-    @Transactional
-    public SportCenter updateOpeningTime(int id, Time openingTime) {
-        SportCenter sportCenter = findSportCenterById(id);
-
-        sportCenter.setOpeningTime(openingTime);
-        sportCenterRepository.save(sportCenter);
-
-        return sportCenter;
-    }
-
-    @Transactional
-    public SportCenter updateClosingTime(int id, Time closingTime) {
-        SportCenter sportCenter = findSportCenterById(id);
-
-        sportCenter.setClosingTime(closingTime);
-        sportCenterRepository.save(sportCenter);
-
-        return sportCenter;
-    }
-
-    //--------------------------// Delete Sport Center //--------------------------//
-
-    @Transactional
-    public void deleteSportCenter(int id) {
-        SportCenter sportCenter = findSportCenterById(id);
-        sportCenterRepository.delete(sportCenter);
-    }
+    //--------------------------// Helper function //--------------------------//
 
     private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
@@ -112,6 +116,15 @@ public class SportCenterManagementService {
         }
         if (!email.contains("@")) {
             throw new IllegalArgumentException("Email has to contain the character @");
+        }
+    }
+
+    private void validPhoneNumber(String phoneNumber) {
+        for (int i = 0; i < phoneNumber.length(); i++) {
+            char c = phoneNumber.charAt(i); 
+            if (!Character.isDigit(c) && c != '-') {
+                throw new IllegalArgumentException("Phone number has to contain digits and dashes only");
+            }
         }
     }
 

@@ -42,7 +42,7 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class AccountIntegrationTests {
+public class AccountIntegrationTests extends CommonTestSetup {
     @Autowired
     private TestRestTemplate client;
     
@@ -77,15 +77,6 @@ public class AccountIntegrationTests {
     private String valid_newPassword = "newPassword";
     private String valid_newName = "Lory";
     private String valid_newImageURL = "pfp.jpeg";
-
-    @BeforeAll
-    @AfterTestClass
-    public void clearDatabase() {
-        sportCenterRepository.deleteAll();
-        customerRepository.deleteAll();
-        instructorRepository.deleteAll();
-        ownerRepository.deleteAll();
-    }
     
     //--------------------------// Login Test //--------------------------//
 
@@ -94,7 +85,7 @@ public class AccountIntegrationTests {
     public void login() {
         // Save one account in the system
         Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
+        Time closingTime = Time.valueOf("23:59:0");
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
         
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");

@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +28,7 @@ public class SportCenterManagementServiceTests {
     @Mock
     private SportCenterRepository sportCenterRepository;
 
+
     @InjectMocks
     private SportCenterManagementService sportCenterManagementService;
 
@@ -47,7 +50,7 @@ public class SportCenterManagementServiceTests {
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
 
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
@@ -60,6 +63,25 @@ public class SportCenterManagementServiceTests {
     }
 
     @Test
+    public void testCreateSportCenterWhenAlreadyExists() {
+        String name = "aName";
+        Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("0:0:0");
+        String address = "aAddress";
+        String email = "a@Email";
+        String phoneNumber = "1234567890";
+        String expectedMessage = "Sport center already exists.";
+
+        SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
+        List<SportCenter> sportCenterList = new ArrayList<>();
+        sportCenterList.add(sportCenter);
+        when(sportCenterRepository.findAll()).thenReturn(sportCenterList);
+        
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.createSportCenter(name, openingTime, closingTime, address, email, phoneNumber));
+        assertEquals(expectedMessage, e.getMessage());
+    }
+
+    @Test
     public void testCreateSportCenterWithEmptyName() {
         // Set up test
         String name = "";
@@ -67,7 +89,7 @@ public class SportCenterManagementServiceTests {
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
         String expectedError = "Empty fields for name, address, email or phone number are not valid";
 
         // Use Sport Center Management Service and Assert
@@ -82,7 +104,7 @@ public class SportCenterManagementServiceTests {
         Time closingTime = Time.valueOf("0:0:0");
         String address = "";
         String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
         String expectedError = "Empty fields for name, address, email or phone number are not valid";
 
         // Use Sport Center Management Service and Assert
@@ -112,7 +134,7 @@ public class SportCenterManagementServiceTests {
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
         String expectedError = "Empty fields for name, address, email or phone number are not valid";
 
         // Use Sport Center Management Service and Assert
@@ -127,8 +149,23 @@ public class SportCenterManagementServiceTests {
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "aEmail";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
         String expectedError = "Email has to contain the character @";
+
+        // Use Sport Center Management Service and Assert
+        checkCreationErrorAssertion(name, openingTime, closingTime, address, email, phoneNumber, expectedError);
+    }
+
+    @Test
+    public void testCreateSportCenterWithInvalidPhoneNumber() {
+        // Set up test
+        String name = "aName";
+        Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("0:0:0");
+        String address = "aAddress";
+        String email = "a@Email";
+        String phoneNumber = "aPhoneNumber";
+        String expectedError = "Phone number has to contain digits and dashes only";
 
         // Use Sport Center Management Service and Assert
         checkCreationErrorAssertion(name, openingTime, closingTime, address, email, phoneNumber, expectedError);
@@ -137,73 +174,43 @@ public class SportCenterManagementServiceTests {
     //--------------------------// Update Sport Center Tests //--------------------------//
 
     @Test
-    public void testUpdateOpeningTime() {
-        int id = 1;
+    public void testUpdateSportCenter() {
         String name = "aName";
         Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("0:0:0");
         String address = "aAddress";
         String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
+        String phoneNumber = "1234567890";
+
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("22:0:0");
+        String newAddress = "newAddress";
 
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
-        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
-        
-        Time newOpeningTime = Time.valueOf("9:0:0");
-        SportCenter updatedSportCenter = newSportCenter(name, newOpeningTime, closingTime, address, email, phoneNumber);
-        
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(updatedSportCenter);
+        List<SportCenter> sportCenterList = new ArrayList<>();
+        sportCenterList.add(sportCenter);
+        when(sportCenterRepository.findAll()).thenReturn(sportCenterList);
+        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
-        SportCenter savedSportCenter = sportCenterManagementService.updateOpeningTime(id, newOpeningTime);
+        SportCenter savedSportCenter = sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress);
         
         assertEquals(newOpeningTime, savedSportCenter.getOpeningTime());
-    }
-
-    @Test
-    public void testUpdateClosingTime() {
-        int id = 1;
-        String name = "aName";
-        Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("0:0:0");
-        String address = "aAddress";
-        String email = "a@Email";
-        String phoneNumber = "aPhoneNumber";
-
-        SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
-
-        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
-        
-        Time newClosingTime = Time.valueOf("22:0:0");
-        SportCenter updatedSportCenter = newSportCenter(name, openingTime, newClosingTime, address, email, phoneNumber);
-        
-        when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(updatedSportCenter);
-
-        SportCenter savedSportCenter = sportCenterManagementService.updateClosingTime(id, newClosingTime);
-        
         assertEquals(newClosingTime, savedSportCenter.getClosingTime());
+        assertEquals(newAddress, savedSportCenter.getAddress());
+
     }
 
-    //--------------------------// Find Sport Center Tests //--------------------------//
-
     @Test
-    public void testReadSportCenterByValidId() {
-        int id = 1;
-        SportCenter sportCenter = newSportCenter("aName", Time.valueOf("6:0:0"), Time.valueOf("0:0:0"), "aAddress", "a@Email", "aPhoneNumber");
+    public void testUpdateSportCenterWithEmptyAddress() {
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("22:0:0");
+        String newAddress = "";
+        String expectedMessage = "Empty address is not valid";
         
-        when(sportCenterRepository.findSportCenterById(id)).thenReturn(sportCenter);
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress));
+        assertEquals(expectedMessage, e.getMessage());
 
-        SportCenter foundSportCenter = sportCenterManagementService.findSportCenterById(id);
-        checkResultSportCenter(foundSportCenter, sportCenter.getName(), sportCenter.getOpeningTime(), sportCenter.getClosingTime(), sportCenter.getAddress(), sportCenter.getEmail(), sportCenter.getPhoneNumber());
-    }
-
-    @Test
-    public void testReadSportCenterByInvalidId() {
-        int id = 1;
-        when(sportCenterRepository.findSportCenterById(id)).thenReturn(null);
-
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.findSportCenterById(id));
-        assertEquals("There is no sport center with ID " + id + ".", e.getMessage());
     }
 
     //--------------------------// Helper methods //--------------------------//
