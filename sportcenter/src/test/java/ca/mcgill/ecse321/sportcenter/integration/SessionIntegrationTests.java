@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.sql.Date;
 import java.sql.Time;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,8 +20,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.event.annotation.AfterTestClass;
-
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
@@ -33,12 +30,7 @@ import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
-import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
-import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
-import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
@@ -50,8 +42,7 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class SessionIntegrationTests {
-
+public class SessionIntegrationTests extends CommonTestSetup {
     @Autowired
     private TestRestTemplate client;
 
@@ -67,23 +58,9 @@ public class SessionIntegrationTests {
 	@Autowired
     private CourseService courseService;
 
-    @Autowired
-	private SessionRepository sessionRepository;
-
 	@Autowired
 	private InstructorRepository instructorRepository;
 
-	@Autowired
-	private LocationRepository locationRepository;
-
-	@Autowired
-	private RegistrationRepository registrationRepository;
-
-	@Autowired
-	private CourseRepository courseRepository;
-
-	@Autowired
-	private SportCenterRepository sportCenterRepository;
 
 	//---------------------Headers------------------------------
 
@@ -137,16 +114,11 @@ public class SessionIntegrationTests {
     Date newDate = Date.valueOf("2024-02-19");
     Integer newCapacity = 20;
 
-    @BeforeAll
-	public void intializeDatabase() {
+	//---------------login -------------------------------
 
-		registrationRepository.deleteAll();
-		sessionRepository.deleteAll();
-		sportCenterRepository.deleteAll();
-		locationRepository.deleteAll();
-		instructorRepository.deleteAll();
-		courseRepository.deleteAll();
-
+	@Test
+    @Order(0)
+    public void loginAndPrepDatabase() {
 		Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("23:0:0");
 		
@@ -157,30 +129,7 @@ public class SessionIntegrationTests {
 		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL);
 		newLocation = locationService.createLocation(newFloor, newRoom);
 
-		
-	}
-
-	@AfterTestClass
-	public void clearDatabase() {
-
-		registrationRepository.deleteAll();
-		sessionRepository.deleteAll();
-		sportCenterRepository.deleteAll();
-		locationRepository.deleteAll();
-		instructorRepository.deleteAll();
-		courseRepository.deleteAll();
-
-
-	}
-
-	//---------------login -------------------------------
-
-	@Test
-    @Order(0)
-    public void login() {
         // Save one account in the system
-       
-        
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
         
         // Login into that account
@@ -191,10 +140,7 @@ public class SessionIntegrationTests {
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
     }
 
-
 	//--------------------------// General Empty Result Tests //--------------------------//
-
-
 
 	@Test
 	@Order(1)

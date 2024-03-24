@@ -10,7 +10,7 @@ public class SessionRequestDTO {
     private Time endTime;
     private Date date;
     private int capacity;
-    private CourseDTO course;
+    private CourseRequestDTO course;
     private AccountRequestDTO supervisor;
     private LocationDTO location;
 
@@ -18,7 +18,7 @@ public class SessionRequestDTO {
 
     }
 
-    public SessionRequestDTO(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, AccountRequestDTO aSupervisor, CourseDTO aCourseType, LocationDTO aLocation){
+    public SessionRequestDTO(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, AccountRequestDTO aSupervisor, CourseRequestDTO aCourseType, LocationDTO aLocation){
         this.startTime = aStartTime;
         this.endTime = aEndTime;
         this.date = aDate;
@@ -47,7 +47,7 @@ public class SessionRequestDTO {
         return capacity;
     }
 
-    public CourseDTO getCourse(){
+    public CourseRequestDTO getCourse(){
         return course;
     }
 
@@ -77,7 +77,7 @@ public class SessionRequestDTO {
         this.capacity = capacity;
     }
 
-    public void setCourse(CourseDTO course){
+    public void setCourse(CourseRequestDTO course){
         this.course = course;
     }
 

@@ -12,7 +12,7 @@ public class SportCenterDTO {
   private String address;
   private String email;
   private String phoneNumber;
-  private List<CourseDTO> courses;
+  private CourseListDTO courses;
   private List<LocationDTO> locations;
   private AccountListDTO accounts;
 
@@ -75,11 +75,11 @@ public class SportCenterDTO {
     this.phoneNumber = phoneNumber;
   }
 
-  public List<CourseDTO> getCourses() {
+  public CourseListDTO getCourses() {
     return courses;
   }
 
-  public void setCourses(List<CourseDTO> courses) {
+  public void setCourses(CourseListDTO courses) {
     this.courses = courses;
   }
 
