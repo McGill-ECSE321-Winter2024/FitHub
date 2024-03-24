@@ -14,9 +14,9 @@ public class CommonTestSetup {
     protected SportCenter sportCenter;
 
     @Autowired
-    BillingAccountRepository billingAccountRepository;
+    private BillingAccountRepository billingAccountRepository;
     @Autowired 
-    RegistrationRepository registrationRepository;
+    private RegistrationRepository registrationRepository;
 	@Autowired
 	private SessionRepository sessionRepository;
 
@@ -39,7 +39,6 @@ public class CommonTestSetup {
     /**
      * Clears the database before each test.
      */
-    @BeforeEach
     @AfterEach
     public void clearDatabase() {
         billingAccountRepository.deleteAll();
@@ -58,6 +57,16 @@ public class CommonTestSetup {
      */
     @BeforeEach
     public void createAndSaveSportCenter() {
+        billingAccountRepository.deleteAll();
+        registrationRepository.deleteAll();
+		sessionRepository.deleteAll();
+        sportCenterRepo.deleteAll();
+        courseRepository.deleteAll();
+        locationRepository.deleteAll();
+        customerRepo.deleteAll();
+        instructorRepo.deleteAll();
+        ownerRepo.deleteAll();
+        
         sportCenterRepo.deleteAll();
         SportCenter sportCenter = new SportCenter();
         sportCenter.setName("FitHub");
