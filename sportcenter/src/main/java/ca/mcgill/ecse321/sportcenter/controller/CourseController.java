@@ -122,23 +122,36 @@ public class CourseController {
 
     @PutMapping(value={"/course-approval/{id}", "/course-approve/{id}/"})
     public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id) {
-        Course course = courseService.findCourseById(id);
-        courseService.approveCourse(course);
-        return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
+        try {
+            Course course = courseService.findCourseById(id);
+            courseService.approveCourse(course);
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
+        
     }
 
     @PutMapping(value={"/course-disapproval/{id}", "/course-disapprove/{id}/"})
     public ResponseEntity<CourseResponseDTO> disapproveCourse(@PathVariable Integer id) {
-        Course course = courseService.findCourseById(id);
-        courseService.disapproveCourse(course);
-        return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
+        try{
+            Course course = courseService.findCourseById(id);
+            courseService.disapproveCourse(course);
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(value={"/course-closing/{id}", "/course-close/{id}/"})
     public ResponseEntity<CourseResponseDTO> closeCourse(@PathVariable Integer id) {
-        Course course = courseService.findCourseById(id);
-        courseService.closeCourse(course);
-        return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
+        try {
+            Course course = courseService.findCourseById(id);
+            courseService.closeCourse(course);
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 

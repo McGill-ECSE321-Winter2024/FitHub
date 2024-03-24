@@ -161,6 +161,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
     }
 
+    
     @Test
     @Order(1)
     public void testFindCourseByNameEmpty() {
