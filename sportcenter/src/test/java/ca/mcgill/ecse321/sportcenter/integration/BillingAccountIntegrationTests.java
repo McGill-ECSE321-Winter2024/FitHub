@@ -248,6 +248,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	}
 
+     
     @Test
 	@Order(7)
 	public void testFindBillingAccountByCustomerValidResult(){
@@ -267,10 +268,11 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	}
 
+
     //---------------------------------- Update ---------------------------
 
 	@Test
-	@Order(8)
+	@Order(7)
 	public void testUpdateValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -301,7 +303,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 
     @Test
-	@Order(9)
+	@Order(8)
 	public void testDeleteValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -319,7 +321,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 	}
 
     @Test
-	@Order(10)
+	@Order(9)
 	public void testDeleteInvalidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
