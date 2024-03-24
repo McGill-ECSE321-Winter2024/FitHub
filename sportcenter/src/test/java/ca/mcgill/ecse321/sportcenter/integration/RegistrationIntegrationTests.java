@@ -96,8 +96,6 @@ public class RegistrationIntegrationTests {
     @Autowired
     SportCenterManagementService sportCenterService;
 
-    private Registration.Key validKey;
-
     //---------------------Headers------------------------------
 
 	private String LOGIN_EMAIL = "julia@mail.com";
@@ -108,7 +106,8 @@ public class RegistrationIntegrationTests {
     private Customer customer2;
     private Session session1;
     private Session session2;
-    private Instructor instructor;
+    private Instructor instructor1;
+    private Instructor instructor2;
     private Course course1;
     private Course course2;
     private Location location;
@@ -126,12 +125,13 @@ public class RegistrationIntegrationTests {
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
         customer1 = accountService.createCustomerAccount("tayba.jusab@mail.mcgill.ca", "password", "Tayba", "rat.png");
         customer2 = accountService.createCustomerAccount("personB@gmail.com", "notMyPassword", "Person B", "tree.png");
-        instructor = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png");
+        instructor1 = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png");
+        instructor2 = accountService.createInstructorAccount("pam@mail.com", "pammylmaooda", "Pam", "office.png");
         course1 = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced, Status.Approved);
         course2 = courseService.createCourse("Goat Yoga 2", "beginner yoga with goats", Difficulty.Beginner, Status.Approved);
         location = locationService.createLocation("5", "502");
-        session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-02-18"), 50, instructor.getId(), course1.getId(), location.getId());
-        session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-12-06"), 100, instructor.getId(), course2.getId(), location.getId());
+        session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-02-18"), 50, instructor1.getId(), course1.getId(), location.getId());
+        session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-12-06"), 100, instructor1.getId(), course2.getId(), location.getId());
 	}
 
     @AfterTestClass
@@ -228,8 +228,6 @@ public class RegistrationIntegrationTests {
         assertNotNull(createdRegistration);
         assertEquals(customer1.getId(), createdRegistration.getAccount().getId());
         assertEquals(session1.getId(), createdRegistration.getSession().getId());
-        
-        validKey = registrationService.findRegistration(customer1.getId(), session1.getId()).getKey();
     }
 
     @Test
@@ -269,14 +267,16 @@ public class RegistrationIntegrationTests {
 
     @Test
     @Order(6)
-    public void testReadRegistrationByValidKey() {
+    public void testReadRegistration() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/registrations/" + customer1.getId() + "/" + session1.getId();
         
         // Act
-        ResponseEntity<RegistrationResponseDTO> response = client.exchange("/registrations/" + validKey, HttpMethod.GET, requestEntity, RegistrationResponseDTO.class);
+        ResponseEntity<RegistrationResponseDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, RegistrationResponseDTO.class);
 
         // Assert
         assertNotNull(response);
@@ -365,6 +365,60 @@ public class RegistrationIntegrationTests {
     @Test
     @Order(9)
     public void updateRegistration() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
+        // Update customer 2's name and email
+        accountService.updateCustomerAccount(customer2.getId(), "newemail@gmail.com", customer2.getPassword(), "New Name", customer2.getImageURL());
+
+        // Update sessions 1's instructor
+        sessionService.updateSessionSupervisor(session1.getId(), instructor2.getId());
+
+        String url = "/registrations?customerId=" + customer2.getId() + "&sessionId=" + session1.getId();
+
+        ResponseEntity<RegistrationResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, RegistrationResponseDTO.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        RegistrationResponseDTO registration = response.getBody();
+        assertNotNull(registration);
+
+        assertEquals("New Name", registration.getAccount().getName());
+        assertEquals("newemail@gmail.com", registration.getAccount().getEmail());
+        assertEquals(instructor2.getId(), registration.getSession().getSupervisor().getId());
+    }
+
+    @Test
+    @Order(10)
+    public void cancelRegistration() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/registrations/" + customer1.getId() + "/" + session1.getId();
+
+        ResponseEntity<Void> response = client.exchange(url, HttpMethod.DELETE, requestEntity, Void.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    @Order(11)
+    public void cancelAlreadyCancelledRegistration() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/registrations/" + customer1.getId() + "/" + session1.getId();
+
+        ResponseEntity<Void> response = client.exchange(url, HttpMethod.DELETE, requestEntity, Void.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }

@@ -66,9 +66,9 @@ public class RegistrationController {
 
     //--------------------------// Read Registration //--------------------------//
 
-    @GetMapping(value={"/registrations/{key}", "/registrations/{key}/"})
-    public ResponseEntity<RegistrationResponseDTO> findRegistrationByKey(@PathVariable Registration.Key key) {
-        return new ResponseEntity<>(new RegistrationResponseDTO(registrationService.findRegistrationByKey(key)), HttpStatus.FOUND);
+    @GetMapping(value={"/registrations/{customerId}/{sessionId}", "/registrations/{customerId}/{sessionId}/"})
+    public ResponseEntity<RegistrationResponseDTO> findRegistration(@PathVariable Integer customerId, @PathVariable Integer sessionId) {
+        return new ResponseEntity<>(new RegistrationResponseDTO(registrationService.findRegistration(customerId, sessionId)), HttpStatus.FOUND);
     }
 
     @GetMapping(value = {"/registrations", "/registrations/"})
