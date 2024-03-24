@@ -195,7 +195,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 		
 	}
 
-     //------------------------------ Read and Get ------------------------------
+     //------------------------------ Read and Get with valid requests ------------------------------
 
     @Test
     @Order(5)
@@ -233,9 +233,24 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	}
 
-     
     @Test
 	@Order(7)
+	public void testFindAllBillingAccountValidResult(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<BillingAccountListDTO> response = client.exchange("/billing-accounts", HttpMethod.GET, requestEntity, BillingAccountListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
+
+	}
+
+     
+    @Test
+	@Order(8)
 	public void testFindBillingAccountByCustomerValidResult(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -254,7 +269,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 	}
 
     @Test
-	@Order(8)
+	@Order(9)
 	public void testFindDefaultBillingAccountByCustomerValidResult(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -276,7 +291,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     //---------------------------------- Update ---------------------------
 
 	@Test
-	@Order(9)
+	@Order(10)
 	public void testUpdateValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -307,7 +322,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 
     @Test
-	@Order(10)
+	@Order(11)
 	public void testDeleteValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -325,7 +340,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 	}
 
     @Test
-	@Order(11)
+	@Order(12)
 	public void testDeleteInvalidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
