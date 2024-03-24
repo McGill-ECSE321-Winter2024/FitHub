@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,13 +30,16 @@ import ca.mcgill.ecse321.sportcenter.dto.InstructorResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.OwnerResponseDTO;
-import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
-import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
+
+/*
+* <p> Integration testing for the Account use cases with the controller. <p>
+* <p>Service class in charge of managing accounts. It implements following use cases: </p>
+* <p>Create, update, delete a customer/instructor/owner account and login to account</p>
+* @author Julia
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -52,15 +54,6 @@ public class AccountIntegrationTests extends CommonTestSetup {
 
     @Autowired
     SportCenterManagementService sportCenterService;
-    @Autowired
-    private SportCenterRepository sportCenterRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private InstructorRepository instructorRepository;
-    @Autowired
-    private OwnerRepository ownerRepository;
 
 
     private String LOGIN_EMAIL = "julia@mail.com";

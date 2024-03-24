@@ -3,9 +3,6 @@ package ca.mcgill.ecse321.sportcenter.integration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.description;
-
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +23,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
-import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
-import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.InstructorResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.OwnerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
-import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
-import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
-import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
@@ -55,6 +40,18 @@ import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
 
+/*
+* <p> Integration testing for the Course use cases with the controller. <p>
+* <p> Service class in charge of managing courses. It implements following use cases: </p>
+* <p> Create and update a course</p>
+* <p> Getting courses according to their difficuly and their status.</p>
+* <p> Propose new type of courses </p>
+* <p> Approve a new course </p>
+* <p> Disapprove a pending course </p>
+* <p> Close an approved ourse </p>
+* <p> User views course detail </p>
+* @author Sahar
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -164,6 +161,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
     }
 
+    
     @Test
     @Order(1)
     public void testFindCourseByNameEmpty() {
@@ -415,6 +413,23 @@ public class CourseIntegrationTests extends CommonTestSetup{
         assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode()); // Should return ACCEPTED
         assertEquals(Course.Status.Closed.toString(), response.getBody().getStatus()); // Make additional assertions as needed
+    }
+
+    @Test
+    @Order(7)
+    public void testDeleteValidCourse() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString());
+        // Act
+        ResponseEntity<String> response = client.exchange("/courses/" + course.getId(), HttpMethod.DELETE, requestEntity, String.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
 }

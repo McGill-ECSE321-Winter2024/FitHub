@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CourseResponseDTO {
 

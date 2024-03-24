@@ -8,7 +8,6 @@ public class CourseRequestDTO {
   public enum Difficulty { Beginner, Intermediate, Advanced }
   public enum Status { Approved, Pending, Closed, Disapproved }
 
-  private int id;
   private String name;
   private String difficulty;
   private String status;
