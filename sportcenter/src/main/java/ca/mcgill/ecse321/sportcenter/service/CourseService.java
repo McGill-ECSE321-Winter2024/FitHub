@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -216,6 +217,20 @@ public class CourseService {
             courseRepository.save(course);
         }
     }
+
+     //--------------------------// Delete course //--------------------------//
+
+     @Transactional
+     public void deleteCourse(Integer id) {
+        try {
+            Course course = findCourseById(id);
+            if (course != null){
+                courseRepository.delete(course);
+            }
+        } catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("There are courses with id " + id);
+        }
+     }
 
     //--------------------------// Helper functions //--------------------------//
 
