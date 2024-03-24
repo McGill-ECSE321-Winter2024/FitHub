@@ -13,6 +13,10 @@ public class BillingAccountListDTO {
         this.accounts = accounts;
     }
 
+    public BillingAccountListDTO(){
+        this.accounts = new ArrayList<>();
+    }
+
     public List<BillingAccountResponseDTO> getBillingAccounts(){
         return accounts;
     }

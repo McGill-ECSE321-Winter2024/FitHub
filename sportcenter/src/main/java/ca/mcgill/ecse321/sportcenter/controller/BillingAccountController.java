@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 public class BillingAccountController {
 
@@ -51,7 +52,7 @@ public class BillingAccountController {
 
     //--------------------------// Delete Account //--------------------------//
 
-    @DeleteMapping(value={"/customers/{cId}/billing-accounts{id}", "/customers/{cId}/billing-accounts{id}/"})
+    @DeleteMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"})
     public ResponseEntity<Void> deleteBillingAccount(@PathVariable Integer id) {
         boolean deletionSuccessful = billingService.deleteBillingAccount(id);
         if (deletionSuccessful) {
@@ -82,19 +83,48 @@ public class BillingAccountController {
    }
 
    @GetMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"})
-   public BillingAccountListDTO findBillingAccountByCustomer(@PathVariable int cId){
-       Customer customer = accountService.findCustomerById(cId);
-       List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
-       for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
-           accounts.add(new BillingAccountResponseDTO(account));
-       }
-       return new BillingAccountListDTO(accounts);
+   public ResponseEntity<BillingAccountListDTO> findBillingAccountsByCustomer(@PathVariable int cId){
+
+        try{     
+            Customer customer = accountService.findCustomerById(cId);
+            List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
+
+            for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
+                accounts.add(new BillingAccountResponseDTO(account));
+            }
+       
+            if(accounts.isEmpty())
+                return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.OK);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(),HttpStatus.NO_CONTENT);
+        }
+      
+       
    }
 
-   @GetMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"})
+   @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
+        
+    try{
         Customer customer = accountService.findCustomerById(cId);
-        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(billingService.findDefaultBillingAccountOfCustomer(customer)), HttpStatus.FOUND);
+
+        try{
+            BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+        }
     }
+    catch(IllegalArgumentException e){
+        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+    }
+    
+    }
+
 
 }
