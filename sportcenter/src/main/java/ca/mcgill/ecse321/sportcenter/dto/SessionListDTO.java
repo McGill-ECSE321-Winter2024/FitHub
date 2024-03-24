@@ -34,5 +34,10 @@ public class SessionListDTO {
     public void setSessions(List<SessionResponseDTO> sessions) {
         this.sessions = sessions;
     }
+
+    @Override
+    public String toString() {
+        return "Size of SessionList: " + this.sessions.size();
+    }
     
 }

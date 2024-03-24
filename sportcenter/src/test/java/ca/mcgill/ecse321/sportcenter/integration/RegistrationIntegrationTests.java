@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.description;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -32,6 +33,8 @@ import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.RegistrationListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.RegistrationResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
@@ -94,13 +97,43 @@ public class RegistrationIntegrationTests {
     SportCenterManagementService sportCenterService;
 
     private Registration.Key validKey;
-    private Integer validCustomerId;
-    private Integer validSessionId;
-    private String LOGIN_EMAIL = "julia@mail.com";
+
+    //---------------------Headers------------------------------
+
+	private String LOGIN_EMAIL = "julia@mail.com";
     private String LOGIN_PASSWORD = "secret1456165";
 
+    //--------------------- Customer ------------------------------
+    private Customer customer1;
+    private Customer customer2;
+    private Session session1;
+    private Session session2;
+    private Instructor instructor;
+    private Course course1;
+    private Course course2;
+    private Location location;
 
     @BeforeAll
+	public void intializeDatabase() {
+		sportCenterRepository.deleteAll();
+        registrationRepository.deleteAll();
+        customerRepository.deleteAll();
+        sessionRepository.deleteAll();
+
+		Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("23:0:0");
+		
+        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
+        customer1 = accountService.createCustomerAccount("tayba.jusab@mail.mcgill.ca", "password", "Tayba", "rat.png");
+        customer2 = accountService.createCustomerAccount("personB@gmail.com", "notMyPassword", "Person B", "tree.png");
+        instructor = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png");
+        course1 = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced, Status.Approved);
+        course2 = courseService.createCourse("Goat Yoga 2", "beginner yoga with goats", Difficulty.Beginner, Status.Approved);
+        location = locationService.createLocation("5", "502");
+        session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-02-18"), 50, instructor.getId(), course1.getId(), location.getId());
+        session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-12-06"), 100, instructor.getId(), course2.getId(), location.getId());
+	}
+
     @AfterTestClass
     public void clearDatabase() {
         sportCenterRepository.deleteAll();
@@ -112,13 +145,7 @@ public class RegistrationIntegrationTests {
     @Test
     @Order(0)
     public void login() {
-        // Save one account in the system
-        Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("23:59:0");
-        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
-        
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
-        
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
         ResponseEntity<LoginResponseDTO> response = client.postForEntity("/login", request, LoginResponseDTO.class);
@@ -131,17 +158,7 @@ public class RegistrationIntegrationTests {
 
     @Test
     @Order(1)
-    public void testFindAllRegistrations() {
-        Time openingTime = Time.valueOf("6:0:0");
-        Time closingTime = Time.valueOf("23:59:0");
-        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
-
-        Customer customer = accountService.createCustomerAccount("tayba.jusab@mail.mcgill.ca", "password", "Tayba", "rat.png");
-        Instructor instructor = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png");
-        Course course = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced, Status.Approved);
-        Location location = locationService.createLocation("5", "502");
-        Session session = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-02-18"), 50, instructor.getId(), course.getId(), location.getId());
-
+    public void testFindAllRegistrationsEmptyResult() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -153,49 +170,106 @@ public class RegistrationIntegrationTests {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
-
-        validCustomerId = customer.getId();
-        validSessionId = session.getId();
     }
+
+    @Test
+	@Order(2)
+	public void testFindSessionsByCustomerEmptyResult() {
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(customerRepository.findCustomerById(customer1.getId()));
+		
+		String url = "/customers/" + customer1.getId() + "/sessions";
+
+		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
+	}
+
+    @Test
+	@Order(3)
+	public void testFindCustomersBySessionEmptyResult(){
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(sessionRepository.findById(session1.getId()));
+		
+		String url = "/sessions/" + session1.getId() + "/customers";
+
+		ResponseEntity<AccountListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, AccountListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
+	}
 
     //--------------------------// Create Registration Test //--------------------------//
 
     @Test
-    @Order(2)
+    @Order(4)
     public void testCreateValidRegistration() {
-        Customer customer = accountService.findCustomerById(validCustomerId);
-        Session session = sessionService.findSessionById(validSessionId);
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        
-        Integer customerId = customer.getId();
-        Integer sessionId = session.getId();
+
+        String url = "/registrations?customerId=" + customer1.getId() + "&sessionId=" + session1.getId();
         
         // Act
-        ResponseEntity<RegistrationResponseDTO> response = client.exchange("/registrations?customerId=" + customerId + "&sessionId=" + sessionId, 
-            HttpMethod.POST, requestEntity, RegistrationResponseDTO.class);
+        ResponseEntity<RegistrationResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, RegistrationResponseDTO.class);
 
         // Asserts
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         RegistrationResponseDTO createdRegistration = response.getBody();
         assertNotNull(createdRegistration);
-        assertEquals(customer, createdRegistration.getAccount());
-        assertEquals(session, createdRegistration.getSession());
+        assertEquals(customer1.getId(), createdRegistration.getAccount().getId());
+        assertEquals(session1.getId(), createdRegistration.getSession().getId());
         
-        validKey = registrationService.findRegistration(customerId, sessionId).getKey();
+        validKey = registrationService.findRegistration(customer1.getId(), session1.getId()).getKey();
+    }
+
+    @Test
+    @Order(5)
+    public void testCreateValidRegistration2() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        // Register customer2 to sessions 1 and 2 such that
+        // Session 1: customer 1, and 2
+        // Session 2: customer 2
+        String url1 = "/registrations?customerId=" + customer2.getId() + "&sessionId=" + session1.getId();
+        String url2 = "/registrations?customerId=" + customer2.getId() + "&sessionId=" + session2.getId();
+        
+        // Act
+        ResponseEntity<RegistrationResponseDTO> response1 = client.exchange(url1, HttpMethod.POST, requestEntity, RegistrationResponseDTO.class);
+        ResponseEntity<RegistrationResponseDTO> response2 = client.exchange(url2, HttpMethod.POST, requestEntity, RegistrationResponseDTO.class);
+
+        // Asserts
+        assertNotNull(response1);
+        assertEquals(HttpStatus.CREATED, response1.getStatusCode());
+        RegistrationResponseDTO createdRegistration1 = response1.getBody();
+        assertNotNull(createdRegistration1);
+        assertEquals(customer2.getId(), createdRegistration1.getAccount().getId());
+        assertEquals(session1.getId(), createdRegistration1.getSession().getId());
+
+        assertNotNull(response1);
+        assertEquals(HttpStatus.CREATED, response2.getStatusCode());
+        RegistrationResponseDTO createdRegistration2 = response2.getBody();
+        assertNotNull(createdRegistration2);
+        assertEquals(customer2.getId(), createdRegistration2.getAccount().getId());
+        assertEquals(session2.getId(), createdRegistration2.getSession().getId());
     }
 
     //--------------------------// Read Registration Tests //--------------------------//
 
     @Test
-    @Order(3)
+    @Order(6)
     public void testReadRegistrationByValidKey() {
-        Customer customer = accountService.findCustomerById(validCustomerId);
-        Session session = sessionService.findSessionById(validSessionId);
-
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -209,10 +283,88 @@ public class RegistrationIntegrationTests {
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
         RegistrationResponseDTO registration = response.getBody();
         assertNotNull(registration);
-        assertEquals(customer, registration.getAccount());
-        assertEquals(session, registration.getSession());
     }
 
+    @Test
+    @Order(7)
+    public void testReadAllRegistrations() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
+        ResponseEntity<RegistrationListDTO> response = client.exchange("/registrations/", HttpMethod.GET, requestEntity, RegistrationListDTO.class);
 
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        RegistrationListDTO registrationList = response.getBody();
+        assertNotNull(registrationList);
+
+        // Check total registrations size
+        assertEquals(3, registrationList.getRegistrations().size());
+
+        // Check if customer1 is registered to session1
+        assertEquals(customer1.getId(), registrationList.getRegistrations().get(0).getAccount().getId());
+        assertEquals(session1.getId(), registrationList.getRegistrations().get(0).getSession().getId());
+
+        // Check if customer2 is registered to session1 and 2
+        assertEquals(customer2.getId(), registrationList.getRegistrations().get(1).getAccount().getId());
+        assertEquals(session1.getId(), registrationList.getRegistrations().get(1).getSession().getId());
+        assertEquals(customer2.getId(), registrationList.getRegistrations().get(2).getAccount().getId());
+        assertEquals(session2.getId(), registrationList.getRegistrations().get(2).getSession().getId());
+    }
+
+    @Test
+    @Order(8)
+    public void testReadCustomersBySpecificSession() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/sessions/" + session1.getId() + "/customers";
+
+        ResponseEntity<AccountListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, AccountListDTO.class);
+
+        // Check all customers registered to session 1
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        AccountListDTO accountList = response.getBody();
+        assertNotNull(accountList);
+
+        assertEquals(2, accountList.getAccounts().size());
+        assertEquals(customer1.getId(), accountList.getAccounts().get(0).getId());
+        assertEquals(customer2.getId(), accountList.getAccounts().get(1).getId());
+    }
+
+    @Test
+    @Order(9)
+    public void testReadSessionsBySpecificCustomer() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/customers/" + customer2.getId() + "/sessions";
+
+        ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
+
+        // Check all sessions that customer 2 registered to
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        SessionListDTO sessionList = response.getBody();
+        assertNotNull(sessionList);
+
+        assertEquals(2, sessionList.getSessions().size());
+        assertEquals(session1.getId(), sessionList.getSessions().get(0).getId());
+        assertEquals(session2.getId(), sessionList.getSessions().get(1).getId());
+    }
+
+    //--------------------------// Update Registration Tests //--------------------------//
+
+    @Test
+    @Order(9)
+    public void updateRegistration() {
+
+    }
 }

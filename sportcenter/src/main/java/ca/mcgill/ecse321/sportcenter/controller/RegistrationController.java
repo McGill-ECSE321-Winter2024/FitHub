@@ -120,7 +120,6 @@ public class RegistrationController {
 
     //--------------------------// Delete Registration //--------------------------//
 
-
     @DeleteMapping(value = {"/registrations/{customerId}/{sessionId}", "/registrations/{customerId}/{sessionId}/"})
     public ResponseEntity<Void> cancelRegistration(@PathVariable Integer customerId, @PathVariable Integer sessionId) {
         Registration registration = registrationService.findRegistration(customerId, sessionId);
