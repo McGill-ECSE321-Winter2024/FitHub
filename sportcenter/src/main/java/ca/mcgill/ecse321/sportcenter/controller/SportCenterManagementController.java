@@ -31,7 +31,9 @@ public class SportCenterManagementController {
     @Autowired
     private SportCenterManagementService sportCenterManagementService;
 
-    // Creating a sport center
+
+    //--------------------------// Create SportCenter //--------------------------//
+
     @PostMapping("/sportCenter")
     @ResponseStatus(HttpStatus.CREATED)
     public SportCenterDTO createSportCenter(@RequestBody SportCenterDTO sportCenter){
@@ -46,6 +48,8 @@ public class SportCenterManagementController {
 
         return new SportCenterDTO(createdSportCenter.getName(), createdSportCenter.getOpeningTime(), createdSportCenter.getClosingTime(), createdSportCenter.getAddress(), createdSportCenter.getEmail(), createdSportCenter.getPhoneNumber(), courses, locations, accounts);
     }
+
+    //--------------------------// Update SportCenter //--------------------------//
 
     // updating opening/closing hours? is that how we do it?
     @PutMapping("/sportCenter")
@@ -75,7 +79,9 @@ public class SportCenterManagementController {
         return new SportCenterDTO(updatedSportCenter.getName(), updatedSportCenter.getOpeningTime(), updatedSportCenter.getClosingTime(), updatedSportCenter.getAddress(), updatedSportCenter.getEmail(), updatedSportCenter.getPhoneNumber(), courses, locations, accounts);
     }
 
-    // Deleting a sport center
+
+    //--------------------------// Delete SportCenter //--------------------------//
+
     @DeleteMapping("/sportCenter")
     public void deleteSportCenter() {
         sportCenterManagementService.deleteSportCenter();

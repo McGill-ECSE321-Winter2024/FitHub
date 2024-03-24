@@ -36,9 +36,13 @@ import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//@TestInstance(Lifecycle.PER_CLASS)
 
+
+/*
+* <p>Service class in charge of managing sessions. It implements following use cases: </p>
+* <p>Create, update, delete a session </p>
+* @author Émilia
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)

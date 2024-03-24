@@ -33,6 +33,13 @@ import ca.mcgill.ecse321.sportcenter.dto.OwnerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
+
+/*
+* <p> Integration testing for the Account use cases with the controller. <p>
+* <p>Service class in charge of managing accounts. It implements following use cases: </p>
+* <p>Create, update, delete a customer/instructor/owner account and login to account</p>
+* @author Julia
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)

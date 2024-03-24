@@ -28,6 +28,9 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
+
+    //--------------------------// Create Course //--------------------------//
+
     @PostMapping(value={"/courses", "/courses/"})
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseRequestDTO course) { 
@@ -39,6 +42,8 @@ public class CourseController {
         }
     }
 
+    //--------------------------// Update Course //--------------------------//
+
     @PutMapping(value={"/courses/{id}", "/courses/{id}/"})
     public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Integer id, @RequestBody CourseResponseDTO course) {
         try {
@@ -48,6 +53,9 @@ public class CourseController {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.NO_CONTENT);
         }
     }
+
+
+    //--------------------------// Getters //--------------------------//
 
     @GetMapping(value={"/courses/{id}", "/courses/{id}/"})
     public ResponseEntity<CourseResponseDTO> findCourseById(@PathVariable Integer id) {
@@ -108,6 +116,9 @@ public class CourseController {
             return new ResponseEntity<CourseListDTO>(new CourseListDTO(), HttpStatus.NO_CONTENT);
         }
     }
+
+
+    //--------------------------// Setters //--------------------------//
 
     @PutMapping(value={"/course-approval/{id}", "/course-approve/{id}/"})
     public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id) {

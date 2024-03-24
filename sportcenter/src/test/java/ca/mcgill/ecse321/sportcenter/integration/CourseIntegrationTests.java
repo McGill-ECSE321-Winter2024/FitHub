@@ -40,6 +40,18 @@ import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
 
+/*
+* <p> Integration testing for the Course use cases with the controller. <p>
+* <p> Service class in charge of managing courses. It implements following use cases: </p>
+* <p> Create and update a course</p>
+* <p> Getting courses according to their difficuly and their status.</p>
+* <p> Propose new type of courses </p>
+* <p> Approve a new course </p>
+* <p> Disapprove a pending course </p>
+* <p> Close an approved ourse </p>
+* <p> User views course detail </p>
+* @author Sahar
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
