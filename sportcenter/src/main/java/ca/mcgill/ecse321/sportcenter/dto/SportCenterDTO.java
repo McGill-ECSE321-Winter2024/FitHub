@@ -16,7 +16,7 @@ public class SportCenterDTO {
   private String email;
   private String phoneNumber;
   private CourseListDTO courses;
-  private List<LocationResponseDTO> locations;
+  private LocationListDTO locations;
   private AccountListDTO accounts;
 
   private String error;
@@ -50,22 +50,26 @@ public class SportCenterDTO {
     this.email = sportCenter.getEmail();
     this.phoneNumber = sportCenter.getPhoneNumber();
 
+
+
     List<CourseResponseDTO> courseResponseList = CourseListDTO.courseListToCourseResponseDTOList(sportCenter.getCourses());
     CourseListDTO courses = new CourseListDTO(courseResponseList);
 
     // TO DOOOOOO CONVERT LOCATION INTO LOCATIONLIST
+    List<LocationResponseDTO> locationResponseList = LocationListDTO.locationListToLocationResponseDTOList(sportCenter.getLocations());
+    LocationListDTO locations = new LocationListDTO(locationResponseList);
 
     List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(sportCenter.getAccounts());
     AccountListDTO accounts = new AccountListDTO(accountResponseList);
 
     this.courses = courses;
-    this.locations = new ArrayList<>();
+    this.locations = locations;
     this.accounts = accounts;
 
     this.error = "";
   }
 
-  public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, CourseListDTO courses, List<LocationDTO> locations, AccountListDTO accounts) {
+  public SportCenterDTO(String name, Time openingTime, Time closingTime, String address, String email, String phoneNumber, CourseListDTO courses, LocationListDTO locations, AccountListDTO accounts) {
     this.name = name;
     this.openingTime = openingTime;
     this.closingTime = closingTime;
@@ -131,11 +135,11 @@ public class SportCenterDTO {
     this.courses = courses;
   }
 
-  public List<LocationResponseDTO> getLocations() {
+  public LocationListDTO getLocations() {
     return locations;
   }
 
-  public void setLocations(List<LocationResponseDTO> locations) {
+  public void setLocations(LocationListDTO locations) {
     this.locations = locations;
   }
 

@@ -29,11 +29,13 @@ import org.springframework.test.context.event.annotation.AfterTestClass;
 import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.LocationDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LocationListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
@@ -65,7 +67,9 @@ public class SportCenterIntegrationTests {
     private String valid_phone_number = "1234567890";
 
     // Locations
-    List<LocationDTO> valid_locations = new ArrayList<>();
+    List<Location> centerLocations = new ArrayList<>();
+    List<LocationResponseDTO> locationResponseList = LocationListDTO.locationListToLocationResponseDTOList(centerLocations);
+    LocationListDTO valid_locations = new LocationListDTO(locationResponseList);
 
     // Courses
     List<Course> centerCourses = new ArrayList<>();

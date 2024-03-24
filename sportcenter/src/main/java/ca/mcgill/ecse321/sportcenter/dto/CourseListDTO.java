@@ -28,5 +28,5 @@ public class CourseListDTO {
         list.add(dto);
     }
     return list;
-}
+    }
 }
