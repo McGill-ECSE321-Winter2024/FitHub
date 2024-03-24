@@ -210,6 +210,8 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 		
 	}
 
+     //------------------------------ Read and Get ------------------------------
+
     @Test
     @Order(5)
     public void testReadBillingAccountByValidId() {
@@ -246,11 +248,29 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	}
 
+    @Test
+	@Order(7)
+	public void testFindBillingAccountByCustomerValidResult(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(customerRepository.findCustomerById(customer.getId()));
+		
+		String url = "/customers/" + customer.getId() + "/billing-accounts";
+
+		ResponseEntity<BillingAccountListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, BillingAccountListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
+
+	}
+
     //---------------------------------- Update ---------------------------
 
-
 	@Test
-	@Order(7)
+	@Order(8)
 	public void testUpdateValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -276,8 +296,12 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 	}
 
+
+    //---------------------------------- Delete ---------------------------
+
+
     @Test
-	@Order(8)
+	@Order(9)
 	public void testDeleteValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -291,6 +315,26 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+	}
+
+    @Test
+	@Order(10)
+	public void testDeleteInvalidBillingAccount(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        assertNotNull(customerRepository.findCustomerById(customer.getId()));
+
+        int invalidId = 100;
+
+		String url = "/customers/" + customer.getId() + "/billing-accounts/" + invalidId;
+		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.DELETE, requestEntity, BillingAccountResponseDTO.class);
+
+		assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
 	}
 
