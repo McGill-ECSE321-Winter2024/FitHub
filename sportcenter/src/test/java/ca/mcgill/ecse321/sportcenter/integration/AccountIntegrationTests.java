@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -275,7 +276,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<CustomerResponseDTO> response = client.exchange("/customers/" + validId, HttpMethod.DELETE, requestEntity, CustomerResponseDTO.class);
+        ResponseEntity<String> response = client.exchange("/customers/" + validId, HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
@@ -432,7 +433,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors/" + validId, HttpMethod.DELETE, requestEntity, InstructorResponseDTO.class);
+        ResponseEntity<String> response = client.exchange("/instructors/" + validId, HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
@@ -589,7 +590,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners/" + validId, HttpMethod.DELETE, requestEntity, OwnerResponseDTO.class);
+        ResponseEntity<String> response = client.exchange("/owners/" + validId, HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
@@ -615,5 +616,91 @@ public class AccountIntegrationTests extends CommonTestSetup {
         assertNotNull(accountListDTO);
         // Currently there are supposed to be 2 customer accounts, 1 instructor account and 1 owner account
         assertEquals(4, accountListDTO.getAccounts().size()); 
+    }
+
+    //--------------------------// Invalid Tests //--------------------------//
+    @Test
+    @Order(21)
+    public void testCreateInvalidInstructor() { // Invalid password
+        // Setting up valid variables for upcoming Instructor Tests (cannot reuse the same email)
+        valid_email = "instructor@mail.mcgill.ca";
+        String invalid_password = "0"; // Not long enough
+        valid_name = "Loryane";
+        valid_imageURL = "instructorFace.com";
+        valid_newEmail = "instructor@other.email.com";
+        valid_newPassword = "newSecretInstructorPassword";
+        valid_newName = "NewLoryane";
+        valid_newImageURL = "instructorNose.com";
+
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, invalid_password, valid_name, valid_imageURL), headers);
+        
+        // Act
+        ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors", HttpMethod.POST, requestEntity, InstructorResponseDTO.class);
+
+        // Asserts
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("The password needs to have 8 characters or more", response.getBody().getError());
+    }
+
+    @Test
+    @Order(22)
+    public void testUpdateInvalidOwnerAccount() { // Invalid Email
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO("", "dfljadkjflaksdfj", "Madona", "Madona.face"), headers);
+        
+        // Act
+        ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners/" + validId, HttpMethod.PUT, requestEntity, OwnerResponseDTO.class);
+
+        // Asserts
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Empty fields for email, password or name are not valid", response.getBody().getError());
+    }
+
+    
+    @Test
+    @Order(23)
+    public void testDeleteInvalidCustomer() { // Fake id
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        int id = 66666;
+        // Act
+        ResponseEntity<String> response = client.exchange("/customers/" + id, HttpMethod.DELETE, requestEntity, String.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("There is no customer with ID " + id + ".", response.getBody());
+    }
+
+    @Test
+    @Order(23)
+    public void testFindAllInstructorAccountsWithInvalidEmailArgument() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        
+        String email = "fkjakdjflajf";
+        // Act
+        ResponseEntity<AccountListDTO> response = client.exchange("/instructors?email=" + email, HttpMethod.GET, requestEntity, AccountListDTO.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("There is no instructor with email " + email + ".", response.getBody().getError());
     }
 }
