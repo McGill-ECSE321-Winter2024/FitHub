@@ -19,11 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
-import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
-import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
 
@@ -108,8 +105,6 @@ public class BillingAccountController {
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         
         Customer customer = accountService.findCustomerById(cId);
-        
-        //BillingAccount account = new BillingAccount();
 
         try{
             BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
