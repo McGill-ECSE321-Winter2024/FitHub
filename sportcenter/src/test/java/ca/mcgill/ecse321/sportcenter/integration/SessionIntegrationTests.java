@@ -124,7 +124,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		location = locationService.createLocation(floor, room);
-		course = courseService.createCourse(courseName, description, diff, status);
+		course = courseService.createCourse(courseName, description, diff.toString(), status.toString());
 		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL);
 		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL);
 		newLocation = locationService.createLocation(newFloor, newRoom);

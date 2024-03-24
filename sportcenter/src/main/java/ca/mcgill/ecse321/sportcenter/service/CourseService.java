@@ -32,10 +32,19 @@ public class CourseService {
     //--------------------------// Create Course //--------------------------//
 
     @Transactional
-    public Course createCourse(String name, String description, Difficulty diff, Status status) {
+    public Course createCourse(String name, String description, String diff, String status) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
+        //keep all course names unique
+        try {
+            findCourseByName(name);
+            // If no exception is thrown, it means a course with the given name already exists
+            throw new IllegalArgumentException("Course with the name '" + name + "' already exists!");
+        } catch (IllegalArgumentException e){
+            // Do nothing, as this means the course with the given name doesn't exist
+        }
+
         // Input validation checks
         if (name == null || name.trim().isEmpty()) {
             errorMessage.append("Course name cannot be empty! ");
@@ -61,10 +70,10 @@ public class CourseService {
     
         // If no errors, create and save the course
         Course course = new Course();
-        course.setName(name);
+        course.setName(name.toLowerCase());
         course.setDescription(description);
-        course.setDifficulty(diff);
-        course.setStatus(status);
+        course.setDifficulty(Course.Difficulty.valueOf(diff));
+        course.setStatus(Course.Status.valueOf(status));
         courseRepository.save(course);
         return course;
     }    
@@ -72,10 +81,10 @@ public class CourseService {
     //--------------------------// Update Course //--------------------------//
 
     @Transactional
-    public Course updateCourse(Integer id, String name, String description, Difficulty diff, Status status) {
+    public Course updateCourse(Integer id, String name, String description, String diff, String status) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
-    
+
         // Input validation checks
         if (name == null || name.trim().isEmpty()) {
             errorMessage.append("Course name cannot be empty! ");
@@ -89,20 +98,33 @@ public class CourseService {
         if (status == null) {
             errorMessage.append("Course status cannot be null! ");
         }
-    
+
         // If there are any errors, throw an exception
         if (errorMessage.length() > 0) {
             throw new IllegalArgumentException(errorMessage.toString().trim());
         }
-    
-        // If no errors, create and save the course
-        Course course = findCourseById(id);
-        course.setName(name.toLowerCase());
-        course.setDescription(description);
-        course.setDifficulty(diff);
-        course.setStatus(status);
-        courseRepository.save(course);
-        return course;
+
+        // Check if the course with the given ID exists
+        Course existingCourse = findCourseById(id);
+
+        // Check if the name has been changed and if so, ensure it's unique
+        if (!existingCourse.getName().equalsIgnoreCase(name)) {
+            Course courseWithNewName = courseRepository.findCourseByName(name);
+            if (courseWithNewName != null) {
+                throw new IllegalArgumentException("Course with the name '" + name + "' already exists!");
+            }
+        }
+
+        // Update the existing course with the new information
+        
+        existingCourse.setName(name.toLowerCase());
+        existingCourse.setDescription(description);
+        existingCourse.setDifficulty(Course.Difficulty.valueOf(diff));
+        existingCourse.setStatus(Course.Status.valueOf(status));
+        courseRepository.save(existingCourse);
+         
+
+        return existingCourse;
     }
 
     //--------------------------// Getters //--------------------------//  
@@ -118,11 +140,15 @@ public class CourseService {
 
     @Transactional 
     public Course findCourseByName(String name){
-        Course course = courseRepository.findCourseByName(name.toLowerCase());
-        if (course == null){
-            throw new IllegalArgumentException("There is no course with name " + name +".");
+        if (name != null){
+            Course course = courseRepository.findCourseByName(name.toLowerCase());
+            if (course == null){
+                throw new IllegalArgumentException("There is no course with name " + name +".");
+            }
+            return course;
+        } else {
+            throw new IllegalArgumentException("Name can't be null.");
         }
-        return course;
     }
 
     @Transactional

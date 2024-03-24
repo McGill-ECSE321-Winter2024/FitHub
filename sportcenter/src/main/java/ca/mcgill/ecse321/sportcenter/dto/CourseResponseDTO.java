@@ -2,16 +2,17 @@ package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CourseResponseDTO {
 
   public enum Difficulty { Beginner, Intermediate, Advanced }
-  public enum Status { Approved, Pending, Closed, Disaproved }
+  public enum Status { Approved, Pending, Closed, Disapproved }
 
   private int id;
   private String name;
-  private Difficulty difficulty;
-  private Status status;
+  private String difficulty;
+  private String status;
   private String description;
   private SportCenter center;
   
@@ -19,20 +20,21 @@ public class CourseResponseDTO {
   public CourseResponseDTO() {
     
   }
-
-  public CourseResponseDTO(String aName, Difficulty aDifficulty, Status aStatus, String aDescription)
+  
+  public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus)
   {
     name = aName;
-    difficulty = aDifficulty;
-    status = aStatus;
+    difficulty = aDifficulty.trim();
+    status = aStatus.trim();
     description = aDescription;
   }
 
     public CourseResponseDTO(Course course)
   {
+    id = course.getId();
     name = course.getName();
-    difficulty = Difficulty.valueOf(course.getDifficulty().toString());
-    status = Status.valueOf(course.getStatus().toString());
+    difficulty = course.getDifficulty().toString();
+    status = course.getStatus().toString();
     description = course.getDescription();
   }
 
@@ -43,14 +45,14 @@ public class CourseResponseDTO {
     this.name = aName;
   }
 
-  public void setDifficulty(Difficulty aDifficulty)
+  public void setDifficulty(String aDifficulty)
   {
-    this.difficulty = aDifficulty;
+    this.difficulty = aDifficulty.trim();
   }
 
-  public void setStatus(Status aStatus)
+  public void setStatus(String aStatus)
   {
-    this.status = aStatus;
+    this.status = aStatus.trim();
   }
 
   public void setDescription(String aDescription)
@@ -68,12 +70,12 @@ public class CourseResponseDTO {
     return name;
   }
 
-  public Difficulty getDifficulty()
+  public String getDifficulty()
   {
     return difficulty;
   }
 
-  public Status getStatus()
+  public String getStatus()
   {
     return status;
   }
