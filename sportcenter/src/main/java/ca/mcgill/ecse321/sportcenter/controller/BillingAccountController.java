@@ -109,14 +109,14 @@ public class BillingAccountController {
         
         Customer customer = accountService.findCustomerById(cId);
         
-        BillingAccount account = new BillingAccount();
+        //BillingAccount account = new BillingAccount();
 
         try{
-            account = billingService.findDefaultBillingAccountOfCustomer(customer);
+            BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
             return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
         }
         catch(Exception e){
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account),HttpStatus.NO_CONTENT);
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
         }
     
     }
