@@ -55,7 +55,7 @@ public class LocationService {
         Location location = findLocationById(id);
         location.setFloor(floor);
         location.setRoom(room);
-        //location.setCenter(toList(sportCenterRepository.findAll()).get(0));
+        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return locationRepository.save(location);
     }
 
