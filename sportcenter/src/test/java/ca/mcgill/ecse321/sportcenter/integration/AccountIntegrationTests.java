@@ -42,7 +42,7 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class AccountIntegrationTests {
+public class AccountIntegrationTests extends CommonTestSetup {
     @Autowired
     private TestRestTemplate client;
     
@@ -77,15 +77,6 @@ public class AccountIntegrationTests {
     private String valid_newPassword = "newPassword";
     private String valid_newName = "Lory";
     private String valid_newImageURL = "pfp.jpeg";
-
-    @BeforeAll
-    @AfterTestClass
-    public void clearDatabase() {
-        sportCenterRepository.deleteAll();
-        customerRepository.deleteAll();
-        instructorRepository.deleteAll();
-        ownerRepository.deleteAll();
-    }
     
     //--------------------------// Login Test //--------------------------//
 
