@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.controller;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

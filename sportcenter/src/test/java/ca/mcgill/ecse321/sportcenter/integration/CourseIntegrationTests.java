@@ -417,4 +417,21 @@ public class CourseIntegrationTests extends CommonTestSetup{
         assertEquals(Course.Status.Closed.toString(), response.getBody().getStatus()); // Make additional assertions as needed
     }
 
+    @Test
+    @Order(7)
+    public void testDeleteValidCourse() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString());
+        // Act
+        ResponseEntity<String> response = client.exchange("/courses/" + course.getId(), HttpMethod.DELETE, requestEntity, String.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
 }
