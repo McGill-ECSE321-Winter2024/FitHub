@@ -253,11 +253,30 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	}
 
+    @Test
+	@Order(8)
+	public void testFindDefaultBillingAccountByCustomerValidResult(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		assertNotNull(customerRepository.findCustomerById(customer.getId()));
+		
+		String url = "/customers/" + customer.getId() + "/billing-account";
+
+		ResponseEntity<BillingAccountResponseDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, BillingAccountResponseDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
+
+	}
+
 
     //---------------------------------- Update ---------------------------
 
 	@Test
-	@Order(7)
+	@Order(9)
 	public void testUpdateValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -288,7 +307,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 
     @Test
-	@Order(8)
+	@Order(10)
 	public void testDeleteValidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -306,7 +325,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 	}
 
     @Test
-	@Order(9)
+	@Order(11)
 	public void testDeleteInvalidBillingAccount(){
 
 		HttpHeaders headers = new HttpHeaders();

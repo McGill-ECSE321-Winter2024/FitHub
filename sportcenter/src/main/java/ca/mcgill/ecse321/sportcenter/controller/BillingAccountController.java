@@ -110,7 +110,7 @@ public class BillingAccountController {
             BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
             return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
         }
-        catch(Exception e){
+        catch(IllegalArgumentException e){
             return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
         }
     
