@@ -38,7 +38,7 @@ public class CourseController {
             Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(createdCourse), HttpStatus.CREATED);
         } catch (IllegalArgumentException e){
-            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,7 +50,7 @@ public class CourseController {
             Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(updatedCourse), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
         }
     }
 
