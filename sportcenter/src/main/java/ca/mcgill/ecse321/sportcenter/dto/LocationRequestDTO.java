@@ -9,6 +9,10 @@ public class LocationRequestDTO {
         this.room = room;
     }
 
+    public LocationRequestDTO(){
+        
+    }
+
     public String getFloor() {
         return this.floor;
     }

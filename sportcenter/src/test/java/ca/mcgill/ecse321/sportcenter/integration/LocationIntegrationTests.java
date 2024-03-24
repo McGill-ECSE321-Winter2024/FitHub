@@ -28,6 +28,8 @@ import ca.mcgill.ecse321.sportcenter.dto.LocationListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
+import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.InstructorResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
@@ -73,7 +75,7 @@ public class LocationIntegrationTests extends CommonTestSetup {
     private String NEW_FLOOR = "4";
     private String NEW_ROOM = "402";
 
-    private Integer validId;
+    private Integer validId = 0;
 
     
     //--------------------------// Login Test //--------------------------//
@@ -168,21 +170,26 @@ public class LocationIntegrationTests extends CommonTestSetup {
     @Test
     @Order(4)
     public void testUpdateValidLocation() {
-        // Set up authentication for this test
-        HttpHeaders headers = new HttpHeaders();
+       HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<LocationRequestDTO> requestEntity = new HttpEntity<>(new LocationRequestDTO(NEW_FLOOR, NEW_ROOM), headers);
-        
-        // Act
-        ResponseEntity<LocationResponseDTO> response = client.exchange("/locations/" + this.validId, HttpMethod.PUT, requestEntity, LocationResponseDTO.class);
 
-        // Asserts
-        assertNotNull(response);
+		LocationRequestDTO locationParam = new LocationRequestDTO();
+
+        locationParam.setFloor(NEW_FLOOR);;
+        locationParam.setRoom(NEW_ROOM);;
+    
+        HttpEntity<LocationRequestDTO> requestEntity = new HttpEntity<LocationRequestDTO>(locationParam,headers);
+
+		String url = "/locations/" + validId;
+		ResponseEntity<LocationResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, LocationResponseDTO.class);
+
+		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        LocationResponseDTO updatedLocation = response.getBody();
-        assertNotNull(updatedLocation);
-        assertEquals(NEW_FLOOR, updatedLocation.getFloor());
-        assertEquals(NEW_ROOM, updatedLocation.getRoom());
+        LocationResponseDTO location = response.getBody();
+        assertNotNull(location);
+        assertEquals(this.validId, location.getId());
+        assertEquals(NEW_FLOOR, location.getFloor());
+        assertEquals(NEW_ROOM, location.getRoom());
     }
 
      //--------------------------// Delete Tests //--------------------------//
@@ -196,7 +203,7 @@ public class LocationIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<LocationResponseDTO> response = client.exchange("/locations/" + this.validId, HttpMethod.DELETE, requestEntity, LocationResponseDTO.class);
+        ResponseEntity<LocationResponseDTO> response = client.exchange("/locations/" + validId, HttpMethod.DELETE, requestEntity, LocationResponseDTO.class);
 
         // Assert
         assertNotNull(response);

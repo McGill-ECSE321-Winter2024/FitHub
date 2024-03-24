@@ -12,6 +12,7 @@ public class LocationResponseDTO {
     }
 
     public LocationResponseDTO(Location location) {
+        this.id = location.getId();
         this.floor = location.getFloor();
         this.room = location.getRoom();
     }
