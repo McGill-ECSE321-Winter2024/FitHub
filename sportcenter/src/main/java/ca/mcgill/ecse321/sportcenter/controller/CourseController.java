@@ -44,11 +44,26 @@ public class CourseController {
     }
 
     @GetMapping(value={"/courses", "/courses/"})
+    public ResponseEntity<?> findCourses(
+        @RequestParam(name = "name", required = false) String name,
+        @RequestParam(name = "difficulty", required = false) String difficulty,
+        @RequestParam(name = "status", required = false) String status) {
+
+        if (name != null) {
+            return findCourseByName(name);
+        } else if (difficulty != null) {
+            return findCoursesByDifficulty(difficulty);
+        } else if (status != null) {
+            return findCoursesByStatus(status);
+        } else {
+            return findAllCourses();
+        }
+    }
+
     public ResponseEntity<CourseResponseDTO> findCourseByName(@RequestParam(name = "name", required = false) String name){
         return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseByName(name)), HttpStatus.FOUND);
     }
 
-    @GetMapping(value={"/courses", "/courses/"})
     public ResponseEntity<CourseListDTO> findAllCourses() {
         if (courseService.findAllCourses().size() > 0)
             return new ResponseEntity<CourseListDTO>(new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses())), HttpStatus.OK);
@@ -56,7 +71,6 @@ public class CourseController {
             return new ResponseEntity<CourseListDTO>(new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(courseService.findAllCourses())), HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value={"/courses", "/courses/"})
     public ResponseEntity<CourseListDTO> findCoursesByDifficulty(@RequestParam(name = "difficulty", required = false) String difficulty) {
         if (courseService.findCoursesByDifficulty(Course.Difficulty.valueOf(difficulty)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
@@ -70,7 +84,6 @@ public class CourseController {
                 HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value={"/courses", "/courses/"})
     public ResponseEntity<CourseListDTO> findCoursesByStatus(@RequestParam(name = "status", required = false) String status)  {
         if (courseService.findCoursesByStatus(Course.Status.valueOf(status)).size() > 0)
         return new ResponseEntity<CourseListDTO>(new CourseListDTO(
