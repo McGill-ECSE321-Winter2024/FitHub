@@ -114,7 +114,7 @@ public class BillingAccountIntegreationTests {
 	public void intializeDatabase() {
         
         billingAccountRepository.deleteAll();
-		//sportCenterRepository.deleteAll();
+		sportCenterRepository.deleteAll();
 		customerRepository.deleteAll();
 
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
@@ -126,8 +126,8 @@ public class BillingAccountIntegreationTests {
     @AfterTestClass
 	public void clearDatabase() {
         billingAccountRepository.deleteAll();
-		//sportCenterRepository.deleteAll();
-		//customerRepository.deleteAll();
+		sportCenterRepository.deleteAll();
+		customerRepository.deleteAll();
     }
 
     //---------------login -------------------------------
@@ -253,7 +253,7 @@ public class BillingAccountIntegreationTests {
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
 	}
 
-    /* 
+    
 	@Test
     @Order(6)
     public void testReadSessionByCustomer() {
@@ -271,7 +271,7 @@ public class BillingAccountIntegreationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should not be empty
 
 	}
-    */
+
 
 
 
