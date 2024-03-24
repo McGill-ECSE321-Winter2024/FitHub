@@ -12,7 +12,7 @@ public class SessionResponseDTO {
     private Time endTime;
     private Date date;
     private int capacity;
-    private CourseDTO course;
+    private CourseRequestDTO course;
     private AccountResponseDTO supervisor;
     private LocationDTO location;
 
@@ -27,7 +27,7 @@ public class SessionResponseDTO {
         this.endTime = session.getEndTime();
         this.date = session.getDate();
         this.capacity = session.getCapacity();
-        this.course = new CourseDTO(session.getCourseType());
+        this.course = new CourseRequestDTO(session.getCourseType());
         this.supervisor = new AccountResponseDTO(session.getSupervisor());
         this.location = new LocationDTO(session.getLocation().getFloor(), session.getLocation().getRoom());
     }
@@ -54,7 +54,7 @@ public class SessionResponseDTO {
         return capacity;
     }
 
-    public CourseDTO getCourse(){
+    public CourseRequestDTO getCourse(){
         return course;
     }
 
@@ -88,7 +88,7 @@ public class SessionResponseDTO {
         this.capacity = capacity;
     }
 
-    public void setCourse(CourseDTO course){
+    public void setCourse(CourseRequestDTO course){
         this.course = course;
     }
 

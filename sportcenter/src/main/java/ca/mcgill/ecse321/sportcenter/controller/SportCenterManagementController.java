@@ -17,7 +17,7 @@ import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
-import ca.mcgill.ecse321.sportcenter.dto.CourseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
@@ -34,7 +34,7 @@ public class SportCenterManagementController {
     @ResponseStatus(HttpStatus.CREATED)
     public SportCenterDTO createSportCenter(@RequestBody SportCenterDTO sportCenter){
         // Create empty lists
-        List<CourseDTO> courses = new ArrayList<>();
+        List<CourseResponseDTO> courses = new ArrayList<>();
         List<LocationDTO> locations = new ArrayList<>();
         List<Account> centerAccounts = new ArrayList<>();
         List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(centerAccounts);
@@ -51,10 +51,10 @@ public class SportCenterManagementController {
         SportCenter updatedSportCenter = sportCenterManagementService.updateSportCenter(newSportCenter.getOpeningTime(), newSportCenter.getClosingTime(), newSportCenter.getAddress());
         
         // Convert list of Course into list of CourseDTO
-        List<CourseDTO> courses = new ArrayList<>();
-        CourseDTO courseDTO;
+        List<CourseResponseDTO> courses = new ArrayList<>();
+        CourseResponseDTO courseDTO;
         for(Course course : updatedSportCenter.getCourses()) {
-            courseDTO = new CourseDTO(course);
+            courseDTO = new CourseResponseDTO(course);
             courses.add(courseDTO);
         }
 
