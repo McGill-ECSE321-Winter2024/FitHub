@@ -18,7 +18,7 @@ import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.LocationDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
@@ -35,7 +35,7 @@ public class SportCenterManagementController {
     public SportCenterDTO createSportCenter(@RequestBody SportCenterDTO sportCenter){
         // Create empty lists
         List<CourseResponseDTO> courses = new ArrayList<>();
-        List<LocationDTO> locations = new ArrayList<>();
+        List<LocationResponseDTO> locations = new ArrayList<>();
         List<Account> centerAccounts = new ArrayList<>();
         List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(centerAccounts);
         AccountListDTO accounts = new AccountListDTO(accountResponseList);
@@ -59,10 +59,10 @@ public class SportCenterManagementController {
         }
 
         // Convert list of Location into list of LocationDTO
-        List<LocationDTO> locations = new ArrayList<>();
-        LocationDTO locationDTO;
+        List<LocationResponseDTO> locations = new ArrayList<>();
+        LocationResponseDTO locationDTO;
         for(Location location : updatedSportCenter.getLocations()) {
-            locationDTO = new LocationDTO(location.getFloor(), location.getRoom());
+            locationDTO = new LocationResponseDTO(location);
             locations.add(locationDTO);
         }
 
