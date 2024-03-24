@@ -17,13 +17,23 @@ To access the Home of our project, please consult this [wiki page](https://githu
 | Émilia Gagné   | EmiliaGagne     |
 | Julia Grenier  | julia-b-grenier |
 
-## Deliverable 1 and 2 - Overview of individual effort
+## Deliverable 1  - Overview of individual effort
+| Name           | Individual Effort |
+| -------------- | ----------------- |
+| Anjali Singhal | 12.5              |
+| Sahar Fathi    | 12.0              |
+| James Luu      | 12.0              |
+| Tayba Jusab    | 12.0              |
+| Émilia Gagné   | 14.0              |
+| Julia Grenier  | 12.5              |
+
+## Deliverable 2 - Overview of individual effort
 
 | Name           | Individual Effort |
 | -------------- | ----------------- |
-| Anjali Singhal | 47.5              |
-| Sahar Fathi    | 47.5              |
-| James Luu      | 47.5              |
-| Tayba Jusab    | 47.5              |
-| Émilia Gagné   | 47.5              |
-| Julia Grenier  | 47.5              |
+| Anjali Singhal | 33.5              |
+| Sahar Fathi    | 33.5              |
+| James Luu      | 33.5              |
+| Tayba Jusab    | 33.5              |
+| Émilia Gagné   | 33.5              |
+| Julia Grenier  | 33.5              |
