@@ -45,9 +45,6 @@ public class LocationIntegrationTests extends CommonTestSetup {
     private String VALID_FLOOR = "3";
     private String VALID_ROOM = "302";
 
-    private String NEW_FLOOR = "6";
-    private String NEW_ROOM = "601";
-
     private Integer validId = 0;
 
     

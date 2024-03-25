@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.sportcenter.dto.RegistrationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Location;
-import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
 import ca.mcgill.ecse321.sportcenter.dto.LocationRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
-import ca.mcgill.ecse321.sportcenter.dto.RegistrationListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationListDTO;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
