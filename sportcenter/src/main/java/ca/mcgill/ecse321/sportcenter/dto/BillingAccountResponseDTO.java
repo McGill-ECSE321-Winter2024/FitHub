@@ -74,6 +74,10 @@ public class BillingAccountResponseDTO {
         return id;
     }
 
+    public String getError() {
+        return error;
+    }
+
     //--------------------- Setters -------------------//
 
     public void setCardHolder(String aCardHolder){
@@ -107,5 +111,7 @@ public class BillingAccountResponseDTO {
     public void setId(Integer aId){
         this.id = aId;
     }
-
+    public void setError(String error) {
+        
+    }
 }

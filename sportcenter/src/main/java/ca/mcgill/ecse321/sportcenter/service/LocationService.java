@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
-import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 

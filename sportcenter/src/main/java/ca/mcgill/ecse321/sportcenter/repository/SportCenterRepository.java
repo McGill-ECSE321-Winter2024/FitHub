@@ -8,5 +8,6 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 public interface SportCenterRepository extends CrudRepository<SportCenter, Integer> {
     SportCenter findSportCenterById(int id);
+    @SuppressWarnings("null")
     List<SportCenter> findAll();
 }

@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.sportcenter.dto;
 import java.sql.Time;
 
 import java.util.List;
-import java.util.ArrayList;
 
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 

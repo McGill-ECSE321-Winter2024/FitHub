@@ -26,8 +26,15 @@ public class BillingAccountListDTO {
         return accounts;
     }
 
+    public String getError() {
+        return error;
+    }
+
     public void setBillingAccounts(List<BillingAccountResponseDTO> accounts){
         this.accounts = accounts;
+    }
+    public void setError(String error) {
+        
     }
 
     public static <T> List<BillingAccountResponseDTO> billingAccountListToBillingAccountResponseDTOList(List<T> accounts) {
