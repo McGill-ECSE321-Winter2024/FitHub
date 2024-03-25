@@ -16,6 +16,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
@@ -58,19 +60,21 @@ public class LocationServiceTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        sportCenter = sportCenterRepository.save(sportCenter);
+        List<SportCenter> listSportCenter = new ArrayList<>();
+        listSportCenter.add(sportCenter);
+        when(sportCenterRepository.findAll()).thenReturn(listSportCenter);
     }
 
     //--------------------------// Create Location Tests //--------------------------//
 
     @Test
     public void testCreateValidLocation() {
-        String floor = "2";
-        String room = "200";
+        String floor = "3";
+        String room = "302";
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findSportCenterById(0));
+        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(locationRepository.save(any(Location.class))).thenReturn(location);
 
@@ -108,7 +112,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findSportCenterById(0));
+        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(locationRepository.findLocationByFloorAndRoom(floor, room)).thenReturn(location);
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> locationService.createLocation(floor, room));
@@ -126,7 +130,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findSportCenterById(0));
+        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         when(locationRepository.findLocationById(id)).thenReturn(location);
 
@@ -135,6 +139,7 @@ public class LocationServiceTests {
         Location updatedLocation = new Location();
         updatedLocation.setFloor(newFloor);
         updatedLocation.setRoom(newRoom);
+        updatedLocation.setCenter(toList(sportCenterRepository.findAll()).get(0));
         when(locationRepository.save(any(Location.class))).thenReturn(updatedLocation);
 
         Location savedLocation = locationService.updateLocation(id, newFloor, newRoom);
@@ -154,7 +159,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor("aFloor");
         location.setRoom("aRoom");
-        location.setCenter(sportCenterRepository.findSportCenterById(0));
+        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
         when(locationRepository.findLocationById(id)).thenReturn(location);
 
         Location foundLocation = locationService.findLocationById(id);
@@ -180,7 +185,7 @@ public class LocationServiceTests {
         Location location = new Location();
         location.setFloor(floor);
         location.setRoom(room);
-        location.setCenter(sportCenterRepository.findSportCenterById(0));
+        location.setCenter(toList(sportCenterRepository.findAll()).get(0));
         when(locationRepository.findLocationByFloorAndRoom(floor, room)).thenReturn(location);
 
         Location foundLocation = locationService.findLocationByFloorAndRoom(floor, room);
@@ -201,4 +206,12 @@ public class LocationServiceTests {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> locationService.findLocationByFloorAndRoom(floor, room));
         assertEquals("There is no location with floor " + floor + " or room " + room + ".", e.getMessage());
     }
+
+    private <T> List<T> toList(Iterable<T> iterable){
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
 }

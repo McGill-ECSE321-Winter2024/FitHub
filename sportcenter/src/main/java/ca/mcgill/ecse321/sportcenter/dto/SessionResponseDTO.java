@@ -14,7 +14,7 @@ public class SessionResponseDTO {
     private int capacity;
     private CourseRequestDTO course;
     private AccountResponseDTO supervisor;
-    private LocationDTO location;
+    private LocationRequestDTO location;
 
     @SuppressWarnings("unused")
     public SessionResponseDTO(){
@@ -29,7 +29,7 @@ public class SessionResponseDTO {
         this.capacity = session.getCapacity();
         this.course = new CourseRequestDTO(session.getCourseType());
         this.supervisor = new AccountResponseDTO(session.getSupervisor());
-        this.location = new LocationDTO(session.getLocation().getFloor(), session.getLocation().getRoom());
+        this.location = new LocationRequestDTO(session.getLocation().getFloor(), session.getLocation().getRoom());
     }
 
     //--------------------- Getters -------------------//
@@ -62,7 +62,7 @@ public class SessionResponseDTO {
         return supervisor;
     }
 
-    public LocationDTO getLocation(){
+    public LocationRequestDTO getLocation(){
         return location;
     }
 
@@ -96,7 +96,7 @@ public class SessionResponseDTO {
         this.supervisor = supervisor;
     }
 
-    public void setLocation(LocationDTO locationDTO){
+    public void setLocation(LocationRequestDTO locationDTO){
         this.location = locationDTO;
     }
 
