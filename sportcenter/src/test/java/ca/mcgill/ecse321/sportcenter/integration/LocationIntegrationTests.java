@@ -20,6 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ca.mcgill.ecse321.sportcenter.dto.LocationListDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LocationRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
@@ -94,12 +95,11 @@ public class LocationIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        String url = "/locations?floor=" + VALID_FLOOR + "&room=" + VALID_ROOM;
+        HttpEntity<LocationRequestDTO> requestEntity = new HttpEntity<>(new LocationRequestDTO(VALID_FLOOR, VALID_ROOM),headers);
         
         // Act
-        ResponseEntity<LocationResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, LocationResponseDTO.class);
+        ResponseEntity<LocationResponseDTO> response = client.exchange("/locations", HttpMethod.POST, requestEntity, LocationResponseDTO.class);
 
         // Asserts
         assertNotNull(response);
