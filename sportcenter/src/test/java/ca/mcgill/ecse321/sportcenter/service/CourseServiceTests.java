@@ -254,6 +254,24 @@ public class CourseServiceTests {
     }
 
     @Test
+    public void testApproveCourseInvalid() {
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.approveCourse(course));
+        assertEquals("You can only approve a course which has a status of pending.", e.getMessage());
+    }
+
+    @Test
     public void testDisapproveCourse() {
         String name = "a Name";
         String description = "a Description.";
@@ -279,6 +297,24 @@ public class CourseServiceTests {
     }
 
     @Test
+    public void testDispproveCourseInvalid() {
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.disapproveCourse(course));
+        assertEquals("You can only disapprove a course which has a status of pending.", e.getMessage());
+    }
+
+    @Test
     public void testCloseCourse() {
         String name = "a Name";
         String description = "a Description.";
@@ -301,6 +337,24 @@ public class CourseServiceTests {
         assertEquals(description, course.getDescription());
         assertEquals(diff, course.getDifficulty());
         verify(courseDao, times(1)).save(any(Course.class));
+    }
+
+    @Test
+    public void testCloseCourseInvalid() {
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Pending;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.closeCourse(course));
+        assertEquals("You can only close a course which has a status of approved.", e.getMessage());
     }
 
     //--------------------------// Update Course Tests //--------------------------//

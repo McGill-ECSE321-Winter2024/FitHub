@@ -24,6 +24,11 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
 
+/**
+ * <p>Controller class in charge of managing billing accounts. It implements following use cases: </p>
+ * <p>Create, update, read and delete a billing account </p>
+ * @author Anjali
+*/
 @CrossOrigin(origins = "*")
 @RestController
 public class BillingAccountController {
@@ -39,15 +44,25 @@ public class BillingAccountController {
     @PostMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"} )
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BillingAccountResponseDTO> createBillingAccount(@RequestBody BillingAccountRequestDTO account, @PathVariable int cId){
-        Customer customer = accountService.findCustomerById(cId);
-        return new ResponseEntity<BillingAccountResponseDTO>( new BillingAccountResponseDTO(billingService.createBillingAccount(account.getCardNumber(), account.getCardHolder(), account.getBillingAddress(), account.getCvv(), account.getIsDefault(), account.getExpirationDate(), customer)), HttpStatus.CREATED);
+        try{
+            Customer customer = accountService.findCustomerById(cId);
+            return new ResponseEntity<BillingAccountResponseDTO>( new BillingAccountResponseDTO(billingService.createBillingAccount(account.getCardNumber(), account.getCardHolder(), account.getBillingAddress(), account.getCvv(), account.getIsDefault(), account.getExpirationDate(), customer)), HttpStatus.CREATED);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
     
     //--------------------------// Update Account //--------------------------//
 
     @PutMapping(value={"/customers/{cId}/billing-accounts/{id}", "/customers/{cId}/billing-accounts/{id}/"} )
     public ResponseEntity<BillingAccountResponseDTO> updateBillingAccount(@RequestBody BillingAccountRequestDTO account, @PathVariable int id, @PathVariable int cId){
+       try{ 
         return new ResponseEntity<BillingAccountResponseDTO>( new BillingAccountResponseDTO(billingService.updateBillingAccount(id, account.getCardNumber(), account.getCardHolder(), account.getBillingAddress(), account.getCvv(), account.getIsDefault(), account.getExpirationDate())), HttpStatus.ACCEPTED);
+       }
+       catch(IllegalArgumentException e){
+        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+       }
     }
 
     //--------------------------// Delete Account //--------------------------//
@@ -66,20 +81,30 @@ public class BillingAccountController {
 
     @GetMapping(value={"/billing-accounts/{id}", "/billing-accounts/{id}/"})
     public ResponseEntity<BillingAccountResponseDTO> findBillingAccountById(@PathVariable Integer id) {
-        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(billingService.findBillingAccountById(id)), HttpStatus.FOUND);
+        try{
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(billingService.findBillingAccountById(id)), HttpStatus.FOUND);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value={"/billing-accounts", "/billing-accounts/"})
    public ResponseEntity< BillingAccountListDTO> findAllBillingAccounts() {
-       List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
-       for (BillingAccount account : billingService.findAllBillingAccounts()){
-           accounts.add(new BillingAccountResponseDTO(account));
-       }
-       if(accounts.isEmpty())
-           return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.NO_CONTENT);
-       else{
-           return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.OK);
-       }
+       try{
+            List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
+            for (BillingAccount account : billingService.findAllBillingAccounts()){
+                accounts.add(new BillingAccountResponseDTO(account));
+            }
+            if(accounts.isEmpty())
+                return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(accounts),HttpStatus.OK);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
    }
 
    @GetMapping(value={"/customers/{cId}/billing-accounts", "/customers/{cId}/billing-accounts/"})
@@ -100,7 +125,7 @@ public class BillingAccountController {
             }
         }
         catch(IllegalArgumentException e){
-            return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(),HttpStatus.NO_CONTENT);
+            return new ResponseEntity<BillingAccountListDTO>(new BillingAccountListDTO(e.getMessage()),HttpStatus.BAD_REQUEST);
         }
       
        
@@ -109,20 +134,20 @@ public class BillingAccountController {
    @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         
-    try{
-        Customer customer = accountService.findCustomerById(cId);
-
         try{
-            BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
+            Customer customer = accountService.findCustomerById(cId);
+
+            try{
+                BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
+                return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
+            }
+            catch(IllegalArgumentException e){
+                return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+            }
         }
         catch(IllegalArgumentException e){
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(e.getMessage()),HttpStatus.BAD_REQUEST);
         }
-    }
-    catch(IllegalArgumentException e){
-        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
-    }
     
     }
 

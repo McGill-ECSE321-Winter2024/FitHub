@@ -32,7 +32,12 @@ import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
-
+/*
+* <p> Integration testing for the BillingAccount use cases with the controller. <p>
+* <p> Service class in charge of managing billing accounts. It implements following use cases: </p>
+* <p> Create, update, delete a billing account </p>
+* @author Anjali
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)

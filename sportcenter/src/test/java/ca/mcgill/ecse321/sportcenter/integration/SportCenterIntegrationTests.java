@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.description;
 
 import java.sql.Time;
 import java.util.ArrayList;

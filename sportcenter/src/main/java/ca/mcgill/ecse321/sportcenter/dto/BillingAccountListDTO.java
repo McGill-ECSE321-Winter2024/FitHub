@@ -8,9 +8,14 @@ import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 public class BillingAccountListDTO {
 
     private List<BillingAccountResponseDTO> accounts;
+    private String error;
 
     public BillingAccountListDTO(List<BillingAccountResponseDTO> accounts){
         this.accounts = accounts;
+    }
+
+    public BillingAccountListDTO(String error) {
+        this.error = error;
     }
 
     public BillingAccountListDTO(){
