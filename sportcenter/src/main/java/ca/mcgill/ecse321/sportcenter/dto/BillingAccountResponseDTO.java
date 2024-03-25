@@ -17,6 +17,8 @@ public class BillingAccountResponseDTO {
     private Date expirationDate;
     private CustomerResponseDTO customer;
 
+    private String error;
+
     public BillingAccountResponseDTO(BillingAccount aAccount){
 
         this.id = aAccount.getId();
@@ -32,6 +34,10 @@ public class BillingAccountResponseDTO {
 
     public BillingAccountResponseDTO(){
         
+    }
+
+    public BillingAccountResponseDTO(String error) { 
+        this.error = error;
     }
 
     //--------------------- Getters -------------------//
