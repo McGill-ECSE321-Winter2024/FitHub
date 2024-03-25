@@ -15,10 +15,6 @@ public class RegistrationResponseDTO {
         this.session = new SessionResponseDTO(registration.getKey().getSession());
     }
 
-    public RegistrationResponseDTO(){
-        
-    }
-
     public AccountResponseDTO getAccount() {
         return this.account;
     }
