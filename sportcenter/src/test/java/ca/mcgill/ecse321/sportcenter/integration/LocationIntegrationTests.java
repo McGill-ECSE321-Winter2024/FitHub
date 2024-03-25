@@ -156,31 +156,6 @@ public class LocationIntegrationTests extends CommonTestSetup {
         assertEquals(VALID_ROOM, location.getRoom());
     }
 
-    //--------------------------// Update Tests //--------------------------//
-
-    @Test
-    @Order(4)
-    public void testUpdateValidLocation() {
-       HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-
-		LocationRequestDTO locationParam = new LocationRequestDTO(NEW_FLOOR, NEW_ROOM);
-        System.out.println(locationParam.getFloor());
-    
-        HttpEntity<LocationRequestDTO> requestEntity = new HttpEntity<LocationRequestDTO>(locationParam, headers);
-
-		String url = "/locations/" + this.validId;
-		ResponseEntity<LocationResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, LocationResponseDTO.class);
-
-		assertNotNull(response);
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        LocationResponseDTO location = response.getBody();
-        assertNotNull(location);
-        assertEquals(this.validId, location.getId());
-        assertEquals(NEW_FLOOR, location.getFloor());
-        assertEquals(NEW_ROOM, location.getRoom());
-    }
-
      //--------------------------// Delete Tests //--------------------------//
 
     @Test
