@@ -17,8 +17,7 @@ To access the Home of our project, please consult this [wiki page](https://githu
 | Émilia Gagné   | EmiliaGagne     |
 | Julia Grenier  | julia-b-grenier |
 
-## Deliverable 1 - Overview of individual effort
-
+## Deliverable 1  - Overview of individual effort
 | Name           | Individual Effort |
 | -------------- | ----------------- |
 | Anjali Singhal | 12.5              |
@@ -38,3 +37,4 @@ To access the Home of our project, please consult this [wiki page](https://githu
 | Tayba Jusab    | 35              |
 | Émilia Gagné   | 35              |
 | Julia Grenier  | 35              |
+
