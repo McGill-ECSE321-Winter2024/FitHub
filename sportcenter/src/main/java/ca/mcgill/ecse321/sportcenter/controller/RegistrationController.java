@@ -78,14 +78,11 @@ public class RegistrationController {
 
     //--------------------------// Read Registration //--------------------------//
 
-    @GetMapping(value={"/registrations/{key}", "/registrations/{key}/"})
-    public ResponseEntity<RegistrationResponseDTO> findRegistrationByKey(@PathVariable Registration.Key key) {
-        try{
-            return new ResponseEntity<>(new RegistrationResponseDTO(registrationService.findRegistrationByKey(key)), HttpStatus.FOUND);
-        }
-        catch(IllegalArgumentException e){
-            return new ResponseEntity<>(new RegistrationResponseDTO(), HttpStatus.BAD_REQUEST);
-        }
+
+    @GetMapping(value={"/registrations/{customerId}/{sessionId}", "/registrations/{customerId}/{sessionId}/"})
+    public ResponseEntity<RegistrationResponseDTO> findRegistration(@PathVariable Integer customerId, @PathVariable Integer sessionId) {
+        return new ResponseEntity<>(new RegistrationResponseDTO(registrationService.findRegistration(customerId, sessionId)), HttpStatus.FOUND);
+
     }
 
     @GetMapping(value = {"/registrations", "/registrations/"})
@@ -151,7 +148,6 @@ public class RegistrationController {
     }
 
     //--------------------------// Delete Registration //--------------------------//
-
 
     @DeleteMapping(value = {"/registrations/{customerId}/{sessionId}", "/registrations/{customerId}/{sessionId}/"})
     public ResponseEntity<Void> cancelRegistration(@PathVariable Integer customerId, @PathVariable Integer sessionId) {

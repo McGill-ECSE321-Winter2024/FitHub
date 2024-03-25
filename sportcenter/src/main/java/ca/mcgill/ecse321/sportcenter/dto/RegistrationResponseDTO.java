@@ -6,6 +6,10 @@ public class RegistrationResponseDTO {
     private AccountResponseDTO account;
     private SessionResponseDTO session;
 
+    public RegistrationResponseDTO() {
+        
+    }
+
     public RegistrationResponseDTO(Registration registration) {
         this.account = AccountResponseDTO.create(registration.getKey().getCustomer());
         this.session = new SessionResponseDTO(registration.getKey().getSession());
