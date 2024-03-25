@@ -8,16 +8,25 @@ import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 public class BillingAccountListDTO {
 
     private List<BillingAccountResponseDTO> accounts;
+    private String error;
 
     public BillingAccountListDTO(List<BillingAccountResponseDTO> accounts){
         this.accounts = accounts;
     }
 
-    public List<BillingAccountResponseDTO> getAccounts(){
+    public BillingAccountListDTO(String error) {
+        this.error = error;
+    }
+
+    public BillingAccountListDTO(){
+        this.accounts = new ArrayList<>();
+    }
+
+    public List<BillingAccountResponseDTO> getBillingAccounts(){
         return accounts;
     }
 
-    public void setAccounts(List<BillingAccountResponseDTO> accounts){
+    public void setBillingAccounts(List<BillingAccountResponseDTO> accounts){
         this.accounts = accounts;
     }
 

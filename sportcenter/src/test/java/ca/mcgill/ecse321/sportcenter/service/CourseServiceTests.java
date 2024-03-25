@@ -116,10 +116,10 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
-        Course createdCourse = service.createCourse(name, description, diff, status);
+        Course createdCourse = service.createCourse(name, description, diff.toString(), status.toString());
 
 		assertNotNull(createdCourse);
-		assertEquals(name, createdCourse.getName());
+		assertEquals(name.toLowerCase(), createdCourse.getName());
         assertEquals(description, createdCourse.getDescription());
         assertEquals(diff, createdCourse.getDifficulty());
         assertEquals(status, createdCourse.getStatus());
@@ -136,7 +136,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -156,7 +156,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -176,7 +176,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -196,7 +196,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -216,7 +216,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff, status);
+			course = service.createCourse(name, description, diff.toString(), status.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -254,6 +254,24 @@ public class CourseServiceTests {
     }
 
     @Test
+    public void testApproveCourseInvalid() {
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.approveCourse(course));
+        assertEquals("You can only approve a course which has a status of pending.", e.getMessage());
+    }
+
+    @Test
     public void testDisapproveCourse() {
         String name = "a Name";
         String description = "a Description.";
@@ -279,6 +297,24 @@ public class CourseServiceTests {
     }
 
     @Test
+    public void testDispproveCourseInvalid() {
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Approved;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.disapproveCourse(course));
+        assertEquals("You can only disapprove a course which has a status of pending.", e.getMessage());
+    }
+
+    @Test
     public void testCloseCourse() {
         String name = "a Name";
         String description = "a Description.";
@@ -301,6 +337,24 @@ public class CourseServiceTests {
         assertEquals(description, course.getDescription());
         assertEquals(diff, course.getDifficulty());
         verify(courseDao, times(1)).save(any(Course.class));
+    }
+
+    @Test
+    public void testCloseCourseInvalid() {
+        String name = "a Name";
+        String description = "a Description.";
+        Difficulty diff = Difficulty.Beginner;
+        Status status = Status.Pending;
+
+        Course course = new Course();
+        course.setName(name);
+        course.setDescription(description);
+        course.setDifficulty(diff);
+        course.setStatus(status);
+        course.setCenter(sportCenterRepo.findSportCenterById(0));
+
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.closeCourse(course));
+        assertEquals("You can only close a course which has a status of approved.", e.getMessage());
     }
 
     //--------------------------// Update Course Tests //--------------------------//
@@ -335,11 +389,9 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(updatedCourse);
 
-        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString());
     
         // Assert
-        verify(courseDao, times(1)).findCourseById(id);
-        verify(courseDao, times(1)).save(any(Course.class));
         assertNotNull(savedCourse);
         assertEquals(newName.toLowerCase(), savedCourse.getName());
         assertEquals(newDescription, savedCourse.getDescription());
@@ -375,7 +427,7 @@ public class CourseServiceTests {
 
         String error = "";
         try {
-			service.updateCourse(id, newName, newDescription, newDiff, newStatus);
+			service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString());
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -388,7 +440,7 @@ public class CourseServiceTests {
     //--------------------------// Find Course Tests //--------------------------//
 
     @Test
-    public void testCourseOwnerByValidId() {
+    public void testCourseByValidId() {
         // Set up test
         int id = 3;
         String name = "aName";

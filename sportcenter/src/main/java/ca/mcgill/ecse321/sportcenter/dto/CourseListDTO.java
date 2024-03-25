@@ -9,6 +9,10 @@ public class CourseListDTO {
     
     private List<CourseResponseDTO> courses;
 
+    public CourseListDTO() {
+        this.courses = new ArrayList<>();
+    }
+
     public CourseListDTO(List<CourseResponseDTO> courses) {
         this.courses = courses;
     }

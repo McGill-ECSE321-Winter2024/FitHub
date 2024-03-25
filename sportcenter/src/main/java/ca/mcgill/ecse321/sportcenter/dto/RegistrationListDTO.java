@@ -13,6 +13,10 @@ public class RegistrationListDTO {
         this.registrations = registrations;
     }
 
+    public RegistrationListDTO(){
+        
+    }
+
     public List<RegistrationResponseDTO> getRegistrations() {
         return this.registrations;
     }

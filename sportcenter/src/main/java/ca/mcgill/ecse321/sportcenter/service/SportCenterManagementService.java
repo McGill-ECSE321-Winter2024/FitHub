@@ -8,6 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
+import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
+import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
+import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
+import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
+import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
+import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
@@ -18,9 +26,27 @@ import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 */
 @Service
 public class SportCenterManagementService {
+    @Autowired
+    private BillingAccountRepository billingAccountRepository;
+    @Autowired 
+    private RegistrationRepository registrationRepository;
+	@Autowired
+	private SessionRepository sessionRepository;
 
     @Autowired
     private SportCenterRepository sportCenterRepository;
+
+    @Autowired
+    private CustomerRepository customerRepo;
+    @Autowired
+    private InstructorRepository instructorRepo;
+    @Autowired
+    private OwnerRepository ownerRepo;
+
+    @Autowired
+	private CourseRepository courseRepository;
+    @Autowired
+	private LocationRepository locationRepository;
 
     //--------------------------// Create Sport Center //--------------------------//
 
@@ -31,6 +57,7 @@ public class SportCenterManagementService {
         }
         validSportCentertInfo(name, address, email, phoneNumber);
         validPhoneNumber(phoneNumber);
+        validSchedule(openingTime, closingTime);
 		SportCenter createdSportCenter = new SportCenter();
 		createdSportCenter.setName(name);
         createdSportCenter.setOpeningTime(openingTime);
@@ -49,6 +76,7 @@ public class SportCenterManagementService {
         if (newAddress.isEmpty()) {
             throw new IllegalArgumentException("Empty address is not valid");
         }
+        validSchedule(newOpeningTime, newClosingTime);
 
         SportCenter sportCenter = getSportCenter();
 
@@ -80,11 +108,17 @@ public class SportCenterManagementService {
 
     @Transactional
     public void deleteSportCenter() {
-        SportCenter sportCenter = sportCenterRepository.findSportCenterById(0);
-        if (sportCenter == null) {
-            throw new IllegalArgumentException("Sport center does not exist.");
-        }
-        sportCenterRepository.delete(sportCenter);
+        getSportCenter(); // Verify that there is at least one sport center
+
+        billingAccountRepository.deleteAll();
+        registrationRepository.deleteAll();
+		sessionRepository.deleteAll();
+        sportCenterRepository.deleteAll();
+        courseRepository.deleteAll();
+        locationRepository.deleteAll();
+        customerRepo.deleteAll();
+        instructorRepo.deleteAll();
+        ownerRepo.deleteAll();
     }
 
     //--------------------------// Getters Sport Center //--------------------------//
@@ -95,6 +129,9 @@ public class SportCenterManagementService {
 
     @Transactional
     public SportCenter getSportCenter() {
+        if (getAllSportCenters().size() == 0) {
+            throw new IllegalArgumentException("No sport center exist");
+        }
         return getAllSportCenters().get(0);
     }
 
@@ -128,4 +165,11 @@ public class SportCenterManagementService {
         }
     }
 
+    private void validSchedule(Time openingTime, Time closingTime) {
+        if (closingTime.before(openingTime)) {
+            throw new IllegalArgumentException("Opening time must be before closing time");
+        }
+    }
+
 }
+

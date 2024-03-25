@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Time;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
@@ -32,13 +30,16 @@ import ca.mcgill.ecse321.sportcenter.dto.InstructorResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.OwnerResponseDTO;
-import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
-import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
+
+/*
+* <p> Integration testing for the Account use cases with the controller. <p>
+* <p>Service class in charge of managing accounts. It implements following use cases: </p>
+* <p>Create, update, delete a customer/instructor/owner account and login to account</p>
+* @author Julia
+*/
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -53,15 +54,6 @@ public class AccountIntegrationTests extends CommonTestSetup {
 
     @Autowired
     SportCenterManagementService sportCenterService;
-    @Autowired
-    private SportCenterRepository sportCenterRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private InstructorRepository instructorRepository;
-    @Autowired
-    private OwnerRepository ownerRepository;
 
 
     private String LOGIN_EMAIL = "julia@mail.com";
@@ -277,7 +269,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<CustomerResponseDTO> response = client.exchange("/customers/" + validId, HttpMethod.DELETE, requestEntity, CustomerResponseDTO.class);
+        ResponseEntity<String> response = client.exchange("/customers/" + validId, HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
@@ -434,7 +426,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors/" + validId, HttpMethod.DELETE, requestEntity, InstructorResponseDTO.class);
+        ResponseEntity<String> response = client.exchange("/instructors/" + validId, HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
@@ -591,7 +583,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Act
-        ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners/" + validId, HttpMethod.DELETE, requestEntity, OwnerResponseDTO.class);
+        ResponseEntity<String> response = client.exchange("/owners/" + validId, HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
@@ -617,5 +609,91 @@ public class AccountIntegrationTests extends CommonTestSetup {
         assertNotNull(accountListDTO);
         // Currently there are supposed to be 2 customer accounts, 1 instructor account and 1 owner account
         assertEquals(4, accountListDTO.getAccounts().size()); 
+    }
+
+    //--------------------------// Invalid Tests //--------------------------//
+    @Test
+    @Order(21)
+    public void testCreateInvalidInstructor() { // Invalid password
+        // Setting up valid variables for upcoming Instructor Tests (cannot reuse the same email)
+        valid_email = "instructor@mail.mcgill.ca";
+        String invalid_password = "0"; // Not long enough
+        valid_name = "Loryane";
+        valid_imageURL = "instructorFace.com";
+        valid_newEmail = "instructor@other.email.com";
+        valid_newPassword = "newSecretInstructorPassword";
+        valid_newName = "NewLoryane";
+        valid_newImageURL = "instructorNose.com";
+
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, invalid_password, valid_name, valid_imageURL), headers);
+        
+        // Act
+        ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors", HttpMethod.POST, requestEntity, InstructorResponseDTO.class);
+
+        // Asserts
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("The password needs to have 8 characters or more", response.getBody().getError());
+    }
+
+    @Test
+    @Order(22)
+    public void testUpdateInvalidOwnerAccount() { // Invalid Email
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO("", "dfljadkjflaksdfj", "Madona", "Madona.face"), headers);
+        
+        // Act
+        ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners/" + validId, HttpMethod.PUT, requestEntity, OwnerResponseDTO.class);
+
+        // Asserts
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Empty fields for email, password or name are not valid", response.getBody().getError());
+    }
+
+    
+    @Test
+    @Order(23)
+    public void testDeleteInvalidCustomer() { // Fake id
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        int id = 66666;
+        // Act
+        ResponseEntity<String> response = client.exchange("/customers/" + id, HttpMethod.DELETE, requestEntity, String.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("There is no customer with ID " + id + ".", response.getBody());
+    }
+
+    @Test
+    @Order(23)
+    public void testFindAllInstructorAccountsWithInvalidEmailArgument() {
+        // Set up authentication for this test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        
+        String email = "fkjakdjflajf";
+        // Act
+        ResponseEntity<AccountListDTO> response = client.exchange("/instructors?email=" + email, HttpMethod.GET, requestEntity, AccountListDTO.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("There is no instructor with email " + email + ".", response.getBody().getError());
     }
 }

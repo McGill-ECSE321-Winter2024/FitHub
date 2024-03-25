@@ -43,82 +43,121 @@ public class SessionController {
     //--------------------------// Getters //--------------------------//
     @GetMapping("/sessions/{sid}")
     public ResponseEntity<SessionResponseDTO> findSessionById(@PathVariable int sid){
-        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.findSessionById(sid)), HttpStatus.FOUND);
+        try{
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.findSessionById(sid)), HttpStatus.FOUND);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = { "/sessions", "/sessions/" })
     public ResponseEntity<SessionListDTO> findAllSessions(){
         List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
-        for (Session model : sessionService.findAllSessions()){
-            sessions.add(new SessionResponseDTO(model));
+        try{
+            for (Session model : sessionService.findAllSessions()){
+                sessions.add(new SessionResponseDTO(model));
+            }
+            if(sessions.isEmpty())
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+            }
+    
         }
-        if(sessions.isEmpty())
-            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
-        else{
-            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(),HttpStatus.BAD_REQUEST);
         }
     }
     
     @GetMapping("/sessions/instructors/{iId}")
     public ResponseEntity<SessionListDTO> findSessionsByInstructor(@PathVariable int iId){
-        Instructor instructor = sessionService.getInstructorById(iId);
-        if(instructor == null){
-            throw new IllegalArgumentException("Instructor does not exist");
-        }
-        SessionListDTO sessions = new SessionListDTO();
-        List<SessionResponseDTO> responseDTOs = new ArrayList<SessionResponseDTO>();
+        try{
+            Instructor instructor = sessionService.getInstructorById(iId);
+            SessionListDTO sessions = new SessionListDTO();
+            List<SessionResponseDTO> responseDTOs = new ArrayList<SessionResponseDTO>();
 
-        List<Session> list = sessionService.findSessionsByInstructor(instructor);
-        
-        if(list.isEmpty()){
-            return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.NO_CONTENT);
+            List<Session> list = sessionService.findSessionsByInstructor(instructor);
+            
+            if(list.isEmpty()){
+                return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.NO_CONTENT);
+            }
+
+            for(Session s : list){
+                responseDTOs.add(new SessionResponseDTO(s));
+            }
+    
+            sessions.setSessions(responseDTOs);
+            return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.OK);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(),HttpStatus.BAD_REQUEST);
         }
 
-        for(Session s : list){
-            responseDTOs.add(new SessionResponseDTO(s));
-        }
-   
-        sessions.setSessions(responseDTOs);
-        return new ResponseEntity<SessionListDTO>(sessions,HttpStatus.OK);
         
     }
 
     @GetMapping("/sessions/courses/{cId}")
     public ResponseEntity<SessionListDTO> findSessionsByCourse(@PathVariable int cId){
-        Course course = courseService.findCourseById(cId);
-        List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
-        for (Session model : sessionService.findSessionsByCourse(course)){
-            sessions.add(new SessionResponseDTO(model));
+        try{
+            Course course = courseService.findCourseById(cId);
+            List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
+            for (Session model : sessionService.findSessionsByCourse(course)){
+                sessions.add(new SessionResponseDTO(model));
+            }
+            if(sessions.isEmpty())
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+            }
         }
-        if(sessions.isEmpty())
-            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
-        else{
-            return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(),HttpStatus.BAD_REQUEST);
         }
     }
 
     //--------------------------// Create Session //--------------------------//
-    //TO CONFIRM WITH TA
+    
     @PostMapping("/sessions/{iId}/{cId}/{lId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<SessionResponseDTO> proposeSuperviseSession(@RequestBody SessionRequestDTO session, @PathVariable int iId, @PathVariable int cId, @PathVariable int lId){
-        return new ResponseEntity<SessionResponseDTO>( new SessionResponseDTO(sessionService.proposeSuperviseSession(session.getStartTime(), session.getEndTime(), session.getDate(), session.getCapacity(), iId, cId, lId)),HttpStatus.CREATED);
+        try{
+            return new ResponseEntity<SessionResponseDTO>( new SessionResponseDTO(sessionService.proposeSuperviseSession(session.getStartTime(), session.getEndTime(), session.getDate(), session.getCapacity(), iId, cId, lId)),HttpStatus.CREATED);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
     }
     //--------------------------// Update Session //--------------------------//
-    //TO CONFIRM WITH TA
+    
     @PutMapping("/sessions/{id}")
     public ResponseEntity<SessionResponseDTO> updateSession(@RequestBody SessionRequestDTO newSession, @PathVariable int id){
-        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity())),HttpStatus.ACCEPTED);
+        try{
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSession(id, newSession.getStartTime(), newSession.getEndTime(), newSession.getDate(), newSession.getCapacity())),HttpStatus.ACCEPTED);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/sessions/{sId}/locations/{lId}")
     public ResponseEntity<SessionResponseDTO> updateSessionLocation(@PathVariable int sId, @PathVariable int lId){
-        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionLocation(sId, lId)),HttpStatus.ACCEPTED);
+        try{
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionLocation(sId, lId)),HttpStatus.ACCEPTED);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(), HttpStatus.BAD_REQUEST);
+        } 
     }
 
     @PutMapping("/sessions/{sId}/instructors/{iId}")
     public ResponseEntity<SessionResponseDTO> updateSessionSupervisor(@PathVariable int sId, @PathVariable int iId){
-        return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionSupervisor(sId, iId)),HttpStatus.ACCEPTED);
+        try{
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(sessionService.updateSessionSupervisor(sId, iId)),HttpStatus.ACCEPTED);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(), HttpStatus.BAD_REQUEST);
+        }    
     }
 
     //--------------------------// Delete Session //--------------------------//

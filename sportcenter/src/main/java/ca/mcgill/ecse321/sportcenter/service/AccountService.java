@@ -157,39 +157,27 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Delete Account //--------------------------//
     
     @Transactional
-    public boolean deleteCustomerAccount(Integer id) {
-        Account account = customerRepository.findCustomerById(id);
-        if (account == null) {
-            return false;
-        }
+    public void deleteCustomerAccount(Integer id) {
+        Account account = findCustomerById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
         sportCenterManagementService.updateSportCenter(sportCenter);
-        return true;
     }
 
     @Transactional
-    public boolean deleteInstructorAccount(Integer id) {
-        Account account = instructorRepository.findInstructorById(id);
-        if (account == null) {
-            return false;
-        }
+    public void deleteInstructorAccount(Integer id) {
+        Account account = findInstructorById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
         sportCenterManagementService.updateSportCenter(sportCenter);
-        return true;
     }
 
     @Transactional
-    public boolean deleteOwnerAccount(Integer id) {
-        Account account = ownerRepository.findOwnerById(id);
-        if (account == null) {
-            return false;
-        }
+    public void deleteOwnerAccount(Integer id) {
+        Account account = findOwnerById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
         sportCenterManagementService.updateSportCenter(sportCenter);
-        return true;
     }
     
     //--------------------------// Getters //--------------------------//
