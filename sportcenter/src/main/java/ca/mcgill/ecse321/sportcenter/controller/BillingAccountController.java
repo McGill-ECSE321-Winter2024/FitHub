@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.BillingAccountResponseDTO;
@@ -25,6 +24,11 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
 
+/**
+ * <p>Controller class in charge of managing billing accounts. It implements following use cases: </p>
+ * <p>Create, update, read and delete a billing account </p>
+ * @author Anjali
+*/
 @CrossOrigin(origins = "*")
 @RestController
 public class BillingAccountController {
@@ -130,20 +134,20 @@ public class BillingAccountController {
    @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         
-    try{
-        Customer customer = accountService.findCustomerById(cId);
-
         try{
-            BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
+            Customer customer = accountService.findCustomerById(cId);
+
+            try{
+                BillingAccount account = billingService.findDefaultBillingAccountOfCustomer(customer);
+                return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(account), HttpStatus.OK);
+            }
+            catch(IllegalArgumentException e){
+                return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+            }
         }
         catch(IllegalArgumentException e){
-            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(),HttpStatus.NO_CONTENT);
+            return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(e.getMessage()),HttpStatus.BAD_REQUEST);
         }
-    }
-    catch(IllegalArgumentException e){
-        return new ResponseEntity<BillingAccountResponseDTO>(new BillingAccountResponseDTO(e.getMessage()),HttpStatus.BAD_REQUEST);
-    }
     
     }
 

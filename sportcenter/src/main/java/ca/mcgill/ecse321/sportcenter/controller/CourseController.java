@@ -22,6 +22,11 @@ import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 
+/**
+ * <p>Controller class in charge of managing courses. It implements following use cases: </p>
+ * <p>Create, update, read and delete a course </p>
+ * @author Sahar
+*/
 @CrossOrigin(origins = "*")
 @RestController
 public class CourseController {

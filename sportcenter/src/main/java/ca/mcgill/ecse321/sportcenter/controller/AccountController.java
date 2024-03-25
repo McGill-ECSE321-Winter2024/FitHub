@@ -24,6 +24,11 @@ import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 
+/**
+ * <p>Controller class in charge of managing accounts. It implements following use cases: </p>
+ * <p>Create, update, read and delete a account </p>
+ * @author Julia
+*/
 @CrossOrigin(origins = "*")
 @RestController
 public class AccountController {
