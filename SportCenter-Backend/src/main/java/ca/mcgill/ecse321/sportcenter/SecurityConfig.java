@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.sportcenter;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -12,6 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,10 +25,10 @@ public class SecurityConfig {
     
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
+		http.cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
 			.authorizeHttpRequests((authorize) -> authorize
-				.requestMatchers("/login").permitAll()
+				.requestMatchers("/").permitAll()
 				.anyRequest().authenticated()
 			)
 			.securityContext((securityContext) -> securityContext
@@ -32,7 +38,10 @@ public class SecurityConfig {
 				))
 			)
 			.httpBasic(Customizer.withDefaults())
-			.formLogin(Customizer.withDefaults());
+			.formLogin(formLogin -> formLogin
+                .permitAll()
+            )
+			.rememberMe(Customizer.withDefaults());
 
 		return http.build();
 	}
@@ -41,4 +50,16 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowedMethods(Arrays.asList("*"));
+		configuration.setAllowedHeaders(Arrays.asList("*"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }
+
