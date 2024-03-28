@@ -30,54 +30,39 @@
 </template>
 <script>
 import axios from 'axios'
-
 import config from '../../config'
 
 const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 
 const AXIOS = axios.create({
-  baseURL: backendUrl
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 
 export default {
-    data() {
-        return {
-        email: '',
-        password: ''
-        };
-    },
-    methods: {
-        async login() {
-            /* try {
-                const response = await AXIOS.get('http://localhost:8080/customers', { crossdomain: true });
-                // Handle successful login response
-                console.log('Login successful:', response.data);
-                // Redirect to another page, update user state, etc.
-            } catch (error) {
-                // Handle login error
-                console.error('Login failed');
-            } */
-
-            const testURL = 'http://localhost:8080/customers';
-            const myInit = {
-                method: 'GET',
-                mode: 'no-cors',
-            };
-
-            const myRequest = new Request(testURL, myInit);
-
-            fetch(myRequest).then(function(response) {
-                return response;
-            }).then(function(response) {
-                console.log(response);
-            }).catch(function(e){
-                console.log(e);
-            });
-
-
-        }
+  data() {
+    return {
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        const response = await axios.post('http://localhost:8080/login', {
+          email: this.email,
+          password: this.password
+        });
+        // Handle successful login response
+        console.log('Login successful:', response.data);
+        // Redirect to another page, update user state, etc.
+      } catch (error) {
+        // Handle login error
+        console.error('Login failed');
+      }
     }
+  }
 };
 </script>
 <style>
