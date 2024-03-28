@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue.js Component Example</title>
+    <!-- Include Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <!-- Mount Vue instance -->
+    <div id="app">
+        <component></component> <!-- Your Vue.js component will be mounted here -->
+    </div>
+    
+    <!-- Import Vue.js component -->
+    <script src="Login.vue"></script>
+    
+    <!-- Vue.js logic -->
+    <script>
+        new Vue({
+            el: '#app'
+        });
+    </script>
+</body>
+</html>

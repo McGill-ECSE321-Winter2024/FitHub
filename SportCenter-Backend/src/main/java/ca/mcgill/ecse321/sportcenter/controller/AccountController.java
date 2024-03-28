@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.sportcenter.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
@@ -29,16 +32,18 @@ import ca.mcgill.ecse321.sportcenter.service.AccountService;
  * <p>Create, update, read and delete a account </p>
  * @author Julia
 */
-@CrossOrigin(origins = "http://127.0.0.1:8087")
+@CrossOrigin(origins = "*")
 @RestController
 public class AccountController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/login")
-	String login() {
-		return "login";
-	}
+    @GetMapping("/")
+	ModelAndView showHelloPage() {
+        Map<String, Object> model = new HashMap<>();
+        model.put("title", "Hello Vue!");
+        return new ModelAndView("login.html", model);
+    }
     
     //--------------------------// Create Account //--------------------------//
     

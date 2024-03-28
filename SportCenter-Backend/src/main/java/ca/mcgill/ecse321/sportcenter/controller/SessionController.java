@@ -30,7 +30,7 @@ import ca.mcgill.ecse321.sportcenter.service.SessionService;
 * <p>Create, update, delete a session </p>
 * @author Émilia
 */
-@CrossOrigin(origins = "http://127.0.0.1:8087")
+@CrossOrigin(origins = "*")
 @RestController
 public class SessionController {
 
