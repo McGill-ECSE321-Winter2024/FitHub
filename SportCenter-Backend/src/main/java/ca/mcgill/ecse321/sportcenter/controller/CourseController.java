@@ -27,7 +27,7 @@ import ca.mcgill.ecse321.sportcenter.service.CourseService;
  * <p>Create, update, read and delete a course </p>
  * @author Sahar
 */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class CourseController {
     @Autowired

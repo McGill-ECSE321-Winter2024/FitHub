@@ -33,7 +33,7 @@ import ca.mcgill.ecse321.sportcenter.model.Session;
  * <p>Create, update, read and delete a registration </p>
  * @author Tayba
 */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class RegistrationController {
     

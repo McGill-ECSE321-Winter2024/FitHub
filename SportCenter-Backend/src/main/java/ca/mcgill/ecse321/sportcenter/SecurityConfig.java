@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.sportcenter;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,8 @@ import org.springframework.security.web.context.RequestAttributeSecurityContextR
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -25,10 +27,11 @@ public class SecurityConfig {
     
     @Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.cors(Customizer.withDefaults())
-            .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
+		http
+			.csrf(csrf -> csrf.disable())
+			.cors(cors -> cors.disable())
 			.authorizeHttpRequests((authorize) -> authorize
-				.requestMatchers("/").permitAll()
+				.requestMatchers("/login").permitAll()
 				.anyRequest().authenticated()
 			)
 			.securityContext((securityContext) -> securityContext
@@ -39,6 +42,9 @@ public class SecurityConfig {
 			)
 			.httpBasic(Customizer.withDefaults())
 			.formLogin(formLogin -> formLogin
+				.loginPage("http://127.0.0.1:8087/#/login")
+				.loginProcessingUrl("/login")
+				.defaultSuccessUrl("/swagger-ui/index.html#", true)
                 .permitAll()
             )
 			.rememberMe(Customizer.withDefaults());
@@ -50,16 +56,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("*"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}
 }
 

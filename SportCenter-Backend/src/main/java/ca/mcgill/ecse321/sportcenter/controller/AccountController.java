@@ -29,11 +29,16 @@ import ca.mcgill.ecse321.sportcenter.service.AccountService;
  * <p>Create, update, read and delete a account </p>
  * @author Julia
 */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class AccountController {
     @Autowired
     AccountService accountService;
+
+    @GetMapping("/login")
+	String login() {
+		return "login";
+	}
     
     //--------------------------// Create Account //--------------------------//
     

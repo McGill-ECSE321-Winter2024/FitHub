@@ -21,7 +21,7 @@ import ca.mcgill.ecse321.sportcenter.dto.LocationRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LocationListDTO;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class LocationController {
 
