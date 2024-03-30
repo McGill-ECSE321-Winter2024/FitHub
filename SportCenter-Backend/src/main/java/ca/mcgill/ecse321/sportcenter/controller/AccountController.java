@@ -32,17 +32,15 @@ import ca.mcgill.ecse321.sportcenter.service.AccountService;
  * <p>Create, update, read and delete a account </p>
  * @author Julia
 */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8087")
 @RestController
 public class AccountController {
     @Autowired
     AccountService accountService;
 
     @GetMapping("/")
-	ModelAndView showHelloPage() {
-        Map<String, Object> model = new HashMap<>();
-        model.put("title", "Hello Vue!");
-        return new ModelAndView("login.html", model);
+    public ResponseEntity<String> getLogin() {
+        return new ResponseEntity<String>("success", HttpStatus.OK);
     }
     
     //--------------------------// Create Account //--------------------------//

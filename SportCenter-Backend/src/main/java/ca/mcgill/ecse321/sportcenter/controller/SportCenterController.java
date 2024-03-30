@@ -20,7 +20,7 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
  * <p>Create, update, read and delete the sport center </p>
  * @author James
 */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8087")
 @RestController
 public class SportCenterController {
     

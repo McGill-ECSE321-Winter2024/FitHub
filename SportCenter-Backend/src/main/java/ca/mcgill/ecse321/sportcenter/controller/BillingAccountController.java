@@ -29,7 +29,7 @@ import ca.mcgill.ecse321.sportcenter.service.BillingAccountService;
  * <p>Create, update, read and delete a billing account </p>
  * @author Anjali
 */
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8087")
 @RestController
 public class BillingAccountController {
 

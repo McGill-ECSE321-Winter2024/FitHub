@@ -29,40 +29,49 @@
     
 </template>
 <script>
-import axios from 'axios'
-import config from '../../config'
 
-const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+import axios from "axios";
+import config from "../../config";
 
-const AXIOS = axios.create({
-  baseURL: backendUrl,
-  headers: { 'Access-Control-Allow-Origin': frontendUrl }
-})
+const client = axios.create({
+    // IMPORTANT: baseURL, not baseUrl
+    baseURL: config.dev.backendBaseUrl
+});
 
 export default {
-  data() {
-    return {
-      email: '',
-      password: ''
-    };
-  },
-  methods: {
-    async login() {
-      try {
-        const response = await axios.post('http://localhost:8080/login', {
-          email: this.email,
-          password: this.password
-        });
-        // Handle successful login response
-        console.log('Login successful:', response.data);
-        // Redirect to another page, update user state, etc.
-      } catch (error) {
-        // Handle login error
-        console.error('Login failed');
-      }
+    data() {
+        return {
+        email: '',
+        password: ''
+        };
+    },
+    methods: {
+        async login() {
+            
+            /* const formData = new FormData();
+            formData.append('username', this.email);
+            formData.append('password', this.password);
+ */
+            const params = new URLSearchParams();
+            params.append('username', this.email);
+            params.append('password', this.password);
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8080/login',
+                data: params,
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            })
+            .then(function (response) {
+                //handle success
+                console.log(response);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
+        }
     }
-  }
 };
 </script>
 <style>

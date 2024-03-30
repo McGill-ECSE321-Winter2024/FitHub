@@ -27,7 +27,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         if (sportCenterService.getAllSportCenters().isEmpty()) {
             Time openingTime = Time.valueOf("6:0:0");
             Time closingTime = Time.valueOf("23:59:0");
-            sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
+            sportCenterService.createSportCenter("FitHub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
         }
 
         // Create a default owner Admin account if it isnt already in the database
