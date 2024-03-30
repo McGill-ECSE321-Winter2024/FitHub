@@ -72,33 +72,38 @@ public class SportCenterManagementService {
     //--------------------------// Update Sport Center //--------------------------//
 
     @Transactional
-    public SportCenter updateSportCenter(Time newOpeningTime, Time newClosingTime, String newAddress) {
-        if (newAddress.isEmpty()) {
-            throw new IllegalArgumentException("Empty address is not valid");
-        }
+    public SportCenter updateSportCenter(String newName, Time newOpeningTime, Time newClosingTime, String newAddress, String newEmail, String newPhoneNumber) {
+        validSportCentertInfo(newName, newAddress, newEmail, newPhoneNumber);
+        validPhoneNumber(newPhoneNumber);
         validSchedule(newOpeningTime, newClosingTime);
 
         SportCenter sportCenter = getSportCenter();
 
+        sportCenter.setName(newName);
         sportCenter.setOpeningTime(newOpeningTime);
         sportCenter.setClosingTime(newClosingTime);
         sportCenter.setAddress(newAddress);
+        sportCenter.setEmail(newEmail);
+        sportCenter.setPhoneNumber(newPhoneNumber);
         sportCenterRepository.save(sportCenter);
 
         return sportCenter;
     }
 
     @Transactional
-    public SportCenter updateSportCenter(SportCenter updatedSportCenter) {
-        if (updatedSportCenter.getAddress().isEmpty()) {
-            throw new IllegalArgumentException("Empty address is not valid");
-        }
+    public SportCenter updateSportCenter(SportCenter updatedSportCenter) {        
+        validSportCentertInfo(updatedSportCenter.getName(), updatedSportCenter.getAddress(), updatedSportCenter.getEmail(), updatedSportCenter.getPhoneNumber());
+        validPhoneNumber(updatedSportCenter.getPhoneNumber());
+        validSchedule(updatedSportCenter.getOpeningTime(), updatedSportCenter.getClosingTime());
 
         SportCenter sportCenter = getSportCenter();
 
+        sportCenter.setName(updatedSportCenter.getName());
         sportCenter.setOpeningTime(updatedSportCenter.getOpeningTime());
         sportCenter.setClosingTime(updatedSportCenter.getClosingTime());
         sportCenter.setAddress(updatedSportCenter.getAddress());
+        sportCenter.setEmail(updatedSportCenter.getEmail());
+        sportCenter.setPhoneNumber(updatedSportCenter.getPhoneNumber());
         sportCenterRepository.save(sportCenter);
 
         return sportCenter;
