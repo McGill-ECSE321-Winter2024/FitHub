@@ -14,8 +14,8 @@
                     <div class="row mx-5">
                         <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
                     </div>
-                    <div class="row mt-2 justify-content-center">
-                        <p class="error">error</p>
+                    <div class="row my-3 justify-content-center">
+                        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
                     </div>
                     <div class="row mx-5 justify-content-center">
                         <button class="mx-5 p-2 px-3 rounded justify-content-center button-animation" @click="login">Login</button>
@@ -41,37 +41,43 @@ const client = axios.create({
 export default {
     data() {
         return {
-        email: '',
-        password: ''
+            email: '',
+            password: '',
+            errorMessage: 'Invalid email or password', // Initialize error message
+            showErrorMessage: false
         };
     },
     methods: {
-        async login() {
-            
-            /* const formData = new FormData();
-            formData.append('username', this.email);
-            formData.append('password', this.password);
- */
-            const params = new URLSearchParams();
-            params.append('username', this.email);
-            params.append('password', this.password);
+    async login() {
+        const params = new URLSearchParams();
+        params.append('username', this.email);
+        params.append('password', this.password);
 
-            axios({
-                method: 'post',
-                url: 'http://localhost:8080/login',
-                data: params,
-                headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            })
-            .then(function (response) {
-                //handle success
-                console.log(response);
-            })
-            .catch(function (response) {
-                //handle error
-                console.log(response);
+        try {
+            const response = await axios.post('http://localhost:8080/login', params, {
+                headers: { 'content-type': 'application/x-www-form-urlencoded' }
             });
+
+            // Handle success
+            console.log(response);
+            if (response.data === 'success') {
+                console.log('Login successful');
+                this.switchToHomePage(); // Call another function to switch page
+            } else {
+                console.log('Login failed');
+                this.showErrorMessage = true; // Show error message
+            }
+        } catch (error) {
+            console.log('Login failed');
+            this.showErrorMessage = true; // Show error message
+
         }
+    },
+    switchToHomePage() {
+        this.$router.push('/'); // Navigate to the '/' route
     }
+}
+
 };
 </script>
 <style>
@@ -122,6 +128,14 @@ export default {
 
     .button-animation:hover {
         background-color: rgba(255, 255, 255, 0.2); /* Increase opacity on hover */
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+
+    .error {
+        color: #2c3e50;
     }
 
 </style>
