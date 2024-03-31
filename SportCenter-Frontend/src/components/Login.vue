@@ -17,16 +17,16 @@
                 
                 <form class="col form-group">
                 <div class="container justify-content-center">
-                    <div class="row my-xl-5">
+                    <div class="row my-xl-5 mr-xl-5">
                         <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
                     </div>
-                    <div class="row mt-xl-5 my-3">
+                    <div class="row mt-xl-5 my-3 mr-xl-5">
                         <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center mr-xl-5">
                         <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center mr-xl-5">
                         <button class="p-2 px-3 rounded justify-content-center button-animation" @click="login">Login</button>
                     </div>
                 </div>
