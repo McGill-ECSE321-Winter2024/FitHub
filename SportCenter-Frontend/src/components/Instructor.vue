@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row">
                     <ul v-for="instructor in instructors"  :key="instructor.id">
-                        <img class="instructor_pfp rounded" v-bind:src=instructor.imageURL">
+                        <img class="instructor_pfp rounded" v-bind:src=instructor.imageURL>
                         <li>{{ instructor.name }}</li>
                         <li>{{ instructor.email }}</li>
                         <li>Pronouns</li>
