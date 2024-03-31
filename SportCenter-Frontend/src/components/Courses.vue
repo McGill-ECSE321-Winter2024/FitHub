@@ -149,6 +149,25 @@ export default {
   height: 153px;
   margin: 20px;
   border-radius: 32px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.custom-card .card-img-top img {
+  transition: transform 0.3s ease; 
+}
+
+.custom-card:hover .card-img-top img:nth-child(odd) {
+  transform: translateY(-10px); 
+}
+
+.custom-card:hover .card-img-top img:nth-child(even) {
+  transform: translateY(10px);
 }
 
 .custom-card .card-body {
@@ -158,8 +177,13 @@ export default {
 .cards-container {
   display: flex; 
   flex-wrap: wrap; 
-  margin-left: 100px;
+  margin-left: 150px;
   margin-right: 20px;
+}
+
+img {
+  transform: scale(1.4); 
+  margin-top: 10px;
 }
 
 .text-search-bar {
