@@ -11,7 +11,7 @@ hr {
     opacity: 0.5;
 }
 
-h1 {
+h1 {        /* Used for FitHub title page */
     font-size: 10em; 
     color: transparent; 
     -webkit-text-stroke: 1px white; 
@@ -19,7 +19,42 @@ h1 {
     letter-spacing: 25px;
     font-weight: 900;
     text-align: justify;
-  }
+}
+
+/* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
+h2 {        
+    font-size: 3em;
+    text-align: justify;
+    font-weight: 800;
+    color: #524E5E;
+}
+
+/* Apply rounded corners */
+.rounded-div {
+    border-radius: 10%;
+}
+
+/* Used when you want to make a white div */
+.white-div {
+    color: #524E5E;
+    background-color: #F9F9F9;
+}
+
+/* Only for now, must delete this later. Makes the div element take up the entire screen */
+.whole-screen {
+    height: 100vh;
+    width: 100vw;
+}
+
+.half-screen {
+    height: 50vh;
+    width: 100vw;
+}
+
+/* To be deleted, just to visualize the hooper slides */
+.slide-style {
+    border: 10px solid #000000;
+}
 
 .navbar-brand {
     color: #FFFFFF !important;

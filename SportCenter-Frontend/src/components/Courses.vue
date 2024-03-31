@@ -1,3 +1,6 @@
 <template>
-    <h1>Courses</h1>
+    <div style="font-family: Rubik">
+        <Toolbar />
+        <h2>Courses</h2>
+    </div>
 </template>
