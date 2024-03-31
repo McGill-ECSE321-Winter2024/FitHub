@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.sportcenter.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
@@ -40,9 +37,22 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/")
-    public ResponseEntity<String> getLogin() {
+    @GetMapping("/login-success")
+    public ResponseEntity<String> loginSuccess() {
         return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+    @GetMapping("/login-failure")
+    public ResponseEntity<String> loginFailure() {
+        return new ResponseEntity<String>("failure", HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logOut() {
+        return new ResponseEntity<String>("logout", HttpStatus.OK);
+    }
+    @GetMapping("/logout-success")
+    public ResponseEntity<String> logOutSuccess() {
+        return new ResponseEntity<String>("logout", HttpStatus.OK);
     }
 
     @GetMapping("/role")

@@ -56,30 +56,34 @@ export default {
         };
     },
     methods: {
-    async login() {
-        const params = new URLSearchParams();
+    login() {
+        const params = new FormData();
         params.append('username', this.email);
         params.append('password', this.password);
 
-        try {
-            const response = await axios.post('http://localhost:8080/login', params, {
-                headers: { 'content-type': 'application/x-www-form-urlencoded' }
-            });
-
-            // Handle success
-            console.log(response);
-            if (response.data === 'success') {
-                console.log('Login successful');
-                this.switchToHomePage(); // Call another function to switch page
-            } else {
-                console.log('Login failed');
-                this.showErrorMessage = true; // Show error message
+        fetch('http://localhost:8080/login', {
+            method: 'POST',
+            body: params,
+            credentials: 'include', // Ensure cookies are sent with the request,
+        }).then((response) => {
+            if (response.url === 'http://localhost:8080/login-success') {
+                console.log('Successful')
+                fetch('http://localhost:8080/role', {
+                    method: 'GET',
+                    credentials: 'include', // Ensure cookies are sent with the request,
+                }).then((roleResponse) => {
+                    roleResponse.text().then(role => {
+                        console.log('Role:', role);
+                    }).catch(error => {
+                        console.error('Error reading role text:', error);
+                    });
+                }).catch(error => {
+                    console.error('Error fetching role:', error);
+                });
             }
-        } catch (error) {
-            console.log('Login failed');
-            this.showErrorMessage = true; // Show error message
+            console.log(response);
+        });
 
-        }
     },
     switchToHomePage() {
         this.$router.push('/'); // Navigate to the '/' route
