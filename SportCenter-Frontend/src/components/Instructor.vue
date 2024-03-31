@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row">
                     <ul v-for="instructor in instructors"  :key="instructor.id">
-                        <img class="instructor_pfp rounded" v-bind:src=instructor.imageURL>
+                        <img v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'border-radius': '50%', 'width': 'auto', 'height': '100px' }" />
                         <li>{{ instructor.name }}</li>
                         <li>{{ instructor.email }}</li>
                         <li>Pronouns</li>
@@ -24,9 +24,11 @@
 <script>
 
 export default {
+
     data() {
         return {
             instructors: [],
+            defaultImage: require('@/assets/pfp.png')
         };
     },
     mounted() {
@@ -67,9 +69,7 @@ export default {
         font-family: "Rubik", sans-serif;
     }
 
-    .instructor_pfp {
-        width: 200px;
-        height: auto;
+    ul {
+        list-style-type: none;
     }
-
 </style>
