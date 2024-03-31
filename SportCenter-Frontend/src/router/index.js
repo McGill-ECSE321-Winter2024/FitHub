@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import SignIn from '@/components/Login'
+import Login from '@/components/Login'
+import Instructor from '@/components/Instructor'
 
 Vue.use(Router)
 
@@ -15,7 +16,12 @@ export default new Router({
     {
       path: '/login',
       name: 'SportCenter Login page',
-      component: SignIn
+      component: Login
+    },
+    {
+      path: '/instructor',
+      name: 'SportCenter Instructor page',
+      component: Instructor
     }
   ]
 })

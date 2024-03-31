@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container-fluid">
-            <div  id="eventregistration" class="row align-items-center p-5">
+            <div  id="login-page" class="row align-items-center p-5">
                 <div class="col">
                     <div class="container justify-content-center">
                         <div class="row px-xl-4 mb-xl-5 justify-content-center">
@@ -38,14 +38,6 @@
     
 </template>
 <script>
-import axios from "axios";
-import config from "../../config";
-
-const client = axios.create({
-    // IMPORTANT: baseURL, not baseUrl
-    baseURL: config.dev.backendBaseUrl
-});
-
 export default {
     data() {
         return {
@@ -93,7 +85,7 @@ export default {
 };
 </script>
 <style>
-    #eventregistration {
+    #login-page {
         min-height: 100vh;
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         color: #2c3e50;

@@ -226,7 +226,7 @@ public class AccountController {
         
     }
 
-    @GetMapping(value={"/instructors", "/instructors/"})
+    @GetMapping(value={"/instructors", "/instructors/", "/public/instructors"})
     public ResponseEntity<AccountListDTO> findAllInstructors(@RequestParam(name = "email", required = false) String email) {
         try {
             AccountListDTO accountList = new AccountListDTO();
