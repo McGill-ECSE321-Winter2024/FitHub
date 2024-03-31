@@ -3,31 +3,22 @@
         <div class="container-fluid">
             <div  id="eventregistration" class="row align-items-center p-5">
                 <div class="col">
-                    <div class="container justify-content-center">
-                        <div class="row px-xl-4 mb-xl-5 justify-content-center">
-                            <h2 class="mb-xl-5">
-                                BREAK THE <span style="color:white">ROUTINE</span>
-                            </h2>
-                        </div>
-                        <div class="row justify-content-center ball-row">
-                            <div class="bouncingball"></div>
-                        </div>
-                    </div>
+                    <h2 class="col-md-auto">Sign <span style="color:white">In</span></h2>
                 </div>
                 
                 <form class="col form-group">
                 <div class="container justify-content-center">
-                    <div class="row my-xl-5">
+                    <div class="row m-5">
                         <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
                     </div>
-                    <div class="row mt-xl-5 my-3">
+                    <div class="row mx-5">
                         <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
                     </div>
-                    <div class="row justify-content-center">
+                    <div class="row my-3 justify-content-center">
                         <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
                     </div>
-                    <div class="row justify-content-center">
-                        <button class="p-2 px-3 rounded justify-content-center button-animation" @click="login">Login</button>
+                    <div class="row mx-5 justify-content-center">
+                        <button class="mx-5 p-2 px-3 rounded justify-content-center button-animation" @click="login">Login</button>
                     </div>
                 </div>
                 </form>
@@ -38,6 +29,7 @@
     
 </template>
 <script>
+
 import axios from "axios";
 import config from "../../config";
 
@@ -94,7 +86,6 @@ export default {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         color: #2c3e50;
         background-image: linear-gradient(#5078a8, #7394BC, #9bb0c9);
-        font-family: "Rubik", sans-serif;
     }
 
     .form-control:valid {
@@ -121,8 +112,7 @@ export default {
     }
 
     h2 {
-        font-size: 4em;
-        z-index:950;
+        font-size: 6em;
     }
 
     
@@ -147,44 +137,5 @@ export default {
     .error {
         color: #2c3e50;
     }
-
-    .bouncingball {
-        width:60px;
-        height:60px;
-        border-radius:100%;
-        background-image: linear-gradient(#fea20d, #c27903);
-        animation: bounce 1s;
-        transform: translateY(130px);
-        animation-iteration-count: infinite;
-        position:absolute;
-        z-index:900;
-    }
-
-    .ball-row {
-        min-height: 100px;
-    }
-
-
-@keyframes bounce {
-	0% {top: 0;
-		-webkit-animation-timing-function: ease-in;
-	}
-	40% {}
-	50% {top: 140px;
-		height: 60px;
-		-webkit-animation-timing-function: ease-out;
-	}
-	55% {top: 160px; height: 50px; 
-		-webkit-animation-timing-function: ease-in;}
-	65% {top: 120px; height: 60px; 
-		-webkit-animation-timing-function: ease-out;}
-	95% {
-		top: 0;		
-		-webkit-animation-timing-function: ease-in;
-	}
-	100% {top: 0;
-		-webkit-animation-timing-function: ease-in;
-	}
-}
 
 </style>
