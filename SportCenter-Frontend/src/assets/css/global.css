@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900');
+
+body {
+  font-weight: 700;
+  font-style: normal;
+  background-image: linear-gradient(#7192BB, #9FB8D0);
+}
+
+hr {
+    border: 0.5px solid #FFFFFF;
+    opacity: 0.5;
+}
+
+h1 {        /* Used for FitHub title page */
+    font-size: 10em; 
+    color: transparent; 
+    -webkit-text-stroke: 1px white; 
+    line-height: 1.5;
+    letter-spacing: 25px;
+    font-weight: 900;
+    text-align: justify;
+}
+
+/* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
+h2 {        
+    font-size: 3em;
+    text-align: justify;
+    font-weight: 800;
+    color: #524E5E;
+}
+
+/* Apply rounded corners */
+.rounded-div {
+    border-radius: 10%;
+}
+
+/* Used when you want to make a white div */
+.white-div {
+    color: #524E5E;
+    background-color: #F9F9F9;
+}
+
+/* Only for now, must delete this later. Makes the div element take up the entire screen */
+.whole-screen {
+    height: 100vh;
+    width: 100vw;
+}
+
+.half-screen {
+    height: 50vh;
+    width: 100vw;
+}
+
+/* To be deleted, just to visualize the hooper slides */
+.slide-style {
+    border: 10px solid #000000;
+}
+
+.navbar-brand {
+    color: #FFFFFF !important;
+}
+
+.nav-link {
+    color: #FFFFFF !important;
+}
+
+.nav-link.active {
+    color: #524E5E !important;
+}
+
+.btn {
+    border-radius: 20px !important;
+}
+
+.btn-primary {
+    border-color: #524E5E !important;
+    background-color: #524E5E !important;
+    color: #FFFFFF !important;
+}
+
+.btn-secondary {
+    border-color: #F9F9F9 !important;
+    background-color: #F9F9F9 !important;
+    color: #524E5E !important;
+}
