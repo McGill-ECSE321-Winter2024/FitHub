@@ -1,5 +1,5 @@
 <template>
-    <div style="font-family: Rubik">
+    <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary mx-2">
             <div class="container-fluid border-bottom pb-2">
                 <a class="navbar-brand mx-5" href="#" @click="goToHome">FitHub</a>

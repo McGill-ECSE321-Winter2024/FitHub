@@ -27,7 +27,7 @@
                         <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
                     </div>
                     <div class="row justify-content-center mr-xl-5">
-                        <button class="p-2 px-3 rounded justify-content-center button-animation" @click="login">Login</button>
+                        <button class="p-2 px-3 rounded justify-content-center btn btn-animation" @click="login">Login</button>
                     </div>
                 </div>
                 </form>
@@ -38,6 +38,8 @@
     
 </template>
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -48,33 +50,50 @@ export default {
         };
     },
     methods: {
+
     login() {
         const params = new FormData();
         params.append('username', this.email);
         params.append('password', this.password);
 
+        const basicAuth = 'Basic ' + btoa(this.email + ':' + this.password);
+
         fetch('http://localhost:8080/login', {
             method: 'POST',
             body: params,
+            headers: {
+                'Authorization': basicAuth,
+            },
             credentials: 'include', // Ensure cookies are sent with the request,
-        }).then((response) => {
-            if (response.url === 'http://localhost:8080/login-success') {
-                console.log('Successful')
-                fetch('http://localhost:8080/role', {
-                    method: 'GET',
-                    credentials: 'include', // Ensure cookies are sent with the request,
-                }).then((roleResponse) => {
-                    roleResponse.text().then(role => {
-                        console.log('Role:', role);
+            mode: "cors",
+        })  .then(response => response.text())
+            .then(result => {
+                if (result === 'success') {
+                    console.log('Successful')
+                    fetch('http://localhost:8080/role', {
+                        method: 'GET',
+                        mode: "cors",
+                        headers: {
+                            'Authorization': basicAuth,
+                        },
+                        credentials: 'include' // Ensure cookies are sent with the request,
+                    }).then((roleResponse) => {
+                        roleResponse.text().then(role => {
+                            console.log('Role:', role);
+                        }).catch(error => {
+                            console.error('Error reading role text:', error);
+                        });
                     }).catch(error => {
-                        console.error('Error reading role text:', error);
-                    });
-                }).catch(error => {
-                    console.error('Error fetching role:', error);
-                });
-            }
-            console.log(response);
-        });
+                        console.error('Error fetching role:', error);
+                    }); 
+                }
+                else {
+                    this.showErrorMessage = true;
+                }
+            })
+            .catch(error => console.log('error', error));
+
+            
 
     },
     switchToHomePage() {
@@ -87,9 +106,6 @@ export default {
 <style>
     #login-page {
         min-height: 100vh;
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        color: #2c3e50;
-        background-image: linear-gradient(#5078a8, #7394BC, #9bb0c9);
         font-family: "Rubik", sans-serif;
     }
 
@@ -119,29 +135,11 @@ export default {
     h2 {
         font-size: 4em;
         z-index:950;
-    }
-
-    
-    .button-animation {
-        background-color: transparent;
-        border-color: rgba(255, 255, 255, 0.2);
-        border-style: solid;
-        border-width: 2px;
-        color: white;
-        transition: background-color 0.3s ease; /* Transition effect for background */
-    }
-
-
-    .button-animation:hover {
-        background-color: rgba(255, 255, 255, 0.2); /* Increase opacity on hover */
+        text-align: center;
     }
 
     .hidden {
         visibility: hidden;
-    }
-
-    .error {
-        color: #2c3e50;
     }
 
     .bouncingball {

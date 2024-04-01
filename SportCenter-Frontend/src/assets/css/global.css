@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900');
+* {
+    font-family: "Rubik", sans-serif;
+}
 
 body {
   font-weight: 700;
@@ -83,3 +85,17 @@ h2 {
     background-color: #F9F9F9 !important;
     color: #524E5E !important;
 }
+
+.btn-animation {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    transition: background-color 0.3s ease; /* Transition effect for background */
+}
+.btn-animation:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Increase opacity on hover */
+    color: white;
+}
+

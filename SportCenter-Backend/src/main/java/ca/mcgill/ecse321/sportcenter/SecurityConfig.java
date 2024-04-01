@@ -11,6 +11,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -29,9 +32,15 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.requestMatchers("/login**").permitAll()
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/public/**").permitAll()
+				.requestMatchers("/error**").permitAll()
 				.anyRequest().authenticated()
 			)
-			.securityContext(Customizer.withDefaults())
+			.securityContext((securityContext) -> securityContext
+				.securityContextRepository(new DelegatingSecurityContextRepository(
+					new RequestAttributeSecurityContextRepository(),
+					new HttpSessionSecurityContextRepository()
+				))
+			)
 			.httpBasic(Customizer.withDefaults())
 			.formLogin(formLogin -> formLogin
 				.loginPage("http://127.0.0.1:8087/#/login")
@@ -61,6 +70,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:8087"));
 		configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 		configuration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
