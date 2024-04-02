@@ -2,11 +2,13 @@ package ca.mcgill.ecse321.sportcenter.model;
 
 import java.util.*;
 import java.sql.Date;
+
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
+@Entity
 public class SessionPackage
 {
 
