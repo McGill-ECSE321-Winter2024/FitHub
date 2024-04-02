@@ -13,7 +13,7 @@ hr {
     opacity: 0.5;
 }
 
-h1 {        /* Used for FitHub title page */
+#title-heading {        /* Used for FitHub title page */
     font-size: 10em; 
     color: transparent; 
     -webkit-text-stroke: 1px white; 
@@ -21,6 +21,13 @@ h1 {        /* Used for FitHub title page */
     letter-spacing: 25px;
     font-weight: 900;
     text-align: justify;
+}
+
+h1 {                /* Used for big headings of Sign In and Registration */
+    font-weight: 700;
+    font-size: 5em;
+    text-align: left;
+    color: #524E5E
 }
 
 /* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
@@ -44,18 +51,48 @@ h2 {
 
 /* Only for now, must delete this later. Makes the div element take up the entire screen */
 .whole-screen {
-    height: 100vh;
-    width: 100vw;
+    max-height: 100vh;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 
-.half-screen {
-    height: 50vh;
-    width: 100vw;
+.whole-screen-minus {
+    max-height: 80vh;
+    max-width: 100vw;
+    min-height: 80vh;
+    min-width: 100vw;
+}
+
+.half-height {
+    max-height: 50vh;
+    max-width: 100vw;
+    min-height: 50vh;
+    min-width: 100vw;
+}
+
+.half-width {
+    max-height: 80vh;
+    max-width: 50vw;
+    min-height: 80vh;
+    min-width: 50vw;
+}
+
+.footer {
+    max-height: 10vh;
+    max-width: 100vw;
+    min-height: 10vh;
+    min-width: 100vw;
 }
 
 /* To be deleted, just to visualize the hooper slides */
 .slide-style {
     border: 10px solid #000000;
+}
+
+/* Toolbar style */
+.navbar {
+    height: 10vh !important;
 }
 
 .navbar-brand {
@@ -72,6 +109,7 @@ h2 {
 
 .btn {
     border-radius: 20px !important;
+    font-weight: 600;
 }
 
 .btn-primary {
@@ -99,3 +137,39 @@ h2 {
     color: white;
 }
 
+
+.btn-outline {
+    border-color: #524E5E !important;
+    color: #524E5E !important;
+}
+
+.btn-outline:hover {
+    background-color: #524E5E !important;
+    color: #FFFFFF !important;
+}
+
+/* Form style */
+.form-control:valid {
+    background: transparent;
+    border: white;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    padding: 20px;
+}
+
+.form-control::placeholder {
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.form-control::-ms-input-placeholder {
+    /* Edge 12 -18 */
+    color: white;
+}
+
+.form-control:focus {
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075), 0 0 8px rgba(255, 255, 255, 0.6);
+}

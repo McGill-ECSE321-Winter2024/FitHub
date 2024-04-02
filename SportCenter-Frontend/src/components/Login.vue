@@ -1,24 +1,38 @@
 <template>
-    <div>
+    <div style="font-family: Rubik">
+        <Toolbar /> 
         <div class="container-fluid">
             <div  id="login-page" class="row align-items-center p-5">
                 <div class="col">
                     <div class="container justify-content-center">
-                        <div class="row px-xl-4 mb-xl-5 justify-content-center">
-                            <h2 class="mb-xl-5">
-                                BREAK THE <span style="color:white">ROUTINE</span>
-                            </h2>
+                        <div class="justify-content-center pl-5">
+                            <h1>
+                                Own Your <span style="color: #F9F9F9">Journey,</span><br>
+                                Keep <span style="color: #F9F9F9"><br>Slaying</span>
+                            </h1>
                         </div>
-                        <div class="row justify-content-center ball-row">
-                            <div class="bouncingball"></div>
+                        <div class="row justify-content-center">
+                            <div class="ball-row bouncingball"></div>
                         </div>
                     </div>
                 </div>
-                
-                <form class="col form-group">
-                <div class="container justify-content-center">
-                    <div class="row my-xl-5 mr-xl-5">
-                        <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+
+                <form class="col form-group half-width d-flex flex-column justify-content-center">
+                    <div class="container">
+                        <div class="row my-xl-5 mr-xl-5">
+                            <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+                        </div>
+                        <div class="row mt-xl-5 my-3 mr-xl-5">
+                            <input v-model="password" class="form-control" type="password"
+                                placeholder="Your Password...">
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4"
+                                @click="login">Sign In</button>
+                        </div>
                     </div>
                     <div class="row mt-xl-5 my-3 mr-xl-5">
                         <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
@@ -29,13 +43,12 @@
                     <div class="row justify-content-center mr-xl-5">
                         <button class="p-2 px-3 rounded justify-content-center btn btn-animation" @click="login">Login</button>
                     </div>
-                </div>
                 </form>
             </div>
-            
         </div>
+        <Footer />
     </div>
-    
+
 </template>
 <script>
 import axios from 'axios';
@@ -95,11 +108,11 @@ export default {
 
             
 
-    },
-    switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
+        },
+        switchToHomePage() {
+            this.$router.push('/'); // Navigate to the '/' route
+        }
     }
-}
 
 };
 </script>
@@ -138,9 +151,9 @@ export default {
         text-align: center;
     }
 
-    .hidden {
-        visibility: hidden;
-    }
+.hidden {
+    visibility: hidden;
+}
 
     .bouncingball {
         width:60px;
@@ -154,31 +167,46 @@ export default {
         z-index:900;
     }
 
-    .ball-row {
-        min-height: 100px;
-    }
+.ball-row {
+    padding: 5%;
+    margin: 35%;
+}
 
 
 @keyframes bounce {
-	0% {top: 0;
-		-webkit-animation-timing-function: ease-in;
-	}
-	40% {}
-	50% {top: 140px;
-		height: 60px;
-		-webkit-animation-timing-function: ease-out;
-	}
-	55% {top: 160px; height: 50px; 
-		-webkit-animation-timing-function: ease-in;}
-	65% {top: 120px; height: 60px; 
-		-webkit-animation-timing-function: ease-out;}
-	95% {
-		top: 0;		
-		-webkit-animation-timing-function: ease-in;
-	}
-	100% {top: 0;
-		-webkit-animation-timing-function: ease-in;
-	}
-}
+    0% {
+        top: 0;
+        -webkit-animation-timing-function: ease-in;
+    }
 
+    40% {}
+
+    50% {
+        top: 140px;
+        height: 60px;
+        -webkit-animation-timing-function: ease-out;
+    }
+
+    55% {
+        top: 160px;
+        height: 50px;
+        -webkit-animation-timing-function: ease-in;
+    }
+
+    65% {
+        top: 120px;
+        height: 60px;
+        -webkit-animation-timing-function: ease-out;
+    }
+
+    95% {
+        top: 0;
+        -webkit-animation-timing-function: ease-in;
+    }
+
+    100% {
+        top: 0;
+        -webkit-animation-timing-function: ease-in;
+    }
+}
 </style>
