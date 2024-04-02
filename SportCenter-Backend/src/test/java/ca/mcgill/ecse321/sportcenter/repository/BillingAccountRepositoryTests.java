@@ -47,7 +47,7 @@ public class BillingAccountRepositoryTests extends CommonTestSetup {
         customer = accountRepo.save(customer);
 
         // Then create the billing account
-        BigInteger aCardNumber = new BigInteger("1234567891234567");
+        String aCardNumber = "1234567891234567";
         String aCardHolder = "Bobby Bob";
         String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
         int aCCV = 374;
@@ -101,7 +101,7 @@ public class BillingAccountRepositoryTests extends CommonTestSetup {
         customer = accountRepo.save(customer);
 
          // Then create the billing account
-         BigInteger aCardNumber = new BigInteger("1234567891234567");
+         String aCardNumber = "1234567891234567";
          String aCardHolder = "Bobby Bob";
          String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
          int aCCV = 374;

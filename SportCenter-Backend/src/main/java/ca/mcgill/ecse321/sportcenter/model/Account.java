@@ -24,6 +24,7 @@ public abstract class Account implements UserDetails
   private String name;
   private String imageURL;
   private String pronouns;
+  private Authority authority;
   @Id
   @GeneratedValue
   private int id;

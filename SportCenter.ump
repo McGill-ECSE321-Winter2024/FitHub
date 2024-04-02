@@ -28,8 +28,8 @@ class Registration {
 class SessionPackage {
   Integer priceReduction;
   Integer duration;
-  Session first;
-  0..3 packages <@>- * Course courses;
+  Date first;
+  0..3 packages <@>- 1 Course courses;
 }
 
 class Session {

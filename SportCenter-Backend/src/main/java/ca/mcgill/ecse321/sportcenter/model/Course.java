@@ -1,9 +1,5 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -39,25 +35,21 @@ public class Course
   @JoinColumn(name="sport_center_id")
   private SportCenter sport_center;
 
-  //JPA ANNOTATION NEEDED
-  private List<SessionPackage> packages;
   
   public Course() {
     
   }
 
-  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, int aPricePerHour, String aIcon1, String aIcon2, String aUrl, SportCenter aCenter)
+  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aPricePerHour, String aIcon1, String aIcon2, String aUrl, SportCenter aCenter)
   {
     name = aName;
     difficulty = aDifficulty;
     status = aStatus;
     description = aDescription;
-    id = aId;
     pricePerHour = aPricePerHour;
     icon1 = aIcon1;
     icon2 = aIcon2;
     url = aUrl;
-    packages = new ArrayList<SessionPackage>();
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
@@ -138,6 +130,25 @@ public class Course
     return wasSet;
   }
 
+  public boolean setCenter(SportCenter aCenter)
+  {
+    boolean wasSet = false;
+    if (aCenter == null)
+    {
+      return wasSet;
+    }
+
+    SportCenter existingCenter = sport_center;
+    sport_center = aCenter;
+    if (existingCenter != null && !existingCenter.equals(aCenter))
+    {
+      existingCenter.removeCourse(this);
+    }
+    sport_center.addCourse(this);
+    wasSet = true;
+    return wasSet;
+  }
+
   public String getName()
   {
     return name;
@@ -183,214 +194,23 @@ public class Course
     return id;
   }
 
-  public SportCenter getCenter()
-  {
-    return sport_center;
-  }
 
-  public SessionPackage getPackage(int index)
-  {
-    SessionPackage aPackage = packages.get(index);
-    return aPackage;
-  }
-
-  public List<SessionPackage> getPackages()
-  {
-    List<SessionPackage> newPackages = Collections.unmodifiableList(packages);
-    return newPackages;
-  }
-
-  public int numberOfPackages()
-  {
-    int number = packages.size();
-    return number;
-  }
-
-  public boolean hasPackages()
-  {
-    boolean has = packages.size() > 0;
-    return has;
-  }
-
-  public int indexOfPackage(SessionPackage aPackage)
-  {
-    int index = packages.indexOf(aPackage);
-    return index;
-  }
-  /* Code from template association_GetOne */
-  public SportCenter getCenter()
-  {
-    return center;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfPackages()
-  {
-    return 0;
-  }
-  /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfPackages()
-  {
-    return 3;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addPackage(SessionPackage aPackage)
-  {
-    boolean wasAdded = false;
-    if (packages.contains(aPackage)) { return false; }
-    if (numberOfPackages() >= maximumNumberOfPackages())
+    /* Code from template association_GetOne */
+    public SportCenter getCenter()
     {
-      return wasAdded;
+      return sport_center;
     }
-
-    packages.add(aPackage);
-    if (aPackage.indexOfCourse(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aPackage.addCourse(this);
-      if (!wasAdded)
-      {
-        packages.remove(aPackage);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removePackage(SessionPackage aPackage)
-  {
-    boolean wasRemoved = false;
-    if (!packages.contains(aPackage))
-    {
-      return wasRemoved;
-    }
-
-    int oldIndex = packages.indexOf(aPackage);
-    packages.remove(oldIndex);
-    if (aPackage.indexOfCourse(this) == -1)
-    {
-      wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aPackage.removeCourse(this);
-      if (!wasRemoved)
-      {
-        packages.add(oldIndex,aPackage);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_SetOptionalNToMany */
-  public boolean setPackages(SessionPackage... newPackages)
-  {
-    boolean wasSet = false;
-    ArrayList<SessionPackage> verifiedPackages = new ArrayList<SessionPackage>();
-    for (SessionPackage aPackage : newPackages)
-    {
-      if (verifiedPackages.contains(aPackage))
-      {
-        continue;
-      }
-      verifiedPackages.add(aPackage);
-    }
-
-    if (verifiedPackages.size() != newPackages.length || verifiedPackages.size() > maximumNumberOfPackages())
-    {
-      return wasSet;
-    }
-
-    ArrayList<SessionPackage> oldPackages = new ArrayList<SessionPackage>(packages);
-    packages.clear();
-    for (SessionPackage aNewPackage : verifiedPackages)
-    {
-      packages.add(aNewPackage);
-      if (oldPackages.contains(aNewPackage))
-      {
-        oldPackages.remove(aNewPackage);
-      }
-      else
-      {
-        aNewPackage.addCourse(this);
-      }
-    }
-
-    for (SessionPackage anOldPackage : oldPackages)
-    {
-      anOldPackage.removeCourse(this);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addPackageAt(SessionPackage aPackage, int index)
-  {  
-    boolean wasAdded = false;
-    if(addPackage(aPackage))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfPackages()) { index = numberOfPackages() - 1; }
-      packages.remove(aPackage);
-      packages.add(index, aPackage);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMovePackageAt(SessionPackage aPackage, int index)
-  {
-    boolean wasAdded = false;
-    if(packages.contains(aPackage))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfPackages()) { index = numberOfPackages() - 1; }
-      packages.remove(aPackage);
-      packages.add(index, aPackage);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addPackageAt(aPackage, index);
-    }
-    return wasAdded;
-  }
-  
-  public boolean setCenter(SportCenter aCenter)
-  {
-    boolean wasSet = false;
-    if (aCenter == null)
-    {
-      return wasSet;
-    }
-
-    SportCenter existingCenter = sport_center;
-    sport_center = aCenter;
-    if (existingCenter != null && !existingCenter.equals(aCenter))
-    {
-      existingCenter.removeCourse(this);
-    }
-    sport_center.addCourse(this);
-    wasSet = true;
-    return wasSet;
-  }
 
   public void delete()
   {
-    ArrayList<SessionPackage> copyOfPackages = new ArrayList<SessionPackage>(packages);
-    packages.clear();
-    for(SessionPackage aPackage : copyOfPackages)
-    {
-      aPackage.removeCourse(this);
-    }
-    SportCenter placeholderCenter = center;
-    this.center = null;
+    SportCenter placeholderCenter = sport_center;
+    this.sport_center = null;
     if(placeholderCenter != null)
     {
       placeholderCenter.removeCourse(this);
     }
   }
-
+  
   public String toString()
   {
     return super.toString() + "["+
