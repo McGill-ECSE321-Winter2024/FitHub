@@ -23,7 +23,7 @@ public abstract class Account implements UserDetails
   private String password;
   private String name;
   private String imageURL;
-  private Authority authority;
+  private String pronouns;
   @Id
   @GeneratedValue
   private int id;
@@ -36,12 +36,14 @@ public abstract class Account implements UserDetails
   {
   }
 
-  public Account(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
+  public Account(String aEmail, String aPassword, String aName, String aImageURL, String aPronouns, int aId, SportCenter aCenter)
   {
     email = aEmail;
     password = aPassword;
     name = aName;
     imageURL = aImageURL;
+    pronouns = aPronouns;
+    id = aId;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
@@ -81,6 +83,14 @@ public abstract class Account implements UserDetails
     return wasSet;
   }
 
+  public boolean setPronouns(String aPronouns)
+  {
+    boolean wasSet = false;
+    pronouns = aPronouns;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setId(int aId)
   {
     boolean wasSet = false;
@@ -111,6 +121,11 @@ public abstract class Account implements UserDetails
   public String getImageURL()
   {
     return imageURL;
+  }
+
+  public String getPronouns()
+  {
+    return pronouns;
   }
 
   public int getId()
@@ -152,7 +167,6 @@ public abstract class Account implements UserDetails
     }
   }
 
-
   public String toString()
   {
     return super.toString() + "["+
@@ -160,10 +174,10 @@ public abstract class Account implements UserDetails
             "password" + ":" + getPassword()+ "," +
             "name" + ":" + getName()+ "," +
             "imageURL" + ":" + getImageURL()+ "," +
+            "pronouns" + ":" + getPronouns()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "center = "+(getCenter()!=null?Integer.toHexString(System.identityHashCode(getCenter())):"null");
   }
-  
 
   public void setAuthority(Authority authority) {
       this.authority = authority;

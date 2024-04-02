@@ -1,5 +1,9 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,21 +30,34 @@ public class Course
   @Enumerated(EnumType.ORDINAL)
   private Status status;
   private String description;
+  private int pricePerHour;
+  private String icon1;
+  private String icon2;
+  private String url;
   
   @ManyToOne
   @JoinColumn(name="sport_center_id")
   private SportCenter sport_center;
+
+  //JPA ANNOTATION NEEDED
+  private List<SessionPackage> packages;
   
   public Course() {
     
   }
 
-  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, SportCenter aCenter)
+  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aId, int aPricePerHour, String aIcon1, String aIcon2, String aUrl, SportCenter aCenter)
   {
     name = aName;
     difficulty = aDifficulty;
     status = aStatus;
     description = aDescription;
+    id = aId;
+    pricePerHour = aPricePerHour;
+    icon1 = aIcon1;
+    icon2 = aIcon2;
+    url = aUrl;
+    packages = new ArrayList<SessionPackage>();
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
@@ -80,6 +97,39 @@ public class Course
     return wasSet;
   }
 
+
+  public boolean setPricePerHour(int aPricePerHour)
+  {
+    boolean wasSet = false;
+    pricePerHour = aPricePerHour;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setIcon1(String aIcon1)
+  {
+    boolean wasSet = false;
+    icon1 = aIcon1;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setIcon2(String aIcon2)
+  {
+    boolean wasSet = false;
+    icon2 = aIcon2;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setUrl(String aUrl)
+  {
+    boolean wasSet = false;
+    url = aUrl;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setId(int aId)
   {
     boolean wasSet = false;
@@ -108,6 +158,26 @@ public class Course
     return description;
   }
 
+  public int getPricePerHour()
+  {
+    return pricePerHour;
+  }
+
+  public String getIcon1()
+  {
+    return icon1;
+  }
+
+  public String getIcon2()
+  {
+    return icon2;
+  }
+
+  public String getUrl()
+  {
+    return url;
+  }
+
   public int getId()
   {
     return id;
@@ -116,6 +186,174 @@ public class Course
   public SportCenter getCenter()
   {
     return sport_center;
+  }
+
+  public SessionPackage getPackage(int index)
+  {
+    SessionPackage aPackage = packages.get(index);
+    return aPackage;
+  }
+
+  public List<SessionPackage> getPackages()
+  {
+    List<SessionPackage> newPackages = Collections.unmodifiableList(packages);
+    return newPackages;
+  }
+
+  public int numberOfPackages()
+  {
+    int number = packages.size();
+    return number;
+  }
+
+  public boolean hasPackages()
+  {
+    boolean has = packages.size() > 0;
+    return has;
+  }
+
+  public int indexOfPackage(SessionPackage aPackage)
+  {
+    int index = packages.indexOf(aPackage);
+    return index;
+  }
+  /* Code from template association_GetOne */
+  public SportCenter getCenter()
+  {
+    return center;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfPackages()
+  {
+    return 0;
+  }
+  /* Code from template association_MaximumNumberOfMethod */
+  public static int maximumNumberOfPackages()
+  {
+    return 3;
+  }
+  /* Code from template association_AddManyToManyMethod */
+  public boolean addPackage(SessionPackage aPackage)
+  {
+    boolean wasAdded = false;
+    if (packages.contains(aPackage)) { return false; }
+    if (numberOfPackages() >= maximumNumberOfPackages())
+    {
+      return wasAdded;
+    }
+
+    packages.add(aPackage);
+    if (aPackage.indexOfCourse(this) != -1)
+    {
+      wasAdded = true;
+    }
+    else
+    {
+      wasAdded = aPackage.addCourse(this);
+      if (!wasAdded)
+      {
+        packages.remove(aPackage);
+      }
+    }
+    return wasAdded;
+  }
+  /* Code from template association_RemoveMany */
+  public boolean removePackage(SessionPackage aPackage)
+  {
+    boolean wasRemoved = false;
+    if (!packages.contains(aPackage))
+    {
+      return wasRemoved;
+    }
+
+    int oldIndex = packages.indexOf(aPackage);
+    packages.remove(oldIndex);
+    if (aPackage.indexOfCourse(this) == -1)
+    {
+      wasRemoved = true;
+    }
+    else
+    {
+      wasRemoved = aPackage.removeCourse(this);
+      if (!wasRemoved)
+      {
+        packages.add(oldIndex,aPackage);
+      }
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_SetOptionalNToMany */
+  public boolean setPackages(SessionPackage... newPackages)
+  {
+    boolean wasSet = false;
+    ArrayList<SessionPackage> verifiedPackages = new ArrayList<SessionPackage>();
+    for (SessionPackage aPackage : newPackages)
+    {
+      if (verifiedPackages.contains(aPackage))
+      {
+        continue;
+      }
+      verifiedPackages.add(aPackage);
+    }
+
+    if (verifiedPackages.size() != newPackages.length || verifiedPackages.size() > maximumNumberOfPackages())
+    {
+      return wasSet;
+    }
+
+    ArrayList<SessionPackage> oldPackages = new ArrayList<SessionPackage>(packages);
+    packages.clear();
+    for (SessionPackage aNewPackage : verifiedPackages)
+    {
+      packages.add(aNewPackage);
+      if (oldPackages.contains(aNewPackage))
+      {
+        oldPackages.remove(aNewPackage);
+      }
+      else
+      {
+        aNewPackage.addCourse(this);
+      }
+    }
+
+    for (SessionPackage anOldPackage : oldPackages)
+    {
+      anOldPackage.removeCourse(this);
+    }
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addPackageAt(SessionPackage aPackage, int index)
+  {  
+    boolean wasAdded = false;
+    if(addPackage(aPackage))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfPackages()) { index = numberOfPackages() - 1; }
+      packages.remove(aPackage);
+      packages.add(index, aPackage);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMovePackageAt(SessionPackage aPackage, int index)
+  {
+    boolean wasAdded = false;
+    if(packages.contains(aPackage))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfPackages()) { index = numberOfPackages() - 1; }
+      packages.remove(aPackage);
+      packages.add(index, aPackage);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addPackageAt(aPackage, index);
+    }
+    return wasAdded;
   }
   
   public boolean setCenter(SportCenter aCenter)
@@ -139,14 +377,19 @@ public class Course
 
   public void delete()
   {
-    SportCenter placeholderCenter = sport_center;
-    this.sport_center = null;
+    ArrayList<SessionPackage> copyOfPackages = new ArrayList<SessionPackage>(packages);
+    packages.clear();
+    for(SessionPackage aPackage : copyOfPackages)
+    {
+      aPackage.removeCourse(this);
+    }
+    SportCenter placeholderCenter = center;
+    this.center = null;
     if(placeholderCenter != null)
     {
       placeholderCenter.removeCourse(this);
     }
   }
-
 
   public String toString()
   {
