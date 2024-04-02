@@ -1,41 +1,37 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.33.0.6934.a386b0a58 modeling language!*/
-
+package ca.mcgill.ecse321.sportcenter.model;
 
 import java.util.*;
 
-// line 29 "model.ump"
-// line 124 "model.ump"
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+
 public class SessionPackage
 {
 
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //SessionPackage Attributes
+  @Id
+  @GeneratedValue
+  private int id;
   private int priceReduction;
   private int duration;
-  private Session first;
+  private Date date;
 
-  //SessionPackage Associations
-  private List<Course> courses;
+  @ManyToOne
+  private Course course;
 
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
+  public SessionPackage(){
 
-  public SessionPackage(int aPriceReduction, int aDuration, Session aFirst)
+  }
+
+  public SessionPackage(int aPriceReduction, int aDuration, Date aDate, Course aCourse)
   {
     priceReduction = aPriceReduction;
     duration = aDuration;
-    first = aFirst;
-    courses = new ArrayList<Course>();
+    date = aDate;
+    course = aCourse;
   }
 
-  //------------------------
-  // INTERFACE
-  //------------------------
 
   public boolean setPriceReduction(int aPriceReduction)
   {
@@ -53,11 +49,30 @@ public class SessionPackage
     return wasSet;
   }
 
-  public boolean setFirst(Session aFirst)
+  public boolean setDate(Date aDate)
   {
     boolean wasSet = false;
-    first = aFirst;
+    date = aDate;
     wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    id = aId;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setCourse(Course aNewCourse)
+  {
+    boolean wasSet = false;
+    if (aNewCourse != null)
+    {
+      course = aNewCourse;
+      wasSet = true;
+    }
     return wasSet;
   }
 
@@ -71,140 +86,23 @@ public class SessionPackage
     return duration;
   }
 
-  public Session getFirst()
+  public int getId()
   {
-    return first;
+    return id;
   }
-  /* Code from template association_GetMany */
+
+  public Date getDate()
+  {
+    return date;
+  }
+
   public Course getCourse(int index)
   {
-    Course aCourse = courses.get(index);
-    return aCourse;
-  }
-
-  public List<Course> getCourses()
-  {
-    List<Course> newCourses = Collections.unmodifiableList(courses);
-    return newCourses;
-  }
-
-  public int numberOfCourses()
-  {
-    int number = courses.size();
-    return number;
-  }
-
-  public boolean hasCourses()
-  {
-    boolean has = courses.size() > 0;
-    return has;
-  }
-
-  public int indexOfCourse(Course aCourse)
-  {
-    int index = courses.indexOf(aCourse);
-    return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfCourses()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToManyMethod */
-  public boolean addCourse(Course aCourse)
-  {
-    boolean wasAdded = false;
-    if (courses.contains(aCourse)) { return false; }
-    courses.add(aCourse);
-    if (aCourse.indexOfPackage(this) != -1)
-    {
-      wasAdded = true;
-    }
-    else
-    {
-      wasAdded = aCourse.addPackage(this);
-      if (!wasAdded)
-      {
-        courses.remove(aCourse);
-      }
-    }
-    return wasAdded;
-  }
-  /* Code from template association_RemoveMany */
-  public boolean removeCourse(Course aCourse)
-  {
-    boolean wasRemoved = false;
-    if (!courses.contains(aCourse))
-    {
-      return wasRemoved;
-    }
-
-    int oldIndex = courses.indexOf(aCourse);
-    courses.remove(oldIndex);
-    if (aCourse.indexOfPackage(this) == -1)
-    {
-      wasRemoved = true;
-    }
-    else
-    {
-      wasRemoved = aCourse.removePackage(this);
-      if (!wasRemoved)
-      {
-        courses.add(oldIndex,aCourse);
-      }
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addCourseAt(Course aCourse, int index)
-  {  
-    boolean wasAdded = false;
-    if(addCourse(aCourse))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfCourses()) { index = numberOfCourses() - 1; }
-      courses.remove(aCourse);
-      courses.add(index, aCourse);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveCourseAt(Course aCourse, int index)
-  {
-    boolean wasAdded = false;
-    if(courses.contains(aCourse))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfCourses()) { index = numberOfCourses() - 1; }
-      courses.remove(aCourse);
-      courses.add(index, aCourse);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addCourseAt(aCourse, index);
-    }
-    return wasAdded;
+    return course;
   }
 
   public void delete()
   {
-    while (courses.size() > 0)
-    {
-      Course aCourse = courses.get(courses.size() - 1);
-      aCourse.delete();
-      courses.remove(aCourse);
-    }
-    
-  }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "priceReduction" + ":" + getPriceReduction()+ "," +
-            "duration" + ":" + getDuration()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "first" + "=" + (getFirst() != null ? !getFirst().equals(this)  ? getFirst().toString().replaceAll("  ","    ") : "this" : "null");
+    course = null;
   }
 }
