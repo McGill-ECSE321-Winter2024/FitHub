@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
 import java.util.*;
-
+import java.sql.Date;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -96,7 +96,7 @@ public class SessionPackage
     return date;
   }
 
-  public Course getCourse(int index)
+  public Course getCourse()
   {
     return course;
   }
