@@ -45,7 +45,7 @@ public class SessionPackageController {
         }
     }
 
-    @GetMapping("/sessionPackages/Course/{courseId}")
+    @GetMapping("/sessionPackages/course/{courseId}")
     public ResponseEntity<SessionPackageListDTO> findSessionPackageByCourse(@PathVariable int courseId){
         try{
             List<SessionPackageResponseDTO> packages = new ArrayList<SessionPackageResponseDTO>();
