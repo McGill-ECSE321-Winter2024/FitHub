@@ -24,6 +24,7 @@ public class SessionPackageResponseDTO {
         duration = sessionPackage.getDuration();
         date = sessionPackage.getDate();
         course = sessionPackage.getCourse();
+        id = sessionPackage.getId();
     }
 
     //------------------------------Setters---------------------------//
