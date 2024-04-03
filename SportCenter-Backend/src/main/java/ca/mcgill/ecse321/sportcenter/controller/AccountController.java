@@ -2,12 +2,12 @@ package ca.mcgill.ecse321.sportcenter.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
@@ -38,9 +37,42 @@ public class AccountController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/")
-    public ResponseEntity<String> getLogin() {
+    @GetMapping("/login-success")
+    public ResponseEntity<String> loginSuccess() {
         return new ResponseEntity<String>("success", HttpStatus.OK);
+    }
+    @GetMapping("/login-failure")
+    public ResponseEntity<String> loginFailure() {
+        return new ResponseEntity<String>("failure", HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logOut() {
+        return new ResponseEntity<String>("logout", HttpStatus.OK);
+    }
+    @GetMapping("/logout-success")
+    public ResponseEntity<String> logOutSuccess() {
+        return new ResponseEntity<String>("logout", HttpStatus.OK);
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<String> getRole() {
+        // Get the currently authenticated user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userType = "visitor";
+
+        // Check if the user is authenticated and has a specific role
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_OWNER"))) {
+                userType = "owner";
+            } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_INSTRUCTOR"))) {
+                userType = "instructor";
+            }else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
+                userType = "customer";
+            }
+        }
+
+        return new ResponseEntity<String>(userType, HttpStatus.OK);
     }
     
     //--------------------------// Create Account //--------------------------//

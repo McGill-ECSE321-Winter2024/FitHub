@@ -1,9 +1,9 @@
 // router/index.js
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Home from '@/components/Home'
 import SignIn from '@/components/Login'
-import Courses from '@/components/Courses' // Import the About component
+import Courses from '@/components/Courses' 
 
 Vue.use(Router)
 
@@ -11,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home
     },
     {
       path: '/login',
@@ -20,7 +20,7 @@ export default new Router({
       component: SignIn
     },
     {
-      path: '/courses', // Define the path for the About page
+      path: '/courses',
       name: 'Courses',
       component: Courses
     }
