@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
 
 /*
 * <p> Service class in charge of managing courses. It implements following use cases: </p>
@@ -26,6 +28,9 @@ import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 public class CourseService {
     @Autowired
 	CourseRepository courseRepository;
+
+    @Autowired
+    SessionPackageRepository sessionPackageRepository;
 
     //--------------------------// Create Course //--------------------------//
 
@@ -230,9 +235,14 @@ public class CourseService {
      public void deleteCourse(Integer id) {
         try {
             Course course = findCourseById(id);
+            List<SessionPackage> list =  sessionPackageRepository.findSessionPackageByCourse(course);
+            for(SessionPackage sessionPackage : list){
+                sessionPackageRepository.delete(sessionPackage);
+            }
             if (course != null){
                 courseRepository.delete(course);
             }
+
         } catch (IllegalArgumentException e){
             throw new IllegalArgumentException("There are courses with id " + id);
         }

@@ -116,7 +116,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        String url = "/sessionPackages/course/" + course.getId();
+        String url = "/session-packages/course/" + course.getId();
 		
 		ResponseEntity<SessionPackageListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionPackageListDTO.class);
         // Assert
@@ -141,7 +141,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
         HttpEntity<SessionPackageRequestDTO> requestEntity = new HttpEntity<>(sessionPackageParam, headers);
 
 		
-		String url = "/sessionPackages/" + course.getId();
+		String url = "/session-packages/" + course.getId();
 
 		ResponseEntity<SessionPackageResponseDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, SessionPackageResponseDTO.class);
 		assertNotNull(response);
@@ -166,7 +166,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
         sessionPackageParam.setPriceReduction(aNewPriceReduction);
         HttpEntity<SessionPackageRequestDTO> requestEntity = new HttpEntity<>(sessionPackageParam, headers);
 
-        String url = "/sessionPackages/" + validId;
+        String url = "/session-packages/" + validId;
         ResponseEntity<SessionPackageResponseDTO> response = client.exchange(url, HttpMethod.PUT, requestEntity, SessionPackageResponseDTO.class);
 		assertNotNull(response);
 		assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
@@ -186,7 +186,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-		String url = "/sessionPackages/" + validId ;
+		String url = "/session-packages/" + validId ;
 		ResponseEntity<SessionPackageResponseDTO> response = client.exchange(url, HttpMethod.DELETE, requestEntity, SessionPackageResponseDTO.class);
 
 		assertNotNull(response);

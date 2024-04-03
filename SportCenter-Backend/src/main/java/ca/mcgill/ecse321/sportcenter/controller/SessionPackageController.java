@@ -35,7 +35,7 @@ public class SessionPackageController {
     private SessionPackageService sessionPackageService;
 
     //-----------------------// Getters //----------------------//
-    @GetMapping("/sessionPackages/{id}")
+    @GetMapping("/session-packages/{id}")
     public ResponseEntity<SessionPackageResponseDTO> findSessionPackageById(@PathVariable int id){
         try{
             return new ResponseEntity<SessionPackageResponseDTO>(new SessionPackageResponseDTO(sessionPackageService.getSessionPackageById(id)), HttpStatus.FOUND);
@@ -45,7 +45,7 @@ public class SessionPackageController {
         }
     }
 
-    @GetMapping("/sessionPackages/course/{courseId}")
+    @GetMapping("/session-packages/course/{courseId}")
     public ResponseEntity<SessionPackageListDTO> findSessionPackageByCourse(@PathVariable int courseId){
         try{
             List<SessionPackageResponseDTO> packages = new ArrayList<SessionPackageResponseDTO>();
@@ -66,7 +66,7 @@ public class SessionPackageController {
     }
 
     //----------------------// Create //------------------------//
-    @PostMapping("/sessionPackages/{courseId}")
+    @PostMapping("/session-packages/{courseId}")
     public ResponseEntity<SessionPackageResponseDTO> createSessionPackage(@RequestBody SessionPackageRequestDTO sessionPackage, @PathVariable int courseId){
         try{
             return new ResponseEntity<SessionPackageResponseDTO>(new SessionPackageResponseDTO(sessionPackageService.createSessionPackage(sessionPackage.getPriceReduction(), sessionPackage.getDuration(), sessionPackage.getDate(), courseId)),HttpStatus.CREATED);
@@ -79,7 +79,7 @@ public class SessionPackageController {
 
     //----------------------// Update //------------------------//
 
-    @PutMapping("/sessionPackages/{id}")
+    @PutMapping("/session-packages/{id}")
     public ResponseEntity<SessionPackageResponseDTO> updateSessionPackage(@RequestBody SessionPackageRequestDTO aNewPackage, @PathVariable int id){
         try{
             return new ResponseEntity<SessionPackageResponseDTO>(new SessionPackageResponseDTO(sessionPackageService.updateSessionPackageReduction(id, aNewPackage.getPriceReduction())),HttpStatus.ACCEPTED);
@@ -92,7 +92,7 @@ public class SessionPackageController {
     
     //---------------------// Delete //-------------------------//
 
-    @DeleteMapping("/sessionPackages/{id}")
+    @DeleteMapping("/session-packages/{id}")
     public ResponseEntity<SessionPackageResponseDTO> deleteSessionPackage(@PathVariable int id){
         boolean deletionSuccessful = sessionPackageService.deleteSessionPackage(id);
         if (deletionSuccessful) {
