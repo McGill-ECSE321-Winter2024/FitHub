@@ -12,7 +12,8 @@ public class SessionPackageResponseDTO {
     private int duration;
     private Date date;
     private Course course;
-
+    
+    @SuppressWarnings("unused")
     public SessionPackageResponseDTO(){
 
     }
