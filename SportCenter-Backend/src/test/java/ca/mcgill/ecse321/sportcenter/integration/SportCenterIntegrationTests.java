@@ -80,9 +80,12 @@ public class SportCenterIntegrationTests {
     List<AccountResponseDTO> accountResponseList = AccountListDTO.accountListToAccountResponseDTOList(centerAccounts);
     AccountListDTO valid_accounts = new AccountListDTO(accountResponseList);
     
+    private String new_valid_name = "newName";
     private Time new_valid_opening_time = Time.valueOf("10:00:00");
     private Time new_valid_closing_time = Time.valueOf("20:00:00");
     private String new_valid_address = "somewhere else";
+    private String new_valid_email = "new@Email";
+    private String new_valid_phone_number = "0987654321";
 
     @BeforeAll
     @AfterTestClass
@@ -139,7 +142,7 @@ public class SportCenterIntegrationTests {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<SportCenterDTO>(new SportCenterDTO(valid_name, new_valid_opening_time, new_valid_closing_time, new_valid_address, valid_email, valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
+        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<SportCenterDTO>(new SportCenterDTO(new_valid_name, new_valid_opening_time, new_valid_closing_time, new_valid_address, new_valid_email, new_valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
         
         // Act
         ResponseEntity<SportCenterDTO> response = client.exchange("/sport-center", HttpMethod.PUT, requestEntity, SportCenterDTO.class);
@@ -149,9 +152,12 @@ public class SportCenterIntegrationTests {
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
         SportCenterDTO updatedSportCenter = response.getBody();
         assertNotNull(updatedSportCenter);
+        assertEquals(new_valid_name, updatedSportCenter.getName());
         assertEquals(new_valid_opening_time, updatedSportCenter.getOpeningTime());
         assertEquals(new_valid_closing_time, updatedSportCenter.getClosingTime());
         assertEquals(new_valid_address, updatedSportCenter.getAddress());
+        assertEquals(new_valid_email, updatedSportCenter.getEmail());
+        assertEquals(new_valid_phone_number, updatedSportCenter.getPhoneNumber());
     }
 
     //--------------------------// Delete test //--------------------------//
