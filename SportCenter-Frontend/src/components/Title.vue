@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column pl-5 mb-5 rounded-div">
-        <h1>FITHUB</h1>
+        <h1 class="fithub">FITHUB</h1>
         <p id="title-paragraph" class="mt-4">
             Level up your training with<br>
             certified instructors at Montreal's<br>

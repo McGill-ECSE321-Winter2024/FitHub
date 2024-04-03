@@ -1,5 +1,6 @@
 <template>
   <div class="gradient-background">
+  <Toolbar />
     <div class="text-search-bar">
       <div class="text-content">
         <h1>Explore your interests</h1>
@@ -9,7 +10,6 @@
         <input type="text" class="search-input" placeholder="Search courses">
       </div>
     </div>
-
 
     <div class="cards-container">
 
@@ -191,7 +191,7 @@ img {
   justify-content: space-between;
   align-items: center;
   padding: 20px; 
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .text-content {

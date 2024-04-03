@@ -11,7 +11,7 @@ hr {
     opacity: 0.5;
 }
 
-h1 {        /* Used for FitHub title page */
+.fithub {        /* Used for FitHub title page */
     font-size: 10em; 
     color: transparent; 
     -webkit-text-stroke: 1px white; 
