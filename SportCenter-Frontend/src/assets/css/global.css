@@ -11,7 +11,7 @@ hr {
     opacity: 0.5;
 }
 
-h1 {        /* Used for FitHub title page */
+#title-heading {        /* Used for FitHub title page */
     font-size: 10em; 
     color: transparent; 
     -webkit-text-stroke: 1px white; 
@@ -19,6 +19,20 @@ h1 {        /* Used for FitHub title page */
     letter-spacing: 25px;
     font-weight: 900;
     text-align: justify;
+}
+
+/* Adjust font size for small screens */
+@media (max-width: 767.98px) {
+    #title-heading {
+        font-size: 5em; /* Adjust the font size as needed */
+    }
+}
+
+h1 {                /* Used for big headings of Sign In and Registration */
+    font-weight: 700;
+    font-size: 5em;
+    text-align: left;
+    color: #524E5E
 }
 
 /* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
@@ -70,6 +84,7 @@ h2 {
 
 .btn {
     border-radius: 20px !important;
+    font-weight: 600;
 }
 
 .btn-primary {
