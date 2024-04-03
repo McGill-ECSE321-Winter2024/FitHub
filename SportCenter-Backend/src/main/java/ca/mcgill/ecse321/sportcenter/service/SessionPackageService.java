@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.sql.Date;
 import java.util.List;
 import ca.mcgill.ecse321.sportcenter.model.Course;
@@ -16,6 +18,7 @@ import jakarta.transaction.Transactional;
 * @author Émilia
 */
 
+@Service
 public class SessionPackageService {
 
     @Autowired
