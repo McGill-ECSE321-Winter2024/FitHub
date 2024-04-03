@@ -34,7 +34,7 @@ public class SportCenterRepositoryTests extends CommonTestSetup {
     @Test
     public void testCreateAndReadSportCenter(){
         String name = "FitHub";
-		Time openTime = Time.valueOf("08:00:00");
+		Time openTime = Time.valueOf("06:00:00");
         Time closeTime = Time.valueOf("18:00:00");
 		String email = "info@fithub.com";
 		String phone = "421-436-4444";
@@ -66,11 +66,11 @@ public class SportCenterRepositoryTests extends CommonTestSetup {
     public void createAndReadAllSportCenter(){
 
         String name = "FitHub";
-		Time openTime = Time.valueOf("08:00:00");
-        Time closeTime = Time.valueOf("18:00:00");
-		String email = "info@fithub.com";
-		String phone = "421-436-4444";
-		String address = "2011, University Street, Montreal";
+		Time openTime = Time.valueOf("06:00:00");
+        Time closeTime = Time.valueOf("23:59:00");
+		String email = "sportcenter@mail.com";
+		String phone = "455-645-4566";
+		String address = "16";
 		
 		SportCenter sportsCenter = new SportCenter();
         sportsCenter.setName(name);
