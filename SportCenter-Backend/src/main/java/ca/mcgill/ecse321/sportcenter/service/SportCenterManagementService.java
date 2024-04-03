@@ -55,7 +55,7 @@ public class SportCenterManagementService {
         if (getAllSportCenters().size() > 0) {
             throw new IllegalArgumentException("Sport center already exists.");
         }
-        validSportCentertInfo(name, address, email, phoneNumber);
+        validSportCenterInfo(name, address, email, phoneNumber);
         validPhoneNumber(phoneNumber);
         validSchedule(openingTime, closingTime);
 		SportCenter createdSportCenter = new SportCenter();
@@ -73,7 +73,7 @@ public class SportCenterManagementService {
 
     @Transactional
     public SportCenter updateSportCenter(String newName, Time newOpeningTime, Time newClosingTime, String newAddress, String newEmail, String newPhoneNumber) {
-        validSportCentertInfo(newName, newAddress, newEmail, newPhoneNumber);
+        validSportCenterInfo(newName, newAddress, newEmail, newPhoneNumber);
         validPhoneNumber(newPhoneNumber);
         validSchedule(newOpeningTime, newClosingTime);
 
@@ -92,7 +92,7 @@ public class SportCenterManagementService {
 
     @Transactional
     public SportCenter updateSportCenter(SportCenter updatedSportCenter) {        
-        validSportCentertInfo(updatedSportCenter.getName(), updatedSportCenter.getAddress(), updatedSportCenter.getEmail(), updatedSportCenter.getPhoneNumber());
+        validSportCenterInfo(updatedSportCenter.getName(), updatedSportCenter.getAddress(), updatedSportCenter.getEmail(), updatedSportCenter.getPhoneNumber());
         validPhoneNumber(updatedSportCenter.getPhoneNumber());
         validSchedule(updatedSportCenter.getOpeningTime(), updatedSportCenter.getClosingTime());
 
@@ -152,7 +152,7 @@ public class SportCenterManagementService {
 
     //--------------------------// Input Validation //--------------------------//
 
-    private void validSportCentertInfo(String name, String address, String email, String phoneNumber) {
+    private void validSportCenterInfo(String name, String address, String email, String phoneNumber) {
         if (name.isEmpty() || address.isEmpty() || email.isEmpty() || phoneNumber.isEmpty()) {
             throw new IllegalArgumentException("Empty fields for name, address, email or phone number are not valid");
         }
