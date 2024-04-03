@@ -199,9 +199,12 @@ public class SportCenterManagementServiceTests {
         String email = "a@Email";
         String phoneNumber = "1234567890";
 
+        String newName = "newName";
         Time newOpeningTime = Time.valueOf("8:0:0");
         Time newClosingTime = Time.valueOf("22:0:0");
         String newAddress = "newAddress";
+        String newEmail = "new@Email";
+        String newPhoneNumber = "0987654321";
 
         SportCenter sportCenter = newSportCenter(name, openingTime, closingTime, address, email, phoneNumber);
 
@@ -210,34 +213,88 @@ public class SportCenterManagementServiceTests {
         when(sportCenterRepository.findAll()).thenReturn(sportCenterList);
         when(sportCenterRepository.save(any(SportCenter.class))).thenReturn(sportCenter);
 
-        SportCenter savedSportCenter = sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress);
+        SportCenter savedSportCenter = sportCenterManagementService.updateSportCenter(newName, newOpeningTime, newClosingTime, newAddress, newEmail, newPhoneNumber);
         
+        assertEquals(newName, savedSportCenter.getName());
         assertEquals(newOpeningTime, savedSportCenter.getOpeningTime());
         assertEquals(newClosingTime, savedSportCenter.getClosingTime());
         assertEquals(newAddress, savedSportCenter.getAddress());
+        assertEquals(newEmail, savedSportCenter.getEmail());
+        assertEquals(newPhoneNumber, savedSportCenter.getPhoneNumber());
+
+    }
+
+    @Test
+    public void testUpdateSportCenterWithEmptyName() {
+        String newName = "";
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("22:0:0");
+        String newAddress = "newAddress";
+        String newEmail = "new@Email";
+        String newPhoneNumber = "0987654321";
+        String expectedMessage = "Empty fields for name, address, email or phone number are not valid";
+        
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newName, newOpeningTime, newClosingTime, newAddress, newEmail, newPhoneNumber));
+        assertEquals(expectedMessage, e.getMessage());
 
     }
 
     @Test
     public void testUpdateSportCenterWithEmptyAddress() {
+        String newName = "newName";
         Time newOpeningTime = Time.valueOf("8:0:0");
         Time newClosingTime = Time.valueOf("22:0:0");
         String newAddress = "";
-        String expectedMessage = "Empty address is not valid";
+        String newEmail = "new@Email";
+        String newPhoneNumber = "0987654321";
+        String expectedMessage = "Empty fields for name, address, email or phone number are not valid";
         
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newName, newOpeningTime, newClosingTime, newAddress, newEmail, newPhoneNumber));
+        assertEquals(expectedMessage, e.getMessage());
+
+    }
+    
+    @Test
+    public void testUpdateSportCenterWithInvalidEmail() {
+        String newName = "newName";
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("22:0:0");
+        String newAddress = "newAddress";
+        String newEmail = "newEmail";
+        String newPhoneNumber = "0987654321";
+        String expectedMessage = "Email has to contain the character @";
+        
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newName, newOpeningTime, newClosingTime, newAddress, newEmail, newPhoneNumber));
+        assertEquals(expectedMessage, e.getMessage());
+
+    }
+    
+    @Test
+    public void testUpdateSportCenterWithInvalidPhoneNumber() {
+        String newName = "newName";
+        Time newOpeningTime = Time.valueOf("8:0:0");
+        Time newClosingTime = Time.valueOf("22:0:0");
+        String newAddress = "newAddress";
+        String newEmail = "new@Email";
+        String newPhoneNumber = "newPhoneNumber";
+        String expectedMessage = "Phone number has to contain digits and dashes only";
+        
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newName, newOpeningTime, newClosingTime, newAddress, newEmail, newPhoneNumber));
         assertEquals(expectedMessage, e.getMessage());
 
     }
 
     @Test
     public void testUpdateSportCenterWithInvalidSchedule() {
+        String newName = "newName";
         Time newOpeningTime = Time.valueOf("8:0:0");
         Time newClosingTime = Time.valueOf("2:0:0");
         String newAddress = "newAddress";
+        String newEmail = "new@Email";
+        String newPhoneNumber = "0987654321";
         String expectedMessage = "Opening time must be before closing time";
         
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newOpeningTime, newClosingTime, newAddress));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> sportCenterManagementService.updateSportCenter(newName, newOpeningTime, newClosingTime, newAddress, newEmail, newPhoneNumber));
         assertEquals(expectedMessage, e.getMessage());
 
     }
