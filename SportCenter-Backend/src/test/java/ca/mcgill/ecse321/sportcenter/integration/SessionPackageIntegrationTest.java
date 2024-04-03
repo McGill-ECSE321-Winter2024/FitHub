@@ -37,6 +37,7 @@ import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
+import ca.mcgill.ecse321.sportcenter.service.SessionPackageService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
 /*
@@ -60,6 +61,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
 	@Autowired
     private CourseService courseService;
+
 
 
 	//-------------------------// Headers //------------------------------//
