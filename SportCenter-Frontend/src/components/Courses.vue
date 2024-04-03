@@ -134,6 +134,7 @@ export default {
     }
   }
 }
+
 </script>
 <style scoped>
 .gradient-background {
@@ -177,8 +178,8 @@ export default {
 .cards-container {
   display: flex; 
   flex-wrap: wrap; 
-  margin-left: 150px;
   margin-right: 20px;
+  margin-left: 60px;
 }
 
 img {
@@ -188,23 +189,26 @@ img {
 
 .text-search-bar {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
+  text-align: left;
   padding: 20px; 
   margin-top: 20px;
+  margin-left: 60px;
+  margin-right: 60px;
 }
 
 .text-content {
   flex: 1; 
   text-align: left; 
-  margin-left:100px;
   color: #FFFFFF;
 }
 
 .search-field {
-  margin-left: 20px;
-  margin-right:110px;
+  margin-top: 20px;
 }
+
 .search-input {
   width: 180px;
   height: 35px;
