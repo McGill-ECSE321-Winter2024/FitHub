@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
+import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
 /*
