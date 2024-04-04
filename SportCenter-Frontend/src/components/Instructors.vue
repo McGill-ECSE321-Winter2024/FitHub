@@ -8,8 +8,8 @@
                 </div>
                 <div class="row">
                     <div class="instructor m-2 p-5" v-for="instructor in instructors"  :key="instructor.id">
+                        <img v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'width': 'auto', 'height': '100px' }" />
                         <ul class="m-0 p-0">
-                            <img v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'border-radius': '50%', 'width': 'auto', 'height': '100px' }" />
                             <li>{{ instructor.name }}</li>
                             <li>{{ instructor.email }}</li>
                             <li>Pronouns</li>
@@ -66,13 +66,17 @@ export default {
 <style>
     #instructor_page {
         min-height: 100vh;
-        background-color: #3e8ef1;
+        background-color: #a4c9d8;
 
         color: white;
     }
 
     .instructor {
-        background-color: #62a5f7;
+        background: transparent;
+        color: white;
+        border-color: rgba(0, 0, 0, 0.2);
+        border-style: solid;
+        border-width: 2px;
     }
 
     ul {
@@ -80,7 +84,7 @@ export default {
     }
 
     h2 {
-        color: white;
+        color: #171313;
     }
 
 </style>

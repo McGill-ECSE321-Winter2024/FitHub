@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import SignIn from '@/components/Login'
 import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
+import Registration from '@/components/Registration'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/instructors',
       name: 'Instructors',
       component: Instructors
+    },
+    {
+      path: '/registration',
+      name: 'Registration',
+      component: Registration
     }
   ]
 })
