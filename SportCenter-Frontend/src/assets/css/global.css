@@ -1,5 +1,5 @@
 * {
-    font-family: "Rubik", sans-serif;
+    font-family: "Figtree", sans-serif;
 }
 
 body {
@@ -123,11 +123,11 @@ h2 {
 }
 
 .navbar-brand {
-    color: #FFFFFF !important;
+    color: #171313 !important;
 }
 
 .nav-link {
-    color: #FFFFFF !important;
+    color: #171313 !important;
 }
 
 .nav-link.active {

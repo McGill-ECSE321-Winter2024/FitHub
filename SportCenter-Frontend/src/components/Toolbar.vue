@@ -69,10 +69,7 @@ export default {
             this.$router.push('/login');
         },
         goToRegistration() {
-            const registrationComponent = document.getElementById('join-now');
-            if (registrationComponent) {
-                registrationComponent.scrollIntoView({ behavior: 'smooth' });
-            }
+            this.$router.push('/registration');
         }
     }
 };
