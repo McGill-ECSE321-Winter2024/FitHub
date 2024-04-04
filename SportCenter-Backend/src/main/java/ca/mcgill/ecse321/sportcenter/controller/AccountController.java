@@ -31,7 +31,7 @@ import ca.mcgill.ecse321.sportcenter.service.AccountService;
  * <p>Create, update, read and delete a account </p>
  * @author Julia
 */
-@CrossOrigin(origins = "http://localhost:8087")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class AccountController {
     @Autowired
@@ -226,7 +226,7 @@ public class AccountController {
         
     }
 
-    @GetMapping(value={"/instructors", "/instructors/"})
+    @GetMapping(value={"/instructors", "/instructors/", "/public/instructors"})
     public ResponseEntity<AccountListDTO> findAllInstructors(@RequestParam(name = "email", required = false) String email) {
         try {
             AccountListDTO accountList = new AccountListDTO();

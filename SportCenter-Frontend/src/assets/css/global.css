@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900');
+* {
+    font-family: "Rubik", sans-serif;
+}
 
 body {
   font-weight: 700;
@@ -19,6 +21,25 @@ hr {
     letter-spacing: 25px;
     font-weight: 900;
     text-align: justify;
+}
+
+h1 {                /* Used for big headings of Sign In and Registration */
+    font-weight: 700;
+    font-size: 3rem;
+    text-align: left;
+    color: #524E5E
+}
+
+@media (min-width: 576px) { /* Small devices (576px and up) */
+    h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (min-width: 768px) { /* Medium devices (768px and up) */
+    h1 {
+        font-size: 5rem;
+    }
 }
 
 /* Adjust font size for small screens */
@@ -56,18 +77,49 @@ h2 {
 
 /* Only for now, must delete this later. Makes the div element take up the entire screen */
 .whole-screen {
-    height: 100vh;
-    width: 100vw;
+    max-height: 100vh;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 
-.half-screen {
-    height: 50vh;
-    width: 100vw;
+.whole-screen-minus {
+    max-height: 80vh;
+    max-width: 100vw;
+    min-height: 80vh;
+    min-width: 100vw;
+}
+
+.half-height {
+    max-height: 50vh;
+    max-width: 100vw;
+    min-height: 50vh;
+    min-width: 100vw;
+}
+
+.half-width {
+    max-height: 80vh;
+    max-width: 50vw;
+    min-height: 80vh;
+    min-width: 50vw;
+}
+
+.footer {
+    max-height: 10vh;
+    max-width: 100vw;
+    min-height: 10vh;
+    min-width: 100vw;
 }
 
 /* To be deleted, just to visualize the hooper slides */
 .slide-style {
     border: 10px solid #000000;
+}
+
+/* Toolbar style */
+.navbar {
+    height: 15vh !important;
+    width: 100%;
 }
 
 .navbar-brand {
@@ -97,4 +149,54 @@ h2 {
     border-color: #F9F9F9 !important;
     background-color: #F9F9F9 !important;
     color: #524E5E !important;
+}
+
+.btn-animation {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    transition: background-color 0.3s ease; /* Transition effect for background */
+}
+.btn-animation:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Increase opacity on hover */
+    color: white;
+}
+
+
+.btn-outline {
+    border-color: #524E5E !important;
+    color: #524E5E !important;
+}
+
+.btn-outline:hover {
+    background-color: #524E5E !important;
+    color: #FFFFFF !important;
+}
+
+/* Form style */
+.form-control:valid {
+    background: transparent;
+    border: white;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    padding: 20px;
+}
+
+.form-control::placeholder {
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.form-control::-ms-input-placeholder {
+    /* Edge 12 -18 */
+    color: white;
+}
+
+.form-control:focus {
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075), 0 0 8px rgba(255, 255, 255, 0.6);
 }

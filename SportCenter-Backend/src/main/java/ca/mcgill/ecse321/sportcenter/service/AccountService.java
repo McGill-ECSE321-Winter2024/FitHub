@@ -63,7 +63,7 @@ public class AccountService implements UserDetailsService {
             return owner;
         }
         
-        throw new UnsupportedOperationException("No account in the system exists with this email");
+        throw new UnsupportedOperationException("No account in the system exists with this email: " + email);
     }
 
     //--------------------------// Create Account //--------------------------//
