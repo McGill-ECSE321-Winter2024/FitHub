@@ -1,7 +1,7 @@
 <template>
     <div style="font-family: Rubik; background-color: #524E5E;">
-        <footer class="py-3 my-auto">
-            <ul class="nav justify-content-center pb-3 mb-3">
+        <footer class="footer my-auto py-1">
+            <ul class="nav justify-content-center pb-1 mb-1">
                 <li class="nav-item">
                     <a href="#" class="nav-link px-2" @click="goToHome">Home</a>
                 </li>
