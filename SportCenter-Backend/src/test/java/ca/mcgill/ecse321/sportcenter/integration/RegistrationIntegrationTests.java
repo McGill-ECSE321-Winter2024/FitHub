@@ -116,8 +116,8 @@ public class RegistrationIntegrationTests {
         customer2 = accountService.createCustomerAccount("personB@gmail.com", "notMyPassword", "Person B", "tree.png");
         instructor1 = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png");
         instructor2 = accountService.createInstructorAccount("pam@mail.com", "pammylmaooda", "Pam", "office.png");
-        course1 = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced.toString(), Status.Approved.toString());
-        course2 = courseService.createCourse("Goat Yoga 2", "beginner yoga with goats", Difficulty.Beginner.toString(), Status.Approved.toString());
+        course1 = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced.toString(), Status.Approved.toString(), 0, "none", "none","none");
+        course2 = courseService.createCourse("Goat Yoga 2", "beginner yoga with goats", Difficulty.Beginner.toString(), Status.Approved.toString(), 0, "none", "none","none");
         location = locationService.createLocation("5", "502");
         session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-02-18"), 50, instructor1.getId(), course1.getId(), location.getId());
         session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-12-06"), 100, instructor1.getId(), course2.getId(), location.getId());
