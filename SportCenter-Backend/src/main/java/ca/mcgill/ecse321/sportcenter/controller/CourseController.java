@@ -40,7 +40,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseRequestDTO course) { 
         try {
-            Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
+            Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString(), course.getPricePerHour(), course.getIcon1(), course.getIcon2(), course.getUrl());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(createdCourse), HttpStatus.CREATED);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
@@ -52,7 +52,7 @@ public class CourseController {
     @PutMapping(value={"/courses/{id}", "/courses/{id}/"})
     public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Integer id, @RequestBody CourseResponseDTO course) {
         try {
-            Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
+            Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString(), course.getPricePerHour(), course.getIcon1(), course.getIcon2(), course.getUrl());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(updatedCourse), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
@@ -129,7 +129,7 @@ public class CourseController {
     public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id) {
         try {
             Course course = courseService.findCourseById(id);
-            courseService.approveCourse(course);
+            courseService.approveCourse(course, 14);
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);

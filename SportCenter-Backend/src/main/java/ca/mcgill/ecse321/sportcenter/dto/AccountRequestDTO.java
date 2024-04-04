@@ -5,12 +5,14 @@ public class AccountRequestDTO {
     private String password;
     private String name;
     private String imageURL;
+    private String pronouns;
 
-    public AccountRequestDTO(String email, String password, String name, String imageURL) {
+    public AccountRequestDTO(String email, String password, String name, String imageURL, String pronouns) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.imageURL = imageURL;
+        this.pronouns = pronouns;
     }
 
     public String getEmail() {
@@ -29,7 +31,11 @@ public class AccountRequestDTO {
         return imageURL;
     }
 
-    
+    public String getPronouns()
+    {
+      return pronouns;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -44,5 +50,10 @@ public class AccountRequestDTO {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    public void setPronouns(String aPronouns)
+    {
+      pronouns = aPronouns;
     }
 }

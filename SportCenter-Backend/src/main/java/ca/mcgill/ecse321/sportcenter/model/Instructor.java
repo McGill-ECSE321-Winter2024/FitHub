@@ -9,11 +9,12 @@ public class Instructor extends Account
     setAuthority(Authority.ROLE_INSTRUCTOR);
   }
 
-  public Instructor(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
+  public Instructor(String aEmail, String aPassword, String aName, String aImageURL, String aPronouns, int aId, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aImageURL, aCenter);
+    super(aEmail, aPassword, aName, aImageURL, aPronouns, aId, aCenter);
     setAuthority(Authority.ROLE_INSTRUCTOR);
   }
+
   
   public void delete()
   {
