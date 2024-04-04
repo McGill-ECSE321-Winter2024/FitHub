@@ -12,6 +12,7 @@ import ca.mcgill.ecse321.sportcenter.repository.InstructorRepository;
 import ca.mcgill.ecse321.sportcenter.repository.LocationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.OwnerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
@@ -38,6 +39,9 @@ public class CommonTestSetup {
 	private CourseRepository courseRepository;
     @Autowired
 	private LocationRepository locationRepository;
+
+    @Autowired
+    private SessionPackageRepository sessionPackageRepository;
     
 
     /**
@@ -50,6 +54,7 @@ public class CommonTestSetup {
         registrationRepository.deleteAll();
 		sessionRepository.deleteAll();
         sportCenterRepo.deleteAll();
+        sessionPackageRepository.deleteAll();
         courseRepository.deleteAll();
         locationRepository.deleteAll();
         customerRepo.deleteAll();

@@ -26,21 +26,30 @@ public class Course
   @Enumerated(EnumType.ORDINAL)
   private Status status;
   private String description;
+  private int pricePerHour;
+  private String icon1;
+  private String icon2;
+  private String url;
   
   @ManyToOne
   @JoinColumn(name="sport_center_id")
   private SportCenter sport_center;
+
   
   public Course() {
     
   }
 
-  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, SportCenter aCenter)
+  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aPricePerHour, String aIcon1, String aIcon2, String aUrl, SportCenter aCenter)
   {
     name = aName;
     difficulty = aDifficulty;
     status = aStatus;
     description = aDescription;
+    pricePerHour = aPricePerHour;
+    icon1 = aIcon1;
+    icon2 = aIcon2;
+    url = aUrl;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
     {
@@ -80,10 +89,62 @@ public class Course
     return wasSet;
   }
 
+
+  public boolean setPricePerHour(int aPricePerHour)
+  {
+    boolean wasSet = false;
+    pricePerHour = aPricePerHour;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setIcon1(String aIcon1)
+  {
+    boolean wasSet = false;
+    icon1 = aIcon1;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setIcon2(String aIcon2)
+  {
+    boolean wasSet = false;
+    icon2 = aIcon2;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setUrl(String aUrl)
+  {
+    boolean wasSet = false;
+    url = aUrl;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setId(int aId)
   {
     boolean wasSet = false;
     id = aId;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setCenter(SportCenter aCenter)
+  {
+    boolean wasSet = false;
+    if (aCenter == null)
+    {
+      return wasSet;
+    }
+
+    SportCenter existingCenter = sport_center;
+    sport_center = aCenter;
+    if (existingCenter != null && !existingCenter.equals(aCenter))
+    {
+      existingCenter.removeCourse(this);
+    }
+    sport_center.addCourse(this);
     wasSet = true;
     return wasSet;
   }
@@ -108,34 +169,37 @@ public class Course
     return description;
   }
 
+  public int getPricePerHour()
+  {
+    return pricePerHour;
+  }
+
+  public String getIcon1()
+  {
+    return icon1;
+  }
+
+  public String getIcon2()
+  {
+    return icon2;
+  }
+
+  public String getUrl()
+  {
+    return url;
+  }
+
   public int getId()
   {
     return id;
   }
 
-  public SportCenter getCenter()
-  {
-    return sport_center;
-  }
-  
-  public boolean setCenter(SportCenter aCenter)
-  {
-    boolean wasSet = false;
-    if (aCenter == null)
-    {
-      return wasSet;
-    }
 
-    SportCenter existingCenter = sport_center;
-    sport_center = aCenter;
-    if (existingCenter != null && !existingCenter.equals(aCenter))
+    /* Code from template association_GetOne */
+    public SportCenter getCenter()
     {
-      existingCenter.removeCourse(this);
+      return sport_center;
     }
-    sport_center.addCourse(this);
-    wasSet = true;
-    return wasSet;
-  }
 
   public void delete()
   {
@@ -146,8 +210,7 @@ public class Course
       placeholderCenter.removeCourse(this);
     }
   }
-
-
+  
   public String toString()
   {
     return super.toString() + "["+

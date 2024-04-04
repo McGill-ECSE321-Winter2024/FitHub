@@ -12,6 +12,7 @@ public class AccountResponseDTO {
     private String password;
     private String name;
     private String imageURL;
+    private String pronouns;
 
     private String error;
 
@@ -22,7 +23,6 @@ public class AccountResponseDTO {
         this.error = error;
     }
 
-
     public AccountResponseDTO(Customer customer) {
         this.id = customer.getId();
         this.type = AccountType.CUSTOMER;
@@ -30,6 +30,7 @@ public class AccountResponseDTO {
         this.password = customer.getPassword();
         this.name = customer.getName();
         this.imageURL = customer.getImageURL();
+        this.pronouns = customer.getPronouns();
         this.type = AccountType.CUSTOMER;
         this.error = "";
     }
@@ -41,6 +42,7 @@ public class AccountResponseDTO {
         this.password = instructor.getPassword();
         this.name = instructor.getName();
         this.imageURL = instructor.getImageURL();
+        this.pronouns = instructor.getPronouns();
         this.type = AccountType.INSTRUCTOR;
         this.error = "";
     }
@@ -52,6 +54,7 @@ public class AccountResponseDTO {
         this.password = owner.getPassword();
         this.name = owner.getName();
         this.imageURL = owner.getImageURL();
+        this.pronouns = owner.getPronouns();
         this.type = AccountType.OWNER;
         this.error = "";
     }
@@ -96,6 +99,12 @@ public class AccountResponseDTO {
         return error;
     }
 
+    public String getPronouns()
+    {
+      return pronouns;
+    }
+
+
     public void setType(AccountType type) {
         this.type = type;
     }
@@ -106,6 +115,10 @@ public class AccountResponseDTO {
     
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
     }
 
     public void setPassword(String password) {

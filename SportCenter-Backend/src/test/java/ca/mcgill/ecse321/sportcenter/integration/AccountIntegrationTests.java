@@ -69,6 +69,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
     private String valid_newPassword = "newPassword";
     private String valid_newName = "Lory";
     private String valid_newImageURL = "pfp.jpeg";
+    private String valid_pronouns = "she/her";
     
     //--------------------------// Login Test //--------------------------//
 
@@ -134,7 +135,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL, valid_pronouns), headers);
         
         // Act
         ResponseEntity<CustomerResponseDTO> response = client.exchange("/customers", HttpMethod.POST, requestEntity, CustomerResponseDTO.class);
@@ -183,7 +184,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_newEmail, valid_newPassword, valid_newName, valid_newImageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_newEmail, valid_newPassword, valid_newName, valid_newImageURL,valid_pronouns), headers);
         
         // Act
         ResponseEntity<CustomerResponseDTO> response = client.exchange("/customers/" + validId, HttpMethod.PUT, requestEntity, CustomerResponseDTO.class);
@@ -294,7 +295,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL,valid_pronouns), headers);
         
         // Act
         ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors", HttpMethod.POST, requestEntity, InstructorResponseDTO.class);
@@ -343,7 +344,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_newEmail, valid_newPassword, valid_newName, valid_newImageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_newEmail, valid_newPassword, valid_newName, valid_newImageURL, valid_pronouns), headers);
         
         // Act
         ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors/" + validId, HttpMethod.PUT, requestEntity, InstructorResponseDTO.class);
@@ -451,7 +452,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, valid_password, valid_name, valid_imageURL, valid_pronouns), headers);
         
         // Act
         ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners", HttpMethod.POST, requestEntity, OwnerResponseDTO.class);
@@ -500,7 +501,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_newEmail, valid_newPassword, valid_newName, valid_newImageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_newEmail, valid_newPassword, valid_newName, valid_newImageURL,valid_pronouns), headers);
         
         // Act
         ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners/" + validId, HttpMethod.PUT, requestEntity, OwnerResponseDTO.class);
@@ -628,7 +629,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, invalid_password, valid_name, valid_imageURL), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO(valid_email, invalid_password, valid_name, valid_imageURL, valid_pronouns), headers);
         
         // Act
         ResponseEntity<InstructorResponseDTO> response = client.exchange("/instructors", HttpMethod.POST, requestEntity, InstructorResponseDTO.class);
@@ -646,7 +647,7 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO("", "dfljadkjflaksdfj", "Madona", "Madona.face"), headers);
+        HttpEntity<AccountRequestDTO> requestEntity = new HttpEntity<>(new AccountRequestDTO("", "dfljadkjflaksdfj", "Madona", "Madona.face", "she/her"), headers);
         
         // Act
         ResponseEntity<OwnerResponseDTO> response = client.exchange("/owners/" + validId, HttpMethod.PUT, requestEntity, OwnerResponseDTO.class);

@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -78,7 +77,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
     String cardHolder = "Mary Jane";
     String billingAddress = "1234, Sherbrooke Street, Montreal";
-    BigInteger cardNumber =  new BigInteger("1234567891234567");
+    String cardNumber =  "1234567891234567";
     Integer cvv = 372;
     boolean isDefault = true;
     Date expirationDate = Date.valueOf("2026-02-18");
@@ -86,7 +85,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
     String newCardHolder = "Bob Smith";
     String newBillingAddress = "9, Wellington Street, Montreal";
-    BigInteger newCardNumber =  new BigInteger("2000007891234000");
+    String newCardNumber =  "2000007891234000";
     Integer newCvv = 407;
     boolean newIsDefault = false;
     Date newExpirationDate = Date.valueOf("2028-11-01");
