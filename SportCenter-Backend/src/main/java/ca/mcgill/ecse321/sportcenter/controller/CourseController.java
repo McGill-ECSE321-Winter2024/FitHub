@@ -62,7 +62,7 @@ public class CourseController {
 
     //--------------------------// Getters //--------------------------//
 
-    @GetMapping(value={"/courses/{id}", "/courses/{id}/"})
+    @GetMapping(value={"/courses/{id}", "/courses/{id}/", "/public/courses/{id}"})
     public ResponseEntity<CourseResponseDTO> findCourseById(@PathVariable Integer id) {
         try {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseById(id)), HttpStatus.FOUND);
@@ -72,7 +72,7 @@ public class CourseController {
     }
 
 
-    @GetMapping(value={"/courses", "/courses/"})
+    @GetMapping(value={"/courses", "/courses/", "/public/courses"})
     public ResponseEntity<?> findCourses(
         @RequestParam(name = "name", required = false) String name,
         @RequestParam(name = "difficulty", required = false) String difficulty,
