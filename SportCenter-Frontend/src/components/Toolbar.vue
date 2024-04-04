@@ -73,6 +73,9 @@ export default {
         },
         updateBackgroundColor(color) {
             this.bgColor = color;
+        },
+        goToRegistration() {
+            this.$router.push('/registration');
         }
     }
 };

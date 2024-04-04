@@ -1,5 +1,5 @@
 <template>
-    <div style="font-family: Rubik">
+    <div>
         <Toolbar />
         <h2>Courses</h2>
     </div>
