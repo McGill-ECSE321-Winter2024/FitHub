@@ -1,25 +1,25 @@
 <template>
-    <div class="page container-fluid">
-        <div class="row">
+    <div id="instructor_page" class="container-fluid p-0 m-0">
+        <div class="row align-items-start justify-content-start p-0 m-0">
             <Toolbar />
-        </div>
-        <div class="row">
-            <div>
-                <h2>Meet our Instructors</h2>
-            </div>
-        </div>
-        <div class="row">
             <div class="container">
                 <div class="row">
-                    <ul v-for="instructor in instructors"  :key="instructor.id">
-                        <img v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'border-radius': '50%', 'width': 'auto', 'height': '100px' }" />
-                        <li>{{ instructor.name }}</li>
-                        <li>{{ instructor.email }}</li>
-                        <li>Pronouns</li>
-                        <li>Courses list</li>
-                    </ul>
+                    <h2>Meet our Instructors</h2>
+                </div>
+                <div class="row">
+                    <div class="instructor m-2 p-5" v-for="instructor in instructors"  :key="instructor.id">
+                        <ul class="m-0 p-0">
+                            <img v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'border-radius': '50%', 'width': 'auto', 'height': '100px' }" />
+                            <li>{{ instructor.name }}</li>
+                            <li>{{ instructor.email }}</li>
+                            <li>Pronouns</li>
+                            <li>Courses list</li>
+                        </ul>
+                    </div>
+                    
                 </div>
             </div>
+            
         </div>
     </div>
 </template>
@@ -64,15 +64,23 @@ export default {
 </script>
 
 <style>
-    .page {
+    #instructor_page {
         min-height: 100vh;
+        background-color: #3e8ef1;
+
+        color: white;
     }
 
-    #instructor-page {
-
+    .instructor {
+        background-color: #62a5f7;
     }
 
     ul {
         list-style-type: none;
     }
+
+    h2 {
+        color: white;
+    }
+
 </style>
