@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 m-0">
         <div class="area" >
                 <ul class="circles">
                         <li></li>
@@ -14,35 +14,39 @@
                         <li></li>
                 </ul>
         </div >
-        <div class="page row align-items-center justify-content-center p-5">
-            <!-- Column 1 -->
-            <div class="col">
-                <div class="container justify-content-center-lg">
-                    <div class="row px-xl-4 mb-xl-5 justify-content-center">
-                        <h1 class="mb-xl-5">Own Your Journey</h1>
+        <div class="page row align-items-start justify-content-center">
+            <Toolbar />
+            <div class="row p-5">
+                <!-- Column 1 -->
+                <div class="col">
+                    <div class="container justify-content-center-lg">
+                        <div class="row px-xl-4 mb-xl-5 justify-content-center">
+                            <h1 class="mb-xl-5">Own Your Journey</h1>
+                        </div>
                     </div>
                 </div>
+        
+                <!-- Column 2 -->
+                <div class="col">
+                <form class="form-group">
+                    <div class="container justify-content-center">
+                    <div class="row my-xl-5 mr-xl-5">
+                        <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+                    </div>
+                    <div class="row mt-xl-5 my-3 mr-xl-5">
+                        <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
+                    </div>
+                    <div class="row justify-content-center mr-xl-5">
+                        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+                    </div>
+                    <div class="row justify-content-center mr-xl-5">
+                        <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Sign In</button>
+                    </div>
+                    </div>
+                </form>
+                </div>
             </div>
-    
-            <!-- Column 2 -->
-            <div class="col">
-            <form class="form-group">
-                <div class="container justify-content-center">
-                <div class="row my-xl-5 mr-xl-5">
-                    <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
-                </div>
-                <div class="row mt-xl-5 my-3 mr-xl-5">
-                    <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
-                </div>
-                <div class="row justify-content-center mr-xl-5">
-                    <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
-                </div>
-                <div class="row justify-content-center mr-xl-5">
-                    <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Sign In</button>
-                </div>
-                </div>
-            </form>
-            </div>
+            
         </div>
     </div>
   </template>
