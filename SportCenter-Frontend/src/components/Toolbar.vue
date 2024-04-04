@@ -1,92 +1,94 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light" :style="{ backgroundColor: bgColor , transition: 'background-color 1.5s'}">
         <a class="navbar-brand" href="#" @click="goToHome">
-            <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/90/FFFFFF/acrobatics.png"
-                alt="acrobatics" />itHub</a>
+            <img width="40" height="40" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
+                alt="acrobatics" />itHub
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse border-bottom" id="navbarToggler">
-            <ul class="navbar-nav justify-content-center mx-auto mt-2 mt-lg-0 py-2">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#" @click="goToHome">Home <span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" @click="goToCourses">Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" @click="goToInstructors">Instructors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact-us">Contact Us</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-primary px-4 mx-2 mb-3" @click="goToRegistration">
-                        Join Now!
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-secondary px-4" @click="goToSignIn">
-                        Sign In
-                    </button>
-                </li>
-            </ul>
-        </div>
+        <transition name="toolbar-slide">
+            <div v-if="mounted" class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToCourses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToInstructors">Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToLogin">Already a Member?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Register Here!</a>
+                    </li>
+                </ul>
+            </div>
+        </transition>
     </nav>
 </template>
 
-
 <script>
-export default {
-    mounted() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+import { EventBus } from '@/EventBus';
 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+export default {
+    data() {
+        return {
+            bgColor: '#FFD0D5',
+            mounted: false
+        };
+    },
+    mounted() {
+        setTimeout(() => {
+            this.mounted = true;
+        }, 100);
+        EventBus.$on('beforeSlideOccurred', this.handleChangeBackgroundColor);
+    },
+    beforeDestroy() {
+        EventBus.$off('beforeSlideOccurred', this.handleChangeBackgroundColor);
     },
     methods: {
         goToHome() {
             this.$router.push('/');
         },
-
         goToCourses() {
             this.$router.push('/courses');
         },
         goToInstructors() {
-            this.$router.push('/instructors')
+            this.$router.push('/instructors');
         },
-        goToSignIn() {
+        goToLogin() {
             this.$router.push('/login');
         },
-        goToRegistration() {
-            const registrationComponent = document.getElementById('join-now');
-            if (registrationComponent) {
-                registrationComponent.scrollIntoView({ behavior: 'smooth' });
+        handleChangeBackgroundColor(payload) {
+            const { currentSlide } = payload;
+            if (currentSlide === 0 || currentSlide === 1) {
+                this.updateBackgroundColor('#FFE818');
+            } else if (currentSlide === 2 || currentSlide == 3) {
+                this.updateBackgroundColor('#3E8EF1');
+            } else {
+                this.updateBackgroundColor('#FFD0D5');
             }
+        },
+        updateBackgroundColor(color) {
+            this.bgColor = color;
         }
     }
 };
 </script>
 
 <style scoped>
-@media (max-width: 991.98px) {
+.toolbar-slide-enter-active,
+.toolbar-slide-leave-active {
+    transition: transform 1s ease;
+}
 
-    /* Adjusted to target when navbar is collapsed */
-    .navbar-collapse {
-        padding-top: 20px;
-        /* Increase the top padding */
-        padding-bottom: 20px;
-        /* Increase the bottom padding */
-    }
+.toolbar-slide-enter {
+    transform: translateY(-100%);
+}
+
+.toolbar-slide-leave-to {
+    transform: translateY(0);
 }
 </style>
