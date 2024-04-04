@@ -1,9 +1,9 @@
 <template>
-  <div class="gradient-background">
+  <div class="solid-background">
   <Toolbar />
     <div class="text-search-bar">
       <div class="text-content">
-        <h1>Explore your interests</h1>
+        <h1 class="custom-h1">Explore your interests</h1>
         <h3>Select a course to learn more</h3>
       </div>
       <div class="search-field">
@@ -137,10 +137,16 @@ export default {
 
 </script>
 <style scoped>
-.gradient-background {
-  background: linear-gradient(to bottom, #5F8DC4, #82B2EA, #91B2DA);
-  height: 100vh; 
-  overflow: auto; 
+
+.solid-background {
+  background-color: #141313;
+  height: 100vh;
+  overflow: auto;
+}
+
+.custom-h1 {
+  color: #FFFFFF;
+  font-size: 55px;
 }
 
 .custom-card {
