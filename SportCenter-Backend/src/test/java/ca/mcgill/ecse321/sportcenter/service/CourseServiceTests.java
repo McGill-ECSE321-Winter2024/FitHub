@@ -116,7 +116,7 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
-        Course createdCourse = service.createCourse(name, description, diff.toString(), status.toString(), 0, "none", "none","none");
+        Course createdCourse = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none", "none","none");
 
 		assertNotNull(createdCourse);
 		assertEquals(name.toLowerCase(), createdCourse.getName());
@@ -136,7 +136,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString(), 0, "none", "none","none");
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none", "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -156,7 +156,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString(), 0, "none", "none","none");
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none", "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -176,7 +176,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString(), 0, "none", "none","none");
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none", "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -196,7 +196,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString(), 0, "none", "none","none");
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none", "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -216,7 +216,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString(), 0, "none", "none","none");
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none", "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -389,7 +389,7 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(updatedCourse);
 
-        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString(),0, "none", "none","none");
+        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString(),1, "none", "none","none");
     
         // Assert
         assertNotNull(savedCourse);
@@ -427,7 +427,7 @@ public class CourseServiceTests {
 
         String error = "";
         try {
-			service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString(),0, "none", "none","none");
+			service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString(),1, "none", "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}

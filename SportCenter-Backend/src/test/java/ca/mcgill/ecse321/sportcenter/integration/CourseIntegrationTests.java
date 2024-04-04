@@ -208,6 +208,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
         courseRequest.setDescription("Test Description");
         courseRequest.setDifficulty(CourseRequestDTO.Difficulty.Beginner.toString());
         courseRequest.setStatus(CourseRequestDTO.Status.Closed.toString());
+        courseRequest.setPricePerHour(1);
 
         HttpEntity<CourseRequestDTO> requestEntity = new HttpEntity<>(courseRequest, headers);
 
@@ -235,10 +236,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
 
-        Course course3 = courseService.createCourse("Course 3", "Description 3", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
-
-        //assertEquals(course3.getId(), 0);
-        //assertEquals(courseService.findCourseById(course3.getId()).getName(), "hello");
+        Course course3 = courseService.createCourse("Course 3", "Description 3", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
 
         // Now, update the created course
         CourseResponseDTO updatedCourseRequest = new CourseResponseDTO(course3);
@@ -267,9 +265,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     public void testFindAllCourses() {
         
         // Create sample courses
-        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
-        Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
-        Course course3 = courseService.createCourse("Course 3", "Description 3", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
+        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
+        Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
+        Course course3 = courseService.createCourse("Course 3", "Description 3", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
         
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -288,7 +286,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Order(1)
     public void testFindCourseByName() {
         // Create sample courses
-        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
+        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
         
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -309,8 +307,8 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Order(1)
     public void testFindAllCoursesDifficulty() {
         // Create sample courses
-        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
-        Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
+        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
+        Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
 
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -331,8 +329,8 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Order(1)
     public void testFindAllCoursesStatus() {
         // Create sample courses
-        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
-        Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
+        Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
+        Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
 
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -356,7 +354,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Order(1)
     public void testApproveCourse() {
         // Create sample course
-        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Pending.toString(), 0, "none", "none","none");
+        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Pending.toString(), 1, "none", "none","none");
         CourseRequestDTO courseReq = new CourseRequestDTO(course); 
 
         // Set up authentication for this test
@@ -377,7 +375,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Order(2)
     public void testDisapproveCourse() {
         // Create sample course
-        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Pending.toString(), 0, "none", "none","none");
+        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Pending.toString(), 1, "none", "none","none");
         CourseRequestDTO courseReq = new CourseRequestDTO(course); 
 
         // Set up authentication for this test
@@ -398,7 +396,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Order(3)
     public void testCloseCourse() {
         // Create sample course
-        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
+        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
         CourseRequestDTO courseReq = new CourseRequestDTO(course); 
 
         // Set up authentication for this test
@@ -423,7 +421,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 0, "none", "none","none");
+        Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none", "none","none");
         // Act
         ResponseEntity<String> response = client.exchange("/courses/" + course.getId(), HttpMethod.DELETE, requestEntity, String.class);
 

@@ -98,7 +98,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
         Time closingTime = Time.valueOf("23:0:0");
 		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
-		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 0, "none", "none","none");
+		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none", "none","none");
 
         // Save one account in the system
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
