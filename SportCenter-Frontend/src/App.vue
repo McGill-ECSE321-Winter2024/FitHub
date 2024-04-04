@@ -19,5 +19,6 @@ export default {
   color: #2c3e50;
   margin-top: 0;
   min-height: 100vh;
+  overflow: auto;
 }
 </style>

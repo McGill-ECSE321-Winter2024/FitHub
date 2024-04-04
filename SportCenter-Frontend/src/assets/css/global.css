@@ -2,10 +2,15 @@
     font-family: "Figtree", sans-serif;
 }
 
+html {
+    height: 100%;
+}
+
 body {
   font-weight: 700;
   font-style: normal;
   background-image: linear-gradient(#7192BB, #9FB8D0);
+  height: 100%;
 }
 
 hr {

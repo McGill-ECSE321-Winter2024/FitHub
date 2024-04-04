@@ -1,19 +1,5 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="area-blue" >
-                <ul class="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                </ul>
-        </div >
         <div class="page row align-items-start justify-content-center">
             <Toolbar />
             <div class="row align-items-center p-5">
@@ -52,6 +38,20 @@
                 </div>
             </div>
             
+            <div class="area-blue" >
+                    <ul class="circles">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                    </ul>
+            </div >
         </div>
     </div>
   </template>
@@ -182,6 +182,11 @@ export default {
     }
 
     /* https://codepen.io/mohaiman/pen/MQqMyo */
+    .area-blue{
+        width: 100%;
+        height:100%;
+        z-index: -1; /* Ensure that this element is behind other content */
+    }
 
     .circles{
         position: absolute;

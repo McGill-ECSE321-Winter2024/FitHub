@@ -1,19 +1,6 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="area-orange" >
-                <ul class="squares">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                </ul>
-        </div >
+        
         <div class="page row align-items-start justify-content-center">
             <Toolbar />
             <div class="row p-5">
@@ -46,7 +33,20 @@
                 </form>
                 </div>
             </div>
-            
+            <div class="area-orange" >
+                <ul class="squares">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+            </div >
         </div>
     </div>
   </template>
@@ -118,6 +118,10 @@ export default {
 };
 </script>
 <style>
+    body {
+        background-image: linear-gradient(#ffbc4b);
+    }
+
     .btn-outline {
         background-color: #3e8ef1 !important;
         border-color: #3e8ef1 !important;
@@ -175,9 +179,9 @@ export default {
 
     /* https://codepen.io/mohaiman/pen/MQqMyo */
     .area-orange{
-        background: #ffbc4b;
         width: 100%;
-        height:100vh;
+        height:100%;
+        z-index: -1; /* Ensure that this element is behind other content */
     }
 
     .squares{
