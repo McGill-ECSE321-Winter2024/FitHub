@@ -25,9 +25,21 @@ hr {
 
 h1 {                /* Used for big headings of Sign In and Registration */
     font-weight: 700;
-    font-size: 5em;
+    font-size: 3rem;
     text-align: left;
     color: #524E5E
+}
+
+@media (min-width: 576px) { /* Small devices (576px and up) */
+    h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (min-width: 768px) { /* Medium devices (768px and up) */
+    h1 {
+        font-size: 5rem;
+    }
 }
 
 /* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
@@ -92,7 +104,8 @@ h2 {
 
 /* Toolbar style */
 .navbar {
-    height: 10vh !important;
+    height: 15vh !important;
+    width: 100%;
 }
 
 .navbar-brand {

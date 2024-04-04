@@ -1,6 +1,8 @@
 <template>
-    <div id="instructor-page" class="container-fluid">
-        <Toolbar />
+    <div class="page container-fluid">
+        <div class="row">
+            <Toolbar />
+        </div>
         <div class="row">
             <div>
                 <h2>Meet our Instructors</h2>
@@ -62,8 +64,12 @@ export default {
 </script>
 
 <style>
-    #instructor-page {
+    .page {
         min-height: 100vh;
+    }
+
+    #instructor-page {
+
     }
 
     ul {
