@@ -1,49 +1,52 @@
 <template>
-    <div :style="{ backgroundColor: bgColor, transition: 'background-color 1.5s' }"
-        class="whole-screen pl-5 pr-5 row align-items-center">
-        <ul class="squares">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-        <div class="col-lg-6 col-sm-12 slide-right">
-            <h1 id=" title-heading">Welcome to <br>FitHub</h1>
+    <div class="whole-screen p-0 m-0" :style="{ backgroundColor: bgColor, transition: 'background-color 1.5s' }">
+        <div>
+            <ul class="squares">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
         </div>
-        <div class="col-lg-6 col-sm-12">
-            <hooper :infiniteScroll="true" style="height: 50vh" :autoPlay="true" :playSpeed="2500"
-                @beforeSlide="handleBeforeSlide">
-                <slide>
-                    <img class="w-100 h-100"
-                        src="https://images.adsttc.com/media/images/56d0/5850/e58e/ce94/0000/00bc/large_jpg/01_Sports_Center_Neumatt_Exterior.jpg?1456494662" />
-                </slide>
-                <slide style="height: 50vh;">
-                    <img class="w-100 h-100"
-                        src="https://images.adsttc.com/media/images/56d0/5843/e58e/ceb1/cf00/0135/newsletter/06_Sports_Center_Neumatt_Exterior.jpg?1456494647" />
-                </slide>
-                <slide>
-                    <img class="w-100 h-100"
-                        src="https://images.adsttc.com/media/images/56d0/5d91/e58e/ce94/0000/00e0/newsletter/041_Sports_Center_Neumatt_Hall.jpg?1456496006" />
-                </slide>
-                <slide>
-                    <img class="w-100 h-100"
-                        src="https://images.adsttc.com/media/images/56d0/5d62/e58e/ceb1/cf00/015c/medium_jpg/039_Sports_Center_Neumatt_Hall.jpg?1456495958" />
-                </slide>
-                <slide>
-                    <img class="w-100 h-100"
-                        src="https://image.architonic.com/imgArc/project-1/4/5201637/evolution-design-neumatt-sports-center-architonic036-sports-center-neumatt-hall-18.jpg" />
-                </slide>
-                <slide>
-                    <img class="w-100 h-100"
-                        src="https://images.adsttc.com/media/images/56d0/5e5a/e58e/ceb1/cf00/016a/newsletter/051_Sports_Center_Neumatt_Night_Shot.jpg?1456496206" />
-                </slide>
-            </hooper>
+        <div class="pl-5 pr-5 row align-items-center">
+            <div class="col-lg-6 col-sm-12 slide-right">
+                <h1 id="title-heading">Welcome to <br>FitHub</h1>
+            </div>
+            <div class="col-lg-6 col-sm-12">
+                <hooper :infiniteScroll="true" style="height: 50vh" :autoPlay="true" :playSpeed="2500"
+                    @beforeSlide="handleBeforeSlide">
+                    <slide>
+                        <img class="w-100 h-100"
+                            src="https://images.adsttc.com/media/images/56d0/5850/e58e/ce94/0000/00bc/large_jpg/01_Sports_Center_Neumatt_Exterior.jpg?1456494662" />
+                    </slide>
+                    <slide style="height: 50vh;">
+                        <img class="w-100 h-100"
+                            src="https://images.adsttc.com/media/images/56d0/5843/e58e/ceb1/cf00/0135/newsletter/06_Sports_Center_Neumatt_Exterior.jpg?1456494647" />
+                    </slide>
+                    <slide>
+                        <img class="w-100 h-100"
+                            src="https://images.adsttc.com/media/images/56d0/5d91/e58e/ce94/0000/00e0/newsletter/041_Sports_Center_Neumatt_Hall.jpg?1456496006" />
+                    </slide>
+                    <slide>
+                        <img class="w-100 h-100"
+                            src="https://images.adsttc.com/media/images/56d0/5d62/e58e/ceb1/cf00/015c/medium_jpg/039_Sports_Center_Neumatt_Hall.jpg?1456495958" />
+                    </slide>
+                    <slide>
+                        <img class="w-100 h-100"
+                            src="https://image.architonic.com/imgArc/project-1/4/5201637/evolution-design-neumatt-sports-center-architonic036-sports-center-neumatt-hall-18.jpg" />
+                    </slide>
+                    <slide>
+                        <img class="w-100 h-100"
+                            src="https://images.adsttc.com/media/images/56d0/5e5a/e58e/ceb1/cf00/016a/newsletter/051_Sports_Center_Neumatt_Night_Shot.jpg?1456496206" />
+                    </slide>
+                </hooper>
+            </div>
         </div>
     </div>
 </template>
