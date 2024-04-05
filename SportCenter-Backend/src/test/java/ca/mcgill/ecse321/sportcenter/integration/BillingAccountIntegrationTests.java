@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 
