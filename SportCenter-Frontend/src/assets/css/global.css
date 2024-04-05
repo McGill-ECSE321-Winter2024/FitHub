@@ -1,85 +1,67 @@
-@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,600,700,800,900');
+@import url('https://fonts.googleapis.com/css?family=Figtree:300,400,500,600,700,800,900');
+* {
+    font-family: "Figtree", sans-serif;
+}
+
+:root{
+    --color-black: #171313;
+    --color-muted-black: #837e7e;
+    --color-pink: #FFD0D6;
+    --color-salmon: #FB7EA8;
+}
 
 body {
   font-weight: 700;
   font-style: normal;
-  background-image: linear-gradient(#7192BB, #9FB8D0);
+  color: var(--color-black);
 }
 
-hr {
-    border: 0.5px solid #FFFFFF;
-    opacity: 0.5;
+h1 {                /* Used for big headings of Sign In and Registration */
+    font-weight: 700;
+    font-size: 3rem;
+    text-align: left;
 }
 
-#title-heading {        /* Used for FitHub title page */
-    font-size: 10em; 
-    color: transparent; 
-    -webkit-text-stroke: 1px white; 
-    line-height: 1.5;
-    letter-spacing: 25px;
-    font-weight: 900;
-    text-align: justify;
+@media (min-width: 576px) { /* Small devices (576px and up) */
+    h1 {
+        font-size: 4rem;
+    }
+}
+
+@media (min-width: 768px) { /* Medium devices (768px and up) */
+    h1 {
+        font-size: 5rem;
+    }
 }
 
 /* Adjust font size for small screens */
 @media (max-width: 767.98px) {
     #title-heading {
-        font-size: 5em; /* Adjust the font size as needed */
+        font-size: 5em;
+        /* Adjust the font size as needed */
     }
 }
 
-h1 {                /* Used for big headings of Sign In and Registration */
+h1 {
+    /* Used for big headings of Sign In and Registration */
     font-weight: 700;
     font-size: 5em;
     text-align: left;
-    color: #524E5E
 }
 
 /* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
-h2 {        
-    font-size: 3em;
+h2 {
+    font-size: 28px;
     text-align: justify;
-    font-weight: 800;
-    color: #524E5E;
-}
-
-/* Apply rounded corners */
-.rounded-div {
-    border-radius: 10%;
-}
-
-/* Used when you want to make a white div */
-.white-div {
-    color: #524E5E;
-    background-color: #F9F9F9;
-}
-
-/* Only for now, must delete this later. Makes the div element take up the entire screen */
-.whole-screen {
-    height: 100vh;
-    width: 100vw;
-}
-
-.half-screen {
-    height: 50vh;
-    width: 100vw;
-}
-
-/* To be deleted, just to visualize the hooper slides */
-.slide-style {
-    border: 10px solid #000000;
-}
-
-.navbar-brand {
-    color: #FFFFFF !important;
+    font-weight: 700;
 }
 
 .nav-link {
-    color: #FFFFFF !important;
+    color: var(--color-black) !important;
 }
 
-.nav-link.active {
-    color: #524E5E !important;
+.nav-link:hover {
+    color: var(--color-muted-black) !important;
 }
 
 .btn {
@@ -97,4 +79,54 @@ h2 {
     border-color: #F9F9F9 !important;
     background-color: #F9F9F9 !important;
     color: #524E5E !important;
+}
+
+.btn-animation {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    transition: background-color 0.3s ease; /* Transition effect for background */
+}
+.btn-animation:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Increase opacity on hover */
+    color: white;
+}
+
+
+.btn-outline {
+    border-color: #524E5E !important;
+    color: #524E5E !important;
+}
+
+.btn-outline:hover {
+    background-color: #524E5E !important;
+    color: #FFFFFF !important;
+}
+
+/* Form style */
+.form-control:valid {
+    background: transparent;
+    border: white;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    padding: 20px;
+}
+
+.form-control::placeholder {
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.form-control::-ms-input-placeholder {
+    /* Edge 12 -18 */
+    color: white;
+}
+
+.form-control:focus {
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075), 0 0 8px rgba(255, 255, 255, 0.6);
 }

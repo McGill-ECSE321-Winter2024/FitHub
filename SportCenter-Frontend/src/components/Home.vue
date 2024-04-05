@@ -1,11 +1,16 @@
 <template>
-  <div style="font-family: Rubik">
-    <Toolbar />
-    <Title />
-    <CoursesMini />
-    <InstructorsMini />
-    <ContactUs />
-    <RegistrationForm />
-    <Footer />
+  <div style="font-family: Figtree">
+      <Toolbar />
+      <Title />
+      <CoursesMini />
+      <InstructorsMini />
+      <RegistrationLink />
   </div>
 </template>
+
+<script>
+
+</script>
+
+<style>
+</style>
