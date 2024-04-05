@@ -20,6 +20,7 @@
     "popper.js": "^1.16.1",
     "text-curve": "^0.1.3",
     "vue": "^2.5.2",
+    "vue-card-stack": "^1.3.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
