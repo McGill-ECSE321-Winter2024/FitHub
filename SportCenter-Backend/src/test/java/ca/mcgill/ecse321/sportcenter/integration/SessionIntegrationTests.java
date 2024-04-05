@@ -118,6 +118,9 @@ public class SessionIntegrationTests extends CommonTestSetup {
     Date newDate = Date.valueOf("2024-02-19");
     Integer newCapacity = 20;
 
+	Date dateForRecurrentTest = Date.valueOf("2024-05-02");
+	int recurrenceDuration = 2;
+
 	//---------------login -------------------------------
 
 	@Test
@@ -225,9 +228,31 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 	}
 
+	@Test
+	@Order(5)
+	public void testCreateValidRecurrentSessions(){
+
+		HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+		SessionRequestDTO sessionParam = new SessionRequestDTO();
+		sessionParam.setCapacity(capacity);
+		sessionParam.setDate(date);
+		sessionParam.setEndTime(endTime);
+		sessionParam.setStartTime(startTime);
+        HttpEntity<SessionRequestDTO> requestEntity = new HttpEntity<>(sessionParam, headers);
+
+		///sessions/{iId}/{cId}/{lId}/{recurrenceDuration}"
+		String url = "/sessions/" + supervisor.getId() + "/" + course.getId() + "/" + location.getId() + "/" + recurrenceDuration;
+
+		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, SessionListDTO.class);
+		assertNotNull(response);
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+	}
+
 	//---------------------------------- Read by Id, Instructor, Course  ---------------------------
 	@Test
-    @Order(5)
+    @Order(6)
     public void testReadSessionByValidId() {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
@@ -243,7 +268,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 	}
 
 	@Test
-    @Order(6)
+    @Order(7)
     public void testReadSessionByInstructor() {
 		HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -261,7 +286,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 	}
 
 	@Test
-	@Order(7)
+	@Order(8)
 	public void testReadSessionByCourse(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -283,7 +308,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 
 	@Test
-	@Order(8)
+	@Order(9)
 	public void testUpdateValidSession(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -306,7 +331,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 	}
 
 	@Test
-	@Order(9)
+	@Order(10)
 	public void testUpdateValidSessionInstructor(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -322,7 +347,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 	
 	@Test
-	@Order(10)
+	@Order(11)
 	public void testUpdateValidSessionLocation(){
 
 		HttpHeaders headers = new HttpHeaders();
@@ -338,7 +363,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
 	}
 
 	@Test
-	@Order(11)
+	@Order(12)
 	public void testDeleteValidSession(){
 
 		HttpHeaders headers = new HttpHeaders();

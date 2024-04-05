@@ -128,6 +128,27 @@ public class SessionController {
             return new ResponseEntity<SessionResponseDTO>(new SessionResponseDTO(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/sessions/{iId}/{cId}/{lId}/{recurrenceDuration}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<SessionListDTO> createRecurrentSessions(@RequestBody SessionRequestDTO session, @PathVariable int iId, @PathVariable int cId, @PathVariable int lId, @PathVariable int recurrenceDuration){
+        List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
+        try{
+            for (Session model : sessionService.createRecurrentSessions(session.getStartTime(), session.getEndTime(), session.getDate(), session.getCapacity(), iId, cId, lId, recurrenceDuration)){
+                sessions.add(new SessionResponseDTO(model));
+            }
+            if(sessions.isEmpty())
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+            }
+    
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
     //--------------------------// Update Session //--------------------------//
     
     @PutMapping("/sessions/{id}")

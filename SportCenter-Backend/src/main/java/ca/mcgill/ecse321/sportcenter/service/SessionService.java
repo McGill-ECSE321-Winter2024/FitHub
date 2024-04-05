@@ -43,6 +43,8 @@ public class SessionService {
     @Autowired
     private SportCenterRepository sportCenterRepository;
 
+    private static final long MILLIS_IN_A_WEEK = 1000 * 60 * 60 * 24 * 7;
+
     //--------------------------// Create Session //--------------------------//
 
     @Transactional
@@ -75,6 +77,19 @@ public class SessionService {
         
         Session sessionToCreate = new Session(aStartTime, aEndTime, aDate, aCapacity, aSupervisor, aCourseType, aLocation);
         return sessionRepo.save(sessionToCreate);
+    }
+
+    //This function creates weekly sessions based on the specified recurrenceDuration
+    @Transactional
+    public List<Session> createRecurrentSessions(Time aStartTime, Time aEndTime, Date startDate, int aCapacity, int iId, int cId, int lId, int recurrenceDuration){
+        List<Session> createdSessions = new ArrayList<Session>();
+        Date date = startDate;
+        for(int i=0; i<recurrenceDuration; i++){
+            Session createdSession = proposeSuperviseSession(aStartTime,aEndTime,date,aCapacity,iId,cId,lId);
+            createdSessions.add(createdSession);
+            date = new Date(date.getTime() + MILLIS_IN_A_WEEK); //Update the date to next week
+        }
+        return createdSessions;
     }
 
     
