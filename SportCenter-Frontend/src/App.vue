@@ -19,7 +19,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: var(--color-black);
-  margin-top: 0;
-  min-height: 100vh;
 }
 </style>

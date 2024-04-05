@@ -5,6 +5,7 @@
       <CoursesMini />
       <InstructorsMini />
       <RegistrationLink />
+      <Footer />
   </div>
 </template>
 

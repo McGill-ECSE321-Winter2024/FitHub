@@ -116,13 +116,13 @@ export default {
 
     },
     switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
+        this.$router.push('/');
     }
 }
 
 };
 </script>
-<style>
+<style scoped>
     .btn-outline {
         background-color: #fb7ea8 !important;
         border-color: #fb7ea8 !important;

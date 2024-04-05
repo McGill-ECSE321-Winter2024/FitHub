@@ -1,22 +1,27 @@
 <template>
-    <div style="font-family: Rubik; background-color: #524E5E;">
-        <footer class="footer my-auto py-1">
-            <ul class="nav justify-content-center pb-1 mb-1">
-                <li class="nav-item">
-                    <a href="#" class="nav-link px-2" @click="goToHome">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link px-2" @click="goToCourses">Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link px-2" @click="goToInstructors">Instructors</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact-us" class="nav-link px-2">Contact Us</a>
-                </li>
-            </ul>
-            <p class="text-center text-muted">© 2024 FitHub, P12.Inc</p>
-        </footer>
+    <div class="footer p-5 d-flex">
+            <a class="navbar-brand mr-auto p-2" href="#" @click="goToHome">
+                <img width="100" height="100" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
+                    alt="acrobatics" />itHub
+            </a>
+        <nav class="navbar p-2">
+            <div>
+                <ul class="navbar-nav nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToCourses">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToInstructors">Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToLogin">Already a Member?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" @click="goToRegistration">Register Here!</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
 </template>
 
@@ -50,3 +55,19 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.footer {
+    background-color: var(--color-sunflower);
+}
+
+.nav-item {
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.navbar-brand {
+    color: var(--color-black);
+    font-size: 75px;
+}
+</style>

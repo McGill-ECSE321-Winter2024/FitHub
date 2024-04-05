@@ -117,7 +117,7 @@ export default {
 
 };
 </script>
-<style>
+<style scoped>
     .btn-outline {
         background-color: #3e8ef1 !important;
         border-color: #3e8ef1 !important;
