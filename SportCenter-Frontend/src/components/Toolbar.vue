@@ -21,7 +21,7 @@
                         <a class="nav-link" href="#" @click="goToLogin">Already a Member?</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Register Here!</a>
+                        <a class="nav-link" href="#" @click="goToRegistration">Register Here!</a>
                     </li>
                 </ul>
             </div>
