@@ -9,7 +9,7 @@
                 </div>
         
                 <!-- Column 2 -->
-                <div class="col">
+                <div class="col ">
                 <form class="form-group">
                     <div class="container justify-content-center">
                     <div class="row mt-xl-3 my-3 mr-xl-5">
@@ -38,7 +38,7 @@
                 </div>
             </div>
             
-            <div class="area-blue" >
+            <div class="area-blue higher" >
                     <ul class="circles">
                             <li></li>
                             <li></li>
@@ -122,7 +122,8 @@ export default {
 
 };
 </script>
-<style>
+<style scoped>
+
     .btn-outline {
         background-color: #fb7ea8 !important;
         border-color: #fb7ea8 !important;
@@ -135,19 +136,21 @@ export default {
         color: #fff !important;
     }
 
-    body {
-        background-image: linear-gradient(#3e8ef1);
-    }
-
     .page {
         min-height: 100vh;
         font-family: "Rubik", sans-serif;
+        background-color: #3e8ef1;
 
         width: 100%;
         position: absolute;
         top:0;
         margin: 0px;
         padding: 0px;
+        z-index: 0; /* Ensure that this element is behind other content */
+    }
+
+    .higher {
+        z-index: 900; /* Ensure that this element is behind other content */
     }
 
     .form-control:valid {
@@ -205,8 +208,7 @@ export default {
         height: 20px;
         background: rgba(255, 255, 255, 0.5);
         animation: animate-round 25s linear infinite;
-        bottom: -150px;
-        
+        bottom: -150px;   
     }
 
     .circles li:nth-child(1){

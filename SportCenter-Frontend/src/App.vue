@@ -1,25 +1,23 @@
 <template>
-    <div>
-      <router-view></router-view>
-    </div>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'app'
 }
-
-
 </script>
 
 <style>
 #app {
-  font-family: 'Figtree', Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: var(--color-black);
-  margin-top: 0;
-  min-height: 100vh;
+  color: #2c3e50;
+  
+  overflow: auto;
 }
 </style>

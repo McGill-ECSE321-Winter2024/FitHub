@@ -17,6 +17,8 @@ body {
   font-weight: 700;
   font-style: normal;
   color: var(--color-black);
+  background-color: white;
+  height: 100%;
 }
 
 h1 {                /* Used for big headings of Sign In and Registration */
