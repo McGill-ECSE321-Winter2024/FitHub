@@ -1,6 +1,7 @@
 <template>
-    <div class="rounded-div pt-5 mb-5 whole-screen">
-        <h2 class="pl-5" style="color: #F9F9F9">Our Instructors</h2>
+    <div class="rounded-div pt-5 pl-5 mb-5 whole-screen">
+        <h2>In the Limelight</h2>
+        <h2 style="font-weight: 500">Meet our certified instructors</h2>
         <div class="d-flex align-items-center justify-content-center p-5">
             <hooper group="group1" class="pt-5">
                 <slide class="slide-style whole-width">
