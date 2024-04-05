@@ -79,6 +79,7 @@ export default {
 </script>
 
 <style scoped>
+
 @media (max-width: 991.98px) {
 
     /* Adjusted to target when navbar is collapsed */

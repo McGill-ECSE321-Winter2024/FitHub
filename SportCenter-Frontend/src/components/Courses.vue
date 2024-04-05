@@ -1,6 +1,6 @@
 <template>
   <div class="solid-background">
-  <Toolbar />
+    <Toolbar />
     <div class="text-search-bar">
       <div class="text-content">
         <h1 class="custom-h1">Explore your interests</h1>
@@ -12,116 +12,21 @@
     </div>
 
     <div class="cards-container">
-
-      <b-card class="custom-card">
-
+      <b-card
+        v-for="course in list.courses"
+        :key="course.id"
+        class="custom-card"
+        :style="{ borderColor: getBorderColor(course.difficulty) }"
+      >
         <div class="card-img-top">
-          <img src="@/assets/goat-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
+          <img :src="require(`@/assets/${course.icon1}.png`)" alt="Course Image">
         </div>
-
         <div class="card-body">
-          <h5 class="card-title">GOAT YOGA</h5>
-
+          <h5 class="card-title">{{ course.name.toUpperCase() }}</h5>
         </div>
       </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/dog-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">DOG YOGA</h5>
-
-        </div>
-      </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/goat-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">GOAT YOGA</h5>
-
-        </div>
-      </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/dog-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">DOG YOGA</h5>
-
-        </div>
-      </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/goat-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">GOAT YOGA</h5>
-
-        </div>
-      </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/dog-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">DOG YOGA</h5>
-
-        </div>
-      </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/goat-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">GOAT YOGA</h5>
-
-        </div>
-      </b-card>
-
-      <b-card class="custom-card">
-
-        <div class="card-img-top">
-          <img src="@/assets/dog-64.png" alt="Picture 1">
-          <img src="@/assets/yoga-50.png" alt="Picture 2">
-        </div>
-
-        <div class="card-body">
-          <h5 class="card-title">DOG YOGA</h5>
-
-        </div>
-      </b-card>
-
-
     </div>
-
   </div>
-
 </template>
 
 <script>
@@ -129,68 +34,76 @@ export default {
   name: 'Courses',
   data() {
     return {
-      primary: true,
-      secondary: false,
+      list: []
+    }
+  },
+  mounted() {
+    this.getAllCourses();
+  },
+  methods: {
+    getAllCourses() {
+      const requestOptions = {
+        method: 'GET',
+        credentials: 'include'
+      };
+
+      fetch('http://127.0.0.1:8080/public/courses', requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.list = data;
+          console.log(this.list)
+        })
+        .catch(error => {
+          console.error('Error fetching courses:', error);
+        });
+    },
+    getBorderColor(difficulty) {
+      switch (difficulty) {
+        case 'Advanced':
+          return '#E3240C';
+        case 'Intermediate':
+          return '#FF5746';
+        case 'Beginner':
+          return '#CDF563';
+        default:
+          return '';
+      }
     }
   }
 }
 
 </script>
 <style scoped>
-
 .solid-background {
-  background-color: #141313;
+  background-color: #121212;
   height: 100vh;
   overflow: auto;
 }
 
 .custom-h1 {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 55px;
 }
 
-.custom-card {
-  background: transparent;
-  border: 1px solid #fff;
-  flex: 0 0 224px; 
-  height: 153px;
-  margin: 20px;
-  border-radius: 32px;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
-}
-
-.custom-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-.custom-card .card-img-top img {
-  transition: transform 0.3s ease; 
-}
-
-.custom-card:hover .card-img-top img:nth-child(odd) {
-  transform: translateY(-10px); 
-}
-
-.custom-card:hover .card-img-top img:nth-child(even) {
-  transform: translateY(10px);
-}
-
-.custom-card .card-body {
-  color: #fff; 
-}
-
 .cards-container {
-  display: flex; 
-  flex-wrap: wrap; 
+  display: flex;
+  flex-wrap: wrap;
   margin-right: 20px;
-  margin-left: 60px;
+  margin-left: 25px;
+  margin-bottom: 60px;
+  position: relative;
+  overflow: hidden; /* Ensure spike doesn't overflow */
 }
 
 img {
-  transform: scale(1.4); 
-  margin-top: 10px;
+  transform: scale(1.8);
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .text-search-bar {
@@ -199,16 +112,16 @@ img {
   justify-content: space-between;
   align-items: left;
   text-align: left;
-  padding: 20px; 
+  padding: 20px;
   margin-top: 20px;
   margin-left: 60px;
   margin-right: 60px;
 }
 
 .text-content {
-  flex: 1; 
-  text-align: left; 
-  color: #FFFFFF;
+  flex: 1;
+  text-align: left;
+  color: #ffffff;
 }
 
 .search-field {
@@ -218,11 +131,26 @@ img {
 .search-input {
   width: 180px;
   height: 35px;
-  padding: 10px; 
-  border: 1px solid #ccc; 
-  border-radius: 20px; 
-  background-color: #BFD3F2;
-  color: #FFFFFF;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #bfd3f2;
+  color: #ffffff;
+}
+
+.custom-card {
+  background: #121212;
+  border: 4px solid #fff;
+  flex: 0 0 290px;
+  height: 198px;
+  margin: 20px;
+  border-radius: 42px;
+  position: relative;
+  z-index: 1;
+}
+
+.custom-card .card-body {
+  color: #fff;
 }
 
 </style>
