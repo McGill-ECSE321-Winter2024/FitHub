@@ -21,7 +21,6 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import jakarta.transaction.Transactional;
 
 /*
-* <p> Integration testing for the Account use cases with the controller. <p>
 * <p>Service class in charge of managing sessions. It implements following use cases: </p>
 * <p>Create, update, delete a session </p>
 * @author Émilia

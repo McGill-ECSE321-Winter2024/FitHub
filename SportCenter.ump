@@ -4,6 +4,7 @@ class Account {
   password;
   name;
   imageURL;
+  pronouns;
   Integer id;
 }
 
@@ -22,6 +23,13 @@ class Customer {
 class Registration {
   * registrations -> 1 Customer customer;
   * registrations -> 1 Session session;
+}
+
+class SessionPackage {
+  Integer priceReduction;
+  Integer duration;
+  Date first;
+  0..3 packages <@>- 1 Course courses;
 }
 
 class Session {
@@ -47,12 +55,16 @@ class Course {
   Status status;
   description;
   Integer id;
+  Integer pricePerHour;
+  icon1;
+  icon2;
+  url;
   enum Difficulty {Beginner, Intermediate, Advanced}
   enum Status {Approved, Pending, Closed, Disapproved}
 }
 
 class BillingAccount {
-  Integer cardNumber;
+  cardNumber;
   cardHolder;
   billingAddress;
   Integer cvv;
