@@ -13,7 +13,7 @@ public class BillingAccount
   @Id
   @GeneratedValue
   private int id;
-  private BigInteger cardNumber;
+  private String cardNumber;
   private String cardHolder;
   private String billingAddress;
   private int cvv;
@@ -32,7 +32,7 @@ public class BillingAccount
 
   }
 
-  public BillingAccount(BigInteger aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, Customer aCustomer)
+  public BillingAccount(String aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, Customer aCustomer)
   {
     cardNumber = aCardNumber;
     cardHolder = aCardHolder;
@@ -46,7 +46,7 @@ public class BillingAccount
     }
   }
 
-  public boolean setCardNumber(BigInteger aCardNumber)
+  public boolean setCardNumber(String aCardNumber)
   {
     boolean wasSet = false;
     cardNumber = aCardNumber;
@@ -102,7 +102,7 @@ public class BillingAccount
     return wasSet;
   }
 
-  public BigInteger getCardNumber()
+  public String getCardNumber()
   {
     return cardNumber;
   }
