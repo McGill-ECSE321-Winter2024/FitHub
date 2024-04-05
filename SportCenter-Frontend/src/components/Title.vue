@@ -1,8 +1,8 @@
 <template>
     <div :style="{ backgroundColor: bgColor, transition: 'background-color 1.5s' }"
         class="whole-screen pl-5 pr-5 row align-items-center">
-        <div class="col-lg-6 col-sm-12">
-                <h1 id=" title-heading">Welcome to FitHub</h1>
+        <div class="col-lg-6 col-sm-12 slide-right">
+                <h1 id=" title-heading">Welcome to <br>FitHub</h1>
         </div>
         <div class="col-lg-6 col-sm-12">
             <hooper :infiniteScroll="true" style="height: 50vh" :autoPlay="true" :playSpeed="2500"
@@ -77,17 +77,24 @@ export default {
     height: 100vh;
 }
 
-.text-slide-enter-active,
-.text-slide-leave-active {
-    transition: transform 1s ease;
+div.slide-right {
+  width:100%;
+  overflow:hidden;
+}
+div.slide-right h1 {
+  animation: 2.5s slide-right;
 }
 
-.text-slide-enter {
-    transform: translateX(-100%);
-}
+@keyframes slide-right {
+  from {
+    margin-left: -100%;
+    width: 300%; 
+  }
 
-.text-slide-leave-to {
-    transform: translateX(0);
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
 }
 
 #title-heading {
