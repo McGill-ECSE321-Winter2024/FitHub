@@ -6,6 +6,7 @@ import SignIn from '@/components/Login'
 import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
+import BillingAccount from '@/components/BillingAccount'
 
 Vue.use(Router)
 
@@ -35,6 +36,12 @@ export default new Router({
       path: '/registration',
       name: 'Registration',
       component: Registration
+    }
+    ,
+    {
+      path: '/billing-accounts',
+      name: 'BillingAccount',
+      component: BillingAccount
     }
   ]
 })
