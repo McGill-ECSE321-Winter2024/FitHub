@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -119,8 +119,8 @@ public class RegistrationIntegrationTests {
         course1 = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced.toString(), Status.Approved.toString(), 1, "none", "none","none");
         course2 = courseService.createCourse("Goat Yoga 2", "beginner yoga with goats", Difficulty.Beginner.toString(), Status.Approved.toString(), 1, "none", "none","none");
         location = locationService.createLocation("5", "502");
-        session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-02-18"), 50, instructor1.getId(), course1.getId(), location.getId());
-        session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, Date.valueOf("2024-12-06"), 100, instructor1.getId(), course2.getId(), location.getId());
+        session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, LocalDate.parse("2024-02-18"), 50, instructor1.getId(), course1.getId(), location.getId());
+        session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, LocalDate.parse("2024-12-06"), 100, instructor1.getId(), course2.getId(), location.getId());
 	}
 
     @AfterTestClass

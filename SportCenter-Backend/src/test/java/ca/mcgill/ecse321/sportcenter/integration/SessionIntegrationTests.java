@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -109,13 +109,13 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 	Time startTime = Time.valueOf("08:00:00");
     Time endTime = Time.valueOf("09:00:00");
-    Date date = Date.valueOf("2024-02-18");
+	LocalDate date = LocalDate.parse("2024-02-18");
     Integer capacity = 10;
 	int validId = 0;
 
 	Time newStartTime = Time.valueOf("10:00:00");
     Time newEndTime = Time.valueOf("11:00:00");
-    Date newDate = Date.valueOf("2024-02-19");
+    LocalDate newDate = LocalDate.parse("2024-02-19");
     Integer newCapacity = 20;
 
 	//---------------login -------------------------------

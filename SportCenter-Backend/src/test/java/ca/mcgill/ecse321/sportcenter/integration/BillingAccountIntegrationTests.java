@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -80,7 +80,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     String cardNumber =  "1234567891234567";
     Integer cvv = 372;
     boolean isDefault = true;
-    Date expirationDate = Date.valueOf("2026-02-18");
+    LocalDate expirationDate = LocalDate.parse("2026-02-18");
     int validId = 0;
 
     String newCardHolder = "Bob Smith";
@@ -88,7 +88,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     String newCardNumber =  "2000007891234000";
     Integer newCvv = 407;
     boolean newIsDefault = false;
-    Date newExpirationDate = Date.valueOf("2028-11-01");
+    LocalDate newExpirationDate = LocalDate.parse("2028-11-01");
 
 
     //---------------login -------------------------------
@@ -170,7 +170,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	@Test
 	@Order(4)
-	public void testCreateValidSession(){
+	public void testCreateValidBillingAccount(){
 		
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -196,6 +196,12 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         BillingAccountResponseDTO createdBillingaccount = response.getBody();
 		validId = createdBillingaccount.getId();
+        assertEquals(cardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(cardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(cvv, createdBillingaccount.getCvv());
+        assertEquals(billingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(isDefault, createdBillingaccount.getIsDefault());
+        assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 		
 	}
 

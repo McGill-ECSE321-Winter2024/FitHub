@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -83,7 +83,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
     //---------------------// SessionPackage //------------------//
     int validId;
     int aDuration = 6;
-    Date aDate = Date.valueOf("2024-02-18");
+    LocalDate aDate = LocalDate.parse("2024-02-18");
     int aPriceReduction = 10;
 
     int aNewPriceReduction = 25;

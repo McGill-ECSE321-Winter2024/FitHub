@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.sportcenter.dto;
 
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class BillingAccountResponseDTO {
     
@@ -13,7 +13,7 @@ public class BillingAccountResponseDTO {
     private Integer cvv; 
     private Integer id;
     private boolean isDefault;
-    private Date expirationDate;
+    private LocalDate expirationDate;
     private CustomerResponseDTO customer;
 
     private String error;
@@ -57,7 +57,7 @@ public class BillingAccountResponseDTO {
         return cvv;
     }
 
-    public Date getExpirationDate(){
+    public LocalDate getExpirationDate(){
         return expirationDate;
     }
 
@@ -95,7 +95,7 @@ public class BillingAccountResponseDTO {
         this.cvv = aCvv;
     }
 
-    public void setExpirationDate(Date aExpirationDate){
+    public void setExpirationDate(LocalDate aExpirationDate){
         this.expirationDate = aExpirationDate;
     }
 
