@@ -101,7 +101,7 @@ public class AccountServiceTests {
         when(customerRepository.save(any(Customer.class))).thenReturn(julia);
 
         // Act
-        Customer createdCustomer = accountService.createCustomerAccount(email, password, name, imageURL);
+        Customer createdCustomer = accountService.createCustomerAccount(email, password, name, imageURL, "");
     
         // Assert
         assertNotNull(createdCustomer);
@@ -130,7 +130,7 @@ public class AccountServiceTests {
         when(instructorRepository.save(any(Instructor.class))).thenReturn(instructor);
 
         // Act
-        Instructor createdInstructor = accountService.createInstructorAccount(email, password, name, imageURL);
+        Instructor createdInstructor = accountService.createInstructorAccount(email, password, name, imageURL, "");
     
         // Assert
         assertNotNull(createdInstructor);
@@ -159,7 +159,7 @@ public class AccountServiceTests {
         when(ownerRepository.save(any(Owner.class))).thenReturn(owner);
 
         // Use the AccountService
-        Owner createdOwner = accountService.createOwnerAccount(email, password, name, imageURL);
+        Owner createdOwner = accountService.createOwnerAccount(email, password, name, imageURL, "");
     
         // Assert
         assertNotNull(createdOwner);
@@ -186,7 +186,7 @@ public class AccountServiceTests {
         customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         // Use Account Service and Assert
-        assertThrows(IllegalArgumentException.class, () -> accountService.createCustomerAccount(email, password, name, imageURL));
+        assertThrows(IllegalArgumentException.class, () -> accountService.createCustomerAccount(email, password, name, imageURL, ""));
     }
     
     @Test
@@ -205,7 +205,7 @@ public class AccountServiceTests {
         instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         // Use Account Service and Assert
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL, ""));
         assertEquals("Email has to contain the character @", e.getMessage());
     }
 
@@ -225,7 +225,7 @@ public class AccountServiceTests {
         owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
 
         // Use Account Service and Assert
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL, ""));
         assertEquals("Empty fields for email, password or name are not valid", e.getMessage());
     }
 
@@ -244,10 +244,10 @@ public class AccountServiceTests {
         instructor.setImageURL(imageURL);
         
         // Use Account Service and Assert
-        accountService.createInstructorAccount(email, password, name, imageURL);
+        accountService.createInstructorAccount(email, password, name, imageURL, "");
         
         when(instructorRepository.findInstructorByEmail(email)).thenReturn(instructor);
-        assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL));
+        assertThrows(IllegalArgumentException.class, () -> accountService.createOwnerAccount(email, password, name, imageURL, ""));
     }
 
     //--------------------------// Update Account Tests //--------------------------//
@@ -282,7 +282,7 @@ public class AccountServiceTests {
         updatedCustomer.setImageURL(newURL);
         when(customerRepository.save(any(Customer.class))).thenReturn(updatedCustomer);
 
-        Customer savedCustomer = accountService.updateCustomerAccount(id, newEmail, newPassword, newName, newURL);
+        Customer savedCustomer = accountService.updateCustomerAccount(id, newEmail, newPassword, newName, newURL, "");
     
         // Assert
         verify(customerRepository, times(1)).findCustomerById(id);
@@ -324,7 +324,7 @@ public class AccountServiceTests {
         updatedInstructor.setImageURL(newURL);
         when(instructorRepository.save(any(Instructor.class))).thenReturn(updatedInstructor);
 
-        Instructor savedInstructor = accountService.updateInstructorAccount(id, newEmail, newPassword, newName, newURL);
+        Instructor savedInstructor = accountService.updateInstructorAccount(id, newEmail, newPassword, newName, newURL, "");
     
         // Assert
         verify(instructorRepository, times(1)).findInstructorById(id);
@@ -366,7 +366,7 @@ public class AccountServiceTests {
         updatedOwner.setImageURL(newURL);
         when(ownerRepository.save(any(Owner.class))).thenReturn(updatedOwner);
 
-        Owner savedOwner = accountService.updateOwnerAccount(id, newEmail, newPassword, newName, newURL);
+        Owner savedOwner = accountService.updateOwnerAccount(id, newEmail, newPassword, newName, newURL, "");
     
         // Assert
         verify(ownerRepository, times(1)).findOwnerById(id);

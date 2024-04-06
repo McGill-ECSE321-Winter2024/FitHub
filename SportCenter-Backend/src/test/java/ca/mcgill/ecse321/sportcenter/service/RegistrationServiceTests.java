@@ -14,7 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 import java.util.List;
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class RegistrationServiceTests {
         session = new Session();
         session.setStartTime(Time.valueOf("08:00:00"));
         session.setEndTime(Time.valueOf("09:00:00"));
-        session.setDate(Date.valueOf("2024-02-18"));
+        session.setDate(LocalDate.parse("2024-02-18"));
         session.setCapacity(50);
         session.setSupervisor(instructor);
         session.setCourseType(course);

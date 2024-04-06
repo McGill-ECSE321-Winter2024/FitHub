@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +123,7 @@ public class SessionServiceTests {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -192,7 +192,7 @@ public class SessionServiceTests {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 0;
 
         // Use Account Service and Assert
@@ -227,7 +227,7 @@ public class SessionServiceTests {
 
         Time startTime = null;
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
 
@@ -263,7 +263,7 @@ public class SessionServiceTests {
 
         Time startTime =  Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = null;
+        LocalDate date = null;
         Integer capacity = 10;
 
         // Use Account Service and Assert
@@ -292,7 +292,7 @@ public class SessionServiceTests {
 
         Time startTime =  Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         // Use Session Service and Assert
@@ -322,7 +322,7 @@ public class SessionServiceTests {
 
         Time startTime =  Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         // Use Session Service and Assert
@@ -358,7 +358,7 @@ public class SessionServiceTests {
 
         Time startTime1 = Time.valueOf("08:00:00");
         Time endTime1 = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
                
@@ -429,7 +429,7 @@ public class SessionServiceTests {
 
         Time startTime1 = Time.valueOf("08:00:00");
         Time endTime1 = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Time startTime2 = Time.valueOf("08:30:00");
@@ -478,7 +478,7 @@ public class SessionServiceTests {
         
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -491,7 +491,7 @@ public class SessionServiceTests {
 
         Time newStartTime = Time.valueOf("09:00:00");
         Time newEndTime = Time.valueOf("011:00:00");
-        Date newDate = Date.valueOf("2024-02-19");
+        LocalDate newDate = LocalDate.parse("2024-02-19");
         Integer newCapacity = 20;
 
         Session updatedSession = new Session();
@@ -664,7 +664,7 @@ public class SessionServiceTests {
         
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -677,7 +677,7 @@ public class SessionServiceTests {
 
         Time newStartTime = Time.valueOf("06:00:00");
         Time newEndTime = Time.valueOf("07:00:00");
-        Date newDate = Date.valueOf("2024-02-19");
+        LocalDate newDate = LocalDate.parse("2024-02-19");
         Integer newCapacity = 20;
 
         Session updatedSession = new Session();
@@ -722,7 +722,7 @@ public class SessionServiceTests {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -802,7 +802,7 @@ public class SessionServiceTests {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -884,7 +884,7 @@ public class SessionServiceTests {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();

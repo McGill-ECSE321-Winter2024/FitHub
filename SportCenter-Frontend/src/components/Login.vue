@@ -1,19 +1,5 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="area-orange" >
-                <ul class="squares">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                </ul>
-        </div >
         <div class="page row align-items-start justify-content-center">
             <Toolbar />
             <div class="row p-5">
@@ -28,25 +14,38 @@
         
                 <!-- Column 2 -->
                 <div class="col">
-                <form class="form-group">
-                    <div class="container justify-content-center">
-                    <div class="row my-xl-5 mr-xl-5">
-                        <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
-                    </div>
-                    <div class="row mt-xl-5 my-3 mr-xl-5">
-                        <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Sign In</button>
-                    </div>
-                    </div>
-                </form>
+                    <form class="form-group">
+                        <div class="container justify-content-center">
+                        <div class="row my-xl-5 mr-xl-5">
+                            <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+                        </div>
+                        <div class="row mt-xl-5 my-3 mr-xl-5">
+                            <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Sign In</button>
+                        </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            
+            <div class="area-orange higher" >
+                <ul class="squares">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                </ul>
+            </div >
         </div>
     </div>
   </template>
@@ -117,7 +116,8 @@ export default {
 
 };
 </script>
-<style>
+<style scoped>
+    
     .btn-outline {
         background-color: #3e8ef1 !important;
         border-color: #3e8ef1 !important;
@@ -133,16 +133,22 @@ export default {
     .page {
         min-height: 100vh;
         font-family: "Rubik", sans-serif;
+        background-color: #ffbc4b;
 
         width: 100%;
         position: absolute;
         top:0;
         margin: 0px;
         padding: 0px;
+        z-index: 0; /* Ensure that this element is behind other content */
+    }
+
+    .higher {
+        z-index: 900; /* Ensure that this element is behind other content */
     }
 
     .form-control:valid {
-        background: transparent;
+        background-color: #ffbc4b;
         color: #171313;
         border-color: rgba(0, 0, 0, 0.2);
         border-style: solid;
@@ -175,9 +181,9 @@ export default {
 
     /* https://codepen.io/mohaiman/pen/MQqMyo */
     .area-orange{
-        background: #ffbc4b;
         width: 100%;
-        height:100vh;
+        height:100%;
+        z-index: -1; /* Ensure that this element is behind other content */
     }
 
     .squares{

@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
 
 /*
 * <p> Service class in charge of managing courses. It implements following use cases: </p>
@@ -27,10 +29,13 @@ public class CourseService {
     @Autowired
 	CourseRepository courseRepository;
 
+    @Autowired
+    SessionPackageRepository sessionPackageRepository;
+
     //--------------------------// Create Course //--------------------------//
 
     @Transactional
-    public Course createCourse(String name, String description, String diff, String status) {
+    public Course createCourse(String name, String description, String diff, String status, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -42,7 +47,7 @@ public class CourseService {
         } catch (IllegalArgumentException e){
             // Do nothing, as this means the course with the given name doesn't exist
         }
-
+    
         // Input validation checks
         if (name == null || name.trim().isEmpty()) {
             errorMessage.append("Course name cannot be empty! ");
@@ -56,6 +61,10 @@ public class CourseService {
         if (status == null) {
             errorMessage.append("Course status cannot be null! ");
         }
+        if (pricePerHour == null || pricePerHour <= 0) {
+            errorMessage.append("Price per hour must be provided and greater than zero! ");
+        }
+    
         // Ensure the uniqueness of each course
         if (courseRepository.existsByName(name)) {
             errorMessage.append("Course already exists! ");
@@ -72,6 +81,60 @@ public class CourseService {
         course.setDescription(description);
         course.setDifficulty(Course.Difficulty.valueOf(diff));
         course.setStatus(Course.Status.valueOf(status));
+        course.setPricePerHour(pricePerHour);
+        course.setCategory(category);
+        course.setUrl(url != null ? url : "none");
+        courseRepository.save(course);
+        return course;
+    }
+    
+    @Transactional
+    public Course proposeCourse(String name, String description, String diff, Integer pricePerHour, String category, String url) {
+        // Accumulate error messages
+        StringBuilder errorMessage = new StringBuilder();
+    
+        //keep all course names unique
+        try {
+            findCourseByName(name);
+            // If no exception is thrown, it means a course with the given name already exists
+            throw new IllegalArgumentException("Course with the name '" + name + "' already exists!");
+        } catch (IllegalArgumentException e){
+            // Do nothing, as this means the course with the given name doesn't exist
+        }
+    
+        // Input validation checks
+        if (name == null || name.trim().isEmpty()) {
+            errorMessage.append("Course name cannot be empty! ");
+        }
+        if (description == null || description.trim().isEmpty()) {
+            errorMessage.append("Course description cannot be empty! ");
+        }
+        if (diff == null) {
+            errorMessage.append("Course difficulty cannot be null! ");
+        }
+        if (pricePerHour == null || pricePerHour <= 0) {
+            errorMessage.append("Price per hour must be provided and greater than zero! ");
+        }
+    
+        // Ensure the uniqueness of each course
+        if (courseRepository.existsByName(name)) {
+            errorMessage.append("Course already exists! ");
+        }
+    
+        // If there are any errors, throw an exception
+        if (errorMessage.length() > 0) {
+            throw new IllegalArgumentException(errorMessage.toString().trim());
+        }
+    
+        // If no errors, create and save the course
+        Course course = new Course();
+        course.setName(name.toLowerCase());
+        course.setDescription(description);
+        course.setDifficulty(Course.Difficulty.valueOf(diff));
+        course.setStatus(Course.Status.valueOf("Pending"));
+        course.setPricePerHour(pricePerHour);
+        course.setCategory(category);
+        course.setUrl(url != null ? url : "none");
         courseRepository.save(course);
         return course;
     }    
@@ -79,10 +142,10 @@ public class CourseService {
     //--------------------------// Update Course //--------------------------//
 
     @Transactional
-    public Course updateCourse(Integer id, String name, String description, String diff, String status) {
+    public Course updateCourse(Integer id, String name, String description, String diff, String status, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
-
+    
         // Input validation checks
         if (name == null || name.trim().isEmpty()) {
             errorMessage.append("Course name cannot be empty! ");
@@ -96,15 +159,15 @@ public class CourseService {
         if (status == null) {
             errorMessage.append("Course status cannot be null! ");
         }
-
+    
         // If there are any errors, throw an exception
         if (errorMessage.length() > 0) {
             throw new IllegalArgumentException(errorMessage.toString().trim());
         }
-
+    
         // Check if the course with the given ID exists
         Course existingCourse = findCourseById(id);
-
+    
         // Check if the name has been changed and if so, ensure it's unique
         if (!existingCourse.getName().equalsIgnoreCase(name)) {
             Course courseWithNewName = courseRepository.findCourseByName(name);
@@ -112,18 +175,19 @@ public class CourseService {
                 throw new IllegalArgumentException("Course with the name '" + name + "' already exists!");
             }
         }
-
+    
         // Update the existing course with the new information
-        
         existingCourse.setName(name.toLowerCase());
         existingCourse.setDescription(description);
         existingCourse.setDifficulty(Course.Difficulty.valueOf(diff));
         existingCourse.setStatus(Course.Status.valueOf(status));
+        existingCourse.setPricePerHour(pricePerHour);
+        existingCourse.setCategory(category);
+        existingCourse.setUrl(url != null ? url : "none");
         courseRepository.save(existingCourse);
-         
-
         return existingCourse;
     }
+    
 
     //--------------------------// Getters //--------------------------//  
 
@@ -188,9 +252,10 @@ public class CourseService {
     //--------------------------// Propose course //--------------------------//
 
     @Transactional
-    public void approveCourse(Course course){
+    public void approveCourse(Course course, int pricePerHour){
         if (course.getStatus() == Course.Status.Pending){
             course.setStatus(Course.Status.Approved);
+            course.setPricePerHour(pricePerHour);
             courseRepository.save(course);
         } 
         else {
@@ -230,9 +295,14 @@ public class CourseService {
      public void deleteCourse(Integer id) {
         try {
             Course course = findCourseById(id);
+            List<SessionPackage> list =  sessionPackageRepository.findSessionPackageByCourse(course);
+            for(SessionPackage sessionPackage : list){
+                sessionPackageRepository.delete(sessionPackage);
+            }
             if (course != null){
                 courseRepository.delete(course);
             }
+
         } catch (IllegalArgumentException e){
             throw new IllegalArgumentException("There are courses with id " + id);
         }

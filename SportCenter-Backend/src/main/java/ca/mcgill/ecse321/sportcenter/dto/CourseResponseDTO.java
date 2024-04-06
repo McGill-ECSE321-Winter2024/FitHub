@@ -13,6 +13,9 @@ public class CourseResponseDTO {
   private String difficulty;
   private String status;
   private String description;
+  private int pricePerHour;
+  private String category;
+  private String url;
   private SportCenter center;
   
   @SuppressWarnings("unused")
@@ -20,12 +23,15 @@ public class CourseResponseDTO {
     
   }
   
-  public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus)
+  public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus, int aPricePerHour, String aCategory, String aUrl)
   {
     name = aName;
     difficulty = aDifficulty.trim();
     status = aStatus.trim();
     description = aDescription;
+    pricePerHour = aPricePerHour;
+    category = aCategory.trim();
+    url = aUrl.trim();
   }
 
     public CourseResponseDTO(Course course)
@@ -35,6 +41,9 @@ public class CourseResponseDTO {
     difficulty = course.getDifficulty().toString();
     status = course.getStatus().toString();
     description = course.getDescription();
+    pricePerHour = course.getPricePerHour();
+    category = course.getCategory();
+    url = course.getUrl();
   }
 
 //--------------------- Getters -------------------//
@@ -62,6 +71,22 @@ public class CourseResponseDTO {
   public void setId(int aId)
   {
     this.id = aId;
+  }
+
+
+  public void setPricePerHour(int aPricePerHour)
+  {
+    pricePerHour = aPricePerHour;
+  }
+
+  public void setCategory(String aCategory)
+  {
+    category = aCategory;
+  }
+
+  public void setUrl(String aUrl)
+  {
+    url = aUrl;
   }
 
   public String getName()
@@ -92,6 +117,21 @@ public class CourseResponseDTO {
   public SportCenter getCenter()
   {
     return center;
+  }
+
+  public int getPricePerHour()
+  {
+    return pricePerHour;
+  }
+
+  public String getCategory()
+  {
+    return category;
+  }
+
+  public String getUrl()
+  {
+    return url;
   }
   
 } 

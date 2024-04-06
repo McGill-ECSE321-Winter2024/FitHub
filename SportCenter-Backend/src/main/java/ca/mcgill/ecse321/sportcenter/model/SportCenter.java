@@ -254,9 +254,9 @@ public class SportCenter
     return 0;
   }
 
-  public Course addCourse(String aName, Course.Difficulty aDifficulty, Course.Status aStatus, String aDescription, int aId)
+  public Course addCourse(String aName, Course.Difficulty aDifficulty, Course.Status aStatus, String aDescription, int aPricePerHour, String aCategory, String aUrl)
   {
-    return new Course(aName, aDifficulty, aStatus, aDescription, this);
+    return new Course(aName, aDifficulty, aStatus, aDescription, aPricePerHour, aCategory, aUrl, this);
   }
 
   public boolean addCourse(Course aCourse)

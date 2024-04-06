@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,6 @@ import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 import jakarta.transaction.Transactional;
 
 /*
-* <p> Integration testing for the Account use cases with the controller. <p>
 * <p>Service class in charge of managing sessions. It implements following use cases: </p>
 * <p>Create, update, delete a session </p>
 * @author Émilia
@@ -47,7 +46,7 @@ public class SessionService {
     //--------------------------// Create Session //--------------------------//
 
     @Transactional
-    public Session proposeSuperviseSession(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, int iId, int cId, int lId){
+    public Session proposeSuperviseSession(Time aStartTime, Time aEndTime, LocalDate aDate, int aCapacity, int iId, int cId, int lId){
         //Input Validation
         //Things left to implement: make sure aEndTime is after aStartTime and that it is inside the opnening hours
         if(aCapacity<=0 || aDate == null || aStartTime == null || aEndTime == null){
@@ -83,7 +82,7 @@ public class SessionService {
     //--------------------------// Update Session //--------------------------//
 
     @Transactional
-    public Session updateSession(int sid, Time aStartTime, Time aEndTime, Date aDate, int aCapacity){
+    public Session updateSession(int sid, Time aStartTime, Time aEndTime, LocalDate aDate, int aCapacity){
         if(aCapacity<=0 || aDate == null || aStartTime == null || aEndTime == null){
             throw new IllegalArgumentException();
         }
@@ -193,7 +192,7 @@ public class SessionService {
         return instructRepo.findInstructorById(id);
     }
 
-    private boolean isLocationAvailable(Location location, Date date, Time aStartTime, Time aEndTime){
+    private boolean isLocationAvailable(Location location, LocalDate date, Time aStartTime, Time aEndTime){
 
         // Get the sessions associated with given location and date
         //For each session in sessions, check if there is overlap with the given time
@@ -202,7 +201,7 @@ public class SessionService {
 
     }
 
-    private boolean isSupervisorAvailable(Date date, Time aStartTime, Time aEndTime, Instructor supervisor){
+    private boolean isSupervisorAvailable(LocalDate date, Time aStartTime, Time aEndTime, Instructor supervisor){
         //get the sessions associated with the given date and supervisor
         //For each session, check if there is overlap with the given time
         List<Session> session = sessionRepo.findBySupervisorAndDate(supervisor, date);

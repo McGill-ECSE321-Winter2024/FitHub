@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,7 @@ import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 
-@ExtendWith(MockitoExtension.class)
-
+@SpringBootTest
 public class CourseServiceTests {
     @Mock
     private CourseRepository courseDao;
@@ -116,7 +116,7 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
-        Course createdCourse = service.createCourse(name, description, diff.toString(), status.toString());
+        Course createdCourse = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none","none");
 
 		assertNotNull(createdCourse);
 		assertEquals(name.toLowerCase(), createdCourse.getName());
@@ -136,7 +136,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString());
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1,"none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -156,7 +156,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString());
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -176,7 +176,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString());
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1,  "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -196,7 +196,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString());
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -216,7 +216,7 @@ public class CourseServiceTests {
 		Course course = null;
         
 		try {
-			course = service.createCourse(name, description, diff.toString(), status.toString());
+			course = service.createCourse(name, description, diff.toString(), status.toString(), 1, "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -244,7 +244,7 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(course);
 
-        service.approveCourse(course);
+        service.approveCourse(course, 14);
         
         assertEquals(Course.Status.Approved, course.getStatus());
 		assertEquals(name, course.getName());
@@ -267,7 +267,7 @@ public class CourseServiceTests {
         course.setStatus(status);
         course.setCenter(sportCenterRepo.findSportCenterById(0));
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.approveCourse(course));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> service.approveCourse(course, 14));
         assertEquals("You can only approve a course which has a status of pending.", e.getMessage());
     }
 
@@ -389,7 +389,7 @@ public class CourseServiceTests {
 
         when(courseDao.save(any(Course.class))).thenReturn(updatedCourse);
 
-        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString());
+        Course savedCourse = service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString(),1, "none","none");
     
         // Assert
         assertNotNull(savedCourse);
@@ -427,7 +427,7 @@ public class CourseServiceTests {
 
         String error = "";
         try {
-			service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString());
+			service.updateCourse(id, newName, newDescription, newDiff.toString(), newStatus.toString(),1, "none","none");
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
