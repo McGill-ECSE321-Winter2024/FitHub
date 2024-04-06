@@ -221,7 +221,10 @@ public class SessionIntegrationTests extends CommonTestSetup {
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         SessionResponseDTO createdSession = response.getBody();
 		validId = createdSession.getId();
-		
+		assertEquals(capacity, createdSession.getCapacity());
+		assertEquals(date, createdSession.getDate());
+		assertEquals(startTime, createdSession.getStartTime());
+		assertEquals(endTime, createdSession.getEndTime());
 
 	}
 
@@ -240,6 +243,11 @@ public class SessionIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
+		SessionResponseDTO createdSession = response.getBody();;
+		assertEquals(capacity, createdSession.getCapacity());
+		assertEquals(date, createdSession.getDate());
+		assertEquals(startTime, createdSession.getStartTime());
+		assertEquals(endTime, createdSession.getEndTime());
 	}
 
 	@Test
@@ -300,8 +308,11 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-
-		
+		SessionResponseDTO createdSession = response.getBody();
+		assertEquals(newCapacity, createdSession.getCapacity());
+		assertEquals(newDate, createdSession.getDate());
+		assertEquals(newStartTime, createdSession.getStartTime());
+		assertEquals(newEndTime, createdSession.getEndTime());
 
 	}
 
@@ -318,6 +329,12 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+		SessionResponseDTO createdSession = response.getBody();
+		assertEquals(newCapacity, createdSession.getCapacity());
+		assertEquals(newDate, createdSession.getDate());
+		assertEquals(newStartTime, createdSession.getStartTime());
+		assertEquals(newEndTime, createdSession.getEndTime());
+
 	}
 
 	
@@ -334,6 +351,12 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+		SessionResponseDTO createdSession = response.getBody();
+		assertEquals(newCapacity, createdSession.getCapacity());
+		assertEquals(newDate, createdSession.getDate());
+		assertEquals(newStartTime, createdSession.getStartTime());
+		assertEquals(newEndTime, createdSession.getEndTime());
+
 
 	}
 
