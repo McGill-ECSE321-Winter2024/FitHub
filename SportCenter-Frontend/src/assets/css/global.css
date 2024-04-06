@@ -1,33 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Figtree:300,400,500,600,700,800,900');
 * {
-    font-family: "Rubik", sans-serif;
+    font-family: "Figtree", sans-serif;
+}
+
+:root{
+    --color-black: #171313;
+    --color-muted-black: #837e7e;
+    --color-pink: #FFD0D6;
+    --color-salmon: #FB7EA8;
 }
 
 body {
   font-weight: 700;
   font-style: normal;
-  background-image: linear-gradient(#7192BB, #9FB8D0);
-}
-
-hr {
-    border: 0.5px solid #FFFFFF;
-    opacity: 0.5;
-}
-
-#title-heading {        /* Used for FitHub title page */
-    font-size: 10em; 
-    color: transparent; 
-    -webkit-text-stroke: 1px white; 
-    line-height: 1.5;
-    letter-spacing: 25px;
-    font-weight: 900;
-    text-align: justify;
+  color: var(--color-black);
 }
 
 h1 {                /* Used for big headings of Sign In and Registration */
     font-weight: 700;
     font-size: 3rem;
     text-align: left;
-    color: #524E5E
 }
 
 @media (min-width: 576px) { /* Small devices (576px and up) */
@@ -45,93 +37,31 @@ h1 {                /* Used for big headings of Sign In and Registration */
 /* Adjust font size for small screens */
 @media (max-width: 767.98px) {
     #title-heading {
-        font-size: 5em; /* Adjust the font size as needed */
+        font-size: 5em;
+        /* Adjust the font size as needed */
     }
 }
 
-h1 {                /* Used for big headings of Sign In and Registration */
+h1 {
+    /* Used for big headings of Sign In and Registration */
     font-weight: 700;
     font-size: 5em;
     text-align: left;
-    color: #524E5E
 }
 
 /* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
-h2 {        
-    font-size: 3em;
+h2 {
+    font-size: 28px;
     text-align: justify;
-    font-weight: 800;
-    color: #524E5E;
-}
-
-/* Apply rounded corners */
-.rounded-div {
-    border-radius: 10%;
-}
-
-/* Used when you want to make a white div */
-.white-div {
-    color: #524E5E;
-    background-color: #F9F9F9;
-}
-
-/* Only for now, must delete this later. Makes the div element take up the entire screen */
-.whole-screen {
-    max-height: 100vh;
-    max-width: 100vw;
-    min-height: 100vh;
-    min-width: 100vw;
-}
-
-.whole-screen-minus {
-    max-height: 80vh;
-    max-width: 100vw;
-    min-height: 80vh;
-    min-width: 100vw;
-}
-
-.half-height {
-    max-height: 50vh;
-    max-width: 100vw;
-    min-height: 50vh;
-    min-width: 100vw;
-}
-
-.half-width {
-    max-height: 80vh;
-    max-width: 50vw;
-    min-height: 80vh;
-    min-width: 50vw;
-}
-
-.footer {
-    max-height: 10vh;
-    max-width: 100vw;
-    min-height: 10vh;
-    min-width: 100vw;
-}
-
-/* To be deleted, just to visualize the hooper slides */
-.slide-style {
-    border: 10px solid #000000;
-}
-
-/* Toolbar style */
-.navbar {
-    height: 15vh !important;
-    width: 100%;
-}
-
-.navbar-brand {
-    color: #FFFFFF !important;
+    font-weight: 700;
 }
 
 .nav-link {
-    color: #FFFFFF !important;
+    color: var(--color-black) !important;
 }
 
-.nav-link.active {
-    color: #524E5E !important;
+.nav-link:hover {
+    color: var(--color-muted-black) !important;
 }
 
 .btn {
