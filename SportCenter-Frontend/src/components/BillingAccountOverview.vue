@@ -1,0 +1,137 @@
+<template>
+
+    <div class="solid-background">
+    
+    <div class="text-content">
+        <h1 class="custom-h1">Billing account overview</h1>
+        <h3>Manage your payment details for one-time purchase</h3>
+    </div>
+    
+
+    <div class="card-box">
+        <h5 class="card-display">****0000 | YYYY-MM</h5>
+        <button id="add-btn" type="add">Add new card</button>
+    </div>
+
+    <div class="cards">
+        <h2>My cards</h2>
+    
+        <div class="card-box">
+        <h5 class="card-display">****8888 | 2026-10</h5>
+        <button id="edit-btn" type="edit">Edit</button>
+        <button id="remove-btn" type="remove">Delete</button>
+        </div>
+
+        <div class="card-box">
+        <h5 class="card-display">****8080 | 2027-01</h5>
+        <button id="edit-btn" type="edit">Edit</button>
+        <button id="remove-btn" type="remove">Delete</button>
+        </div>
+    </div>
+    </div>
+    </template>
+    
+    <script>
+    
+    export default {
+    
+    };
+    </script>
+    
+    <style scoped>
+    
+    .solid-background {
+      background-color: #121212;
+      height: 100vh;
+      width: 100vw;
+      overflow: auto;
+    }
+    .custom-h1 {
+      margin-top: 300px;
+      margin-left: 480px; 
+      color: #ffffff;
+      font-size: 45px;
+    }
+
+    .card-box {
+      width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .cards {
+      align-items: center;
+    }
+    
+    label {
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    
+    button {
+      padding: 10px 10px;
+      background-color: #121212;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 700; 
+      margin-bottom: 15px;
+    }
+    
+    #edit-btn {
+        margin-left: 260px;
+        color: #CDF563;
+    }
+    
+    #add-btn {
+        color: #CDF563;
+        margin-right: 40px;
+    }
+
+    #remove-btn {
+        margin-left: 0px; 
+        margin-right: 40px;
+        color: #EC5545;
+    }
+    
+    button:hover {
+      background-color: #121a22;
+    }
+    
+    h2 {
+      text-align: left;
+      margin-left: 400px;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      font-size: 30px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    h5 {
+      margin-left: 20px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    h3 {
+      margin-bottom: 50px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+    
+    </style>

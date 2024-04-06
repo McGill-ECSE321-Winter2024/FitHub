@@ -34,8 +34,8 @@
         <input type="text" id="cardHolder" v-model="formData.cardHolder" required>
       </div>
       <div class="form-group-side">
-        <input type="checkbox" id="isDefault" v-model="formData.isDefault">
-        <label for="isDefault">Save as default</label>
+        <input type="checkbox" id="isDefault" v-model="formData.isDefault" style="transform: scale(1.5);">
+        <label for="isDefault">Save as default </label>
       </div>
       <button id="save-btn" type="save">Save</button>
       <button id="cancel-btn" type="cancel">Cancel</button>
@@ -105,7 +105,7 @@ export default {
   margin: auto;
   padding: 20px;
   border: 2px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .form-group-side {
@@ -127,7 +127,7 @@ input[type="text"] {
   background-color: #121212;
   width: 100%;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 7px;
 }
 
 input[type="checkbox"] {
