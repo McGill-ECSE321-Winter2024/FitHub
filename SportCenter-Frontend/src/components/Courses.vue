@@ -1,5 +1,6 @@
 <template>
   <div class="solid-background">
+
     <Toolbar />
     <div class="text-search-bar">
       <div class="text-content">
@@ -16,8 +17,7 @@
         v-for="course in list.courses"
         :key="course.id"
         class="custom-card"
-        :style="{ borderColor: getBorderColor(course.difficulty) }"
-      >
+        :style="{ borderColor: getBorderColor(course.difficulty) }">
         <div class="card-img-top">
           <img :src="require(`@/assets/${course.icon1}.png`)" alt="Course Image">
         </div>
@@ -27,6 +27,7 @@
       </b-card>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -34,7 +35,8 @@ export default {
   name: 'Courses',
   data() {
     return {
-      list: []
+      list: [],
+      hoveredCardColor: ''
     }
   },
   mounted() {
@@ -77,8 +79,16 @@ export default {
   }
 }
 
+
 </script>
 <style scoped>
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  background-color: var(--hovered-card-color);
+}
+
 .solid-background {
   background-color: #121212;
   height: 100vh;

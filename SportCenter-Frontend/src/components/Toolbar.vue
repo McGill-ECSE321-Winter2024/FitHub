@@ -80,6 +80,7 @@ export default {
 
 <style scoped>
 
+
 @media (max-width: 991.98px) {
 
     /* Adjusted to target when navbar is collapsed */
