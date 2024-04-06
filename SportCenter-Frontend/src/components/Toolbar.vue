@@ -1,6 +1,6 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light" :style="{ transition: 'background-color 1.5s'}">
-        <a class="navbar-brand" href="#" @click="goToHome">
+    <nav class="navbar navbar-expand-lg navbar-light" :style="{ transition: 'background-color 1.5s', zIndex: 1}">
+        <router-link to="/" class="navbar-brand"">
             <img width="40" height="40" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
                 alt="acrobatics" />itHub
         </router-link>
