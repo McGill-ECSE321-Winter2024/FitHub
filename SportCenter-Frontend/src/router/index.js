@@ -7,6 +7,7 @@ import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
 import OwnerSettings from '@/components/OwnerSettings'
+import Location from '@/components/Location'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/settings',
       name: 'Settings',
       component: OwnerSettings
+    },
+    {
+      path: '/location',
+      name: 'Location',
+      component: Location
     }
   ]
 })
