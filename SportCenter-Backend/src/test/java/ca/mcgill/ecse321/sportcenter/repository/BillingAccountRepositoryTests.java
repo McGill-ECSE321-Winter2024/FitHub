@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigInteger;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +47,11 @@ public class BillingAccountRepositoryTests extends CommonTestSetup {
         customer = accountRepo.save(customer);
 
         // Then create the billing account
-        BigInteger aCardNumber = new BigInteger("1234567891234567");
+        String aCardNumber = "1234567891234567";
         String aCardHolder = "Bobby Bob";
         String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
         int aCCV = 374;
-        Date expDate = new Date(4);
+        LocalDate expDate = LocalDate.parse("2028-10-30");
         boolean isDefault = false;
 
         BillingAccount billingAccount = new BillingAccount();
@@ -101,11 +101,11 @@ public class BillingAccountRepositoryTests extends CommonTestSetup {
         customer = accountRepo.save(customer);
 
          // Then create the billing account
-         BigInteger aCardNumber = new BigInteger("1234567891234567");
+         String aCardNumber = "1234567891234567";
          String aCardHolder = "Bobby Bob";
          String aBillingAdress = "2444 Sherbrooke O. Bd, Montreal";
          int aCCV = 374;
-         Date expDate = new Date(4);
+         LocalDate expDate = LocalDate.parse("2028-10-30");
          boolean isDefault = false;
  
          BillingAccount billingAccount = new BillingAccount();

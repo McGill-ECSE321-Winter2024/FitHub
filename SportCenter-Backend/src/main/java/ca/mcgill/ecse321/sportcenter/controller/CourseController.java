@@ -40,7 +40,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CourseResponseDTO> createCourse(@RequestBody CourseRequestDTO course) { 
         try {
-            Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
+            Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString(), course.getPricePerHour(), course.getCategory(), course.getUrl());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(createdCourse), HttpStatus.CREATED);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
@@ -52,7 +52,7 @@ public class CourseController {
     @PutMapping(value={"/courses/{id}", "/courses/{id}/"})
     public ResponseEntity<CourseResponseDTO> updateCourse(@PathVariable Integer id, @RequestBody CourseResponseDTO course) {
         try {
-            Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString());
+            Course updatedCourse = courseService.updateCourse(course.getId(), course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString(), course.getPricePerHour(), course.getCategory(), course.getUrl());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(updatedCourse), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
@@ -62,7 +62,7 @@ public class CourseController {
 
     //--------------------------// Getters //--------------------------//
 
-    @GetMapping(value={"/courses/{id}", "/courses/{id}/"})
+    @GetMapping(value={"/courses/{id}", "/courses/{id}/", "/public/courses/{id}"})
     public ResponseEntity<CourseResponseDTO> findCourseById(@PathVariable Integer id) {
         try {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(courseService.findCourseById(id)), HttpStatus.FOUND);
@@ -72,7 +72,7 @@ public class CourseController {
     }
 
 
-    @GetMapping(value={"/courses", "/courses/"})
+    @GetMapping(value={"/courses", "/courses/", "/public/courses"})
     public ResponseEntity<?> findCourses(
         @RequestParam(name = "name", required = false) String name,
         @RequestParam(name = "difficulty", required = false) String difficulty,
@@ -126,16 +126,15 @@ public class CourseController {
     //--------------------------// Setters //--------------------------//
 
     @PutMapping(value={"/course-approval/{id}", "/course-approve/{id}/"})
-    public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id) {
+    public ResponseEntity<CourseResponseDTO> approveCourse(@PathVariable Integer id, @RequestParam(required = true) int value) {
         try {
             Course course = courseService.findCourseById(id);
-            courseService.approveCourse(course);
+            courseService.approveCourse(course, value);
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(course), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
         }
-        
-    }
+    }    
 
     @PutMapping(value={"/course-disapproval/{id}", "/course-disapprove/{id}/"})
     public ResponseEntity<CourseResponseDTO> disapproveCourse(@PathVariable Integer id) {

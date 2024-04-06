@@ -18,6 +18,7 @@ import { Hooper, Slide, Navigation} from 'hooper';
 import 'hooper/dist/hooper.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import './assets/css/global.css'
 
 Vue.use(BootstrapVue)

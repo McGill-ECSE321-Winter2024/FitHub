@@ -8,9 +8,9 @@ public class Customer extends Account
     setAuthority(Authority.ROLE_CUSTOMER);
   }
 
-  public Customer(String aEmail, String aPassword, String aName, String aImageURL, SportCenter aCenter)
+  public Customer(String aEmail, String aPassword, String aName, String aImageURL, String aPronouns, int aId, SportCenter aCenter)
   {
-    super(aEmail, aPassword, aName, aImageURL, aCenter);
+    super(aEmail, aPassword, aName, aImageURL, aPronouns, aId, aCenter);
     setAuthority(Authority.ROLE_CUSTOMER);
   }
 

@@ -1,7 +1,8 @@
 <template>
   <div style="font-family: Figtree; height: 100vh; background-color: #121212">
-    <Toolbar />
-
+    <div style="background-color: #121212">
+      <Toolbar />
+    </div>
     <!-- Container for sidebar and main content -->
     <div class="content-container">
       <!-- Sidebar container with gray box -->
@@ -66,7 +67,7 @@
       >
         <!-- Edit Profile -->
         <div v-if="currentTab === 'OwnerProfileSettings'">
-          <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 20px">
+          <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
             Edit profile
           </h2>
           <!-- Properties and text fields -->
@@ -195,8 +196,8 @@ export default {
   padding: 15px;
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .menu-item-selected {

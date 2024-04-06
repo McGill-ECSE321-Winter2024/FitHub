@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.model;
 import java.math.BigInteger;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,11 +13,11 @@ public class BillingAccount
   @Id
   @GeneratedValue
   private int id;
-  private BigInteger cardNumber;
+  private String cardNumber;
   private String cardHolder;
   private String billingAddress;
   private int cvv;
-  private Date expirationDate;
+  private LocalDate expirationDate;
   private boolean isDefault;
 
   //BillingAccount Associations
@@ -32,7 +32,7 @@ public class BillingAccount
 
   }
 
-  public BillingAccount(BigInteger aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, Date aExpirationDate, boolean aIsDefault, Customer aCustomer)
+  public BillingAccount(String aCardNumber, String aCardHolder, String aBillingAddress, int aCvv, LocalDate aExpirationDate, boolean aIsDefault, Customer aCustomer)
   {
     cardNumber = aCardNumber;
     cardHolder = aCardHolder;
@@ -46,7 +46,7 @@ public class BillingAccount
     }
   }
 
-  public boolean setCardNumber(BigInteger aCardNumber)
+  public boolean setCardNumber(String aCardNumber)
   {
     boolean wasSet = false;
     cardNumber = aCardNumber;
@@ -78,7 +78,7 @@ public class BillingAccount
     return wasSet;
   }
 
-  public boolean setExpirationDate(Date aExpirationDate)
+  public boolean setExpirationDate(LocalDate aExpirationDate)
   {
     boolean wasSet = false;
     expirationDate = aExpirationDate;
@@ -102,7 +102,7 @@ public class BillingAccount
     return wasSet;
   }
 
-  public BigInteger getCardNumber()
+  public String getCardNumber()
   {
     return cardNumber;
   }
@@ -122,7 +122,7 @@ public class BillingAccount
     return cvv;
   }
 
-  public Date getExpirationDate()
+  public LocalDate getExpirationDate()
   {
     return expirationDate;
   }
