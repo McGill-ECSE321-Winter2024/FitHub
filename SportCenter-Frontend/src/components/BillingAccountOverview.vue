@@ -16,12 +16,14 @@
     <div class="cards">
         <h2>My cards</h2>
     
+        <h6>Default card</h6>
         <div class="card-box">
         <h5 class="card-display">****8888 | 2026-10</h5>
         <button id="edit-btn" type="edit">Edit</button>
         <button id="remove-btn" type="remove">Delete</button>
         </div>
 
+        <h6>Other cards</h6>
         <div class="card-box">
         <h5 class="card-display">****8080 | 2027-01</h5>
         <button id="edit-btn" type="edit">Edit</button>
@@ -134,4 +136,13 @@
       color: #FFFFFF;
     }
     
+    h6 {
+      text-align: left;
+      margin-left: 400px;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
     </style>

@@ -17,7 +17,6 @@
       <form-row>
       <div class="form-group">
         <label for="expiryDate">Expiry Date</label>
-        <!--datepicker id="expiryDate" v-model="formData.expiryDate" format="yyyy-MM-dd" required></datepicker-->
         <input type="text" id="expiryDate" v-model="formData.expiryDate" required placeholder=" YYYY-MM-DD">
       </div>
       <div class="form-group">
@@ -46,13 +45,9 @@
 </template>
 
 <script>
-//import Datepicker from 'vue-datepicker';
 
 export default {
   data() {
-    //components: {
-    //Datepicker
-    //}
     return {
       formData: {
         cardNumber: '',
