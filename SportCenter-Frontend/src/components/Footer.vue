@@ -1,23 +1,23 @@
 <template>
     <div class="footer p-5 d-flex">
-            <a class="navbar-brand mr-auto p-2" href="#" @click="goToHome">
+            <router-link to="/" class="navbar-brand mr-auto p-2">
                 <img width="100" height="100" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
                     alt="acrobatics" />itHub
-            </a>
+            </router-link>
         <nav class="navbar p-2">
             <div>
                 <ul class="navbar-nav nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToCourses">Courses</a>
+                        <router-link to="/courses" class="nav-link">Courses</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToInstructors">Instructors</a>
+                        <router-link to="/instructors" class="nav-link">Instructors</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToLogin">Already a Member?</a>
+                        <router-link to="/login" class="nav-link">Already a Member?</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToRegistration">Register Here!</a>
+                        <router-link to="/registration" class="nav-link">Register Here!</router-link>
                     </li>
                 </ul>
             </div>
@@ -38,21 +38,6 @@ export default {
             });
         });
     },
-    methods: {
-        goToHome() {
-            this.$router.push('/');
-        },
-
-        goToCourses() {
-            this.$router.push('/courses');
-        },
-        goToInstructors() {
-            this.$router.push('/instructors')
-        },
-        goToSignIn() {
-            this.$router.push('/login');
-        }
-    }
 };
 </script>
 

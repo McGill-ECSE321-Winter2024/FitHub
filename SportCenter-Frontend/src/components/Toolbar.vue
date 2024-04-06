@@ -1,9 +1,9 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light" :style="{ backgroundColor: bgColor , transition: 'background-color 1.5s', zIndex: 1 }">
-        <a class="navbar-brand" href="#" @click="goToHome">
+        <router-link to="/" class="navbar-brand">
             <img width="40" height="40" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
                 alt="acrobatics" />itHub
-        </a>
+        </router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" 
             aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -49,18 +49,6 @@ export default {
         EventBus.$off('beforeSlideOccurred', this.handleChangeBackgroundColor);
     },
     methods: {
-        goToHome() {
-            this.$router.push('/');
-        },
-        goToCourses() {
-            this.$router.push('/courses');
-        },
-        goToInstructors() {
-            this.$router.push('/instructors');
-        },
-        goToLogin() {
-            this.$router.push('/login');
-        },
         handleChangeBackgroundColor(payload) {
             const { currentSlide } = payload;
             if (currentSlide === 0 || currentSlide === 1) {
@@ -73,9 +61,6 @@ export default {
         },
         updateBackgroundColor(color) {
             this.bgColor = color;
-        },
-        goToRegistration() {
-            this.$router.push('/registration');
         }
     }
 };

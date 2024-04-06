@@ -10,12 +10,12 @@
             </p>
         </div>
         <div id="container" class="pt-5">
-            <button class="learn-more" @click="goToRegistration()">
+            <router-link to="/registration"  tag="button" class="learn-more">
                 <span class="circle" aria-hidden="true">
                     <span class="icon arrow"></span>
                 </span>
                 <span class="button-text">Register Now</span>
-            </button>
+            </router-link>
         </div>
     </div>
 </template>

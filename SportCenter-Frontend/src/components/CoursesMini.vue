@@ -2,9 +2,9 @@
     <div class="pl-5 pt-5 pr-5">
         <div class="d-flex align-items-center">
             <h2 class="mr-auto">Trending Courses</h2>
-            <a class="pr-3" @mouseover="changeIcon" @mouseleave="resetIcon" @click="goToCourses" href="#">
+            <router-link to="/courses" class="pr-3" @mouseover="changeIcon" @mouseleave="resetIcon" href="#">
                 View All Courses
-            </a>
+            </router-link>
             <div>
                 <b-icon :icon="icon" font-scale="1.75"></b-icon>
             </div>
