@@ -5,6 +5,7 @@ import SignIn from '@/components/Login'
 import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
+import OwnerSettings from '@/components/OwnerSettings'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/registration',
       name: 'Registration',
       component: Registration
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: OwnerSettings
     }
   ]
 })
