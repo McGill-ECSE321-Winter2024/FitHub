@@ -35,7 +35,7 @@ public class CourseService {
     //--------------------------// Create Course //--------------------------//
 
     @Transactional
-    public Course createCourse(String name, String description, String diff, String status, Integer pricePerHour, String icon1, String icon2, String url) {
+    public Course createCourse(String name, String description, String diff, String status, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -82,15 +82,14 @@ public class CourseService {
         course.setDifficulty(Course.Difficulty.valueOf(diff));
         course.setStatus(Course.Status.valueOf(status));
         course.setPricePerHour(pricePerHour);
-        course.setIcon1(icon1 != null ? icon1 : "none");
-        course.setIcon2(icon2 != null ? icon2 : "none");
+        course.setCategory(category);
         course.setUrl(url != null ? url : "none");
         courseRepository.save(course);
         return course;
     }
     
     @Transactional
-    public Course proposeCourse(String name, String description, String diff, Integer pricePerHour, String icon1, String icon2, String url) {
+    public Course proposeCourse(String name, String description, String diff, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -134,8 +133,7 @@ public class CourseService {
         course.setDifficulty(Course.Difficulty.valueOf(diff));
         course.setStatus(Course.Status.valueOf("Pending"));
         course.setPricePerHour(pricePerHour);
-        course.setIcon1(icon1 != null ? icon1 : "none");
-        course.setIcon2(icon2 != null ? icon2 : "none");
+        course.setCategory(category);
         course.setUrl(url != null ? url : "none");
         courseRepository.save(course);
         return course;
@@ -144,7 +142,7 @@ public class CourseService {
     //--------------------------// Update Course //--------------------------//
 
     @Transactional
-    public Course updateCourse(Integer id, String name, String description, String diff, String status, Integer pricePerHour, String icon1, String icon2, String url) {
+    public Course updateCourse(Integer id, String name, String description, String diff, String status, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -184,8 +182,7 @@ public class CourseService {
         existingCourse.setDifficulty(Course.Difficulty.valueOf(diff));
         existingCourse.setStatus(Course.Status.valueOf(status));
         existingCourse.setPricePerHour(pricePerHour);
-        existingCourse.setIcon1(icon1 != null ? icon1 : "none");
-        existingCourse.setIcon2(icon2 != null ? icon2 : "none");
+        existingCourse.setCategory(category);
         existingCourse.setUrl(url != null ? url : "none");
         courseRepository.save(existingCourse);
         return existingCourse;
