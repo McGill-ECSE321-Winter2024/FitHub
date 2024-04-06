@@ -30,6 +30,7 @@ dependencies {
 	implementation 'com.github.therapi:therapi-runtime-javadoc:0.13.0'
 	
 	implementation "org.springframework.boot:spring-boot-starter-security"
+	
 
 }
 

@@ -129,12 +129,12 @@ public class SessionIntegrationTests extends CommonTestSetup {
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		location = locationService.createLocation(floor, room);
 		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none", "none","none");
-		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL);
-		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL);
+		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL, "");
+		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL, "");
 		newLocation = locationService.createLocation(newFloor, newRoom);
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
