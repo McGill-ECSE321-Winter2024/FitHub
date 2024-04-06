@@ -112,10 +112,10 @@ public class RegistrationIntegrationTests {
         Time closingTime = Time.valueOf("23:0:0");
 		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
-        customer1 = accountService.createCustomerAccount("tayba.jusab@mail.mcgill.ca", "password", "Tayba", "rat.png");
-        customer2 = accountService.createCustomerAccount("personB@gmail.com", "notMyPassword", "Person B", "tree.png");
-        instructor1 = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png");
-        instructor2 = accountService.createInstructorAccount("pam@mail.com", "pammylmaooda", "Pam", "office.png");
+        customer1 = accountService.createCustomerAccount("tayba.jusab@mail.mcgill.ca", "password", "Tayba", "rat.png", "");
+        customer2 = accountService.createCustomerAccount("personB@gmail.com", "notMyPassword", "Person B", "tree.png", "");
+        instructor1 = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png", "");
+        instructor2 = accountService.createInstructorAccount("pam@mail.com", "pammylmaooda", "Pam", "office.png", "");
         course1 = courseService.createCourse("Goat Yoga", "yoga with goats", Difficulty.Advanced.toString(), Status.Approved.toString(), 1, "none", "none","none");
         course2 = courseService.createCourse("Goat Yoga 2", "beginner yoga with goats", Difficulty.Beginner.toString(), Status.Approved.toString(), 1, "none", "none","none");
         location = locationService.createLocation("5", "502");
@@ -134,7 +134,7 @@ public class RegistrationIntegrationTests {
     @Test
     @Order(0)
     public void login() {
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
         ResponseEntity<LoginResponseDTO> response = client.postForEntity("/login", request, LoginResponseDTO.class);
@@ -360,7 +360,7 @@ public class RegistrationIntegrationTests {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         // Update customer 2's name and email
-        accountService.updateCustomerAccount(customer2.getId(), "newemail@gmail.com", customer2.getPassword(), "New Name", customer2.getImageURL());
+        accountService.updateCustomerAccount(customer2.getId(), "newemail@gmail.com", customer2.getPassword(), "New Name", customer2.getImageURL(), "");
 
         // Update sessions 1's instructor
         sessionService.updateSessionSupervisor(session1.getId(), instructor2.getId());

@@ -69,37 +69,51 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Create Account //--------------------------//
 
     @Transactional
-    public Customer createCustomerAccount(String email, String password, String name, String imageURL) {
+    public Customer createCustomerAccount(String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Customer customer = new Customer();
         customer.setEmail(email);
         customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setPronouns(pronouns);
         customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
     @Transactional
-    public Instructor createInstructorAccount(String email, String password, String name, String imageURL) {
+    public Instructor createInstructorAccount(String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Instructor instructor = new Instructor();
         instructor.setEmail(email);
         instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setPronouns(pronouns);
         instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
     @Transactional
-    public Owner createOwnerAccount(String email, String password, String name, String imageURL) {
+    public Owner createOwnerAccount(String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Owner owner = new Owner();
         owner.setEmail(email);
@@ -113,12 +127,21 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Update Account //--------------------------//
     
     @Transactional
-    public Customer updateCustomerAccount(Integer id, String email, String password, String name, String imageURL) {
+    public Customer updateCustomerAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
-        uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Customer customer = findCustomerById(id);
-        customer.setEmail(email);
+
+        // If it is the same email, then dont check if it is unique (it is not since it is used for this exact account), else verify
+        if (!customer.getEmail().equalsIgnoreCase(email)) {
+            uniqueEmail(email);
+            customer.setEmail(email);
+        }
+
         customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
@@ -127,11 +150,22 @@ public class AccountService implements UserDetailsService {
     }
     
     @Transactional
-    public Instructor updateInstructorAccount(Integer id, String email, String password, String name, String imageURL) {
+    public Instructor updateInstructorAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
 
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
+
         Instructor instructor = findInstructorById(id);
+
+        // If it is the same email, then dont check if it is unique (it is not since it is used for this exact account), else verify
+        if (!instructor.getEmail().equalsIgnoreCase(email)) {
+            uniqueEmail(email);
+            instructor.setEmail(email);
+        }
+
         instructor.setEmail(email);
         instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
@@ -141,11 +175,22 @@ public class AccountService implements UserDetailsService {
     }
 
     @Transactional
-    public Owner updateOwnerAccount(Integer id, String email, String password, String name, String imageURL) {
+    public Owner updateOwnerAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
         
         Owner owner = findOwnerById(id);
+
+        // If it is the same email, then dont check if it is unique (it is not since it is used for this exact account), else verify
+        if (!owner.getEmail().equalsIgnoreCase(email)) {
+            uniqueEmail(email);
+            owner.setEmail(email);
+        }
+
         owner.setEmail(email);
         owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);

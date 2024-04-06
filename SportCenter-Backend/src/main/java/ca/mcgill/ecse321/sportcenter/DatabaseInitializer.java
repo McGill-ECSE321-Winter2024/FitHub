@@ -36,7 +36,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             System.out.println("Default account @ is already created");
         } catch (Exception e) {
             System.out.println("Created default owner account with email: \"@\" and password: \"password\"");
-            accountService.createOwnerAccount("@", "password", "Admin", "");
+            accountService.createOwnerAccount("@", "password", "Admin", "", "They/Them");
         }
 
         // Add more initialization logic as needed
