@@ -12,16 +12,16 @@
             <div v-if="mounted" class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToCourses">Courses</a>
+                        <router-link to="/courses" class="nav-link">Courses</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToInstructors">Instructors</a>
+                        <router-link to="/instructors" class="nav-link">Instructors</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToLogin">Already a Member?</a>
+                        <router-link to="/login" class="nav-link">Already a Member?</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="goToRegistration">Register Here!</a>
+                        <router-link to="/registration" class="nav-link">Register Here!</router-link>
                     </li>
                 </ul>
             </div>
