@@ -1,112 +1,176 @@
-{
-  "name": "Goat Yoga",
-  "description": "This is a sample course",
-  "difficulty": "Advanced",
-  "status": "Approved",
-  "pricePerHour": 20,
-	"category": "Stretching"
-  "url": "https://www.narcity.com/media-library/image.jpg?id=25907161&width=1245&height=700&quality=85&coordinates=45%2C0%2C45%2C0"
-}
-
-{
-  "name": "Puppy Yoga",
-  "description": "This is a sample course",
-  "difficulty": "Beginner",
-  "status": "Approved",
-  "pricePerHour": 30,
-  "category": "Stretching"
-  "url": "https://www.yogakawa.com/wp-content/uploads/2022/04/puppy-yoga-events.jpg"
-  }
-  
-  {
-  "name": "Ping Pong",
-  "description": "This is a sample course",
-  "difficulty": "Beginner",
-  "status": "Approved",
-  "pricePerHour": 35,
-  "category": "Table Sports"
-  "url": "https://www.stt.org.au/home/images/stt/classess/beginner1.jpg#joomlaImage://local-images/stt/classess/beginner1.jpg?width=1024&height=580"
-  }
-  
-  {
-  "name": "Badminton",
-  "description": "Learn the fundamentals of badminton in this beginner course.",
-  "difficulty": "Beginner",
-  "status": "Approved",
-  "pricePerHour": 40,
-  "category": "Teamwork"
-  "url": "https://media.vsb.bc.ca/images/82fb2962-6ba1-424e-9fae-fa121879cfe6_49995483-3e2e-4558-95b3-5c89ee12ce76_badminton.jpg"
-}
-
-{
-  "name": "Basketball",
-  "description": "Improve your basketball skills with this intermediate level course.",
-  "difficulty": "Intermediate",
-  "status": "Approved",
-  "pricePerHour": 45,
-  "category": "Teamwork",
-  "url": "https://columbusrecparks.com/wp-content/uploads/2022/01/Adult-Basketball-Leagues-5-1024x576.png"
-}
-
-{
-  "name": "Boxing",
-  "description": "Get in shape and learn self-defense techniques in this advanced boxing course.",
-  "difficulty": "Advanced",
-  "status": "Approved",
-  "pricePerHour": 50,
-  "category": "Martial Arts",
-  "url": "https://alteaactive.com/toronto/wp-content/uploads/sites/36/2023/03/Altea-Active_Boxing-01-1024x683.jpg"
-}
-
-{
-  "name": "Dodgeball",
-  "description": "Have fun and improve your reflexes with this dodgeball course.",
-  "difficulty": "Beginner",
-  "status": "Approved",
-  "pricePerHour": 35,
-  "category": "Teamwork",
-  "url": "https://bloximages.newyork1.vip.townnews.com/thecheyennepost.com/content/tncms/assets/v3/editorial/d/2c/d2c0024a-794a-11ec-9fac-cb3bae4d35e0/61e8466345d69.image.jpg?resize=540%2C240"
-}
-
-{
-  "name": "Football",
-  "description": "Learn the basics of football and enhance your teamwork skills.",
-  "difficulty": "Intermediate",
-  "status": "Approved",
-  "pricePerHour": 45,
-  "category": "Outdoor",
-  "url": "none"
-}
-
-{
-  "name": "Rollerskating",
-  "description": "Enjoy the thrill of rollerskating and improve your balance.",
-  "difficulty": "Beginner",
-  "status": "Approved",
-  "pricePerHour": 40,
-  "icon1": "Outdoor",
-  "icon2": "none",
-  "url": "none"
-}
-
-{
-  "name": "Running",
-  "description": "Get fit and improve your endurance with this running course.",
-  "difficulty": "Intermediate",
-  "status": "Approved",
-  "pricePerHour": 35,
-  "icon1": "Cardio"
-  "url": "none"
-}
-
-{
-  "name": "Volleyball",
-  "description": "Learn the rules and techniques of volleyball in this intermediate course.",
-  "difficulty": "Intermediate",
-  "status": "Approved",
-  "pricePerHour": 45,
-  "category": "Teamwork",
-  "url": "none"
-}
-
-  
+ {
+            "id": 13660,
+            "name": "rollerskating",
+            "difficulty": "Beginner",
+            "status": "Approved",
+            "description": "Glide into the world of rollerskating and improve your balance with this beginner-friendly course that promises excitement and fun.",
+            "pricePerHour": 40,
+            "category": "Rolling",
+            "url": "https://wehco.media.clients.ellingtoncms.com/imports/adg/photos/201312922_MOMS-SKATING-CLASSES-2-TB_t800.jpg?90232451fbcadccc64a17de7521d859a8f88077d",
+            "center": null
+        },
+        {
+            "id": 13661,
+            "name": "running",
+            "difficulty": "Intermediate",
+            "status": "Approved",
+            "description": "Lace up your shoes and hit the pavement with this intermediate running course, designed to boost your fitness and endurance levels.",
+            "pricePerHour": 35,
+            "category": "Cardio",
+            "url": "https://images.ctfassets.net/ipjoepkmtnha/7MDS5f88oDxFMpkw2flDIb/5297b44d69b0106f34712b992d9b9a55/journey_step04_running_class.jpg",
+            "center": null
+        },
+        {
+            "id": 13662,
+            "name": "volleyball",
+            "difficulty": "Intermediate",
+            "status": "Approved",
+            "description": "Learn the ins and outs of volleyball in this intermediate course, focusing on skills, strategy, and teamwork.",
+            "pricePerHour": 45,
+            "category": "Teamwork",
+            "url": "https://images.squarespace-cdn.com/content/v1/5c44e941cc8fedc55527a3ec/9cf2278d-00ff-43dc-a4f4-d5886cd35705/JOHN%3AETHAN.jpg",
+            "center": null
+        },
+        {
+            "id": 13663,
+            "name": "yoga for flexibility",
+            "difficulty": "Intermediate",
+            "status": "Approved",
+            "description": "Enhance your flexibility and mobility with a series of yoga poses and stretches designed to increase range of motion and reduce muscle tension.",
+            "pricePerHour": 25,
+            "category": "Stretching",
+            "url": "https://www.constantcontact.com/blog/wp-content/uploads/2021/06/Social-4.jpg",
+            "center": null
+        },
+        {
+            "id": 13652,
+            "name": "goat yoga",
+            "difficulty": "Advanced",
+            "status": "Approved",
+            "description": "Immerse yourself in a unique yoga experience surrounded by playful goats, fostering both relaxation and joy.",
+            "pricePerHour": 20,
+            "category": "Stretching",
+            "url": "https://www.narcity.com/media-library/image.jpg?id=25907161&width=1245&height=700&quality=85&coordinates=45%2C0%2C45%2C0",
+            "center": null
+        },
+        {
+            "id": 13653,
+            "name": "puppy yoga",
+            "difficulty": "Beginner",
+            "status": "Approved",
+            "description": "Embark on a yoga journey accompanied by adorable puppies, promoting tranquility and a deeper connection with your practice.",
+            "pricePerHour": 30,
+            "category": "Stretching",
+            "url": "https://www.yogakawa.com/wp-content/uploads/2022/04/puppy-yoga-events.jpg",
+            "center": null
+        },
+        {
+            "id": 13654,
+            "name": "ping pong",
+            "difficulty": "Beginner",
+            "status": "Approved",
+            "description": "Dive into the world of table tennis and sharpen your skills with this beginner-friendly course.",
+            "pricePerHour": 35,
+            "category": "Table Sports",
+            "url": "https://www.stt.org.au/home/images/stt/classess/beginner1.jpg#joomlaImage://local-images/stt/classess/beginner1.jpg?width=1024&height=580",
+            "center": null
+        },
+        {
+            "id": 13655,
+            "name": "badminton",
+            "difficulty": "Beginner",
+            "status": "Approved",
+            "description": "Learn the fundamentals of badminton in this beginner course, focusing on technique and strategy.",
+            "pricePerHour": 40,
+            "category": "Teamwork",
+            "url": "https://media.vsb.bc.ca/images/82fb2962-6ba1-424e-9fae-fa121879cfe6_49995483-3e2e-4558-95b3-5c89ee12ce76_badminton.jpg",
+            "center": null
+        },
+        {
+            "id": 13656,
+            "name": "basketball",
+            "difficulty": "Intermediate",
+            "status": "Approved",
+            "description": "Elevate your basketball skills with this intermediate level course, designed to enhance both individual performance and team dynamics.",
+            "pricePerHour": 45,
+            "category": "Teamwork",
+            "url": "https://columbusrecparks.com/wp-content/uploads/2022/01/Adult-Basketball-Leagues-5-1024x576.png",
+            "center": null
+        },
+        {
+            "id": 13657,
+            "name": "boxing",
+            "difficulty": "Advanced",
+            "status": "Approved",
+            "description": "Get in shape and learn self-defense techniques in this advanced boxing course, combining fitness and martial arts.",
+            "pricePerHour": 50,
+            "category": "Martial Arts",
+            "url": "https://alteaactive.com/toronto/wp-content/uploads/sites/36/2023/03/Altea-Active_Boxing-01-1024x683.jpg",
+            "center": null
+        },
+        {
+            "id": 13658,
+            "name": "dodgeball",
+            "difficulty": "Beginner",
+            "status": "Approved",
+            "description": "Experience the thrill of dodgeball and improve your reflexes in this engaging course that's perfect for beginners.",
+            "pricePerHour": 35,
+            "category": "Teamwork",
+            "url": "https://bloximages.newyork1.vip.townnews.com/thecheyennepost.com/content/tncms/assets/v3/editorial/d/2c/d2c0024a-794a-11ec-9fac-cb3bae4d35e0/61e8466345d69.image.jpg?resize=540%2C240",
+            "center": null
+        },
+        {
+            "id": 13659,
+            "name": "football",
+            "difficulty": "Intermediate",
+            "status": "Approved",
+            "description": "Master the basics of football and hone your teamwork skills in this intermediate-level course suitable for enthusiasts.",
+            "pricePerHour": 45,
+            "category": "Outdoor",
+            "url": "https://dublinindoorfootball.ie/wp-content/uploads/2019/03/@michaelmarangos-dif-3-min-1024x683.jpg",
+            "center": null
+        },
+        {
+            "id": 13664,
+            "name": "high-intensity interval training (hiit)",
+            "difficulty": "Advanced",
+            "status": "Approved",
+            "description": "Experience a challenging workout that alternates between short bursts of intense exercise and brief recovery periods, maximizing calorie burn and cardiovascular fitness.",
+            "pricePerHour": 30,
+            "category": "Cardio",
+            "url": "https://hips.hearstapps.com/hmg-prod/images/701/one-change-improve-hiit-workout-preformance-1513345031.jpg",
+            "center": null
+        },
+        {
+            "id": 13665,
+            "name": "pilates for core strength",
+            "difficulty": "Intermediate",
+            "status": "Approved",
+            "description": "Strengthen your core muscles and improve posture and stability through a series of controlled movements and exercises inspired by Pilates principles.",
+            "pricePerHour": 25,
+            "category": "Core Strength",
+            "url": "https://www.ghfc.com/uploads/images/Pilates_at_GHF_Group_Pilates__Core_Strength_Gainesville_2021.jpg",
+            "center": null
+        },
+        {
+            "id": 13667,
+            "name": "circuit training",
+            "difficulty": "Intermediate",
+            "status": "Pending",
+            "description": "Experience a dynamic workout that combines strength training and cardiovascular exercises in a circuit format, providing a comprehensive and efficient full-body workout.",
+            "pricePerHour": 25,
+            "category": "Strength Training",
+            "url": "https://careersport.net/wp-content/uploads/2019/09/Circuits.jpg",
+            "center": null
+        },
+        {
+            "id": 13666,
+            "name": "zumba dance fitness",
+            "difficulty": "Beginner",
+            "status": "Pending",
+            "description": "Join the party and dance your way to fitness with energetic Latin-inspired music and choreographed dance routines that improve cardiovascular health and coordination.",
+            "pricePerHour": 20,
+            "category": "Dance",
+            "url": "https://www.goodlifefitness.com/content/experience-fragments/goodlife/class_category/class-category/dance/_jcr_content/root/responsivegrid/responsivegrid_322550577/image.coreimg.90.1440.png/1591302799724/classcategorypage-cardio-imagebreak.png",
+            "center": null
+        }
