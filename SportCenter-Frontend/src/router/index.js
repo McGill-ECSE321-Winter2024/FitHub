@@ -3,7 +3,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import SignIn from '@/components/Login'
-import Courses from '@/components/Courses' 
+import Courses from '@/components/Courses'
+import Instructors from '@/components/Instructors'
+import Registration from '@/components/Registration'
 
 Vue.use(Router)
 
@@ -23,6 +25,16 @@ export default new Router({
       path: '/courses',
       name: 'Courses',
       component: Courses
+    },
+    {
+      path: '/instructors',
+      name: 'Instructors',
+      component: Instructors
+    },
+    {
+      path: '/registration',
+      name: 'Registration',
+      component: Registration
     }
   ]
 })

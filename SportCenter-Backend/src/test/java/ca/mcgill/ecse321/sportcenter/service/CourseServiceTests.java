@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,7 @@ import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 
 
-@ExtendWith(MockitoExtension.class)
-
+@SpringBootTest
 public class CourseServiceTests {
     @Mock
     private CourseRepository courseDao;

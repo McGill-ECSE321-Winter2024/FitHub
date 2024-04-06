@@ -12,7 +12,7 @@ import Title from './components/Title'
 import CoursesMini from './components/CoursesMini'
 import InstructorsMini from './components/InstructorsMini'
 import ContactUs from './components/ContactUs'
-import RegistrationForm from './components/RegistrationForm'
+import RegistrationLink from './components/RegistrationLink'
 import Footer from './components/Footer'
 import { Hooper, Slide, Navigation} from 'hooper';
 import 'hooper/dist/hooper.css';
@@ -29,7 +29,7 @@ Vue.component('Title', Title)
 Vue.component('CoursesMini', CoursesMini)
 Vue.component('InstructorsMini', InstructorsMini)
 Vue.component('ContactUs', ContactUs)
-Vue.component('RegistrationForm', RegistrationForm)
+Vue.component('RegistrationLink', RegistrationLink)
 Vue.component('Footer', Footer)
 Vue.component('Hooper', Hooper)
 Vue.component('Slide', Slide)

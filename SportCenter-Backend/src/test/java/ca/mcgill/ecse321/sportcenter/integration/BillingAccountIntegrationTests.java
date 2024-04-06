@@ -3,7 +3,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -80,7 +80,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     String cardNumber =  "1234567891234567";
     Integer cvv = 372;
     boolean isDefault = true;
-    Date expirationDate = Date.valueOf("2026-02-18");
+    LocalDate expirationDate = LocalDate.parse("2026-02-18");
     int validId = 0;
 
     String newCardHolder = "Bob Smith";
@@ -88,7 +88,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     String newCardNumber =  "2000007891234000";
     Integer newCvv = 407;
     boolean newIsDefault = false;
-    Date newExpirationDate = Date.valueOf("2028-11-01");
+    LocalDate newExpirationDate = LocalDate.parse("2028-11-01");
 
 
     //---------------login -------------------------------
@@ -97,11 +97,11 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     @Order(0)
     public void login() {
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
-		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
-		newCustomer = accountService.createCustomerAccount(newEmail, newPassword, newInstructorName, newImageURL);
+		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL, "");
+		newCustomer = accountService.createCustomerAccount(newEmail, newPassword, newInstructorName, newImageURL, "");
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -170,7 +170,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 	@Test
 	@Order(4)
-	public void testCreateValidSession(){
+	public void testCreateValidBillingAccount(){
 		
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -196,6 +196,12 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         BillingAccountResponseDTO createdBillingaccount = response.getBody();
 		validId = createdBillingaccount.getId();
+        assertEquals(cardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(cardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(cvv, createdBillingaccount.getCvv());
+        assertEquals(billingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(isDefault, createdBillingaccount.getIsDefault());
+        assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 		
 	}
 
@@ -216,6 +222,13 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+        assertEquals(cardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(cardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(cvv, createdBillingaccount.getCvv());
+        assertEquals(billingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(isDefault, createdBillingaccount.getIsDefault());
+        assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 	}
 
     
@@ -234,7 +247,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should not be empty
-
+        
 	}
 
     @Test
@@ -288,7 +301,13 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
-
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+        assertEquals(cardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(cardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(cvv, createdBillingaccount.getCvv());
+        assertEquals(billingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(isDefault, createdBillingaccount.getIsDefault());
+        assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 	}
 
 
@@ -319,6 +338,13 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+        assertEquals(newCardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(newCardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(newCvv, createdBillingaccount.getCvv());
+        assertEquals(newBillingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(newIsDefault, createdBillingaccount.getIsDefault());
+        assertEquals(newExpirationDate, createdBillingaccount.getExpirationDate());
 	}
 
 
