@@ -4,25 +4,16 @@
     
         <div class="text-content">
             <h1 class="custom-h1">My Sessions</h1>
-            <h3>Manage your payment details for one-time purchase</h3>
+            <h3>Manage the sessions to which you are registered to.</h3>
         </div>
-
-    <div class="cont">
-      <div class="mt-5">
-        <div class="row">
-         
-        </div>
-      </div>
-    </div>
         
     </div>
    
 </template>
 
 <script>
-//import Datepicker from 'vue-datepicker';
 export default {
-    names:sessions,
+    names: 'Sessions',
     data() {
     return {
       list: [],

@@ -39,7 +39,7 @@ export default new Router({
     },
     {
       path: '/sessions',
-      name: 'MySessionsCustomer',
+      name: 'Sessions',
       component: MySessionsCustomer
     }
   ]
