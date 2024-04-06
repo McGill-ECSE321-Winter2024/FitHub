@@ -101,7 +101,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none", "none","none");
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
