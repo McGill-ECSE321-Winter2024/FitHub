@@ -1,35 +1,35 @@
 <template>
   <div class="solid-background">
-
     <Toolbar />
-    <div class="text-search-bar">
-      <div class="text-content">
-        <h1 class="custom-h1">Explore your interests</h1>
-        <h3>Select a course to learn more</h3>
+      <!-- Toolbar and search bar -->
+      <div class="text-search-bar">
+        <div class="text-content">
+          <h1 class="custom-h1">Explore your interests</h1>
+          <h3>Select a course to learn more</h3>
+        </div>
+        <div class="search-field">
+          <input type="text" class="search-input" placeholder="Search courses">
+        </div>
       </div>
-      <div class="search-field">
-        <input type="text" class="search-input" placeholder="Search courses">
-      </div>
-    </div>
 
-    <div class="cards-container">
-      <b-card
-        v-for="course in list.courses"
-        :key="course.id"
-        class="custom-card"
-        :style="{ borderColor: getBorderColor(course.difficulty) }">
-        <div class="card-img-top">
-          <img :src="require(`@/assets/${course.icon1}.png`)" alt="Course Image">
+    <div class="cont">
+      <div class="mt-5">
+        <div class="row">
+          <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
+            <div>
+              <img :src="course.url" :alt="course.name" class="w-100 h-100">
+            </div>
+            <h3><span class="white-heading">{{ course.category }}</span></h3>
+            <div>
+              <h3>{{ capitalize(course.name) }}</h3>
+              <p>{{ course.description }}</p>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ course.name.toUpperCase() }}</h5>
-        </div>
-      </b-card>
-    </div>
+      </div>
+      </div>
   </div>
-
 </template>
-
 <script>
 export default {
   name: 'Courses',
@@ -75,23 +75,19 @@ export default {
         default:
           return '';
       }
+    },
+    capitalize(str) {
+      return str.replace(/\b\w/g, (char) => char.toUpperCase());
     }
   }
 }
-
-
 </script>
+
 <style scoped>
-
-.custom-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-  background-color: var(--hovered-card-color);
-}
-
 .solid-background {
   background-color: #121212;
   height: 100vh;
+  width: 100vw;
   overflow: auto;
 }
 
@@ -100,43 +96,20 @@ export default {
   font-size: 55px;
 }
 
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: 20px;
-  margin-left: 25px;
-  margin-bottom: 60px;
-  position: relative;
-  overflow: hidden; /* Ensure spike doesn't overflow */
+.text-search-bar{
+    margin-top: 30px;
+    margin-left: 50px;
+    margin-right:50px;
 }
 
-img {
-  transform: scale(1.8);
+.cont {
   margin-top: 30px;
-  margin-bottom: 20px;
+  width: 100vw;
+  height: 100vh;
+  margin-left: 50px;
+  margin-right:50px;
 }
 
-.text-search-bar {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: left;
-  text-align: left;
-  padding: 20px;
-  margin-top: 20px;
-  margin-left: 60px;
-  margin-right: 60px;
-}
-
-.text-content {
-  flex: 1;
-  text-align: left;
-  color: #ffffff;
-}
-
-.search-field {
-  margin-top: 20px;
-}
 
 .search-input {
   width: 180px;
@@ -148,19 +121,28 @@ img {
   color: #ffffff;
 }
 
-.custom-card {
-  background: #121212;
-  border: 4px solid #fff;
-  flex: 0 0 290px;
-  height: 198px;
-  margin: 20px;
-  border-radius: 42px;
-  position: relative;
-  z-index: 1;
+.white-heading {
+  font-size: 14px;
+  color: #121212;
+  background-color: #FFF;
+  font-weight: 700;
+  padding: 1%;
 }
 
-.custom-card .card-body {
-  color: #fff;
+h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFFFFF;
 }
 
+p {
+  font-size: 18px;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
 </style>
