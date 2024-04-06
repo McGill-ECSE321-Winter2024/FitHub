@@ -93,6 +93,19 @@ export default {
                     }).then((roleResponse) => {
                         roleResponse.text().then(role => {
                             console.log('Role:', role);
+                            
+                            // Save cookies and change page
+                            this.$cookies.set('username', this.email);
+                            this.$cookies.set('password', this.password);
+                            this.$cookies.set('role', role);
+
+                            console.log('Created new cookies:');
+                            console.log('username: ', decodeURIComponent(this.$cookies.get('username')));
+                            console.log('password: ', this.$cookies.get('password'));
+                            console.log('role: ', this.$cookies.get('role'))
+                            
+                            this.$router.push('/');
+
                         }).catch(error => {
                             console.error('Error reading role text:', error);
                         });
