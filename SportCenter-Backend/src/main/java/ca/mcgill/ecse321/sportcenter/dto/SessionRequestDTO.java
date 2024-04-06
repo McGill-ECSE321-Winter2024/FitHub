@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 
@@ -8,7 +8,7 @@ public class SessionRequestDTO {
 
     private Time startTime;
     private Time endTime;
-    private Date date;
+    private LocalDate date;
     private int capacity;
     private CourseRequestDTO course;
     private AccountRequestDTO supervisor;
@@ -18,7 +18,7 @@ public class SessionRequestDTO {
 
     }
 
-    public SessionRequestDTO(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, AccountRequestDTO aSupervisor, CourseRequestDTO aCourseType, LocationRequestDTO aLocation){
+    public SessionRequestDTO(Time aStartTime, Time aEndTime, LocalDate aDate, int aCapacity, AccountRequestDTO aSupervisor, CourseRequestDTO aCourseType, LocationRequestDTO aLocation){
         this.startTime = aStartTime;
         this.endTime = aEndTime;
         this.date = aDate;
@@ -31,7 +31,7 @@ public class SessionRequestDTO {
 
     //--------------------- Getters -------------------//
 
-    public Date getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
@@ -61,7 +61,7 @@ public class SessionRequestDTO {
 
     //--------------------- Setters -------------------//
 
-    public void setDate(Date date){
+    public void setDate(LocalDate date){
         this.date = date;
     }
 

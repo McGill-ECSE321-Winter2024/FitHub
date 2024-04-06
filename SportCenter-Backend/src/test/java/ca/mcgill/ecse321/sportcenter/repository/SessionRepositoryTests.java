@@ -7,7 +7,7 @@ package ca.mcgill.ecse321.sportcenter.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
@@ -72,7 +72,7 @@ public class SessionRepositoryTests extends CommonTestSetup {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -138,7 +138,7 @@ public class SessionRepositoryTests extends CommonTestSetup {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();
@@ -205,7 +205,7 @@ public class SessionRepositoryTests extends CommonTestSetup {
 
         Time startTime = Time.valueOf("08:00:00");
         Time endTime = Time.valueOf("09:00:00");
-        Date date = Date.valueOf("2024-02-18");
+        LocalDate date = LocalDate.parse("2024-02-18");
         Integer capacity = 10;
 
         Session aSession = new Session();

@@ -3,14 +3,12 @@ package ca.mcgill.ecse321.sportcenter.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
-import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
-import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
 /*
@@ -31,7 +29,7 @@ public class SessionPackageService {
     //--------------------------// Create SessionPackage //--------------------------//
 
     @Transactional
-    public SessionPackage createSessionPackage(int aPriceReduction, int aDuration, Date aDate, int courseId){
+    public SessionPackage createSessionPackage(int aPriceReduction, int aDuration, LocalDate aDate, int courseId){
         Course aCourse = courseRepo.findCourseById(courseId);
         if(aPriceReduction > 100 || aPriceReduction<0 || aDuration <0 || aDate == null ){
             throw new IllegalArgumentException("Invalid input");

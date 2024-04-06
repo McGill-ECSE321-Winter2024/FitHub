@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.repository;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -14,6 +14,6 @@ public interface SessionRepository extends CrudRepository<Session, Integer> {
     Session findById(int id);
     List<Session> findBySupervisor(Instructor supervisor);
     List<Session> findByCourseType(Course course);
-    List<Session> findBySupervisorAndDate(Instructor supervisor, Date date);
-    List<Session> findByLocationAndDate(Location location, Date date);
+    List<Session> findBySupervisorAndDate(Instructor supervisor, LocalDate date);
+    List<Session> findByLocationAndDate(Location location, LocalDate date);
 }
