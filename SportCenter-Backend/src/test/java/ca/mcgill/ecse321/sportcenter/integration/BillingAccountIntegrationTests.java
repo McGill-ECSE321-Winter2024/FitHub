@@ -97,11 +97,11 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
     @Order(0)
     public void login() {
         sportCenterService.createSportCenter("Fithub", Time.valueOf("6:0:0"), Time.valueOf("23:0:0"), "16", "sportcenter@mail.com", "455-645-4566");
-		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL);
-		newCustomer = accountService.createCustomerAccount(newEmail, newPassword, newInstructorName, newImageURL);
+		customer = accountService.createCustomerAccount(email, password, instructorName, imageURL, "");
+		newCustomer = accountService.createCustomerAccount(newEmail, newPassword, newInstructorName, newImageURL, "");
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
