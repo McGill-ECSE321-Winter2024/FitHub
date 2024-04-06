@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +69,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "1234567891234567";
         Integer cvv = 372;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2026-02-18");
+        LocalDate expirationDate = LocalDate.parse("2026-02-18");
 
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
 
@@ -108,7 +108,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "12345";
         Integer cvv = 123;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2026-07-23");
+        LocalDate expirationDate = LocalDate.parse("2026-07-23");
 
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
 
@@ -126,7 +126,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "1234567891234567";
         Integer cvv = 1;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2026-07-23");
+        LocalDate expirationDate = LocalDate.parse("2026-07-23");
 
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
 
@@ -143,7 +143,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "1234567891234567";
         Integer cvv = 123;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2020-07-23");
+        LocalDate expirationDate = LocalDate.parse("2020-07-23");
 
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
 
@@ -160,7 +160,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "1234567891234567";
         Integer cvv = 123;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2027-07-23");
+        LocalDate expirationDate = LocalDate.parse("2027-07-23");
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> billingAccountService.createBillingAccount(cardNumber, cardHolder, billingAddress, cvv, isDefault, expirationDate, null));
         assertEquals("Customer account does not exist", e.getMessage());
@@ -179,7 +179,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "1234567891234567";
         Integer cvv = 372;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2026-02-18");
+        LocalDate expirationDate = LocalDate.parse("2026-02-18");
 
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
 
@@ -199,7 +199,7 @@ public class BillingAccountServiceTests {
         String newCardNumber =  "1234567891234567";
         Integer newCvv = 407;
         boolean newIsDefault = false;
-        Date newExpirationDate = Date.valueOf("2028-11-01");
+        LocalDate newExpirationDate = LocalDate.parse("2028-11-01");
         BillingAccount newAccount = new BillingAccount();
         newAccount.setCardHolder(newCardHolder);
         newAccount.setBillingAddress(newBillingAddress);
@@ -240,7 +240,7 @@ public class BillingAccountServiceTests {
         String cardNumber =  "1234567891234567";
         Integer cvv = 372;
         boolean isDefault = true;
-        Date expirationDate = Date.valueOf("2026-02-18");
+        LocalDate expirationDate = LocalDate.parse("2026-02-18");
 
         when(customerRepository.findCustomerById(0)).thenReturn(customer);
 

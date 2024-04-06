@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class BillingAccountRequestDTO {
 
@@ -9,11 +9,11 @@ public class BillingAccountRequestDTO {
     private String billingAddress;
     private Integer cvv; 
     private boolean isDefault;
-    private Date expirationDate;
+    private LocalDate expirationDate;
     private CustomerResponseDTO customer;
 
 
-    public BillingAccountRequestDTO(String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, CustomerResponseDTO customer){
+    public BillingAccountRequestDTO(String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, LocalDate expirationDate, CustomerResponseDTO customer){
 
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
@@ -47,7 +47,7 @@ public class BillingAccountRequestDTO {
         return cvv;
     }
 
-    public Date getExpirationDate(){
+    public LocalDate getExpirationDate(){
         return expirationDate;
     }
 
@@ -77,7 +77,7 @@ public class BillingAccountRequestDTO {
         this.cvv = aCvv;
     }
 
-    public void setExpirationDate(Date aExpirationDate){
+    public void setExpirationDate(LocalDate aExpirationDate){
         this.expirationDate = aExpirationDate;
     }
 

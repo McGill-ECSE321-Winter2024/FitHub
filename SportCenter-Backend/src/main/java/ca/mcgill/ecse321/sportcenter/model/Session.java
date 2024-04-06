@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.model;
 
 import java.sql.Time;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +16,7 @@ public class Session
   private int id;
   private Time startTime;
   private Time endTime;
-  private Date date;
+  private LocalDate date;
   private int capacity;
 
   @ManyToOne 
@@ -31,7 +31,7 @@ public class Session
     
   }
 
-  public Session(Time aStartTime, Time aEndTime, Date aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation)
+  public Session(Time aStartTime, Time aEndTime, LocalDate aDate, int aCapacity, Instructor aSupervisor, Course aCourseType, Location aLocation)
   {
     startTime = aStartTime;
     endTime = aEndTime;
@@ -67,7 +67,7 @@ public class Session
     return wasSet;
   }
 
-  public boolean setDate(Date aDate)
+  public boolean setDate(LocalDate aDate)
   {
     boolean wasSet = false;
     date = aDate;
@@ -101,7 +101,7 @@ public class Session
     return endTime;
   }
 
-  public Date getDate()
+  public LocalDate getDate()
   {
     return date;
   }
