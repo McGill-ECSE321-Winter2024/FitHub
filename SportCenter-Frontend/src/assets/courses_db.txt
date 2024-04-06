@@ -1,0 +1,112 @@
+{
+  "name": "Goat Yoga",
+  "description": "This is a sample course",
+  "difficulty": "Advanced",
+  "status": "Approved",
+  "pricePerHour": 20,
+	"category": "Stretching"
+  "url": "https://www.narcity.com/media-library/image.jpg?id=25907161&width=1245&height=700&quality=85&coordinates=45%2C0%2C45%2C0"
+}
+
+{
+  "name": "Puppy Yoga",
+  "description": "This is a sample course",
+  "difficulty": "Beginner",
+  "status": "Approved",
+  "pricePerHour": 30,
+  "category": "Stretching"
+  "url": "https://www.yogakawa.com/wp-content/uploads/2022/04/puppy-yoga-events.jpg"
+  }
+  
+  {
+  "name": "Ping Pong",
+  "description": "This is a sample course",
+  "difficulty": "Beginner",
+  "status": "Approved",
+  "pricePerHour": 35,
+  "category": "Table Sports"
+  "url": "https://www.stt.org.au/home/images/stt/classess/beginner1.jpg#joomlaImage://local-images/stt/classess/beginner1.jpg?width=1024&height=580"
+  }
+  
+  {
+  "name": "Badminton",
+  "description": "Learn the fundamentals of badminton in this beginner course.",
+  "difficulty": "Beginner",
+  "status": "Approved",
+  "pricePerHour": 40,
+  "category": "Teamwork"
+  "url": "https://media.vsb.bc.ca/images/82fb2962-6ba1-424e-9fae-fa121879cfe6_49995483-3e2e-4558-95b3-5c89ee12ce76_badminton.jpg"
+}
+
+{
+  "name": "Basketball",
+  "description": "Improve your basketball skills with this intermediate level course.",
+  "difficulty": "Intermediate",
+  "status": "Approved",
+  "pricePerHour": 45,
+  "category": "Teamwork",
+  "url": "https://columbusrecparks.com/wp-content/uploads/2022/01/Adult-Basketball-Leagues-5-1024x576.png"
+}
+
+{
+  "name": "Boxing",
+  "description": "Get in shape and learn self-defense techniques in this advanced boxing course.",
+  "difficulty": "Advanced",
+  "status": "Approved",
+  "pricePerHour": 50,
+  "category": "Martial Arts",
+  "url": "https://alteaactive.com/toronto/wp-content/uploads/sites/36/2023/03/Altea-Active_Boxing-01-1024x683.jpg"
+}
+
+{
+  "name": "Dodgeball",
+  "description": "Have fun and improve your reflexes with this dodgeball course.",
+  "difficulty": "Beginner",
+  "status": "Approved",
+  "pricePerHour": 35,
+  "category": "Teamwork",
+  "url": "https://bloximages.newyork1.vip.townnews.com/thecheyennepost.com/content/tncms/assets/v3/editorial/d/2c/d2c0024a-794a-11ec-9fac-cb3bae4d35e0/61e8466345d69.image.jpg?resize=540%2C240"
+}
+
+{
+  "name": "Football",
+  "description": "Learn the basics of football and enhance your teamwork skills.",
+  "difficulty": "Intermediate",
+  "status": "Approved",
+  "pricePerHour": 45,
+  "category": "Outdoor",
+  "url": "none"
+}
+
+{
+  "name": "Rollerskating",
+  "description": "Enjoy the thrill of rollerskating and improve your balance.",
+  "difficulty": "Beginner",
+  "status": "Approved",
+  "pricePerHour": 40,
+  "icon1": "Outdoor",
+  "icon2": "none",
+  "url": "none"
+}
+
+{
+  "name": "Running",
+  "description": "Get fit and improve your endurance with this running course.",
+  "difficulty": "Intermediate",
+  "status": "Approved",
+  "pricePerHour": 35,
+  "icon1": "Cardio"
+  "url": "none"
+}
+
+{
+  "name": "Volleyball",
+  "description": "Learn the rules and techniques of volleyball in this intermediate course.",
+  "difficulty": "Intermediate",
+  "status": "Approved",
+  "pricePerHour": 45,
+  "category": "Teamwork",
+  "url": "none"
+}
+
+  
