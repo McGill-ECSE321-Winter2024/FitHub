@@ -11,7 +11,7 @@
                 </div>
                 
                 <div class="row align-items-start justify-content-start">
-                    <hooper group="group1" :itemsToShow="3" :centerMode="true" :initialSlide="0" class="h-100 pt-5">
+                    <hooper group="group1" :loop="false" :itemsToShow="3" :initialSlide="0" class="h-100 pt-5">
                         <slide class="instructor third-width my-auto" v-for="instructor in instructors"  :key="instructor.id">
                             <div class="">
                                 <img class="mt-3" v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'width': '200px', 'height': 'auto' }" />
