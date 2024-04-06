@@ -222,6 +222,13 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+        assertEquals(cardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(cardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(cvv, createdBillingaccount.getCvv());
+        assertEquals(billingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(isDefault, createdBillingaccount.getIsDefault());
+        assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 	}
 
     
@@ -240,7 +247,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should not be empty
-
+        
 	}
 
     @Test
@@ -294,7 +301,13 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
-
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+        assertEquals(cardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(cardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(cvv, createdBillingaccount.getCvv());
+        assertEquals(billingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(isDefault, createdBillingaccount.getIsDefault());
+        assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 	}
 
 
@@ -325,6 +338,13 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        BillingAccountResponseDTO createdBillingaccount = response.getBody();
+        assertEquals(newCardNumber, createdBillingaccount.getCardNumber());
+        assertEquals(newCardHolder, createdBillingaccount.getCardHolder());
+        assertEquals(newCvv, createdBillingaccount.getCvv());
+        assertEquals(newBillingAddress, createdBillingaccount.getBillingAddress());
+        assertEquals(newIsDefault, createdBillingaccount.getIsDefault());
+        assertEquals(newExpirationDate, createdBillingaccount.getExpirationDate());
 	}
 
 
