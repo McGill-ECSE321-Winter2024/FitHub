@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.sportcenter.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import ca.mcgill.ecse321.sportcenter.model.Session;
@@ -10,7 +10,7 @@ public class SessionResponseDTO {
     private Integer id;
     private Time startTime;
     private Time endTime;
-    private Date date;
+    private LocalDate date;
     private int capacity;
     private CourseRequestDTO course;
     private AccountResponseDTO supervisor;
@@ -38,7 +38,7 @@ public class SessionResponseDTO {
         return id;
     }
 
-    public Date getDate(){
+    public LocalDate getDate(){
         return date;
     }
 
@@ -72,7 +72,7 @@ public class SessionResponseDTO {
         this.id = id;
     }
     
-    public void setDate(Date date){
+    public void setDate(LocalDate date){
         this.date = date;
     }
 

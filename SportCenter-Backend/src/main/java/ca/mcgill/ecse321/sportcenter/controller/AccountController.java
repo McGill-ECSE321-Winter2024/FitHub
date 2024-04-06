@@ -80,7 +80,7 @@ public class AccountController {
     @PostMapping(value={"/customers", "/customers/"})
     public ResponseEntity<AccountResponseDTO> createCustomerAccount(@RequestBody AccountRequestDTO account) {
         try {
-            Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -90,7 +90,7 @@ public class AccountController {
     @PostMapping(value={"/instructors", "/instructors/"})
     public ResponseEntity<AccountResponseDTO> createInstructorAccount(@RequestBody AccountRequestDTO account) {
         try {
-            Instructor createdAccount = accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Instructor createdAccount = accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -100,7 +100,7 @@ public class AccountController {
     @PostMapping(value={"/owners", "/owners/"})
     public ResponseEntity<AccountResponseDTO>  createOwnerAccount(@RequestBody AccountRequestDTO account) {
         try {
-            Owner createdAccount = accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Owner createdAccount = accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -112,7 +112,7 @@ public class AccountController {
     @PutMapping(value={"/customers/{id}", "/customers/{id}/"})
     public ResponseEntity<AccountResponseDTO> updateCustomerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         try {
-            Customer updatedAccount = accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Customer updatedAccount = accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -122,7 +122,7 @@ public class AccountController {
     @PutMapping(value={"/instructors/{id}", "/instructors/{id}/"})
     public ResponseEntity<AccountResponseDTO> updateInstructorAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         try {
-            Instructor updatedAccount = accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Instructor updatedAccount = accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -132,7 +132,7 @@ public class AccountController {
     @PutMapping(value={"/owners/{id}", "/owners/{id}/"})
     public ResponseEntity<AccountResponseDTO> updateOwnerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         try {
-            Owner updatedAccount = accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Owner updatedAccount = accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
