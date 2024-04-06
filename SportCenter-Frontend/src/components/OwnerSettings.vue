@@ -1,64 +1,10 @@
 <template>
   <div style="font-family: Figtree; height: 100vh; background-color: #121212">
-    <div style="background-color: #121212">
-      <Toolbar />
-    </div>
+    <Toolbar />
     <!-- Container for sidebar and main content -->
     <div class="content-container">
-      <!-- Sidebar container with gray box -->
-      <div
-        class="sidebar-container"
-        style="width: 350px; margin-right: 50px; overflow-y: auto; height: 100%"
-      >
-        <div
-          class="sidebar"
-          style="
-            border-radius: 10px;
-            background-color: #232323;
-            margin-top: 20px;
-            margin-left: 20px;
-            width: 330px;
-            height: 90%;
-          "
-        >
-          <h2 style="color: #ffffff; font-size: 45px; padding: 30px">
-            Settings
-          </h2>
-          <!-- Adjust font size here -->
-          <ul
-            style="
-              list-style-type: none;
-              padding: 0;
-              text-align: left;
-              color: #ffffff;
-            "
-          >
-            <!-- Edit Profile Button -->
-            <li
-              @click="toggleMenu('OwnerProfileSettings')"
-              :class="{
-                'menu-item-selected': currentTab === 'OwnerProfileSettings',
-              }"
-              class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
-            >
-              Edit profile
-            </li>
-            <!-- Edit Sport Center Button -->
-            <li
-              @click="toggleMenu('OwnerSportCenterSettings')"
-              :class="{
-                'menu-item-selected': currentTab === 'OwnerSportCenterSettings',
-              }"
-              class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
-            >
-              Edit sport center
-            </li>
-            <!-- Add more menu items as needed -->
-          </ul>
-        </div>
-      </div>
+      <!-- Settings sidebar -->
+      <SettingsSidebar :currentTab="currentTab" @toggle-menu="toggleMenu" />
 
       <!-- Main content -->
       <div
@@ -66,7 +12,7 @@
         style="flex-grow: 1; overflow: auto; padding: 60px; text-align: left"
       >
         <!-- Edit Profile -->
-        <div v-if="currentTab === 'OwnerProfileSettings'">
+        <div v-if="currentTab === 'EditProfile'">
           <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
             Edit profile
           </h2>
@@ -90,9 +36,8 @@
             </div>
           </div>
         </div>
-
         <!-- Sport Center Settings -->
-        <div v-else-if="currentTab === 'OwnerSportCenterSettings'">
+        <div v-else-if="currentTab === 'EditSportCenter'">
           <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
             Edit sport center
           </h2>
@@ -146,7 +91,6 @@
                 :state="true"
               ></b-form-timepicker>
             </div>
-            </div>
           </div>
         </div>
       </div>
@@ -155,24 +99,22 @@
 </template>
 
 <script>
-// Import OwnerProfileSettings and OwnerSportCenterSettings components
-import OwnerProfileSettings from "./OwnerProfileSettings.vue";
-import OwnerSportCenterSettings from "./OwnerSportCenterSettings.vue";
+import Toolbar from "./Toolbar.vue"; // Import your Toolbar component
+import SettingsSidebar from "./SettingsSidebar.vue"; // Import the Sidebar component
 
 export default {
   name: "ProfileSettings",
   components: {
-    OwnerProfileSettings,
-    OwnerSportCenterSettings,
-    // Add more components as needed
+    Toolbar,
+    SettingsSidebar,
   },
   data() {
     return {
-      currentTab: "OwnerProfileSettings", // Default tab
+      currentTab: "EditProfile", // Default tab
       profile: {
-        name: "",
-        email: "",
-        password: "",
+        name: "r",
+        email: "r",
+        password: "r",
       },
       sportCenter: {
         email: "",
@@ -198,10 +140,6 @@ export default {
   transition: background-color 0.3s ease-in-out;
   margin-left: 15px;
   margin-right: 15px;
-}
-
-.menu-item-selected {
-  background-color: #444;
 }
 
 .content-container {
