@@ -151,7 +151,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 		assertNotNull(response);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         SessionPackageResponseDTO createdPackage = response.getBody();
-        //assertEquals(aDate, createdPackage.getDate());
+        assertEquals(aDate, createdPackage.getDate());
         assertEquals(aDuration, createdPackage.getDuration());
         assertEquals(aPriceReduction, createdPackage.getPriceReduction());
 		validId = createdPackage.getId();
@@ -160,7 +160,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
     //----------------------// Update //-----------------------//
 
-    /*
+    
      
     
     @Test
@@ -184,7 +184,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
     }
 
-     */
+    
 
     //----------------------// Delete //-----------------------//
     @Test
