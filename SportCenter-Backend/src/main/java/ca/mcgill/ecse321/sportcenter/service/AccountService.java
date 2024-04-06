@@ -152,7 +152,6 @@ public class AccountService implements UserDetailsService {
     @Transactional
     public Instructor updateInstructorAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
-        uniqueEmail(email);
 
         if (pronouns.isEmpty()) {
             pronouns = "Any";
@@ -177,7 +176,6 @@ public class AccountService implements UserDetailsService {
     @Transactional
     public Owner updateOwnerAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
-        uniqueEmail(email);
 
         if (pronouns.isEmpty()) {
             pronouns = "Any";

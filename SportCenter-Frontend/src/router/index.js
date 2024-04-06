@@ -1,6 +1,7 @@
 // router/index.js
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueCookies from 'vue-cookies'
 import Home from '@/components/Home'
 import SignIn from '@/components/Login'
 import Courses from '@/components/Courses'
@@ -10,6 +11,8 @@ import OwnerSettings from '@/components/OwnerSettings'
 import Location from '@/components/Location'
 
 Vue.use(Router)
+
+Vue.use(VueCookies)
 
 export default new Router({
   routes: [
