@@ -3,6 +3,9 @@
     font-family: "Figtree", sans-serif;
 }
 
+html {
+    height: 100%;
+}
 :root{
     --color-black: #171313;
     --color-muted-black: #837e7e;
@@ -14,6 +17,8 @@ body {
   font-weight: 700;
   font-style: normal;
   color: var(--color-black);
+  background-color: white;
+  height: 100%;
 }
 
 h1 {                /* Used for big headings of Sign In and Registration */
