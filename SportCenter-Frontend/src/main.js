@@ -14,6 +14,7 @@ import InstructorsMini from './components/InstructorsMini'
 import ContactUs from './components/ContactUs'
 import RegistrationLink from './components/RegistrationLink'
 import Footer from './components/Footer'
+import CoursesCol from'./components/CoursesCol'
 import { Hooper, Slide, Navigation} from 'hooper';
 import 'hooper/dist/hooper.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -31,6 +32,7 @@ Vue.component('InstructorsMini', InstructorsMini)
 Vue.component('ContactUs', ContactUs)
 Vue.component('RegistrationLink', RegistrationLink)
 Vue.component('Footer', Footer)
+Vue.component('CoursesCol', CoursesCol)
 Vue.component('Hooper', Hooper)
 Vue.component('Slide', Slide)
 Vue.component('Navigation', Navigation)
