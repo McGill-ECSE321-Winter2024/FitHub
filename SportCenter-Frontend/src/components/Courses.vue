@@ -104,7 +104,7 @@ export default {
 
 .cont {
   margin-top: 30px;
-  width: 100vw;
+  width: 95vw;
   height: 100vh;
   margin-left: 50px;
   margin-right:50px;
