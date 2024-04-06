@@ -27,8 +27,7 @@ public class Course
   private Status status;
   private String description;
   private int pricePerHour;
-  private String icon1;
-  private String icon2;
+  private String category;
   private String url;
   
   @ManyToOne
@@ -40,15 +39,14 @@ public class Course
     
   }
 
-  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aPricePerHour, String aIcon1, String aIcon2, String aUrl, SportCenter aCenter)
+  public Course(String aName, Difficulty aDifficulty, Status aStatus, String aDescription, int aPricePerHour, String aCategory, String aUrl, SportCenter aCenter)
   {
     name = aName;
     difficulty = aDifficulty;
     status = aStatus;
     description = aDescription;
     pricePerHour = aPricePerHour;
-    icon1 = aIcon1;
-    icon2 = aIcon2;
+    category = aCategory;
     url = aUrl;
     boolean didAddCenter = setCenter(aCenter);
     if (!didAddCenter)
@@ -98,21 +96,14 @@ public class Course
     return wasSet;
   }
 
-  public boolean setIcon1(String aIcon1)
+  public boolean setCategory(String aCategory)
   {
     boolean wasSet = false;
-    icon1 = aIcon1;
+    category = aCategory;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setIcon2(String aIcon2)
-  {
-    boolean wasSet = false;
-    icon2 = aIcon2;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setUrl(String aUrl)
   {
@@ -174,14 +165,9 @@ public class Course
     return pricePerHour;
   }
 
-  public String getIcon1()
+  public String getCategory()
   {
-    return icon1;
-  }
-
-  public String getIcon2()
-  {
-    return icon2;
+    return category;
   }
 
   public String getUrl()

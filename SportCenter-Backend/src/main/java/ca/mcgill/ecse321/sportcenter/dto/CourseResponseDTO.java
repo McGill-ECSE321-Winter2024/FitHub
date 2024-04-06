@@ -14,8 +14,7 @@ public class CourseResponseDTO {
   private String status;
   private String description;
   private int pricePerHour;
-  private String icon1;
-  private String icon2;
+  private String category;
   private String url;
   private SportCenter center;
   
@@ -24,15 +23,14 @@ public class CourseResponseDTO {
     
   }
   
-  public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus, int aPricePerHour, String aIcon1, String aIcon2, String aUrl)
+  public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus, int aPricePerHour, String aCategory, String aUrl)
   {
     name = aName;
     difficulty = aDifficulty.trim();
     status = aStatus.trim();
     description = aDescription;
     pricePerHour = aPricePerHour;
-    icon1 = aIcon1.trim();
-    icon2 = aIcon2.trim();
+    category = aCategory.trim();
     url = aUrl.trim();
   }
 
@@ -44,8 +42,7 @@ public class CourseResponseDTO {
     status = course.getStatus().toString();
     description = course.getDescription();
     pricePerHour = course.getPricePerHour();
-    icon1 = course.getIcon1();
-    icon2 = course.getIcon2();
+    category = course.getCategory();
     url = course.getUrl();
   }
 
@@ -82,14 +79,9 @@ public class CourseResponseDTO {
     pricePerHour = aPricePerHour;
   }
 
-  public void setIcon1(String aIcon1)
+  public void setCategory(String aCategory)
   {
-    icon1 = aIcon1;
-  }
-
-  public void setIcon2(String aIcon2)
-  {
-    icon2 = aIcon2;
+    category = aCategory;
   }
 
   public void setUrl(String aUrl)
@@ -132,14 +124,9 @@ public class CourseResponseDTO {
     return pricePerHour;
   }
 
-  public String getIcon1()
+  public String getCategory()
   {
-    return icon1;
-  }
-
-  public String getIcon2()
-  {
-    return icon2;
+    return category;
   }
 
   public String getUrl()
