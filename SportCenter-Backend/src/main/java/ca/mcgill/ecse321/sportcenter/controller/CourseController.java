@@ -79,7 +79,8 @@ public class CourseController {
     public ResponseEntity<?> findCourses(
         @RequestParam(name = "name", required = false) String name,
         @RequestParam(name = "difficulty", required = false) String difficulty,
-        @RequestParam(name = "status", required = false) String status) {
+        @RequestParam(name = "status", required = false) String status, 
+        @RequestParam(name = "instructor-id", required = false) Integer instructor) {
 
         if (name != null) {
             return findCourseByName(name);
@@ -87,6 +88,8 @@ public class CourseController {
             return findCoursesByDifficulty(difficulty);
         } else if (status != null) {
             return findCoursesByStatus(status);
+        } else if (instructor != null) {
+            return findCoursesByInstructor(instructor);
         } else {
             return findAllCourses();
         }

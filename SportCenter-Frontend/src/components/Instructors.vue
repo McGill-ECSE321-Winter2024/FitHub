@@ -17,15 +17,23 @@
                             :key="instructor.id">
                             <div class="list">
                                 <img class="mt-3" v-bind:src=instructor.imageURL
-                                    @error="$event.target.src = defaultImage"
+                                    @error="$event.target.src = defaultImage" 
                                     :style="{ 'width': '200px', 'height': 'auto' }" />
                                 <ul class="m-0 p-0">
                                     <li class="heading">{{ instructor.name }}</li>
                                     <li>{{ instructor.email }}</li>
                                     <li>{{ instructor.pronouns }}</li>
-                                    <ul>
-                                        <li v-for="course in instructorCourses[instructor.id]" :key="course.id">{{ course.name }}</li>
-                                    </ul>
+                                    <li>
+                                        <p class="m-0 p-0" v-for="courses in instructorCourses[instructor.id]" :key="courses.id">
+                                            <!-- Display courses for the current instructor -->
+                                            <span v-if="courses.length > 0">Courses: </span>
+                                            
+                                            <span v-for="(course, index) in courses" :key="course.id">{{ course.name }}
+                                                <!-- Check if it's not the last course -->
+                                                <span v-if="index !== courses.length - 1">, </span>
+                                            </span>
+                                        </p>
+                                    </li>
                                 </ul>
                             </div>
                         </slide>
@@ -53,10 +61,6 @@
     <Footer />
     </div>
 </template>
-
-<script setup>
-defineEmits(['mouseover', 'mouseleave']);
-</script>
 
 <script>
 
@@ -86,6 +90,12 @@ export default {
                     accountsResponse.json().then(accounts => {
                         console.log(accounts.accounts);
                         this.instructors = accounts.accounts;
+
+                        this.instructors.forEach(instructor => {
+                            this.getAllCourses(instructor.id);
+                        });
+
+                        console.log(this.instructorCourses);
                     }).catch(error => {
                         console.error('Error parsing JSON:', error);
                     });
@@ -94,27 +104,28 @@ export default {
                 console.error('Error fetching accounts:', error);
             });
         },
-        getAllCourses(instructorId) {
-            // Fetch courses for the given instructorId
-            const requestOptions = {
+        getAllCourses(id) {
+            const url = 'http://127.0.0.1:8080/public/courses?instructor-id=' + id;
+
+            fetch(url, {
                 method: 'GET',
                 credentials: 'include'
-            };
-
-            fetch(`http://127.0.0.1:8080/public/courses?instructor-id=${instructorId}`, requestOptions)
-                .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
+            }).then(response => {
+                    if (!response.ok) {
+                        console.error('Network response was not ok');
+                    }
+                    
+                    return response.json();
                 })
                 .then(data => {
-                // Assign courses to the instructorCourses object using instructorId as the key
-                this.$set(this.instructorCourses, instructorId, data);
+                    // Update instructorCourses object with courses for the current instructor
+                    console.log(id);
+                    console.log(data);
+                    this.$set(this.instructorCourses, id, data);
                 })
                 .catch(error => {
-                console.error('Error fetching courses:', error);
-                });
+                    console.error('Error fetching courses:', error);
+            });
         },
     }
 };
