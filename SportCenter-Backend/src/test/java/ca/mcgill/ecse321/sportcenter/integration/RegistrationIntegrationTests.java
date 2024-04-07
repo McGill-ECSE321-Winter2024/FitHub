@@ -393,6 +393,12 @@ public class RegistrationIntegrationTests {
 
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        ResponseEntity<RegistrationResponseDTO> responseRead = client.exchange(url, HttpMethod.GET, requestEntity, RegistrationResponseDTO.class);
+
+        // Assert
+        assertNotNull(responseRead);
+        assertEquals(HttpStatus.NO_CONTENT, responseRead.getStatusCode());
     }
 
     @Test

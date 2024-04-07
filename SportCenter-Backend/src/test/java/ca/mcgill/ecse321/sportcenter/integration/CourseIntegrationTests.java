@@ -427,12 +427,19 @@ public class CourseIntegrationTests extends CommonTestSetup{
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none","none");
+        assertNotNull(course);
         // Act
         ResponseEntity<String> response = client.exchange("/courses/" + course.getId(), HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        ResponseEntity<CourseResponseDTO> responseRead = client.exchange("/courses/"+course.getId(), HttpMethod.GET, requestEntity, CourseResponseDTO.class);
+
+        // Assert
+        assertNotNull(responseRead);
+        assertEquals(HttpStatus.NO_CONTENT, responseRead.getStatusCode()); // Should be empty
     }
 
 }
