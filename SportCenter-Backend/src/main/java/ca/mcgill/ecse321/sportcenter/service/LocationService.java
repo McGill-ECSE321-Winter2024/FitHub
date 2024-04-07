@@ -68,7 +68,27 @@ public class LocationService {
         }
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeLocation(location);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        location.delete();
+        locationRepository.save(location);
+        locationRepository.delete(location);
+        return true;
+    }
+
+    @Transactional
+    public boolean deleteLocationByFloorAndRoom(String floor, String room){
+        Location location = locationRepository.findLocationByFloorAndRoom(floor,room);
+        if (location == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeLocation(location);
+        sportCenterRepository.save(sportCenter);
+
+        location.delete();
+        locationRepository.save(location);
+        locationRepository.delete(location);
         return true;
     }
 

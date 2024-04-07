@@ -7,6 +7,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseRequestDTO;
@@ -88,9 +90,21 @@ public class CourseIntegrationTests extends CommonTestSetup{
 
     private static final List<Course> COURSES = new ArrayList<>();
 
-    @BeforeEach
-    public void prep() {
+    // helper function
+    public void clearCourses() {
+        sportCenterRepo.deleteAll();
         courseRepo.deleteAll();
+
+        // Save one account in the system
+        Time openingTime = Time.valueOf("6:0:0");
+        Time closingTime = Time.valueOf("23:59:0");
+        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
+        
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
+        
+        // Login into that account
+        LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
+        ResponseEntity<LoginResponseDTO> response = client.postForEntity("/login", request, LoginResponseDTO.class);
     }
 
     @Test
@@ -116,6 +130,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     @Test
     @Order(1)
     public void testFindAllCoursesEmpty() {
+        clearCourses();
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -130,8 +145,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     public void testFindAllCoursesByDifficultyEmpty() {
+        clearCourses();
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -146,8 +162,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(1)
+    @Order(3)
     public void testFindAllCoursesByStatusEmpty() {
+        clearCourses();
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -163,8 +180,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
 
     
     @Test
-    @Order(1)
+    @Order(4)
     public void testFindCourseByNameEmpty() {
+        clearCourses();
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -179,8 +197,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(1)
+    @Order(5)
     public void testFindCourseByIdEmpty() {
+        clearCourses();
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -197,7 +216,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     //Testing the valid tests which should be returning content
 
     @Test
-    @Order(3)
+    @Order(6)
     public void testCreateCourse() {
         // Given
         HttpHeaders headers = new HttpHeaders();
@@ -230,7 +249,7 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(2)
+    @Order(7)
     public void testUpdateValidCourse() {
         // Given
         HttpHeaders headers = new HttpHeaders();
@@ -257,12 +276,14 @@ public class CourseIntegrationTests extends CommonTestSetup{
         assertNotNull(updatedCourse);
         assertEquals("updated course name", updatedCourse.getName());
         // Add assertions for other fields as needed
+        
     }
 
 
     @Test
-    @Order(1)
+    @Order(8)
     public void testFindAllCourses() {
+        clearCourses();
         
         // Create sample courses
         Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none","none");
@@ -283,8 +304,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(1)
+    @Order(9)
     public void testFindCourseByName() {
+        clearCourses();
         // Create sample courses
         Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1,  "none","none");
         
@@ -304,8 +326,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     
 
     @Test
-    @Order(1)
+    @Order(10)
     public void testFindAllCoursesDifficulty() {
+        clearCourses();
         // Create sample courses
         Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none","none");
         Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none","none");
@@ -326,8 +349,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(1)
+    @Order(11)
     public void testFindAllCoursesStatus() {
+        clearCourses();
         // Create sample courses
         Course course1 = courseService.createCourse("Course 1", "Description 1", Course.Difficulty.Beginner.toString(), Course.Status.Approved.toString(), 1, "none","none");
         Course course2 = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none","none");
@@ -351,8 +375,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
 
     //Tests for approving, disapproving and closing
     @Test
-    @Order(1)
+    @Order(12)
     public void testApproveCourse() {
+        clearCourses();
         // Create sample course
         Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Pending.toString(), 1, "none","none");
         CourseRequestDTO courseReq = new CourseRequestDTO(course); 
@@ -377,8 +402,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
     
     @Test
-    @Order(2)
+    @Order(13)
     public void testDisapproveCourse() {
+        clearCourses();
         // Create sample course
         Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Pending.toString(), 1,  "none","none");
         CourseRequestDTO courseReq = new CourseRequestDTO(course); 
@@ -398,8 +424,9 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(3)
+    @Order(14)
     public void testCloseCourse() {
+        clearCourses();
         // Create sample course
         Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1,  "none","none");
         CourseRequestDTO courseReq = new CourseRequestDTO(course); 
@@ -419,20 +446,28 @@ public class CourseIntegrationTests extends CommonTestSetup{
     }
 
     @Test
-    @Order(7)
+    @Order(15)
     public void testDeleteValidCourse() {
+        clearCourses();
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         Course course = courseService.createCourse("Course 2", "Description 2", Course.Difficulty.Intermediate.toString(), Course.Status.Approved.toString(), 1, "none","none");
+        assertNotNull(course);
         // Act
         ResponseEntity<String> response = client.exchange("/courses/" + course.getId(), HttpMethod.DELETE, requestEntity, String.class);
 
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        ResponseEntity<CourseResponseDTO> responseRead = client.exchange("/courses/"+course.getId(), HttpMethod.GET, requestEntity, CourseResponseDTO.class);
+
+        // Assert
+        assertNotNull(responseRead);
+        assertEquals(HttpStatus.NO_CONTENT, responseRead.getStatusCode()); // Should be empty
     }
 
 }

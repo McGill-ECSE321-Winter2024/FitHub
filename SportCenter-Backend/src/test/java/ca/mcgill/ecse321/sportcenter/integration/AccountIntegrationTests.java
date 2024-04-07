@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Time;
 
@@ -27,6 +28,7 @@ import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CustomerResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.InstructorResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.LocationResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.LoginResponseDTO;
 import ca.mcgill.ecse321.sportcenter.dto.OwnerResponseDTO;
@@ -275,6 +277,10 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        
+        ResponseEntity<AccountResponseDTO> readResponse = client.exchange("/customers/" + validId, HttpMethod.GET, requestEntity, AccountResponseDTO.class);
+        AccountResponseDTO accountResponseDTO = readResponse.getBody();
+        assertNull(accountResponseDTO.getEmail());
     }
 
     //--------------------------// Instructor Tests //--------------------------//
@@ -432,6 +438,10 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        
+        ResponseEntity<AccountResponseDTO> readResponse = client.exchange("/instructors/" + validId, HttpMethod.GET, requestEntity, AccountResponseDTO.class);
+        AccountResponseDTO accountResponseDTO = readResponse.getBody();
+        assertNull(accountResponseDTO.getEmail());
     }
     
     //--------------------------// Owner Tests //--------------------------//
@@ -589,6 +599,10 @@ public class AccountIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        
+        ResponseEntity<AccountResponseDTO> readResponse = client.exchange("/owners/" + validId, HttpMethod.GET, requestEntity, AccountResponseDTO.class);
+        AccountResponseDTO accountResponseDTO = readResponse.getBody();
+        assertNull(accountResponseDTO.getEmail());
     }
 
     //--------------------------// General Tests //--------------------------//
@@ -608,8 +622,8 @@ public class AccountIntegrationTests extends CommonTestSetup {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         AccountListDTO accountListDTO = response.getBody();
         assertNotNull(accountListDTO);
-        // Currently there are supposed to be 2 customer accounts, 1 instructor account and 1 owner account
-        assertEquals(4, accountListDTO.getAccounts().size()); 
+        // Currently there are supposed to be 2 customer accounts, 1 instructor account and 1 owner account, minus 3 (since we deleted them)
+        assertEquals(1, accountListDTO.getAccounts().size()); 
     }
 
     //--------------------------// Invalid Tests //--------------------------//
