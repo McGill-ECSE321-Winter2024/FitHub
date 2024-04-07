@@ -83,7 +83,7 @@ public class AccountController {
 
     //--------------------------// Create Account //--------------------------//
     
-    @PostMapping(value={"/customers", "/customers/"})
+    @PostMapping(value={"/customers", "/customers/", "/public/customers"})
     public ResponseEntity<AccountResponseDTO> createCustomerAccount(@RequestBody AccountRequestDTO account) {
         try {
             Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
