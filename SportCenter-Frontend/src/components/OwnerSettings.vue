@@ -18,7 +18,7 @@
             margin-top: 20px;
             margin-left: 20px;
             width: 330px;
-            height: 90%;
+            height: 100%;
           "
         >
           <h2 style="color: #ffffff; font-size: 45px; padding: 30px">
@@ -55,6 +55,16 @@
             >
               Edit sport center
             </li>
+                        <li
+              @click="toggleMenu('OwnerCourses')"
+              :class="{
+                'menu-item-selected': currentTab === 'OwnerCourses',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Edit courses
+            </li>
             <!-- Add more menu items as needed -->
           </ul>
         </div>
@@ -89,6 +99,10 @@
               />
             </div>
           </div>
+        </div>
+
+          <div v-if="currentTab === 'OwnerCourses'">
+            <OwnerCourses />
         </div>
 
         <!-- Sport Center Settings -->
@@ -158,12 +172,14 @@
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
 import OwnerProfileSettings from "./OwnerProfileSettings.vue";
 import OwnerSportCenterSettings from "./OwnerSportCenterSettings.vue";
+import OwnerCourses from "./OwnerCourses.vue";
 
 export default {
   name: "ProfileSettings",
   components: {
     OwnerProfileSettings,
     OwnerSportCenterSettings,
+    OwnerCourses
     // Add more components as needed
   },
   data() {
