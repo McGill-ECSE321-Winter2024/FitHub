@@ -2,6 +2,8 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.sql.Time;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -80,7 +82,7 @@ public class LocationIntegrationTests extends CommonTestSetup {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         
         // Act
-        ResponseEntity<LocationListDTO> response = client.exchange("/locations", HttpMethod.GET, requestEntity, LocationListDTO.class);
+        ResponseEntity<LocationListDTO> response = client.exchange("/public/locations", HttpMethod.GET, requestEntity, LocationListDTO.class);
 
         // Assert
         assertNotNull(response);
@@ -151,5 +153,11 @@ public class LocationIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        ResponseEntity<LocationResponseDTO> readResponse = client.exchange("/locations/" + this.validId, HttpMethod.GET, requestEntity, LocationResponseDTO.class);
+        LocationResponseDTO location = readResponse.getBody();
+        assertNull(location.getFloor());
+
+
     }
 }

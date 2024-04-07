@@ -83,7 +83,6 @@ public class CourseServiceTests {
         course2.setStatus(Course.Status.Pending);
         COURSES.add(course2); // Add course2 to COURSES list
 
-        
         SportCenter sportCenter = new SportCenter();
         sportCenter.setName("FitHub");
         sportCenter.setOpeningTime(Time.valueOf("08:00:00"));
@@ -93,8 +92,11 @@ public class CourseServiceTests {
         sportCenter.setAddress("2011, University Street, Montreal");
 
         // Save sportCenterRepo
-        sportCenter = sportCenterRepo.save(sportCenter);
+        List<SportCenter> listSportCenter = new ArrayList<>();
+        listSportCenter.add(sportCenter);
+        when(sportCenterRepo.findAll()).thenReturn(listSportCenter);
     }
+
 
     //--------------------------// Create Course Tests //--------------------------//
 
