@@ -101,7 +101,7 @@
           </div>
         </div>
 
-          <div v-if="currentTab === 'OwnerCourses'">
+        <div v-if="currentTab === 'OwnerCourses'">
             <OwnerCourses />
         </div>
 
@@ -165,7 +165,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
