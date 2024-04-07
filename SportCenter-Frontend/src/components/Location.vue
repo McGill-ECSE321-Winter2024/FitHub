@@ -25,7 +25,7 @@
           </td>
       </tr>
       <tr>
-        <span v-if="errorLocation" style="color:red">Error: {{errorPerson}}</span>
+        <span v-if="createErrorLocation" class="error-message">Error: {{createErrorLocation}}</span>
       </tr>
       <tr>
         <h3 class="custom-h3-Delete">Delete a location</h3>
@@ -42,7 +42,7 @@
           </td>
       </tr>
       <tr>
-        <span style="color:red">Error: Message text comes here</span>
+        <span v-if="createErrorLocation" class="error-message">Error: {{createErrorLocation}}</span>
       </tr>
     </table>
   </div>
@@ -84,7 +84,8 @@ export default {
             newLocationFloor: null,
             toDeleteLocationRoom: null,
             toDeleteLocationFloor: null,
-            errorLocation: ''
+            createErrorLocation: '',
+            deleteErrorLocation: ''
         };
     },
     mounted() {
@@ -279,9 +280,9 @@ h4 {
 #delete-btn {
     background-color: #F56363;
 }
-
-
-
+#error-message {
+    background-color: #F56363;
+}
 
 button {
   padding: 10px 10px;
@@ -295,5 +296,7 @@ button {
   height: 40px; 
   margin-bottom: 20px;
 }
+
+
 
 </style>
