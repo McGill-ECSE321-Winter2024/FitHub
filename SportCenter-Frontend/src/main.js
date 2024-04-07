@@ -10,10 +10,11 @@ import router from './router'
 import Toolbar from './components/Toolbar'
 import Title from './components/Title'
 import CoursesMini from './components/CoursesMini'
-import InstructorsMini from './components/InstructorsMini'
+import WhatOurCustomersSay from './components/WhatOurCustomersSay'
 import ContactUs from './components/ContactUs'
 import RegistrationLink from './components/RegistrationLink'
 import Footer from './components/Footer'
+import CoursesCol from'./components/CoursesCol'
 import { Hooper, Slide, Navigation} from 'hooper';
 import 'hooper/dist/hooper.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -27,10 +28,11 @@ Vue.config.productionTip = false
 Vue.component('Toolbar', Toolbar)
 Vue.component('Title', Title)
 Vue.component('CoursesMini', CoursesMini)
-Vue.component('InstructorsMini', InstructorsMini)
+Vue.component('WhatOurCustomersSay', WhatOurCustomersSay)
 Vue.component('ContactUs', ContactUs)
 Vue.component('RegistrationLink', RegistrationLink)
 Vue.component('Footer', Footer)
+Vue.component('CoursesCol', CoursesCol)
 Vue.component('Hooper', Hooper)
 Vue.component('Slide', Slide)
 Vue.component('Navigation', Navigation)

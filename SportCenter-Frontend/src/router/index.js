@@ -1,49 +1,61 @@
 // router/index.js
-import Vue from 'vue'
-import Router from 'vue-router'
-import VueCookies from 'vue-cookies'
-import Home from '@/components/Home'
-import SignIn from '@/components/Login'
-import Courses from '@/components/Courses'
-import Instructors from '@/components/Instructors'
-import Registration from '@/components/Registration'
-import OwnerSettings from '@/components/OwnerSettings'
+import Vue from "vue";
+import Router from "vue-router";
+import VueCookies from "vue-cookies";
+import Home from "@/components/Home";
+import SignIn from "@/components/Login";
+import Courses from "@/components/Courses";
+import Instructors from "@/components/Instructors";
+import Registration from "@/components/Registration";
+import Settings from "@/components/Settings";
+import BillingAccount from "@/components/BillingAccount";
+import BillingAccountOverview from "@/components/BillingAccountOverview";
 
-Vue.use(Router)
+Vue.use(Router);
 
-Vue.use(VueCookies)
+Vue.use(VueCookies);
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Home',
-      component: Home
+      path: "/",
+      name: "Home",
+      component: Home,
     },
     {
-      path: '/login',
-      name: 'SportCenter Login page',
-      component: SignIn
+      path: "/login",
+      name: "SportCenter Login page",
+      component: SignIn,
     },
     {
-      path: '/courses',
-      name: 'Courses',
-      component: Courses
+      path: "/courses",
+      name: "Courses",
+      component: Courses,
     },
     {
-      path: '/instructors',
-      name: 'Instructors',
-      component: Instructors
+      path: "/instructors",
+      name: "Instructors",
+      component: Instructors,
     },
     {
-      path: '/registration',
-      name: 'Registration',
-      component: Registration
+      path: "/registration",
+      name: "Registration",
+      component: Registration,
     },
     {
-      path: '/settings',
-      name: 'Settings',
-      component: OwnerSettings
-    }
-  ]
-})
+      path: "/settings",
+      name: "Settings",
+      component: Settings,
+    },
+    {
+      path: "/billing-account",
+      name: "BillingAccount",
+      component: BillingAccount,
+    },
+    {
+      path: "/billing-accounts",
+      name: "BillingAccountOverview",
+      component: BillingAccountOverview,
+    },
+  ],
+});
