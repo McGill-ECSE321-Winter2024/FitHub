@@ -11,7 +11,7 @@
                     <h3>Discover our dedicated team that will guide you with their passion and expertise.</h3>
                 </div>
 
-                <div class="row align-items-start justify-content-start">
+                <div class="row align-items-start justify-content-start over">
                     <hooper group="group1" :loop="false" :itemsToShow="3" :initialSlide="0" class="over h-100 pt-5">
                         <slide class="instructor third-width my-auto" v-for="instructor in instructors"
                             :key="instructor.id">
@@ -23,7 +23,9 @@
                                     <li class="heading">{{ instructor.name }}</li>
                                     <li>{{ instructor.email }}</li>
                                     <li>{{ instructor.pronouns }}</li>
-                                    <li>Courses list</li>
+                                    <ul>
+                                        <li v-for="course in instructorCourses[instructor.id]" :key="course.id">{{ course.name }}</li>
+                                    </ul>
                                 </ul>
                             </div>
                         </slide>
@@ -63,6 +65,7 @@ export default {
     data() {
         return {
             instructors: [],
+            instructorCourses: {}, // Object to store courses for each instructor
             defaultImage: require('@/assets/pfp.png')
         };
     },
@@ -74,7 +77,7 @@ export default {
         fetchInstructors() {
             fetch('http://localhost:8080/public/instructors', {
                 method: 'GET',
-                credentials: 'include', // Ensure cookies are sent with the request,
+                credentials: 'include'
             }).then((accountsResponse) => {
                 if (accountsResponse.status === 204) {
                     console.log("No instructors in the database");
@@ -90,7 +93,29 @@ export default {
             }).catch(error => {
                 console.error('Error fetching accounts:', error);
             });
-        }
+        },
+        getAllCourses(instructorId) {
+            // Fetch courses for the given instructorId
+            const requestOptions = {
+                method: 'GET',
+                credentials: 'include'
+            };
+
+            fetch(`http://127.0.0.1:8080/public/courses?instructor-id=${instructorId}`, requestOptions)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+                })
+                .then(data => {
+                // Assign courses to the instructorCourses object using instructorId as the key
+                this.$set(this.instructorCourses, instructorId, data);
+                })
+                .catch(error => {
+                console.error('Error fetching courses:', error);
+                });
+        },
     }
 };
 </script>
@@ -103,6 +128,10 @@ export default {
     color: var(--color-yellow);
     z-index: 0;
     /* Ensure that this element is behind other content */
+}
+
+.over {
+    z-index: 1000;
 }
 
 .instructor {

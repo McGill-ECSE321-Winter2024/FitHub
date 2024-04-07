@@ -20,6 +20,8 @@ import ca.mcgill.ecse321.sportcenter.dto.CourseListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.CourseResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
+import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 
 /**
@@ -32,7 +34,8 @@ import ca.mcgill.ecse321.sportcenter.service.CourseService;
 public class CourseController {
     @Autowired
     CourseService courseService;
-
+    @Autowired
+    AccountService accountService;
 
     //--------------------------// Create Course //--------------------------//
 
@@ -122,6 +125,15 @@ public class CourseController {
         }
     }
 
+    public ResponseEntity<CourseListDTO> findCoursesByInstructor(@RequestParam(name = "instructor-id", required = false) Integer id) {
+        try {
+            Instructor instructor = accountService.findInstructorById(id);
+            List<Course> list = courseService.findCoursesByInstructor(instructor);
+            return new ResponseEntity<CourseListDTO>(new CourseListDTO(CourseListDTO.courseListToCourseResponseDTOList(list)), HttpStatus.OK);
+        } catch(IllegalArgumentException e){
+            return new ResponseEntity<CourseListDTO>(new CourseListDTO(), HttpStatus.NO_CONTENT);
+        }
+    }
 
     //--------------------------// Setters //--------------------------//
 
