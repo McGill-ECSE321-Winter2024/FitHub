@@ -1,8 +1,8 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="page row align-items-start justify-content-center">
-            <Toolbar />
-            <div class="row p-5">
+        <Toolbar />
+        <div class="page pt-5 mt-5 row align-items-center justify-content-center">
+            <div class="row p-5 align-items-center mt-5">
                 <!-- Column 1 -->
                 <div class="col">
                     <div class="container justify-content-center-lg">
@@ -83,7 +83,7 @@ export default {
             .then(result => {
                 if (result === 'success') {
                     console.log('Successful')
-                    fetch('http://localhost:8080/role', {
+                    fetch('http://localhost:8080/role-id', {
                         method: 'GET',
                         mode: "cors",
                         headers: {
@@ -92,17 +92,21 @@ export default {
                         credentials: 'include' // Ensure cookies are sent with the request,
                     }).then((roleResponse) => {
                         roleResponse.text().then(role => {
-                            console.log('Role:', role);
+                            const role_and_id = role.split(',');
+                            role = role_and_id[0];
+                            const id = role_and_id[1];
                             
                             // Save cookies and change page
                             this.$cookies.set('username', this.email);
                             this.$cookies.set('password', this.password);
                             this.$cookies.set('role', role);
+                            this.$cookies.set('id', id);
 
                             console.log('Created new cookies:');
                             console.log('username: ', decodeURIComponent(this.$cookies.get('username')));
                             console.log('password: ', this.$cookies.get('password'));
-                            console.log('role: ', this.$cookies.get('role'))
+                            console.log('role: ', this.$cookies.get('role'));
+                            console.log('id: ', this.$cookies.get('id'));
                             
                             this.$router.push('/');
 
@@ -118,8 +122,6 @@ export default {
                 }
             })
             .catch(error => console.log('error', error));
-
-            
 
     },
     switchToHomePage() {
@@ -145,9 +147,7 @@ export default {
 
     .page {
         min-height: 100vh;
-        font-family: "Rubik", sans-serif;
-        background-color: #ffbc4b;
-
+        background-color: var(--color-sunflower);
         width: 100%;
         position: absolute;
         top:0;
@@ -161,8 +161,8 @@ export default {
     }
 
     .form-control:valid {
-        background-color: #ffbc4b;
-        color: #171313;
+        background-color: var(--color-sunflower);
+        color: var(--color-black);
         border-color: rgba(0, 0, 0, 0.2);
         border-style: solid;
         border-width: 2px;
@@ -170,12 +170,12 @@ export default {
     }
 
     .form-control::placeholder {
-        color: #171313;
+        color: var(--color-black);
         opacity: 1; /* Firefox */
     }
 
     .form-control::-ms-input-placeholder { /* Edge 12 -18 */
-        color: #171313;
+        color: var(--color-black);
     }
 
     .form-control:focus {
@@ -184,7 +184,7 @@ export default {
 
     h1 {
         z-index:950;
-        color: #171313;
+        color: var(--color-black);
     }
 
     .hidden {

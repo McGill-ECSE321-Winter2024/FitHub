@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
@@ -55,26 +56,31 @@ public class AccountController {
         return new ResponseEntity<String>("logout", HttpStatus.OK);
     }
 
-    @GetMapping("/role")
-    public ResponseEntity<String> getRole() {
+    @GetMapping("/role-id")
+    public ResponseEntity<String> getRoleAndId() {
         // Get the currently authenticated user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userType = "visitor";
+        String roleAndId = "visitor";
 
         // Check if the user is authenticated and has a specific role
         if (authentication != null && authentication.isAuthenticated()) {
             if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_OWNER"))) {
-                userType = "owner";
+                roleAndId = "owner,";
             } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_INSTRUCTOR"))) {
-                userType = "instructor";
-            }else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
-                userType = "customer";
+                roleAndId = "instructor,";
+            } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
+                roleAndId = "customer,";
+            }
+
+            if (!roleAndId.equals("visitor")) {
+                Account account = (Account) accountService.loadUserByUsername(authentication.getName());
+                roleAndId += account.getId(); // add the id to the response
             }
         }
 
-        return new ResponseEntity<String>(userType, HttpStatus.OK);
+        return new ResponseEntity<String>(roleAndId, HttpStatus.OK);
     }
-    
+
     //--------------------------// Create Account //--------------------------//
     
     @PostMapping(value={"/customers", "/customers/"})
