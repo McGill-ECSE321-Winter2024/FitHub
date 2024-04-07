@@ -2,16 +2,17 @@
   <div class="solid-background">
     <Toolbar />
     <!-- Toolbar and search bar -->
-    <div v-if="!showCreateCourse">
     <div class="text-search-bar">
       <div class="text-content">
-        <h1 class="custom-h1">Explore your interests</h1>
+        <h1 class="custom-h1">
+        <span class="explore-your">Explore your</span>
+        <span class="interests">interests</span>
+        </h1>
         <h3 class="custom-h3">Select a course to learn more</h3>
       </div>
       <div class="search-field">
         <input type="text" class="search-input" placeholder="Search courses">
       </div>
-      <button @click="showCreateCourse = true">New course</button>
     </div>
 
     <!-- Course list -->
@@ -33,11 +34,7 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
-
-    <!-- Create course component -->
-    <ProposeCourse v-if="showCreateCourse" />
   </div>
 </template>
 
@@ -109,8 +106,19 @@ export default {
 }
 
 .custom-h1 {
-  color: #ffffff;
   font-size: 55px;
+}
+
+.explore-your {
+  -webkit-text-stroke: 1px white; /* Outline width and color */
+  text-stroke: 1px white; /* Outline width and color */
+  color: black; /* Fill color */
+}
+
+
+.interests {
+  color: #CDF563;
+  padding: 0 5px; /* Adjust padding as needed */
 }
 
 .content {
@@ -148,22 +156,16 @@ export default {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #bfd3f2;
+  background-color: #FFFF;
   color: #ffffff;
 }
 
 .white-heading {
   font-size: 14px;
   color: var(--color-black);
-  background-color: #FFF;
+  background-color: #CDF563;
   font-weight: 700;
   padding: 1%;
-}
-
-.custom-h3 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-white);
 }
 
 p {
