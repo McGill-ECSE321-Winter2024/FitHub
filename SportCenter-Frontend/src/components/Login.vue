@@ -129,17 +129,16 @@ export default {
 };
 </script>
 <style scoped>
-    
     .btn-outline {
-        background-color: #3e8ef1 !important;
-        border-color: #3e8ef1 !important;
-        color: #fff !important;
+        background-color: var(--color-azure) !important;
+        border-color: var(--color-azure) !important;
+        color: var(--color-white) !important;
     }
 
     .btn-outline:hover {
-        background-color: #2469bd !important;
-        border-color: #2469bd !important;
-        color: #fff !important;
+        background-color: var(--color-storm) !important;
+        border-color: var(--color-storm) !important;
+        color: var(--color-white) !important;
     }
 
     .page {
