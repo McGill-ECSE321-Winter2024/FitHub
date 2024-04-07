@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.sportcenter.service;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.sportcenter.model.BillingAccount;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.repository.BillingAccountRepository;
-
+import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 
 /*
@@ -23,21 +22,23 @@ import jakarta.transaction.Transactional;
 public class BillingAccountService {
     
     @Autowired
+    private CustomerRepository customerRepo;
+    @Autowired
     private BillingAccountRepository billingAccountRepo; 
 
     //--------------------------// Create Billing Account //--------------------------//
 
     @Transactional
-    public BillingAccount createBillingAccount(String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, LocalDate expirationDate, Customer customer){
+    public BillingAccount createBillingAccount(String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, LocalDate expirationDate, Integer customerId){
         
         //Input validation check
         validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate);
 
-        if (customer == null){
+        if (customerRepo.findCustomerById(customerId) == null){
             throw new IllegalArgumentException("Customer account does not exist");
         }
 
-        List<BillingAccount> accounts = findBillingAccountByCustomer(customer);
+        List<BillingAccount> accounts = findBillingAccountByCustomer(customerId);
         if (accounts.size() != 0){
             for (BillingAccount account : accounts){
                 
@@ -62,7 +63,7 @@ public class BillingAccountService {
         billingAccount.setCvv(cvv);
         billingAccount.setExpirationDate(expirationDate);
         billingAccount.setIsDefault(isDefault);
-        billingAccount.setCustomer(customer);
+        billingAccount.setCustomer(customerRepo.findCustomerById(customerId));
 
         return billingAccountRepo.save(billingAccount);
 
@@ -130,7 +131,11 @@ public class BillingAccountService {
     }
 
     @Transactional
-    public List<BillingAccount> findBillingAccountByCustomer(Customer customer){
+    public List<BillingAccount> findBillingAccountByCustomer(Integer customerId){
+        Customer customer = customerRepo.findCustomerById(customerId);
+        if (customer == null){
+            throw new IllegalArgumentException("Customer does not exist");
+        }
         List<BillingAccount> account = billingAccountRepo.findBillingAccountByCustomer(customer);
         if (account == null){
             throw new IllegalArgumentException("There is no billing account with for this customer.");
