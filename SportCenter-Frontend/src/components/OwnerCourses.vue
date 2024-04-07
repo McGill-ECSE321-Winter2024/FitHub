@@ -1,18 +1,13 @@
 <template>
   <div class="solid-background">
-    <Toolbar />
       <!-- Toolbar and search bar -->
       <div class="text-search-bar">
         <div class="text-content">
-          <h1 class="custom-h1">Explore your interests</h1>
-          <h3>Select a course to learn more</h3>
-        </div>
-        <div class="search-field">
-          <input type="text" class="search-input" placeholder="Search courses">
+          <h1 class="custom-h1">Manage courses</h1>
+          <h3>Approve or disapprove courses which instructors have proposed</h3>
         </div>
       </div>
 
-    <div class="cont">
       <div class="mt-5">
         <div class="row">
           <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
@@ -23,13 +18,18 @@
             <div>
               <h3>{{ capitalize(course.name) }}</h3>
               <p>{{ course.description }}</p>
+
+              <div class="buttons">
+                <button @click="approveCourse(course.id)" class="approve">Approve</button>
+                <button @click="disapproveCourse(course.id)" class="disapprove">Disapprove</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'Courses',
@@ -49,7 +49,7 @@ export default {
         credentials: 'include'
       };
 
-      fetch('http://127.0.0.1:8080/public/courses?status=Approved', requestOptions)
+       fetch('http://127.0.0.1:8080/public/courses?status=Pending',requestOptions)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -78,6 +78,12 @@ export default {
     },
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
+    },
+    approveCourse(courseId) {
+
+    },
+    disapproveCourse(courseId) {
+
     }
   }
 }
@@ -87,8 +93,9 @@ export default {
 .solid-background {
   background-color: #121212;
   height: 100vh;
-  width: 100vw;
+  width: 70vw;
   overflow: auto;
+  margin-left: -30px;
 }
 
 .custom-h1 {
@@ -97,19 +104,8 @@ export default {
 }
 
 .text-search-bar{
-    margin-top: 30px;
-    margin-left: 50px;
-    margin-right:50px;
+    margin-top: 15px;
 }
-
-.cont {
-  margin-top: 30px;
-  width: 95vw;
-  height: 100vh;
-  margin-left: 50px;
-  margin-right:50px;
-}
-
 
 .search-input {
   width: 180px;
@@ -144,5 +140,31 @@ p {
 body {
   margin: 0;
   padding: 0;
+}
+
+.approve{
+    border: 0px;
+    background-color: #CDF563;
+    color: #121212;
+    font-weight: bold;
+    border-radius: 20px;
+    height: 40px;
+    width: 100px;
+}
+
+.disapprove {
+    margin-left: 10px;
+    border: 0px;
+    background-color: #E3240C;
+    color: #121212;
+    font-weight: bold;
+    border-radius: 20px;
+     height: 40px;
+    width: 100px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
 }
 </style>
