@@ -12,27 +12,27 @@
                 <div class="col ">
                 <form class="form-group">
                     <div class="container justify-content-center">
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="imageURL" class="form-control" type="text" placeholder="Your Profile Picture...">
-                    </div>
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="name" class="form-control" type="text" placeholder="Your Name...">
-                    </div>
-                    <div class="row my-xl-3 mr-xl-5">
-                        <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
-                    </div>
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
-                    </div>
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="pronouns" class="form-control" type="text" placeholder="Your Pronouns...">
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Register</button>
-                    </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="imageURL" class="form-control" type="text" placeholder="Your Profile Picture...">
+                        </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="name" class="form-control" type="text" placeholder="Your Name...">
+                        </div>
+                        <div class="row my-xl-3 mr-xl-5">
+                            <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+                        </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
+                        </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="pronouns" class="form-control" type="text" placeholder="Your Pronouns...">
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="register">Register</button>
+                        </div>
                     </div>
                 </form>
                 </div>
@@ -64,59 +64,61 @@ export default {
         return {
             email: '',
             password: '',
+            name: '',
+            imageURL: '',
+            pronouns: '',
             errorMessage: 'Invalid email or password', // Initialize error message
             showErrorMessage: false
         };
     },
     methods: {
 
-    login() {
-        const params = new FormData();
-        params.append('username', this.email);
-        params.append('password', this.password);
+    register() {
+        // Create a JSON object with the data to be sent in the POST request
+        const requestBody = {
+            email: this.email,
+            password: this.password,
+            name: this.name,
+            imageURL: this.imageURL,
+            pronouns: this.pronouns,
+        };
 
-        const basicAuth = 'Basic ' + btoa(this.email + ':' + this.password);
-
-        fetch('http://localhost:8080/login', {
+        fetch('http://localhost:8080/public/customers', {
             method: 'POST',
-            body: params,
+            body: JSON.stringify(requestBody),
             headers: {
-                'Authorization': basicAuth,
+                'Content-Type': 'application/json'
             },
             credentials: 'include', // Ensure cookies are sent with the request,
             mode: "cors",
         })  .then(response => response.text())
             .then(result => {
-                if (result === 'success') {
-                    console.log('Successful')
-                    fetch('http://localhost:8080/role', {
-                        method: 'GET',
-                        mode: "cors",
-                        headers: {
-                            'Authorization': basicAuth,
-                        },
-                        credentials: 'include' // Ensure cookies are sent with the request,
-                    }).then((roleResponse) => {
-                        roleResponse.text().then(role => {
-                            console.log('Role:', role);
-                        }).catch(error => {
-                            console.error('Error reading role text:', error);
-                        });
-                    }).catch(error => {
-                        console.error('Error fetching role:', error);
-                    }); 
+                console.log(result);
+
+                result = JSON.parse(result);
+
+                if (result.error == "") {
+                    // Save cookies and change page
+                    this.$cookies.set('username', result.email);
+                    this.$cookies.set('password',  this.password);
+                    this.$cookies.set('role',  result.type);
+                    this.$cookies.set('id',  result.id);
+    
+                    console.log('Created new cookies:');
+                    console.log('username: ', decodeURIComponent(this.$cookies.get('username')));
+                    console.log('password: ', this.$cookies.get('password'));
+                    console.log('role: ', this.$cookies.get('role'));
+                    console.log('id: ', this.$cookies.get('id'));
+                    
+                    this.$router.push('/');
                 }
                 else {
+                    this.errorMessage = result.error;
                     this.showErrorMessage = true;
                 }
             })
             .catch(error => console.log('error', error));
 
-            
-
-    },
-    switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
     }
 }
 
