@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.time.LocalDate;
 import java.sql.Time;
 
@@ -366,6 +368,10 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        ResponseEntity<BillingAccountResponseDTO> responseRead = client.exchange("/billing-accounts/" + validId, HttpMethod.GET, requestEntity, BillingAccountResponseDTO.class);
+        BillingAccountResponseDTO billingAccount = responseRead.getBody();
+        assertNull(billingAccount);
 
 	}
 
