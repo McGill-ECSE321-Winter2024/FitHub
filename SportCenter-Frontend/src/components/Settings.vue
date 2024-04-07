@@ -231,6 +231,7 @@
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
 import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccount from "./BillingAccount.vue";
+import BillingAccountOverview from "./BillingAccountOverview.vue";
 
 export default {
   name: "ProfileSettings",
@@ -259,6 +260,15 @@ export default {
   methods: {
     toggleMenu(tabName) {
       this.currentTab = tabName;
+    },
+    getAccountType(item) {
+      console.log(
+        "username: ",
+        decodeURIComponent(this.$cookies.get("username"))
+      );
+      console.log("password: ", this.$cookies.get("password"));
+      console.log("role: ", this.$cookies.get("role"));
+      console.log("id: ", this.$cookies.get("id"));
     },
   },
 };
