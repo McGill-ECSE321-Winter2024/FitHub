@@ -23,10 +23,12 @@
               <div>
                 <img :src="course.url" :alt="course.name" class="w-100 h-100">
               </div>
+              <div class="content">
               <h3><span class="white-heading">{{ course.category }}</span></h3>
               <div>
-                <h3>{{ capitalize(course.name) }}</h3>
+                <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
                 <p>{{ course.description }}</p>
+              </div>
               </div>
             </div>
           </div>
@@ -109,6 +111,10 @@ export default {
 .custom-h1 {
   color: #ffffff;
   font-size: 55px;
+}
+
+.content {
+    text-align: left;
 }
 
 .custom-h3 {
