@@ -8,7 +8,7 @@
       <!-- Sidebar container with gray box -->
       <div
         class="sidebar-container"
-        style="width: 350px; margin-right: 50px; overflow-y: auto; height: 100%"
+        style="width: 380px; margin-right: 50px; overflow-y: auto; height: 100%"
       >
         <div
           class="sidebar"
@@ -35,9 +35,9 @@
           >
             <!-- Edit Profile Button -->
             <li
-              @click="toggleMenu('OwnerProfileSettings')"
+              @click="toggleMenu('EditProfile')"
               :class="{
-                'menu-item-selected': currentTab === 'OwnerProfileSettings',
+                'menu-item-selected': currentTab === 'EditProfile',
               }"
               class="menu-item"
               style="cursor: pointer; padding: 20px; font-size: 20px"
@@ -46,14 +46,69 @@
             </li>
             <!-- Edit Sport Center Button -->
             <li
-              @click="toggleMenu('OwnerSportCenterSettings')"
+              @click="toggleMenu('EditSportCenter')"
               :class="{
-                'menu-item-selected': currentTab === 'OwnerSportCenterSettings',
+                'menu-item-selected': currentTab === 'EditSportCenter',
               }"
               class="menu-item"
               style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Edit sport center
+            </li>
+            <!-- Manage Instructors Button -->
+            <li
+              @click="toggleMenu('ManageInstructors')"
+              :class="{
+                'menu-item-selected': currentTab === 'ManageInstructors',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Manage instructors
+            </li>
+            <!-- Manage Courses Button -->
+            <li
+              @click="toggleMenu('ManageCourses')"
+              :class="{
+                'menu-item-selected': currentTab === 'ManageCourses',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Manage courses
+            </li>
+            <!-- Manage Locations Button -->
+            <li
+              @click="toggleMenu('ManageLocations')"
+              :class="{
+                'menu-item-selected': currentTab === 'ManageLocations',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Manage locations
+            </li>
+            <!-- My Sessions Button -->
+            <li
+              @click="toggleMenu('MySessions')"
+              :class="{
+                'menu-item-selected': currentTab === 'MySessions',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              My sessions
+            </li>
+            <!-- Billing Account Button -->
+            <li
+              @click="toggleMenu('BillingAccount')"
+              :class="{
+                'menu-item-selected': currentTab === 'BillingAccount',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Billing account
             </li>
             <!-- Add more menu items as needed -->
           </ul>
@@ -66,7 +121,7 @@
         style="flex-grow: 1; overflow: auto; padding: 60px; text-align: left"
       >
         <!-- Edit Profile -->
-        <div v-if="currentTab === 'OwnerProfileSettings'">
+        <div v-if="currentTab === 'EditProfile'">
           <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
             Edit profile
           </h2>
@@ -91,8 +146,18 @@
           </div>
         </div>
 
+        <!-- Manage Courses Settings -->
+        <div v-else-if="currentTab === 'ManageCourses'">
+          <OwnerCourses />
+        </div>
+
+        <!-- Billing Account Settings -->
+        <div v-else-if="currentTab === 'BillingAccount'">
+          <BillingAccount />
+        </div>
+
         <!-- Sport Center Settings -->
-        <div v-else-if="currentTab === 'OwnerSportCenterSettings'">
+        <div v-else-if="currentTab === 'EditSportCenter'">
           <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
             Edit sport center
           </h2>
@@ -146,7 +211,6 @@
                 :state="true"
               ></b-form-timepicker>
             </div>
-            </div>
           </div>
         </div>
       </div>
@@ -155,19 +219,19 @@
 
 <script>
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
-import OwnerProfileSettings from "./OwnerProfileSettings.vue";
-import OwnerSportCenterSettings from "./OwnerSportCenterSettings.vue";
+import OwnerCourses from "./OwnerCourses.vue";
+import BillingAccount from "./BillingAccount.vue";
 
 export default {
   name: "ProfileSettings",
   components: {
-    OwnerProfileSettings,
-    OwnerSportCenterSettings,
+    OwnerCourses,
+    BillingAccount,
     // Add more components as needed
   },
   data() {
     return {
-      currentTab: "OwnerProfileSettings", // Default tab
+      currentTab: "EditProfile", // Default tab
       profile: {
         name: "",
         email: "",
@@ -197,6 +261,8 @@ export default {
   transition: background-color 0.3s ease-in-out;
   margin-left: 15px;
   margin-right: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .menu-item-selected {
@@ -209,7 +275,7 @@ export default {
 }
 
 .text-field {
-  width: 80%;
+  width: 90%;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #444; /* Set initial border color to gray */
@@ -225,7 +291,7 @@ export default {
 }
 
 .timepicker {
-  width: 80%;
+  width: 90%;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #444; /* Set initial border color to gray */

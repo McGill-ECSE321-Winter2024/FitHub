@@ -49,7 +49,7 @@ export default {
         credentials: 'include'
       };
 
-      fetch('http://127.0.0.1:8080/public/courses', requestOptions)
+      fetch('http://127.0.0.1:8080/public/courses?status=Approved', requestOptions)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');

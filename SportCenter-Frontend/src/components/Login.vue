@@ -83,7 +83,7 @@ export default {
             .then(result => {
                 if (result === 'success') {
                     console.log('Successful')
-                    fetch('http://localhost:8080/role', {
+                    fetch('http://localhost:8080/role-id', {
                         method: 'GET',
                         mode: "cors",
                         headers: {
@@ -92,17 +92,21 @@ export default {
                         credentials: 'include' // Ensure cookies are sent with the request,
                     }).then((roleResponse) => {
                         roleResponse.text().then(role => {
-                            console.log('Role:', role);
+                            const role_and_id = role.split(',');
+                            role = role_and_id[0];
+                            const id = role_and_id[1];
                             
                             // Save cookies and change page
                             this.$cookies.set('username', this.email);
                             this.$cookies.set('password', this.password);
                             this.$cookies.set('role', role);
+                            this.$cookies.set('id', id);
 
                             console.log('Created new cookies:');
                             console.log('username: ', decodeURIComponent(this.$cookies.get('username')));
                             console.log('password: ', this.$cookies.get('password'));
-                            console.log('role: ', this.$cookies.get('role'))
+                            console.log('role: ', this.$cookies.get('role'));
+                            console.log('id: ', this.$cookies.get('id'));
                             
                             this.$router.push('/');
 
@@ -118,8 +122,6 @@ export default {
                 }
             })
             .catch(error => console.log('error', error));
-
-            
 
     },
     switchToHomePage() {
