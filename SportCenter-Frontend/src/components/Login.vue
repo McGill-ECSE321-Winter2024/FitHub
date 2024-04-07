@@ -123,9 +123,6 @@ export default {
             })
             .catch(error => console.log('error', error));
 
-    },
-    switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
     }
 }
 
