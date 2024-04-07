@@ -71,7 +71,8 @@ public class SessionIntegrationTests extends CommonTestSetup {
 	private String LOGIN_EMAIL = "julia@mail.com";
     private String LOGIN_PASSWORD = "secret1456165";
 
-	//------------------------- Instrucor ----------------------
+	//------------------------- Instructor ----------------------
+
 	String email = "olivia@mail.com";
     String password = "secretPassword";
     String instructorName = "Olivia";
@@ -83,7 +84,6 @@ public class SessionIntegrationTests extends CommonTestSetup {
     String newInstructorName = "Dada";
     String newImageURL = "dada.png";
 	Instructor newSupervisor;
-
 
 	//------------------------ Location ------------------------
 
