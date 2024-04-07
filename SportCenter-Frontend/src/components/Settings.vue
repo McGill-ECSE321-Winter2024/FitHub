@@ -140,6 +140,11 @@
           <OwnerCourses />
         </div>
 
+        <!-- Billing Account Settings -->
+        <div v-else-if="currentTab === 'BillingAccount'">
+          <BillingAccount />
+        </div>
+
         <!-- Sport Center Settings -->
         <div v-else-if="currentTab === 'EditSportCenter'">
           <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
@@ -199,16 +204,19 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
 import OwnerCourses from "./OwnerCourses.vue";
+import BillingAccount from "./BillingAccount.vue";
 
 export default {
   name: "ProfileSettings",
   components: {
     OwnerCourses,
+    BillingAccount,
     // Add more components as needed
   },
   data() {
