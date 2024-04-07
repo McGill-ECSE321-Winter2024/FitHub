@@ -41,6 +41,7 @@
     </form>
 
 </div>
+<p v-if="successMessage">{{ successMessage }}</p>
 </div>
 </template>
 
@@ -55,26 +56,16 @@ export default {
         cvv: '',
         billingAddress: '',
         cardHolder: '',
-        isDefault: false
+        isDefault: false,
+        successMessage: '' 
       }
     };
   },
   methods: {
     submitForm() {
       // Here you can handle form submission, for example, sending data to a server
+      this.successMessage = 'Added card successfully';
       console.log('Form submitted:', this.formData);
-      // Reset the form after submission
-      this.resetForm();
-    },
-    resetForm() {
-      // Reset form data
-      this.formData = {
-        cardNumber: '',
-        expiryDate: '',
-        cvv: '',
-        billingAddress: '',
-        cardHolder: ''
-      };
     }
   }
 };
