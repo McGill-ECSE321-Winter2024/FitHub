@@ -43,13 +43,10 @@
 </template>
 
 <script>
-// Import OwnerSportCenterSettings component
-import OwnerSportCenterSettings from "./OwnerSportCenterSettings.vue";
 
 export default {
   name: "ProfileSettings",
   components: {
-    OwnerSportCenterSettings,
     // Add more components as needed
   },
   data() {
