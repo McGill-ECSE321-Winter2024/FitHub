@@ -19,11 +19,23 @@
                         <li class="nav-item">
                             <router-link to="/instructors" class="nav-link">Instructors</router-link>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="!isLoggedIn" class="nav-item">
                             <router-link to="/login" class="nav-link">Already a Member?</router-link>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="!isLoggedIn" class="nav-item">
                             <router-link to="/registration" class="nav-link">Register Here!</router-link>
+                        </li>
+                        <li v-if="isLoggedIn" class="nav-item">
+                            <div v-if="isLoggedIn" class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    My Account
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown" :style="{ transition: 'background-color 1.5s', zIndex: 1, backgroundColor: toolbarColor }">
+                                    <router-link class="dropdown-item" to="/settings">Settings <b-icon icon="gear"></b-icon></router-link>
+                                    <a class="dropdown-item" @click.prevent="signOut" style="color: var(--color-red)">Sign Out <b-icon icon="box-arrow-right" style="color: var(--color-red)"></b-icon></a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +53,8 @@ export default {
     data() {
         return {
             mounted: false,
-            toolbarColor: '#FFD0D5'
+            toolbarColor: '#FFD0D5',
+            isLoggedIn: false,
         };
     },
     mounted() {
@@ -53,6 +66,9 @@ export default {
         if (router.currentRoute.path != '/') {
             this.updateToolbarColor(router.currentRoute.path);
         }
+
+        this.isLoggedIn = this.checkAuthenticationStatus();
+
     },
     beforeDestroy() {
         EventBus.$off('beforeSlideOccurred', this.handleChangeBackgroundColor);
@@ -85,13 +101,28 @@ export default {
                 case '/settings':
                     this.toolbarColor = '#CDF567';
                     break;
-                case '/sessions': 
+                case '/sessions':
                     this.toolbarColor = '#FFFFFF';
                     break;
                 default:
                     this.toolbarColor = '#FFD0D6';
             }
         },
+        checkAuthenticationStatus() {
+            // Check if user is authenticated based on your authentication logic
+            const username = this.$cookies.get('username');
+            const password = this.$cookies.get('password');
+
+            console.log(`Username: ${username}`)
+            console.log(`Password: ${password}`)
+            return username && password;
+        },
+        signOut() {
+            this.isLoggedIn = false;
+            this.$cookies.keys().forEach(cookieName => {
+                this.$cookies.remove(cookieName);
+            });
+        }
     }
 };
 </script>
@@ -108,5 +139,15 @@ export default {
 
 .toolbar-slide-leave-to {
     transform: translateY(0);
+}
+
+.dropdown-item {
+    font-weight: 600;
+    align-items: center;
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-black);
+    color: var(--color-white);
 }
 </style>
