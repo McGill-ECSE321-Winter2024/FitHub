@@ -110,7 +110,7 @@ export default {
 <style scoped>
 
 .solid-background {
-  background-color: #121212;
+  background-color: var(--color-black);
   height: 100vh;
   width: 100vw;
   overflow: auto;
@@ -146,7 +146,7 @@ export default {
 }
 
 input[type="text"] {
-  background-color: #121212;
+  background-color: var(--color-black);
   width: 100%;
   border: 1px solid #ccc;
   color: #ccc;
@@ -170,7 +170,7 @@ label {
 
 button {
   padding: 10px 10px;
-  color: #121212;
+  color: var(--color-black);
   border: none;
   border-radius: 20px;
   cursor: pointer;

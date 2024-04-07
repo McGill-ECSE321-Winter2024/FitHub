@@ -43,7 +43,7 @@
     <style scoped>
     
     .solid-background {
-      background-color: #121212;
+      background-color: var(--color-black);
       height: 100vh;
       width: 100vw;
       overflow: auto;
@@ -80,7 +80,7 @@
     
     button {
       padding: 10px 10px;
-      background-color: #121212;
+      background-color: var(--color-black);
       border-radius: 30px;
       border: none;
       cursor: pointer;

@@ -7,10 +7,14 @@ html {
     height: 100%;
 }
 :root{
-    --color-black: #171313;
+    --color-white: #FFFFFF;
+    --color-black: #121212;
     --color-muted-black: #837e7e;
     --color-pink: #FFD0D6;
     --color-salmon: #FB7EA8;
+    --color-sunflower: #FFBC4B;
+    --color-purple: #6900BA;
+    --color-yellow: #FFE818;
 }
 
 body {

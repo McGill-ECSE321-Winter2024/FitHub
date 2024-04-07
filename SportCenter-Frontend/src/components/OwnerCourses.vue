@@ -100,7 +100,7 @@ export default {
 
 <style scoped>
 .solid-background {
-  background-color: #121212;
+  background-color: var(--color-black);
   height: 100vh;
   width: 70vw;
   overflow: auto;
@@ -128,8 +128,8 @@ export default {
 
 .white-heading {
   font-size: 14px;
-  color: #121212;
-  background-color: #fff;
+  color: var(--color-black);
+  background-color: #FFF;
   font-weight: 700;
   padding: 1%;
 }
@@ -151,25 +151,25 @@ body {
   padding: 0;
 }
 
-.approve {
-  border: 0px;
-  background-color: #cdf563;
-  color: #121212;
-  font-weight: bold;
-  border-radius: 20px;
-  height: 40px;
-  width: 100px;
+.approve{
+    border: 0px;
+    background-color: #CDF563;
+    color: var(--color-black);
+    font-weight: bold;
+    border-radius: 20px;
+    height: 40px;
+    width: 100px;
 }
 
 .disapprove {
-  margin-left: 10px;
-  border: 0px;
-  background-color: #e3240c;
-  color: #121212;
-  font-weight: bold;
-  border-radius: 20px;
-  height: 40px;
-  width: 100px;
+    margin-left: 10px;
+    border: 0px;
+    background-color: #E3240C;
+    color: var(--color-black);
+    font-weight: bold;
+    border-radius: 20px;
+     height: 40px;
+    width: 100px;
 }
 
 .buttons {

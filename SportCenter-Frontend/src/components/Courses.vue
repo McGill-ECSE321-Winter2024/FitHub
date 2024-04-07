@@ -1,16 +1,16 @@
 <template>
   <div class="solid-background">
     <Toolbar />
-      <!-- Toolbar and search bar -->
-      <div class="text-search-bar">
-        <div class="text-content">
-          <h1 class="custom-h1">Explore your interests</h1>
-          <h3>Select a course to learn more</h3>
-        </div>
-        <div class="search-field">
-          <input type="text" class="search-input" placeholder="Search courses">
-        </div>
+    <!-- Toolbar and search bar -->
+    <div class="text-search-bar">
+      <div class="text-content">
+        <h1 class="custom-h1">Explore your interests</h1>
+        <h3>Select a course to learn more</h3>
       </div>
+      <div class="search-field">
+        <input type="text" class="search-input" placeholder="Search courses">
+      </div>
+    </div>
 
     <div class="cont">
       <div class="mt-5">
@@ -27,7 +27,8 @@
           </div>
         </div>
       </div>
-      </div>
+    </div>
+    <Footer />
   </div>
 </template>
 <script>
@@ -85,7 +86,7 @@ export default {
 
 <style scoped>
 .solid-background {
-  background-color: #121212;
+  background-color: var(--color-black);
   height: 100vh;
   width: 100vw;
   overflow: auto;
@@ -96,10 +97,10 @@ export default {
   font-size: 55px;
 }
 
-.text-search-bar{
-    margin-top: 30px;
-    margin-left: 50px;
-    margin-right:50px;
+.text-search-bar {
+  margin-top: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .cont {
@@ -107,7 +108,7 @@ export default {
   width: 95vw;
   height: 100vh;
   margin-left: 50px;
-  margin-right:50px;
+  margin-right: 50px;
 }
 
 
@@ -123,7 +124,7 @@ export default {
 
 .white-heading {
   font-size: 14px;
-  color: #121212;
+  color: var(--color-black);
   background-color: #FFF;
   font-weight: 700;
   padding: 1%;
@@ -132,13 +133,13 @@ export default {
 h3 {
   font-size: 24px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 p {
   font-size: 18px;
   font-weight: 400;
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 body {
