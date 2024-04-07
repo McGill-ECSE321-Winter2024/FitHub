@@ -75,6 +75,7 @@ export default {
 
 .hub {
   animation: roll-down 3s ease-out forwards;
+
 }
 
 @keyframes roll-up {
