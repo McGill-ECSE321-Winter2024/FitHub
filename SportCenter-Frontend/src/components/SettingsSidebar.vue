@@ -71,6 +71,21 @@
           My sessions
         </b-row>
         <b-row
+          @click="toggleMenu('Locations')"
+          :class="{
+            'menu-item-selected': currentTab === 'Locations',
+          }"
+          class="menu-item"
+          style="
+            cursor: pointer;
+            padding: 20px;
+            font-size: 20px;
+            color: #ffffff;
+          "
+        >
+          Locations
+        </b-row>
+        <b-row
           @click="toggleMenu('BillingAccount')"
           :class="{
             'menu-item-selected': currentTab === 'BillingAccount',

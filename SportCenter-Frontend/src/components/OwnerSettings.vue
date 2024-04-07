@@ -1,5 +1,12 @@
 <template>
-  <div style="font-family: Figtree; height: 100vh; background-color: #121212">
+  <div
+    style="
+      font-family: Figtree;
+      height: 100vh;
+      background-color: #121212;
+      color: #ffffff;
+    "
+  >
     <Toolbar />
     <!-- Container for sidebar and main content -->
     <div class="content-container">
