@@ -1,8 +1,8 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="page row align-items-start justify-content-center">
-            <Toolbar />
-            <div class="row p-5">
+        <Toolbar />
+        <div class="page pt-5 mt-5 row align-items-center justify-content-center">
+            <div class="row p-5 align-items-center mt-5">
                 <!-- Column 1 -->
                 <div class="col">
                     <div class="container justify-content-center-lg">
@@ -147,9 +147,7 @@ export default {
 
     .page {
         min-height: 100vh;
-        font-family: "Rubik", sans-serif;
-        background-color: #ffbc4b;
-
+        background-color: var(--color-sunflower);
         width: 100%;
         position: absolute;
         top:0;
@@ -163,8 +161,8 @@ export default {
     }
 
     .form-control:valid {
-        background-color: #ffbc4b;
-        color: #171313;
+        background-color: var(--color-sunflower);
+        color: var(--color-black);
         border-color: rgba(0, 0, 0, 0.2);
         border-style: solid;
         border-width: 2px;
@@ -172,12 +170,12 @@ export default {
     }
 
     .form-control::placeholder {
-        color: #171313;
+        color: var(--color-black);
         opacity: 1; /* Firefox */
     }
 
     .form-control::-ms-input-placeholder { /* Edge 12 -18 */
-        color: #171313;
+        color: var(--color-black);
     }
 
     .form-control:focus {
@@ -186,7 +184,7 @@ export default {
 
     h1 {
         z-index:950;
-        color: #171313;
+        color: var(--color-black);
     }
 
     .hidden {

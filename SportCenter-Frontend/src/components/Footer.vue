@@ -1,52 +1,99 @@
 <template>
-    <div style="font-family: Rubik; background-color: #524E5E;">
-        <footer class="footer my-auto py-1">
-            <ul class="nav justify-content-center pb-1 mb-1">
-                <li class="nav-item">
-                    <a href="#" class="nav-link px-2" @click="goToHome">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link px-2" @click="goToCourses">Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link px-2" @click="goToInstructors">Instructors</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact-us" class="nav-link px-2">Contact Us</a>
-                </li>
-            </ul>
-            <p class="text-center text-muted">© 2024 FitHub, P12.Inc</p>
-        </footer>
+    <div class="p-5 d-flex" :style="{ backgroundColor: toolbarColor, transition: 'background-color 1.5s'}"">
+        <router-link to=" /" class="navbar-brand mr-auto p-2">
+        <img width="100" height="100" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
+            alt="acrobatics" />itHub
+        </router-link>
+        <nav class="navbar p-2">
+            <div>
+                <ul class="navbar-nav nav flex-column">
+                    <li class="nav-item">
+                        <router-link to="/courses" class="nav-link">Courses</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/instructors" class="nav-link">Instructors</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/login" class="nav-link">Already a Member?</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/registration" class="nav-link">Register Here!</router-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
 </template>
 
 <script>
-export default {
-    mounted() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+import { EventBus } from '@/EventBus';
+import router from '@/router/index';
 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+export default {
+    data() {
+        return {
+            mounted: false,
+            toolbarColor: '#FFD0D5'
+        };
+    },
+    mounted() {
+        setTimeout(() => {
+            this.mounted = true;
+        }, 100);
+
+        EventBus.$on('beforeSlideOccurred', this.handleChangeBackgroundColor);
+        if (router.currentRoute.path != '/') {
+            this.updateToolbarColor(router.currentRoute.path);
+        }
+    },
+    beforeDestroy() {
+        EventBus.$off('beforeSlideOccurred', this.handleChangeBackgroundColor);
     },
     methods: {
-        goToHome() {
-            this.$router.push('/');
+        handleChangeBackgroundColor(payload) {
+            const { currentSlide } = payload;
+            if (currentSlide === 0 || currentSlide === 1) {
+                this.toolbarColor = '#FFE818';
+            } else if (currentSlide === 2 || currentSlide == 3) {
+                this.toolbarColor = '#3E8EF1';
+            } else {
+                this.toolbarColor = '#FFD0D5';
+            }
         },
-
-        goToCourses() {
-            this.$router.push('/courses');
+        updateToolbarColor(route) {
+            switch (route) {
+                case '/courses':
+                    this.toolbarColor = '#CDF567';
+                    break;
+                case '/instructors':
+                    this.toolbarColor = '#FFE818';
+                    break;
+                case '/login':
+                    this.toolbarColor = '#FFBC4B';
+                    break;
+                case '/registration':
+                    this.toolbarColor = '#CDF567';
+                    break;
+                case '/settings':
+                    this.toolbarColor = '#CDF567';
+                    break;
+                default:
+                    this.toolbarColor = '#FFD0D6';
+            }
         },
-        goToInstructors() {
-            this.$router.push('/instructors')
-        },
-        goToSignIn() {
-            this.$router.push('/login');
-        }
     }
 };
 </script>
+
+<style scoped>
+.nav-item {
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.navbar-brand {
+    color: var(--color-black);
+    font-size: 75px;
+}
+
+</style>
