@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
+import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
@@ -39,6 +41,9 @@ public class CourseService {
 
     @Autowired
     SessionPackageRepository sessionPackageRepository;
+
+    @Autowired
+    SessionService sessionService;
 
     //--------------------------// Create Course //--------------------------//
 
@@ -257,6 +262,16 @@ public class CourseService {
             throw new IllegalArgumentException("No courses of that status exist!");
         }
         return coursesByStatus;
+    }
+
+    @Transactional
+    public List<Course> findCoursesByInstructor(Instructor instructor){
+        List<Course> coursesByInstructor = new ArrayList<>();
+        List<Session> sessions = sessionService.findSessionsByInstructor(instructor);
+        for (Session session : sessions) {
+            coursesByInstructor.add(session.getCourseType());
+        }
+        return coursesByInstructor;
     }
 
     //--------------------------// Propose course //--------------------------//
