@@ -43,4 +43,27 @@ public class LocationRepositoryTests extends CommonTestSetup{
                 assertEquals(floor, locationFromDb.getFloor());
 
 	}
+
+     @Test
+	public void testPersistAndLoadLocationByFloorAndRoom() {
+        
+                String floor = "aFloor1";
+                String room = "aRoom1";
+
+                Location location = new Location();
+                location.setFloor(floor);
+                location.setRoom(room);
+                location.setCenter(sportCenter);
+
+                Location savedLocation = locationRepository.save(location);
+
+                // Retrieve location from the database
+                Location locationFromDb = locationRepository.findLocationByFloorAndRoom(floor, room);
+
+                //Assert that the information in the location association has been saved. 
+                assertNotNull(locationFromDb);
+                assertEquals(room, locationFromDb.getRoom());
+                assertEquals(floor, locationFromDb.getFloor());
+
+	}
 }

@@ -67,7 +67,7 @@ public class LocationController {
         }
     }
 
-    @GetMapping(value = {"/locations", "/locations/"})
+    @GetMapping(value = {"/public/locations", "/public/locations/"})
     public ResponseEntity<LocationListDTO> getAllLocations() {
         List<LocationResponseDTO> locations = new ArrayList<>();
         for (Location location: locationService.getAllLocations()) {
@@ -88,6 +88,21 @@ public class LocationController {
     public ResponseEntity<Void> deleteLocation(@PathVariable Integer id) {
         try{
             boolean deletionSuccessful = locationService.deleteLocation(id);
+            if (deletionSuccessful) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(value = {"/locations", "/locations/"})
+    public ResponseEntity<Void> deleteLocationByFloorAndRoom(@RequestBody LocationRequestDTO location) {
+        try{
+            boolean deletionSuccessful = locationService.deleteLocationByFloorAndRoom(location.getFloor(),location.getRoom());
             if (deletionSuccessful) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {

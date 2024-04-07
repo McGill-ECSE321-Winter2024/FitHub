@@ -101,16 +101,27 @@ export default {
   font-size: 55px;
 }
 
+.custom-h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.left-content {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
 .text-search-bar {
   margin-top: 30px;
   margin-left: 50px;
   margin-right: 50px;
+  text-align: left;
 }
 
 .cont {
   margin-top: 30px;
   width: 95vw;
-  height: 100vh;
   margin-left: 50px;
   margin-right: 50px;
 }
