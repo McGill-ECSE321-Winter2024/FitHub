@@ -1,5 +1,11 @@
 <template>
-  <div style="font-family: Figtree; height: 100vh; background-color: var(--color-black)">
+  <div
+    style="
+      font-family: Figtree;
+      height: 100vh;
+      background-color: var(--color-black);
+    "
+  >
     <div style="background-color: var(--color-black)">
       <Toolbar />
     </div>
@@ -98,6 +104,17 @@
               style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               My sessions
+            </li>
+            <!-- Propose Courses Button -->
+            <li
+              @click="toggleMenu('ProposeCourses')"
+              :class="{
+                'menu-item-selected': currentTab === 'ProposeCourses',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Propose courses
             </li>
             <!-- Billing Account Button -->
             <li
