@@ -1,15 +1,19 @@
 // router/index.js
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueCookies from 'vue-cookies'
 import Home from '@/components/Home'
 import SignIn from '@/components/Login'
 import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
+import OwnerSettings from '@/components/OwnerSettings'
 import BillingAccount from '@/components/BillingAccount'
 import BillingAccountOverview from '@/components/BillingAccountOverview'
 
 Vue.use(Router)
+
+Vue.use(VueCookies)
 
 export default new Router({
   routes: [
@@ -39,6 +43,11 @@ export default new Router({
       component: Registration
     }
     ,
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: OwnerSettings
+    },
     {
       path: '/billing-account',
       name: 'BillingAccount',

@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light" :style="{ backgroundColor: bgColor , transition: 'background-color 1.5s'}">
+    <nav class="navbar navbar-expand-lg navbar-light" :style="{ transition: 'background-color 1.5s'}">
         <a class="navbar-brand" href="#" @click="goToHome">
             <img width="40" height="40" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
                 alt="acrobatics" />itHub
@@ -82,6 +82,7 @@ export default {
 </script>
 
 <style scoped>
+
 .toolbar-slide-enter-active,
 .toolbar-slide-leave-active {
     transition: transform 1s ease;
