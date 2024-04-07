@@ -1,43 +1,53 @@
 <template>
   <div class="solid-background">
-      <!-- Toolbar and search bar -->
-      <div class="text-search-bar">
-        <div class="text-content">
-          <h1 class="custom-h1">Manage courses</h1>
-          <h3>Approve or disapprove courses which instructors have proposed</h3>
-        </div>
+    <!-- Toolbar and search bar -->
+    <div class="text-search-bar">
+      <div class="text-content" style="padding: 60px; text-align: left">
+        <h1 class="custom-h1">Manage courses</h1>
+        <h3>Approve or disapprove courses which instructors have proposed.</h3>
       </div>
+    </div>
 
-      <div class="mt-5">
-        <div class="row">
-          <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
-            <div>
-              <img :src="course.url" :alt="course.name" class="w-100 h-100">
-            </div>
-            <h3><span class="white-heading">{{ course.category }}</span></h3>
-            <div>
-              <h3>{{ capitalize(course.name) }}</h3>
-              <p>{{ course.description }}</p>
+    <div class="mt-5">
+      <div class="row">
+        <div
+          class="col-md-5 col-lg-3 col-sm-12 mb-5"
+          v-for="course in list.courses"
+          :key="course.id"
+        >
+          <div>
+            <img :src="course.url" :alt="course.name" class="w-100 h-100" />
+          </div>
+          <h3>
+            <span class="white-heading">{{ course.category }}</span>
+          </h3>
+          <div>
+            <h3>{{ capitalize(course.name) }}</h3>
+            <p>{{ course.description }}</p>
 
-              <div class="buttons">
-                <button @click="approveCourse(course.id)" class="approve">Approve</button>
-                <button @click="disapproveCourse(course.id)" class="disapprove">Disapprove</button>
-              </div>
+            <div class="buttons">
+              <button @click="approveCourse(course.id)" class="approve">
+                Approve
+              </button>
+              <button @click="disapproveCourse(course.id)" class="disapprove">
+                Disapprove
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Courses',
+  name: "Courses",
   data() {
     return {
       list: [],
-      hoveredCardColor: ''
-    }
+      hoveredCardColor: "",
+    };
   },
   mounted() {
     this.getAllCourses();
@@ -45,48 +55,47 @@ export default {
   methods: {
     getAllCourses() {
       const requestOptions = {
-        method: 'GET',
-        credentials: 'include'
+        method: "GET",
+        credentials: "include",
       };
 
-       fetch('http://127.0.0.1:8080/public/courses?status=Pending',requestOptions)
-        .then(response => {
+      fetch(
+        "http://127.0.0.1:8080/public/courses?status=Pending",
+        requestOptions
+      )
+        .then((response) => {
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error("Network response was not ok");
           }
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           this.list = data;
-          console.log(this.list)
+          console.log(this.list);
         })
-        .catch(error => {
-          console.error('Error fetching courses:', error);
+        .catch((error) => {
+          console.error("Error fetching courses:", error);
         });
     },
     getBorderColor(difficulty) {
       switch (difficulty) {
-        case 'Advanced':
-          return '#E3240C';
-        case 'Intermediate':
-          return '#FF5746';
-        case 'Beginner':
-          return '#CDF563';
+        case "Advanced":
+          return "#E3240C";
+        case "Intermediate":
+          return "#FF5746";
+        case "Beginner":
+          return "#CDF563";
         default:
-          return '';
+          return "";
       }
     },
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
-    approveCourse(courseId) {
-
-    },
-    disapproveCourse(courseId) {
-
-    }
-  }
-}
+    approveCourse(courseId) {},
+    disapproveCourse(courseId) {},
+  },
+};
 </script>
 
 <style scoped>
@@ -100,11 +109,11 @@ export default {
 
 .custom-h1 {
   color: #ffffff;
-  font-size: 55px;
+  font-size: 35px;
 }
 
-.text-search-bar{
-    margin-top: 15px;
+.text-search-bar {
+  margin-top: 0px;
 }
 
 .search-input {
@@ -126,15 +135,15 @@ export default {
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 p {
   font-size: 18px;
   font-weight: 400;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 body {
