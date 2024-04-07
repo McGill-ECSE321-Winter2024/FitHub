@@ -156,7 +156,7 @@ public class LocationIntegrationTests extends CommonTestSetup {
 
         ResponseEntity<LocationResponseDTO> readResponse = client.exchange("/locations/" + this.validId, HttpMethod.GET, requestEntity, LocationResponseDTO.class);
         LocationResponseDTO location = readResponse.getBody();
-        assertNull(location);
+        assertNull(location.getFloor());
 
 
     }

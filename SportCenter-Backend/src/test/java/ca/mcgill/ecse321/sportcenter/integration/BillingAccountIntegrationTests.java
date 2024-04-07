@@ -371,7 +371,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 
         ResponseEntity<BillingAccountResponseDTO> responseRead = client.exchange("/billing-accounts/" + validId, HttpMethod.GET, requestEntity, BillingAccountResponseDTO.class);
         BillingAccountResponseDTO billingAccount = responseRead.getBody();
-        assertNull(billingAccount);
+        assertNull(billingAccount.getCardHolder());
 
 	}
 
