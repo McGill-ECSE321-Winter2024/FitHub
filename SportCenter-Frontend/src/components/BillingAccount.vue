@@ -62,11 +62,47 @@ export default {
     };
   },
   methods: {
-    submitForm() {
       // Here you can handle form submission, for example, sending data to a server
-      this.successMessage = 'Added card successfully';
-      console.log('Form submitted:', this.formData);
-    }
+      //this.successMessage = 'Added card successfully';
+      //console.log('Form submitted:', this.formData);
+    submitForm() {
+      fetch('http://127.0.0.1:8080/customers/{cId}/billing-accounts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.formData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.successMessage = data.message; // Assuming your backend returns a success message
+          console.log('Form submitted:', data);
+        })
+        .catch((error) => {
+          console.error('Error submitting form:', error);
+          // Handle error
+        });
+
+    },
+    cancelForm() {
+
+      return{
+        formData: {
+        cardNumber: '',
+        expiryDate: '',
+        cvv: '',
+        billingAddress: '',
+        cardHolder: '',
+        isDefault: false,
+        successMessage: '' 
+        }
+      };
+    },
   }
 };
 </script>
@@ -113,6 +149,7 @@ input[type="text"] {
   background-color: #121212;
   width: 100%;
   border: 1px solid #ccc;
+  color: #ccc;
   border-radius: 7px;
 }
 
