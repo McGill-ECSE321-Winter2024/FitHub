@@ -32,13 +32,13 @@
       </tr>
       <tr>
           <td>
-              <input type="text" placeholder="Room" class="text-field">
+              <input type="number" placeholder="Room" class="text-field" v-model="toDeleteLocationRoom">
           </td>
           <td>
-              <input type="text" placeholder="Floor" class="text-field">
+              <input type="number" placeholder="Floor" class="text-field" v-model="toDeleteLocationFloor">
           </td>
           <td>
-              <button id="delete-btn">Delete</button>
+              <button  @click="deleteLocation()" id="delete-btn">Delete</button>
           </td>
       </tr>
       <tr>
@@ -82,6 +82,8 @@ export default {
             locations: [],
             newLocationRoom: null,
             newLocationFloor: null,
+            toDeleteLocationRoom: null,
+            toDeleteLocationFloor: null,
             errorLocation: ''
         };
     },
@@ -105,14 +107,15 @@ export default {
               })
               .then(data => {
                 this.locations = data;
-                console.log(this.locations)
+                
               })
               .catch(error => {
                 console.error('Error fetching locations:', error);
               });
         },
         async createLocation() {
-
+            
+            //This needs to be modified with the cookies
             const LOGIN_EMAIL = "@";
             const LOGIN_PASSWORD = "password";
             const headers = new Headers();
@@ -144,13 +147,54 @@ export default {
               .then(data => {
                 // Automatically refresh the data after creating a new location
                 this.getAllLocations();
-                console.log(data)
+                
               })
               .catch(error => {
                 console.error('Error creating locations:', error);
               });
             
-        }
+        },
+        async deleteLocation() {
+
+            //This needs to be modified with the cookies, will be done later
+            const LOGIN_EMAIL = "@";
+            const LOGIN_PASSWORD = "password";
+            const headers = new Headers();
+            headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
+            headers.append('Content-Type', 'application/json');
+
+            const toDeleteLocation = {
+                floor: this.toDeleteLocationFloor,
+                room: this.toDeleteLocationRoom
+            }
+
+            const requestOptions = {
+            method: 'DELETE',
+            credentials: 'include',
+            body: JSON.stringify(toDeleteLocation),
+            headers: headers
+            };
+        
+
+            fetch('http://127.0.0.1:8080/locations', requestOptions)
+            .then(response => {
+                console.log("Attempting to delete")
+                if (!response.ok) {
+                console.log(response);
+                throw new Error('Network response was not ok');
+                }
+                console.log(response);
+            })
+            .then(data => {
+                // Automatically refresh the data after creating a new location
+                this.getAllLocations();
+                console.log(data)
+            })
+            .catch(error => {
+                console.error('Error creating locations:', error);
+            });
+
+            }
     },
     computed: {
         isCreateBtnDisabled() {

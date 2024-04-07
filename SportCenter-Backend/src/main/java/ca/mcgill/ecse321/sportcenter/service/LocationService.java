@@ -72,6 +72,18 @@ public class LocationService {
         return true;
     }
 
+    @Transactional
+    public boolean deleteLocationByFloorAndRoom(String floor, String room){
+        Location location = locationRepository.findLocationByFloorAndRoom(floor,room);
+        if (location == null) {
+            return false;
+        }
+        SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+        sportCenter.removeLocation(location);
+        sportCenterManagementService.updateSportCenter(sportCenter);
+        return true;
+    }
+
     //--------------------------// Getters //--------------------------//
 
     @Transactional

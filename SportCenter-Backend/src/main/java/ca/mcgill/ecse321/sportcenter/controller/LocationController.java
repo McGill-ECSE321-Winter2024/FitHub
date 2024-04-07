@@ -99,4 +99,19 @@ public class LocationController {
         }
     }
 
+    @DeleteMapping(value = {"/locations", "/locations/"})
+    public ResponseEntity<Void> deleteLocationByFloorAndRoom(@RequestBody LocationRequestDTO location) {
+        try{
+            boolean deletionSuccessful = locationService.deleteLocationByFloorAndRoom(location.getFloor(),location.getRoom());
+            if (deletionSuccessful) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
