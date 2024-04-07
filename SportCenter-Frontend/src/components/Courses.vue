@@ -37,17 +37,17 @@
     </div>
 
     <!-- Create course component -->
-    <CreateCourse v-if="showCreateCourse" />
+    <ProposeCourse v-if="showCreateCourse" />
   </div>
 </template>
 
 <script>
-import CreateCourse from './CreateCourse.vue'; // Import your CreateCourse component
+import ProposeCourse from './ProposeCourse.vue'; 
 
 export default {
   name: 'Courses',
   components: {
-    CreateCourse
+    ProposeCourse
   },
   data() {
     return {

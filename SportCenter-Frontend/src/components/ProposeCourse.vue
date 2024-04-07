@@ -2,8 +2,12 @@
 
 <div class="solid-background">
 <div>
-<h3 class="custom-h3">Input details for this course request to the owner</h3>
+<h1 class="custom-h1">Propose a new course</h1>
+<h3 class="custom-h3">Propose a new course by inputting the details.</h3>
+<h3 class="custom-h3">Your request will be reviewed by the owner.</h3>
 </div>
+
+<div class="box">
 <div class="form-box">
     
     <form @submit.prevent="submitForm">
@@ -35,10 +39,11 @@
             </select>
       </div>
 
-      <button id="save-btn" type="save">Save</button>
+      <button id="save-btn" type="save">Send</button>
       <button id="cancel-btn" type="cancel">Cancel</button>
     </form>
 
+</div>
 </div>
 <p v-if="successMessage">{{ successMessage }}</p>
 </div>
@@ -49,21 +54,12 @@
 export default {
   data() {
     return {
-      formData: {
-        cardNumber: '',
-        expiryDate: '',
-        cvv: '',
-        billingAddress: '',
-        cardHolder: '',
-        isDefault: false,
-        successMessage: '' 
-      },
       course: {
         name: "",
         category: "",
         description: "",
         difficulty: "",
-        image: ""
+        url: ""
       },
     };
   },
@@ -117,20 +113,23 @@ export default {
 .solid-background {
   background-color: var(--color-black);
   height: 100vh;
-  width: 100vw;
-  overflow: auto;
 }
 
+.box{
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
 .custom-h1 {
   color: var(--color-white);
   font-size: 55px;
 }
 
 .custom-h3 {
-    margin-top : 50px;
   font-size: 24px;
   font-weight: 700;
   color: var(--color-white);
+  
 }
 
 .content {
@@ -185,12 +184,11 @@ textarea:focus {
 }
 
 .form-box {
-  width: 600px; /* Adjust the width as needed */
-  margin-top: 100px;
-  margin: auto;
+  width: 600px;
   padding: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;
+  margin-top: 20px;
 }
 
 .form-group-side {
@@ -247,13 +245,6 @@ button {
 
 button:hover {
   background-color: #0056b3;
-}
-
-h3 {
-  margin-bottom: 50px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #FFFFFF;
 }
 
 
