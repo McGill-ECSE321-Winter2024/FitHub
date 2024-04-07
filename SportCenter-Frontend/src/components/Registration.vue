@@ -1,8 +1,8 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="page row align-items-start justify-content-center">
-            <Toolbar />
-            <div class="row align-items-center p-5">
+        <Toolbar />
+        <div class="page mt-5 pt-5 row align-items-start justify-content-center">
+            <div class="row align-items-center p-5 mt-5">
                 <!-- Column 1 -->
                 <div class="col">
                     <h1 class="mb-xl-5">Break the routine</h1>
@@ -116,7 +116,7 @@ export default {
 
     },
     switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
+        this.$router.push('/');
     }
 }
 
@@ -138,7 +138,6 @@ export default {
 
     .page {
         min-height: 100vh;
-        font-family: "Rubik", sans-serif;
         background-color: #3e8ef1;
 
         width: 100%;
