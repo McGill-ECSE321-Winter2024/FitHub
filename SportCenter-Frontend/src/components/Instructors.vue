@@ -11,19 +11,29 @@
                     <h3>Discover our dedicated team that will guide you with their passion and expertise.</h3>
                 </div>
 
-                <div class="row align-items-start justify-content-start">
+                <div class="row align-items-start justify-content-start over">
                     <hooper group="group1" :loop="false" :itemsToShow="3" :initialSlide="0" class="over h-100 pt-5">
                         <slide class="instructor third-width my-auto" v-for="instructor in instructors"
                             :key="instructor.id">
                             <div class="list">
                                 <img class="mt-3" v-bind:src=instructor.imageURL
-                                    @error="$event.target.src = defaultImage"
+                                    @error="$event.target.src = defaultImage" 
                                     :style="{ 'width': '200px', 'height': 'auto' }" />
                                 <ul class="m-0 p-0">
                                     <li class="heading">{{ instructor.name }}</li>
                                     <li>{{ instructor.email }}</li>
                                     <li>{{ instructor.pronouns }}</li>
-                                    <li>Courses list</li>
+                                    <li>
+                                        <p class="m-0 p-0" v-for="courses in instructorCourses[instructor.id]" :key="courses.id">
+                                            <!-- Display courses for the current instructor -->
+                                            <span v-if="courses.length > 0">Courses: </span>
+                                            
+                                            <span v-for="(course, index) in courses" :key="course.id">{{ course.name }}
+                                                <!-- Check if it's not the last course -->
+                                                <span v-if="index !== courses.length - 1">, </span>
+                                            </span>
+                                        </p>
+                                    </li>
                                 </ul>
                             </div>
                         </slide>
@@ -52,10 +62,6 @@
     </div>
 </template>
 
-<script setup>
-defineEmits(['mouseover', 'mouseleave']);
-</script>
-
 <script>
 
 export default {
@@ -63,6 +69,7 @@ export default {
     data() {
         return {
             instructors: [],
+            instructorCourses: {}, // Object to store courses for each instructor
             defaultImage: require('@/assets/pfp.png')
         };
     },
@@ -74,7 +81,7 @@ export default {
         fetchInstructors() {
             fetch('http://localhost:8080/public/instructors', {
                 method: 'GET',
-                credentials: 'include', // Ensure cookies are sent with the request,
+                credentials: 'include'
             }).then((accountsResponse) => {
                 if (accountsResponse.status === 204) {
                     console.log("No instructors in the database");
@@ -83,6 +90,12 @@ export default {
                     accountsResponse.json().then(accounts => {
                         console.log(accounts.accounts);
                         this.instructors = accounts.accounts;
+
+                        this.instructors.forEach(instructor => {
+                            this.getAllCourses(instructor.id);
+                        });
+
+                        console.log(this.instructorCourses);
                     }).catch(error => {
                         console.error('Error parsing JSON:', error);
                     });
@@ -90,7 +103,30 @@ export default {
             }).catch(error => {
                 console.error('Error fetching accounts:', error);
             });
-        }
+        },
+        getAllCourses(id) {
+            const url = 'http://127.0.0.1:8080/public/courses?instructor-id=' + id;
+
+            fetch(url, {
+                method: 'GET',
+                credentials: 'include'
+            }).then(response => {
+                    if (!response.ok) {
+                        console.error('Network response was not ok');
+                    }
+                    
+                    return response.json();
+                })
+                .then(data => {
+                    // Update instructorCourses object with courses for the current instructor
+                    console.log(id);
+                    console.log(data);
+                    this.$set(this.instructorCourses, id, data);
+                })
+                .catch(error => {
+                    console.error('Error fetching courses:', error);
+            });
+        },
     }
 };
 </script>
@@ -103,6 +139,10 @@ export default {
     color: var(--color-yellow);
     z-index: 0;
     /* Ensure that this element is behind other content */
+}
+
+.over {
+    z-index: 1000;
 }
 
 .instructor {

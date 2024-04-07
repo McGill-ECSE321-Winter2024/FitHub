@@ -5,38 +5,37 @@
     <div class="text-search-bar">
       <div class="text-content">
         <h1 class="custom-h1">
-        <span class="explore-your">Explore your</span>
-        <span class="interests">interests</span>
+          <span class="explore-your">Explore your</span>
+          <span class="interests">interests</span>
         </h1>
         <h3 class="custom-h3">Select a course to learn more</h3>
-      </div>
-      <div class="search-field">
-        <input type="text" class="search-input" placeholder="Search courses">
       </div>
     </div>
 
     <!-- Course list -->
-    
-      <div class="cont">
-        <div class="mt-5">
-          <div class="row">
-            <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
+    <div class="cont">
+      <div class="mt-5">
+        <div class="row">
+          <div v-for="course in list.courses" :key="course.id" class="col-md-5 col-lg-3 col-sm-12 mb-5">
+            <router-link to="/sessions">
               <div>
                 <img :src="course.url" :alt="course.name" class="w-100 h-100">
               </div>
               <div class="content">
-              <h3><span class="white-heading">{{ course.category }}</span></h3>
-              <div>
-                <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
-                <p>{{ course.description }}</p>
+                <h3><span class="white-heading">{{ course.category }}</span></h3>
+                <div>
+                  <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
+                  <p>{{ course.description }}</p>
+                </div>
               </div>
-              </div>
-            </div>
+            </router-link>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import ProposeCourse from './ProposeCourse.vue'; 
