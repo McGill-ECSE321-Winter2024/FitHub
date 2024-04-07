@@ -1,7 +1,7 @@
 <template>
     <div id="instructor_page" class="container-fluid p-0 m-0">
         <div class="row align-items-start justify-content-start p-0 m-0">
-            <Toolbar />
+            <Toolbar class="over" />
             <div class="container pt-5">
                 <div class="row">
                     <h2>Meet our Instructors</h2>
@@ -11,7 +11,7 @@
                 </div>
                 
                 <div class="row align-items-start justify-content-start">
-                    <hooper group="group1" :loop="false" :itemsToShow="3" :initialSlide="0" class="scroller h-100 pt-5">
+                    <hooper group="group1" :loop="false" :itemsToShow="3" :initialSlide="0" class="over h-100 pt-5">
                         <slide class="instructor third-width my-auto" v-for="instructor in instructors"  :key="instructor.id">
                             <div class="list">
                                 <img class="mt-3" v-bind:src=instructor.imageURL @error="$event.target.src = defaultImage":style="{ 'width': '200px', 'height': 'auto' }" />
@@ -96,7 +96,7 @@ export default {
         color: #ffe818;
         z-index: 0; /* Ensure that this element is behind other content */
     }
-    .scroller {
+    .over {
         z-index: 1000; /* Ensure that this element is behind other content */
     }
     .instructor {

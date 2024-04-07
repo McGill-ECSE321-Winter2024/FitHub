@@ -8,6 +8,8 @@ import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
 import OwnerSettings from '@/components/OwnerSettings'
+import BillingAccount from '@/components/BillingAccount'
+import BillingAccountOverview from '@/components/BillingAccountOverview'
 
 Vue.use(Router)
 
@@ -39,11 +41,23 @@ export default new Router({
       path: '/registration',
       name: 'Registration',
       component: Registration
-    },
+    }
+    ,
     {
       path: '/settings',
       name: 'Settings',
       component: OwnerSettings
+    },
+    {
+      path: '/billing-account',
+      name: 'BillingAccount',
+      component: BillingAccount
+    }
+    ,
+    {
+      path: '/billing-accounts',
+      name: 'BillingAccountOverview',
+      component: BillingAccountOverview
     }
   ]
 })
