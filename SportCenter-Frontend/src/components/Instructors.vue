@@ -92,8 +92,8 @@ export default {
 <style scoped>
     #instructor_page {
         min-height: 100vh;
-        background-color: #6900BA;
-        color: #ffe818;
+        background-color: var(--color-purple);
+        color: var(--color-yellow);
         z-index: 0; /* Ensure that this element is behind other content */
     }
     .over {

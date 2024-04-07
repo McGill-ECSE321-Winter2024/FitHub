@@ -85,7 +85,7 @@ export default {
 
 <style scoped>
 .solid-background {
-  background-color: #121212;
+  background-color: var(--color-black);
   height: 100vh;
   width: 100vw;
   overflow: auto;
@@ -123,7 +123,7 @@ export default {
 
 .white-heading {
   font-size: 14px;
-  color: #121212;
+  color: var(--color-black);
   background-color: #FFF;
   font-weight: 700;
   padding: 1%;
@@ -132,13 +132,13 @@ export default {
 h3 {
   font-size: 24px;
   font-weight: 700;
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 p {
   font-size: 18px;
   font-weight: 400;
-  color: #FFFFFF;
+  color: var(--color-white);
 }
 
 body {

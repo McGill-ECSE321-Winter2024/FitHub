@@ -1,6 +1,6 @@
 <template>
-  <div style="font-family: Figtree; height: 100vh; background-color: #121212">
-    <div style="background-color: #121212">
+  <div style="font-family: Figtree; height: 100vh; background-color: var(--color-black)">
+    <div style="background-color: var(--color-black)">
       <Toolbar />
     </div>
     <!-- Container for sidebar and main content -->
