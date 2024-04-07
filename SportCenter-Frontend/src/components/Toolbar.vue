@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             mounted: false,
-            toolbarColor: '' // Initialize toolbar color
+            toolbarColor: '#FFD0D5'
         };
     },
     mounted() {
@@ -49,21 +49,10 @@ export default {
             this.mounted = true;
         }, 100);
 
-        if (router.currentRoute.path === '/') {
-            this.handleChangeBackgroundColor();
-        } else {
+        EventBus.$on('beforeSlideOccurred', this.handleChangeBackgroundColor);
+        if (router.currentRoute.path != '/') {
             this.updateToolbarColor(router.currentRoute.path);
         }
-
-        // this.$watch(() => router.currentRoute.path, (to, from) => {
-        //     if (to === '/') {
-        //         this.handleChangeBackgroundColor();
-        //     } else {
-        //         this.updateToolbarColor(to);
-        //     }
-        // });
-
-        EventBus.$on('beforeSlideOccurred', this.handleChangeBackgroundColor);
     },
     beforeDestroy() {
         EventBus.$off('beforeSlideOccurred', this.handleChangeBackgroundColor);
@@ -82,15 +71,18 @@ export default {
         updateToolbarColor(route) {
             switch (route) {
                 case '/courses':
-                    this.toolbarColor = '#121212';
+                    this.toolbarColor = '#CDF567';
                     break;
                 case '/instructors':
-                    this.toolbarColor = '#CDF567';
+                    this.toolbarColor = '#FFE818';
                     break;
                 case '/login':
                     this.toolbarColor = '#FFBC4B';
                     break;
                 case '/registration':
+                    this.toolbarColor = '#CDF567';
+                    break;
+                case '/settings':
                     this.toolbarColor = '#CDF567';
                     break;
                 default:

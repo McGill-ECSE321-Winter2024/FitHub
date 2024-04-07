@@ -1,7 +1,7 @@
 <template>
     <div id="instructor_page" class="container-fluid p-0 m-0">
+        <Toolbar />
         <div class="row align-items-start justify-content-start p-0 m-0">
-            <Toolbar class="over" />
             <div class="container pt-5">
                 <div class="row">
                     <h2>Meet our Instructors</h2>
@@ -95,9 +95,6 @@ export default {
         background-color: var(--color-purple);
         color: var(--color-yellow);
         z-index: 0; /* Ensure that this element is behind other content */
-    }
-    .over {
-        z-index: 1000; /* Ensure that this element is behind other content */
     }
     .instructor {
         background: transparent;
