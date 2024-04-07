@@ -1,4 +1,5 @@
 <template>
+    <div>  
     <div id="instructor_page" class="p-0 m-0">
         <Toolbar />
         <div class="row align-items-start justify-content-start p-0 m-0">
@@ -45,7 +46,9 @@
                 </div>
             </div>
         </div>
-        <Footer />
+    </div>
+    
+    <Footer />
     </div>
 </template>
 
