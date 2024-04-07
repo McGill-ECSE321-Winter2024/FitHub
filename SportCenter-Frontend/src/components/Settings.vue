@@ -8,7 +8,7 @@
       <!-- Sidebar container with gray box -->
       <div
         class="sidebar-container"
-        style="width: 370px; margin-right: 50px; overflow-y: auto; height: 100%"
+        style="width: 380px; margin-right: 50px; overflow-y: auto; height: 100%"
       >
         <div
           class="sidebar"
@@ -54,6 +54,17 @@
               style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Edit sport center
+            </li>
+            <!-- Manage Instructors Button -->
+            <li
+              @click="toggleMenu('ManageInstructors')"
+              :class="{
+                'menu-item-selected': currentTab === 'ManageInstructors',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Manage instructors
             </li>
             <!-- Manage Courses Button -->
             <li
