@@ -1,16 +1,16 @@
 <template>
   <div class="solid-background">
     <Toolbar />
-      <!-- Toolbar and search bar -->
-      <div class="text-search-bar">
-        <div class="text-content">
-          <h1 class="custom-h1">Explore your interests</h1>
-          <h3>Select a course to learn more</h3>
-        </div>
-        <div class="search-field">
-          <input type="text" class="search-input" placeholder="Search courses">
-        </div>
+    <!-- Toolbar and search bar -->
+    <div class="text-search-bar">
+      <div class="text-content">
+        <h1 class="custom-h1">Explore your interests</h1>
+        <h3>Select a course to learn more</h3>
       </div>
+      <div class="search-field">
+        <input type="text" class="search-input" placeholder="Search courses">
+      </div>
+    </div>
 
     <div class="cont">
       <div class="mt-5">
@@ -27,7 +27,8 @@
           </div>
         </div>
       </div>
-      </div>
+    </div>
+    <Footer />
   </div>
 </template>
 <script>
@@ -96,10 +97,10 @@ export default {
   font-size: 55px;
 }
 
-.text-search-bar{
-    margin-top: 30px;
-    margin-left: 50px;
-    margin-right:50px;
+.text-search-bar {
+  margin-top: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 .cont {
@@ -107,7 +108,7 @@ export default {
   width: 95vw;
   height: 100vh;
   margin-left: 50px;
-  margin-right:50px;
+  margin-right: 50px;
 }
 
 
