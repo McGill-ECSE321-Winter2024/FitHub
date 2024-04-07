@@ -68,7 +68,11 @@ public class LocationService {
         }
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeLocation(location);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        location.delete();
+        locationRepository.save(location);
+        locationRepository.delete(location);
         return true;
     }
 
