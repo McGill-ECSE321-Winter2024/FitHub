@@ -1,28 +1,32 @@
 <template>
-  <div class="solid-background">
-    <Toolbar />
-    <!-- Toolbar and search bar -->
-    <div class="text-search-bar">
-      <div class="text-content">
-        <h1 class="custom-h1">Explore your interests</h1>
-        <h3>Select a course to learn more</h3>
+  <div>
+    <div class="solid-background">
+      <Toolbar />
+      <!-- Toolbar and search bar -->
+      <div class="text-search-bar">
+        <div class="text-content">
+          <h1 class="custom-h1">Explore your interests</h1>
+          <h3>Select a course to learn more</h3>
+        </div>
+        <div class="search-field">
+          <input type="text" class="search-input" placeholder="Search courses">
+        </div>
       </div>
-      <div class="search-field">
-        <input type="text" class="search-input" placeholder="Search courses">
-      </div>
-    </div>
 
-    <div class="cont">
-      <div class="mt-5">
-        <div class="row">
-          <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
-            <div>
-              <img :src="course.url" :alt="course.name" class="w-100 h-100">
-            </div>
-            <h3><span class="white-heading">{{ course.category }}</span></h3>
-            <div>
-              <h3>{{ capitalize(course.name) }}</h3>
-              <p>{{ course.description }}</p>
+      <div class="cont">
+        <div class="mt-5">
+          <div class="row">
+            <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
+              <router-link to="/sessions">
+                <div>
+                  <img :src="course.url" :alt="course.name" class="w-100 h-100">
+                </div>
+                <h3><span class="white-heading">{{ course.category }}</span></h3>
+                <div>
+                  <h3>{{ capitalize(course.name) }}</h3>
+                  <p>{{ course.description }}</p>
+                </div>
+              </router-link>
             </div>
           </div>
         </div>

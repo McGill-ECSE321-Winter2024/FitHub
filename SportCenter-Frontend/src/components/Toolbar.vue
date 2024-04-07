@@ -85,6 +85,9 @@ export default {
                 case '/settings':
                     this.toolbarColor = '#CDF567';
                     break;
+                case '/sessions': 
+                    this.toolbarColor = '#FFFFFF';
+                    break;
                 default:
                     this.toolbarColor = '#FFD0D6';
             }

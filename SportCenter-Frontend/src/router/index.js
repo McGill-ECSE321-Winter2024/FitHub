@@ -10,6 +10,7 @@ import Registration from "@/components/Registration";
 import Settings from "@/components/Settings";
 import BillingAccount from "@/components/BillingAccount";
 import BillingAccountOverview from "@/components/BillingAccountOverview";
+import SessionRegistration from "@/components/SessionRegistration"
 
 Vue.use(Router);
 
@@ -57,5 +58,10 @@ export default new Router({
       name: "BillingAccountOverview",
       component: BillingAccountOverview,
     },
+    {
+      path: "/sessions",
+      name: "SessionRegistration",
+      component: SessionRegistration,
+    }
   ],
 });
