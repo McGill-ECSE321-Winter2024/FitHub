@@ -67,7 +67,7 @@ public class LocationController {
         }
     }
 
-    @GetMapping(value = {"/locations", "/locations/"})
+    @GetMapping(value = {"/public/locations", "/public/locations/"})
     public ResponseEntity<LocationListDTO> getAllLocations() {
         List<LocationResponseDTO> locations = new ArrayList<>();
         for (Location location: locationService.getAllLocations()) {

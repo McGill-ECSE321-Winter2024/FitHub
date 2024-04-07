@@ -15,17 +15,17 @@
       </tr>
       <tr>
           <td>
-              <input type="text" placeholder="Room" class="text-field">
+              <input type="number" placeholder="Room" class="text-field" v-model="newLocationRoom">
           </td>
           <td>
-              <input type="text" placeholder="Floor" class="text-field">
+              <input type="number" placeholder="Floor" class="text-field" v-model="newLocationFloor">
           </td>
           <td>
-              <button id="create-btn">Create</button>
+              <button @click="createLocation()"  id="create-btn">Create</button>
           </td>
       </tr>
       <tr>
-        <span style="color:red">Error: Message text comes here</span>
+        <span v-if="errorLocation" style="color:red">Error: {{errorPerson}}</span>
       </tr>
       <tr>
         <h3 class="custom-h3-Delete">Delete a location</h3>
@@ -45,16 +45,121 @@
         <span style="color:red">Error: Message text comes here</span>
       </tr>
     </table>
-    <p>
-      
-    </p>
   </div>
+  <h3>Current Locations</h3>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Room</th>
+                    <th>Floor</th>
+                </tr>
+                <tr v-for="l in locations.locations":key="l.id">
+                    <td>{{ l.room }}</td>
+                    <td>{{ l.floor }}</td>
+                </tr>
+            </tbody>
+        </table>
 
 </div>
 </template>
 
 <script>
+import axios from 'axios'
+import config from '../../config'
 
+const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+
+const client = axios.create({
+    // IMPORTANT: baseURL, not baseUrl
+    baseURL: config.dev.backendBaseUrl
+});
+
+export default {
+    name: "Locations",
+    data() {
+        return {
+            locations: [],
+            newLocationRoom: null,
+            newLocationFloor: null,
+            errorLocation: ''
+        };
+    },
+    mounted() {
+        // Fetch location data when the component is created
+        this.getAllLocations();
+    },
+    methods: {
+        getAllLocations() {
+            const requestOptions = {
+              method: 'GET',
+              credentials: 'include'
+            };
+      
+            fetch('http://127.0.0.1:8080/public/locations', requestOptions)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(data => {
+                this.locations = data;
+                console.log(this.locations)
+              })
+              .catch(error => {
+                console.error('Error fetching locations:', error);
+              });
+        },
+        async createLocation() {
+
+            const LOGIN_EMAIL = "@";
+            const LOGIN_PASSWORD = "password";
+            const headers = new Headers();
+            headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
+            headers.append('Content-Type', 'application/json');
+
+            const newLocation = {
+                floor: this.newLocationFloor,
+                room: this.newLocationRoom
+                }
+
+            const requestOptions = {
+              method: 'POST',
+              credentials: 'include',
+              body: JSON.stringify(newLocation),
+              headers: headers
+            };
+            console.log("The floor is " + newLocation.floor);
+            console.log("The room is " + this.newLocationRoom);
+      
+            fetch('http://127.0.0.1:8080/locations', requestOptions)
+              .then(response => {
+                if (!response.ok) {
+                  console.log(response);
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(data => {
+                // Automatically refresh the data after creating a new location
+                this.getAllLocations();
+                console.log(data)
+              })
+              .catch(error => {
+                console.error('Error creating locations:', error);
+              });
+            
+        }
+    },
+    computed: {
+        isCreateBtnDisabled() {
+            return (
+                !this.newLocationFloor|| !this.newLocationRoom
+            );
+        }
+    }
+};
 </script>
 
 <style scoped>
@@ -96,6 +201,8 @@
   justify-content: center;
 }
 h3 {
+  display: flex;
+  justify-content: center;
   margin-bottom: 50px;
   font-size: 24px;
   font-weight: 700;
