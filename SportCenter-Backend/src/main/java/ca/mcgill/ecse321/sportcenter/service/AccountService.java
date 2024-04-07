@@ -204,7 +204,11 @@ public class AccountService implements UserDetailsService {
         Account account = findCustomerById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        account.delete();
+        customerRepository.save((Customer) account);
+        customerRepository.delete((Customer) account);
     }
 
     @Transactional
@@ -212,7 +216,11 @@ public class AccountService implements UserDetailsService {
         Account account = findInstructorById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        account.delete();
+        instructorRepository.save((Instructor) account);
+        instructorRepository.delete((Instructor) account);
     }
 
     @Transactional
@@ -220,7 +228,11 @@ public class AccountService implements UserDetailsService {
         Account account = findOwnerById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        account.delete();
+        ownerRepository.save((Owner) account);
+        ownerRepository.delete((Owner) account);
     }
     
     //--------------------------// Getters //--------------------------//

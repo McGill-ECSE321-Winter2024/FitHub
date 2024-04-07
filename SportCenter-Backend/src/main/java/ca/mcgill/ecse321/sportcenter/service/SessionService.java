@@ -156,9 +156,12 @@ public class SessionService {
     @Transactional
     public Session findSessionById(int sid) {
         Session session =  sessionRepo.findById(sid);
+    
+        
         if(session == null){
             throw new IllegalArgumentException();
         }
+        
         return session;
     }
 
