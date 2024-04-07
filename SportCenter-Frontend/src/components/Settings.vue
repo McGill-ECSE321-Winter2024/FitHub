@@ -27,7 +27,7 @@
             height: 90%;
           "
         >
-          <h2 style="color: #ffffff; font-size: 45px; padding: 30px">
+          <h2 style="color: #ffffff; font-size: 35px; padding: 30px">
             Settings
           </h2>
           <!-- Adjust font size here -->
@@ -46,7 +46,6 @@
                 'menu-item-selected': currentTab === 'EditProfile',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Edit profile
             </li>
@@ -57,7 +56,6 @@
                 'menu-item-selected': currentTab === 'EditSportCenter',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Edit sport center
             </li>
@@ -68,7 +66,6 @@
                 'menu-item-selected': currentTab === 'ManageInstructors',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Manage instructors
             </li>
@@ -79,7 +76,6 @@
                 'menu-item-selected': currentTab === 'ManageCourses',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Manage courses
             </li>
@@ -90,7 +86,6 @@
                 'menu-item-selected': currentTab === 'ManageLocations',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Manage locations
             </li>
@@ -101,7 +96,6 @@
                 'menu-item-selected': currentTab === 'MySessions',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               My sessions
             </li>
@@ -112,7 +106,6 @@
                 'menu-item-selected': currentTab === 'ProposeCourses',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Propose courses
             </li>
@@ -123,7 +116,6 @@
                 'menu-item-selected': currentTab === 'BillingAccount',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Billing account
             </li>
@@ -274,13 +266,15 @@ export default {
 
 <style>
 .menu-item {
-  padding: 15px;
+  padding: 20px;
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
   margin-left: 15px;
   margin-right: 15px;
   margin-top: 10px;
   margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 .menu-item-selected {
