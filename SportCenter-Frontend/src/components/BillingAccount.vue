@@ -121,13 +121,13 @@ export default {
   color: #ffffff;
   font-size: 45px;
 }
+
 .form-box {
-  margin-top: 50px;
   width: 700px;
-  margin: auto;
   padding: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;
+  margin:0px;
 }
 
 .form-group-side {
@@ -151,12 +151,6 @@ input[type="text"] {
   border: 1px solid #ccc;
   color: #ccc;
   border-radius: 7px;
-}
-
-input[type="checkbox"] {
-    align-self: left;
-    align-items: left;
-    margin-right: 5px;
 }
 
 label {

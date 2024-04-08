@@ -39,7 +39,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "Courses",
@@ -77,23 +76,65 @@ export default {
           console.error("Error fetching courses:", error);
         });
     },
-    getBorderColor(difficulty) {
-      switch (difficulty) {
-        case "Advanced":
-          return "#E3240C";
-        case "Intermediate":
-          return "#FF5746";
-        case "Beginner":
-          return "#CDF563";
-        default:
-          return "";
-      }
-    },
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
-    approveCourse(courseId) {},
-    disapproveCourse(courseId) {},
+    approveCourse(courseId) {
+      const requestOptions = {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      fetch(
+        `http://127.0.0.1:8080/course-approval/${courseId}?value=1`,
+        requestOptions
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Course approved:", data);
+          // You can reload the courses list or update the UI as needed
+        })
+        .catch((error) => {
+          console.error("Error approving course:", error);
+        });
+    },
+    disapproveCourse(courseId) {
+      const requestOptions = {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      };
+
+      fetch(
+        `http://127.0.0.1:8080/course-disapproval/${courseId}`,
+        requestOptions
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Course disapproved:", data);
+          // You can reload the courses list or update the UI as needed
+        })
+        .catch((error) => {
+          console.error("Error disapproving course:", error);
+        });
+    },
   },
 };
 </script>
