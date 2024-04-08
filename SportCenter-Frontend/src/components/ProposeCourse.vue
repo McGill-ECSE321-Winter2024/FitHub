@@ -63,6 +63,9 @@ export default {
       const username = this.$cookies.get('username');
       const password = this.$cookies.get('password');
 
+      console.log('Username:', username);
+      console.log('Password:', password);
+
       // Check if user is authenticated
       if (username && password) {
         // Form submission logic
@@ -76,6 +79,8 @@ export default {
           url: this.course.url
         };
 
+        console.log('Form Data:', formData);
+
         // Make POST request with authentication header
         fetch('http://127.0.0.1:8080/courses', {
           method: 'POST',
@@ -83,9 +88,11 @@ export default {
             'Content-Type': 'application/json',
             'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
           },
+          credentials: 'include', 
           body: JSON.stringify(formData)
         })
         .then(response => {
+          console.log('Response Status:', response.status);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
@@ -117,7 +124,6 @@ export default {
   },
 };
 </script>
-
 
 
 <style scoped>
