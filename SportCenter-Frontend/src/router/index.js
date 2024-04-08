@@ -13,6 +13,7 @@ import BillingAccountEdit from "@/components/BillingAccountEdit";
 import BillingAccountOverview from "@/components/BillingAccountOverview";
 import SessionRegistration from "@/components/SessionRegistration"
 import Location from '@/components/Location'
+import BillingAccountDelete from "@/components/BillingAccountDelete";
 
 Vue.use(Router);
 
@@ -74,6 +75,11 @@ export default new Router({
       path: "/billing-account-edit",
       name: "BillingAccountEdit",
       component: BillingAccountEdit,
+    },
+    {
+      path: "/billing-account-delete",
+      name: "BillingAccountDelete",
+      component: BillingAccountDelete,
     }
   ]
 })

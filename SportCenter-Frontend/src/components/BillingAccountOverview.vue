@@ -11,7 +11,6 @@
     <div class="card-box">
         <h5 class="card-display">****0000 | YYYY-MM</h5>
         <router-link to="/billing-account" class="add-link">Add new card</router-link>
-        <!--button id="add-btn" type="add" @click="add">Add new card</button-->
     </div>
 
     <div class="cards">
@@ -20,16 +19,16 @@
         <h6>Default card</h6>
         <div class="card-box">
         <h5 class="card-display">****8888 | 2026-10</h5>
-        <button id="edit-btn" type="edit">Edit</button>
-        <button id="remove-btn" type="remove">Delete</button>
+        <router-link to="/billing-account-edit" class="edit-link">Edit</router-link>
+        <router-link to="/billing-account-delete" class="delete-link">Delete</router-link>
         </div>
 
         <div class="other-cards" v-for="account in billingAccounts":key="account.id">
         <h6>Other cards</h6>
         <div class="card-box">
         <h5 class="card-display">{{ account.cardNumber }} | {{ account.expirationDate }} </h5>
-        <button id="edit-btn" type="edit">Edit</button>
-        <button id="remove-btn" type="remove">Delete</button>
+        <router-link to="/billing-account-edit" class="edit-link">Edit</router-link>
+        <router-link to="/billing-account-delete" class="delete-link">Delete</router-link>
         </div>
         </div>
     </div>
@@ -161,9 +160,28 @@
       margin-bottom: 15px;
     }
     
-    #edit-btn {
-        margin-left: 260px;
-        color: #CDF563;
+    .edit-link{
+      margin-left: 260px;
+      color: #CDF563;
+      padding: 10px 10px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 700; 
+      margin-bottom: 15px;
+    }
+    .delete-link{
+      padding: 10px 10px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 700; 
+      margin-bottom: 15px;
+        margin-left: 0px; 
+        margin-right: 40px;
+        color: #EC5545;
     }
     
     .add-link {
@@ -176,12 +194,6 @@
       font-size: 20px;
       font-weight: 700; 
       margin-bottom: 15px;
-    }
-
-    #remove-btn {
-        margin-left: 0px; 
-        margin-right: 40px;
-        color: #EC5545;
     }
     
     button:hover {
