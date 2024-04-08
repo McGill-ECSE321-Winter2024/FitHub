@@ -60,7 +60,7 @@ export default {
   methods: {
     submitForm() {
       // Get authentication information from cookies
-      const username = this.$cookies.get('username');
+      const username = decodeURIComponent(this.$cookies.get('username'));
       const password = this.$cookies.get('password');
 
       console.log('Username:', username);
@@ -124,6 +124,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style scoped>
