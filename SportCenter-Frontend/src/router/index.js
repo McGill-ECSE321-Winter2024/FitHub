@@ -65,9 +65,10 @@ export default new Router({
       component: Location
     },
     {
-      path: "/sessions",
+      path: "/sessions/courses/:cId",
       name: "SessionRegistration",
       component: SessionRegistration,
+      props: true
     }
   ]
 })

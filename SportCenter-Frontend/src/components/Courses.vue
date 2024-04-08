@@ -17,7 +17,7 @@
         <div class="mt-5">
           <div class="row">
             <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
-              <router-link to="/sessions">
+              <router-link :to="'/sessions/courses/' + course.id" class="hover-link">
                 <div>
                   <img :src="course.url" :alt="course.name" class="w-100 h-100">
                 </div>
@@ -97,7 +97,7 @@ export default {
 }
 
 .custom-h1 {
-  color: #ffffff;
+  color: var(--color-white);
   font-size: 55px;
 }
 
@@ -134,13 +134,13 @@ export default {
   border: 1px solid #ccc;
   border-radius: 20px;
   background-color: #bfd3f2;
-  color: #ffffff;
+  color: var(--color-white);
 }
 
 .white-heading {
   font-size: 14px;
   color: var(--color-black);
-  background-color: #FFF;
+  background-color: var(--color-white);
   font-weight: 700;
   padding: 1%;
 }
@@ -160,5 +160,25 @@ p {
 body {
   margin: 0;
   padding: 0;
+}
+
+.hover-link {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-link:hover {
+  text-decoration: none; /* Remove default underline */
+}
+
+.hover-link:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 3px solid #CDF563; /* Adjust the border width and color as needed */
+  box-sizing: border-box;
 }
 </style>
