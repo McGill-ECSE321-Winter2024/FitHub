@@ -27,7 +27,7 @@ import ca.mcgill.ecse321.sportcenter.service.SessionPackageService;
 * <p>Create, update, delete a session </p>
 * @author Émilia
 */
-@CrossOrigin(origins = "http://localhost:8087")
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class SessionPackageController {
 
@@ -45,7 +45,7 @@ public class SessionPackageController {
         }
     }
 
-    @GetMapping("/session-packages/course/{courseId}")
+    @GetMapping(value = { "/session-packages/course/{courseId}", "public/session-packages/course/{courseId}"})
     public ResponseEntity<SessionPackageListDTO> findSessionPackageByCourse(@PathVariable int courseId){
         try{
             List<SessionPackageResponseDTO> packages = new ArrayList<SessionPackageResponseDTO>();
