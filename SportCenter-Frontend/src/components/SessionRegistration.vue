@@ -22,6 +22,40 @@
         </div>
 
         <div class="sessions">
+            <table>
+                <thead>
+                <tr>
+                    <th class="table-headings">Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Instructor</th>
+                    <th>Capacity</th>
+                    <th>Location (Floor, Room)</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2024-04-18</td>
+                    <td>11:00 am</td>
+                    <td>12:00 pm</td>
+                    <td>Mary</td>
+                    <td>50</td>
+                    <td>3, 303</td>
+                    <button class="register-btn">Register</button>
+                </tr>
+                <tr>
+                    <td>2024-04-20</td>
+                    <td>1:00 pm</td>
+                    <td>2:00 pm</td>
+                    <td>Lory</td>
+                    <td>40</td>
+                    <td>4, 410</td>
+                    <button class="register-btn">Register</button>
+                </tr>
+                </tbody>
+
+            </table>
 
         </div>
 
@@ -116,6 +150,46 @@ button {
     width: 250px; 
     height: 50px; 
     margin-right: 20px;
+}
+table {
+    margin-top: 50px;
+    margin-left: 60px;
+    background-color: var(--color-black);
+    border: white;
+}
+thead {
+    background-color: #509BF4;
+    border-radius: 20px;
+    color: var(--color-black);
+    font-size: 20px;
+    font-weight: 600;
+}
+th {
+    margin-left: 50px;
+    padding: 25px
+}
+tr{
+    border-radius: 20px;
+    margin-top: 50px;
+}
+td{
+    margin-top: 30px;
+    color: var(--color-white);
+    font-size: 15px;
+    font-weight: 400;
+    align-content: center;
+}
+.register-btn{
+    border-radius: 20px;
+    background-color: #F8FB76;
+    border: none;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 500;
+    width: 110px; 
+    height: 30px; 
+    margin-right: 20px;
+    align-content: center;
 }
 
 </style>
