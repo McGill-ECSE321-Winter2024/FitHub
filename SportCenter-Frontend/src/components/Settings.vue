@@ -101,9 +101,9 @@
             </li>
             <!-- Propose Courses Button -->
             <li
-              @click="toggleMenu('ProposeCourses')"
+              @click="toggleMenu('ProposeCourse')"
               :class="{
-                'menu-item-selected': currentTab === 'ProposeCourses',
+                'menu-item-selected': currentTab === 'ProposeCourse',
               }"
               class="menu-item"
             >
@@ -163,6 +163,10 @@
         <!-- Billing Account Settings -->
         <div v-else-if="currentTab === 'BillingAccount'">
           <BillingAccount />
+        </div>
+
+            <div v-else-if="currentTab === 'ProposeCourse'">
+          <ProposeCourse />
         </div>
 
         <!-- Sport Center Settings -->
@@ -232,12 +236,14 @@
 import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccount from "./BillingAccount.vue";
 import BillingAccountOverview from "./BillingAccountOverview.vue";
+import ProposeCourse from "./ProposeCourse.vue";
 
 export default {
   name: "ProfileSettings",
   components: {
     OwnerCourses,
     BillingAccount,
+    ProposeCourse,
     // Add more components as needed
   },
   data() {
