@@ -24,11 +24,13 @@
         <button id="remove-btn" type="remove">Delete</button>
         </div>
 
+        <div class="other-cards" v-for="account in billingAccounts":key="account.id">
         <h6>Other cards</h6>
         <div class="card-box">
-        <h5 class="card-display">****8080 | 2027-01</h5>
+        <h5 class="card-display">{{ account.cardNumber }} | {{ account.expirationDate }} </h5>
         <button id="edit-btn" type="edit">Edit</button>
         <button id="remove-btn" type="remove">Delete</button>
+        </div>
         </div>
     </div>
     </div>
@@ -39,6 +41,20 @@
     import axios from 'axios';
 
     export default { 
+
+      data() {
+        return {
+            billingAccounts: [],
+            billingAccount: {}
+        };
+      },
+
+      mounted() {
+        // Fetch location data when the component is created
+       this.getDefaultBillingAccounts();
+       this.getOtherBillingAccounts();
+    },
+
     methods : {
     getDefaultBillingAccounts() {
         const requestOptions = {

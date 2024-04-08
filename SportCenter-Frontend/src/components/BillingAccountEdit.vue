@@ -31,15 +31,13 @@
             <input type="text" id="cardHolder" v-model="cardHolder" >
           </div>
           <div class="form-group-side">
-            <input type="checkbox" id="isDefault" v-model="isDefault" style="transform: scale(1.5); ">
+            <input type="checkbox" id="isDefault" v-model="isDefault" style="transform: scale(1.5);">
             <label for="isDefault">Save as default </label>
           </div>
           <button id="save-btn" type="save" @click="edit" >Edit</button>
           <button id="cancel-btn" type="cancel" @click="cancel">Cancel</button>
         </form>
         </div>
-        <!-- Display error message -->
-        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
       </div>
     </template>
     
@@ -51,22 +49,20 @@
       
       data() {
         return {
-            billingAccount: [],
+            billingAccount: {},
             cardNumber: billingAccount.cardNumber,
             expirationDate: '',
             cvv: '',
             billingAddress: '',
             cardHolder: '',
             isDefault: false,
-            errorMessage: 'Invalid input(s)',
-            showErrorMessage: false
         };
       },
 
-      mounted() {
+     // mounted() {
         // Fetch location data when the component is created
-        this.getBillingAccount();
-    },
+       // this.getBillingAccount();
+    //},
 
       methods: {
 
@@ -80,7 +76,7 @@
             },
         };
 
-        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', requestOptions)
+        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts/', requestOptions)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -116,7 +112,7 @@
             console.log("The isDefault is " + requestBody.isDefault);
             
     
-            fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', {
+            fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts/', {
                 method: 'PUT',
                 body: JSON.stringify(requestBody),
                 //headers: headers,     
@@ -135,13 +131,11 @@
                     }
                     else {
                       this.errorMessage = result.error;
-                      this.showErrorMessage = true;
+                      //this.showErrorMessage = true;
                     }
                 })
                 .catch(error => {
                     console.error('Error creating billing account:', error);
-                    this.errorMessage = 'Error creating billing account: ' + error.message;
-                    this.showErrorMessage = true;
                 });
     
         },
