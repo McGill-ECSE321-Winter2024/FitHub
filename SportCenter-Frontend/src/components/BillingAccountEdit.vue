@@ -16,11 +16,11 @@
           </div>
           <div class="form-group">
             <label for="expirationDate">Expiry Date</label>
-            <input type="text" id="expirationDate" v-model="expirationDate"  placeholder=" YYYY-MM-DD">
+            <input type="text" id="expirationDate" v-model="expirationDate">
           </div>
           <div class="form-group">
             <label for="cvv">Security Code (CVV)</label>
-            <input type="text" id="cvv" v-model="cvv" required>
+            <input type="text" id="cvv" v-model="cvv" >
           </div>
           <div class="form-group">
             <label for="billingAddress">Billing Address</label>
@@ -31,10 +31,10 @@
             <input type="text" id="cardHolder" v-model="cardHolder" >
           </div>
           <div class="form-group-side">
-            <input type="checkbox" id="isDefault" v-model="isDefault" style="transform: scale(1.5);">
+            <input type="checkbox" id="isDefault" v-model="isDefault" style="transform: scale(1.5); ">
             <label for="isDefault">Save as default </label>
           </div>
-          <button id="save-btn" type="save" @click="create" >Save</button>
+          <button id="save-btn" type="save" @click="edit" >Edit</button>
           <button id="cancel-btn" type="cancel" @click="cancel">Cancel</button>
         </form>
         </div>
@@ -51,7 +51,8 @@
       
       data() {
         return {
-            cardNumber: this.cardNumber,
+            billingAccount: [],
+            cardNumber: billingAccount.cardNumber,
             expirationDate: '',
             cvv: '',
             billingAddress: '',
@@ -61,9 +62,15 @@
             showErrorMessage: false
         };
       },
+
+      mounted() {
+        // Fetch location data when the component is created
+        this.getBillingAccount();
+    },
+
       methods: {
 
-        getDefaultBillingAccounts() {
+       getBillingAccount(){
         const requestOptions = {
         method: 'GET',
         credentials: 'include',
@@ -73,7 +80,7 @@
             },
         };
 
-        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-account-default', requestOptions)
+        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', requestOptions)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -81,43 +88,15 @@
           return response.json();
         })
         .then(data => {
-          this.list = data;
+          this.billingAccount = data;
           console.log(this.list)
         })
         .catch(error => {
           console.error('Error fetching billing-accounts:', error);
         });
-    },
-
-    getOtherBillingAccounts() {
-        const requestOptions = {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-                'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
-                'Content-Type': 'application/json'
-            },
-        };
-
-        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-account', requestOptions)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          this.list = data;
-          console.log(this.list)
-        })
-        .catch(error => {
-          console.error('Error fetching billing-accounts:', error);
-        });
-    },
+       },
     
-    
-        
-        async create() {
+        async edit() {
         
             // Create a JSON object with the data to be sent in the POST request
             const requestBody = {
@@ -138,7 +117,7 @@
             
     
             fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', {
-                method: 'POST',
+                method: 'PUT',
                 body: JSON.stringify(requestBody),
                 //headers: headers,     
                 headers: {

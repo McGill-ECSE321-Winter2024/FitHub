@@ -36,11 +36,64 @@
     
     <script>
 
-    
-    export default {
-     
-    
+    import axios from 'axios';
+
+    export default { 
+    methods : {
+    getDefaultBillingAccounts() {
+        const requestOptions = {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+                'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
+                'Content-Type': 'application/json'
+            },
+        };
+
+        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-account', requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.list = data;
+          console.log(this.list)
+        })
+        .catch(error => {
+          console.error('Error fetching billing-accounts:', error);
+        });
+    },
+
+    getOtherBillingAccounts() {
+        const requestOptions = {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+                'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
+                'Content-Type': 'application/json'
+            },
+        };
+
+        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.list = data;
+          console.log(this.list)
+        })
+        .catch(error => {
+          console.error('Error fetching billing-accounts:', error);
+        });
+    }
+  }
     };
+
     </script>
     
     <style scoped>
