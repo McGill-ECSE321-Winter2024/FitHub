@@ -131,7 +131,7 @@ public class BillingAccountController {
        
    }
 
-   @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
+   @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account/"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         
         try{

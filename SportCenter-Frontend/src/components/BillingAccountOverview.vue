@@ -10,7 +10,8 @@
 
     <div class="card-box">
         <h5 class="card-display">****0000 | YYYY-MM</h5>
-        <button id="add-btn" type="add">Add new card</button>
+        <router-link to="/billing-account" class="add-link">Add new card</router-link>
+        <!--button id="add-btn" type="add" @click="add">Add new card</button-->
     </div>
 
     <div class="cards">
@@ -34,8 +35,10 @@
     </template>
     
     <script>
+
     
     export default {
+     
     
     };
     </script>
@@ -94,9 +97,16 @@
         color: #CDF563;
     }
     
-    #add-btn {
+    .add-link {
         color: #CDF563;
         margin-right: 40px;
+        padding: 10px 10px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 700; 
+      margin-bottom: 15px;
     }
 
     #remove-btn {

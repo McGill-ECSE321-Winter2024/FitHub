@@ -157,8 +157,20 @@ public class BillingAccountService {
     //--------------------------// Input validations //--------------------------//
 
     private void validBillingAccountInfo(String cardNumber, String cardHolder, String billingAddress, Integer cvv, LocalDate expirationDate){
-        if (cardNumber == null || cardHolder.isEmpty() || cardHolder.trim().length() == 0 || billingAddress.isEmpty() || billingAddress.trim().length() == 0 || cvv == null || expirationDate == null){
-            throw new IllegalArgumentException("Empty fields for cardNumber, cardHolder, billingAddress, cvv or expirationDate are not valid");
+        if (cardNumber == null){
+            throw new IllegalArgumentException("Empty fields for cardNumber not valid");
+        }
+        if (cardHolder.isEmpty() || cardHolder.trim().length() == 0){
+            throw new IllegalArgumentException("Empty fields for cardHolder are not valid");
+        }
+        if (billingAddress.isEmpty() || billingAddress.trim().length() == 0){
+            throw new IllegalArgumentException("Empty fields for billingAddress are not valid");
+        }
+        if  (expirationDate == null){
+            throw new IllegalArgumentException("Empty fields for expirationDate are not valid");
+        }
+        if (cvv == null){
+            throw new IllegalArgumentException("Empty fields for cvv are not valid");
         }
         if (cardNumber.toString().length() != 16){
             throw new IllegalArgumentException("Invalid cardNumber; needs to be exactly 16 digits");

@@ -9,6 +9,7 @@ import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
 import Settings from "@/components/Settings";
 import BillingAccount from "@/components/BillingAccount";
+import BillingAccountEdit from "@/components/BillingAccountEdit";
 import BillingAccountOverview from "@/components/BillingAccountOverview";
 import Location from '@/components/Location'
 
@@ -62,6 +63,11 @@ export default new Router({
       path: '/location',
       name: 'Location',
       component: Location
+    },
+    {
+      path: "/billing-account-edit",
+      name: "BillingAccountEdit",
+      component: BillingAccountEdit,
     }
   ]
 })
