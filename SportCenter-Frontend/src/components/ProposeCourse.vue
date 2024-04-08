@@ -2,8 +2,7 @@
   <div class="solid-background">
     <div class="header-container">
       <h1 class="custom-h1">Propose a new course</h1>
-      <h3 class="custom-h3">Propose a new course by inputting the details.</h3>
-      <h3 class="custom-h3">Your request will be reviewed by the owner.</h3>
+      <h3 class="custom-h3">Propose a new course by inputting the details. Your request will be reviewed by the owner.</h3>
     </div>
 
     <div class="box">
@@ -34,8 +33,10 @@
             </select>
           </div>
 
-          <button id="save-btn" type="submit">Send</button>
-          <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
+          <div class="buttons">
+            <button id="save-btn" type="submit">Send</button>
+            <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
+          </div>
         </form>
       </div>
     </div>
@@ -138,13 +139,14 @@ export default {
 }
 .custom-h1 {
   color: var(--color-white);
-  font-size: 55px;
+  font-size: 35px;
 }
 
 .custom-h3 {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--color-white);
+  margin-bottom: 20px;
   
 }
 
@@ -239,12 +241,16 @@ button {
   border-radius: 20px;
   cursor: pointer;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 700;
   width: 100px; 
   height: 50px; 
   margin-bottom: 15px;
 }
 
+.buttons {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+}
 #save-btn {
   background-color: #CDF563;
 }
