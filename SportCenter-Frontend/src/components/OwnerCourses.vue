@@ -2,9 +2,9 @@
   <div class="solid-background">
     <!-- Toolbar and search bar -->
     <div class="text-search-bar">
-      <div class="text-content" style="padding: 60px; text-align: left">
+      <div class="text-content" style="text-align: left">
         <h1 class="custom-h1">Manage courses</h1>
-        <h3>Approve or disapprove courses which instructors have proposed.</h3>
+        <h3 class="custom-h3">Approve or disapprove courses which instructors have proposed.</h3>
       </div>
     </div>
 
@@ -160,14 +160,15 @@ export default {
   font-size: 35px;
 }
 
-.text-search-bar {
-  margin-top: 0px;
+.custom-h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-white);
 }
 
 .search-input {
   width: 180px;
   height: 35px;
-  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
   background-color: #bfd3f2;
@@ -179,7 +180,6 @@ export default {
   color: var(--color-black);
   background-color: #FFF;
   font-weight: 700;
-  padding: 1%;
 }
 
 h3 {
