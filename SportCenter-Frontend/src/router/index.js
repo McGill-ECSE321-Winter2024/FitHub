@@ -11,6 +11,7 @@ import Settings from "@/components/Settings";
 import BillingAccount from "@/components/BillingAccount";
 import BillingAccountEdit from "@/components/BillingAccountEdit";
 import BillingAccountOverview from "@/components/BillingAccountOverview";
+import SessionRegistration from "@/components/SessionRegistration"
 import Location from '@/components/Location'
 
 Vue.use(Router);
@@ -63,6 +64,11 @@ export default new Router({
       path: '/location',
       name: 'Location',
       component: Location
+    },
+    {
+      path: "/sessions",
+      name: "SessionRegistration",
+      component: SessionRegistration,
     },
     {
       path: "/billing-account-edit",

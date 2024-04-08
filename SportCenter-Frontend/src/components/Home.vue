@@ -27,6 +27,17 @@ export default {
       showSplash: true
     };
   },
+  mounted() {
+    const username = this.$cookies.get('username');
+    const password = this.$cookies.get('password');
+    if (username && password) {
+      this.showSplash = false;
+      console.log("Not showing splash");
+      console.log(`Username for splash: ${username}`)
+    } else {
+      this.showSplash = true;
+    }
+  },
   methods: {
     hideSplash() {
       setTimeout(() => {
