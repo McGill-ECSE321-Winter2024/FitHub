@@ -13,6 +13,7 @@
                 <h6>Supervisor: {{ session.supervisor.name }}</h6>
                 <h6>Location Floor: {{ session.location.floor }}</h6>
                 <h6>Location Room: {{ session.location.room }}</h6>
+                <button @click="registerToSession(session.id)">Register</button>
             </div>
         </div>
         <h4>Session Packages</h4>
@@ -81,7 +82,31 @@ export default {
             }).catch(error => {
                 console.error('Error fetching session packages:', error);
             });
-        }
-    }
+        },
+        registerToSession(sessionId) {
+            const customerId = this.$cookies.get('id');
+
+            console.log('Session ID: ', sessionId);
+            console.log('Customer ID: ', customerId);
+            fetch(`http://127.0.0.1:8080/registrations?customerId=${customerId}&sessionId=${sessionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
+                },
+                credentials: 'include',
+            }).then(response => {
+                console.log('Response Status:', response.status);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                console.log('Course created:', data);
+            }).catch(error => {
+                console.error('Error creating course:', error);
+            });
+    },
+}
 };
 </script>
