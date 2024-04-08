@@ -87,7 +87,7 @@ public class CourseService {
         if (errorMessage.length() > 0) {
             throw new IllegalArgumentException(errorMessage.toString().trim());
         }
-    
+     
         // If no errors, create and save the course
         Course course = new Course();
         course.setName(name.toLowerCase());

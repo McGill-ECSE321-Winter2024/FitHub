@@ -68,11 +68,11 @@ export default {
         // Form submission logic
         const formData = {
           name: this.course.name,
+          category: this.course.category,
           description: this.course.description,
           difficulty: this.course.difficulty,
           status: "Pending",
-          category: this.course.category,
-          priceperhour: 0,
+          pricePerHour: this.course.priceperhour, // Ensure correct casing
           url: this.course.url
         };
 
@@ -81,8 +81,7 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(username + ':' + password),
-            //credentials: 'include'
+            'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
           },
           body: JSON.stringify(formData)
         })
@@ -107,17 +106,18 @@ export default {
     },
     cancelForm() {
       // Reset form data logic
-      //this.course = {
-        //name: "",
-        //category: "",
-        //description: "",
-        //difficulty: "",
-        //url: ""
-      //};
+      // this.course = {
+      //   name: "",
+      //   category: "",
+      //   description: "",
+      //   difficulty: "",
+      //   url: ""
+      // };
     },
   },
 };
 </script>
+
 
 
 <style scoped>
