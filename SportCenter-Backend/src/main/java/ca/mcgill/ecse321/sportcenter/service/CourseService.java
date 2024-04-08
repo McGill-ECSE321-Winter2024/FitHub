@@ -74,7 +74,7 @@ public class CourseService {
         if (status == null) {
             errorMessage.append("Course status cannot be null! ");
         }
-        if (pricePerHour == null || pricePerHour <= 0) {
+        if (pricePerHour == null || pricePerHour < 0) {
             errorMessage.append("Price per hour must be provided and greater than zero! ");
         }
     
@@ -87,7 +87,7 @@ public class CourseService {
         if (errorMessage.length() > 0) {
             throw new IllegalArgumentException(errorMessage.toString().trim());
         }
-    
+     
         // If no errors, create and save the course
         Course course = new Course();
         course.setName(name.toLowerCase());

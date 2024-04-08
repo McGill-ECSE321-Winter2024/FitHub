@@ -1,47 +1,55 @@
 <template>
-  <div>
-    <div class="solid-background">
-      <Toolbar />
-      <!-- Toolbar and search bar -->
-      <div class="text-search-bar">
-        <div class="text-content">
-          <h1 class="custom-h1">Explore your interests</h1>
-          <h3>Select a course to learn more</h3>
-        </div>
-        <div class="search-field">
-          <input type="text" class="search-input" placeholder="Search courses">
-        </div>
+  <div class="solid-background">
+    <Toolbar />
+    <!-- Toolbar and search bar -->
+    <div class="text-search-bar">
+      <div class="text-content">
+        <h1 class="custom-h1">
+          <span class="explore-your">Explore your</span>
+          <span class="interests">interests</span>
+        </h1>
+        <h3 class="custom-h3">Select a course to learn more</h3>
       </div>
+    </div>
 
-      <div class="cont">
-        <div class="mt-5">
-          <div class="row">
-            <div class="col-md-5 col-lg-3 col-sm-12 mb-5" v-for="course in list.courses" :key="course.id">
-              <router-link :to="'/sessions/courses/' + course.id" class="hover-link">
-                <div>
-                  <img :src="course.url" :alt="course.name" class="w-100 h-100">
-                </div>
+    <!-- Course list -->
+    <div class="cont">
+      <div class="mt-5">
+        <div class="row">
+          <div v-for="course in list.courses" :key="course.id" class="col-md-5 col-lg-3 col-sm-12 mb-5">
+            <router-link to="/sessions">
+              <div>
+                <img :src="course.url" :alt="course.name" class="w-100 h-100">
+              </div>
+              <div class="content">
                 <h3><span class="white-heading">{{ course.category }}</span></h3>
                 <div>
-                  <h3>{{ capitalize(course.name) }}</h3>
+                  <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
                   <p>{{ course.description }}</p>
                 </div>
-              </router-link>
-            </div>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>
     </div>
-    <Footer />
   </div>
 </template>
+
+
 <script>
+import ProposeCourse from './ProposeCourse.vue'; 
+
 export default {
   name: 'Courses',
+  components: {
+    ProposeCourse
+  },
   data() {
     return {
       list: [],
-      hoveredCardColor: ''
+      hoveredCardColor: '',
+      showCreateCourse: false // Initially hide the CreateCourse component
     }
   },
   mounted() {
@@ -101,6 +109,22 @@ export default {
   font-size: 55px;
 }
 
+.explore-your {
+  -webkit-text-stroke: 1px white; /* Outline width and color */
+  text-stroke: 1px white; /* Outline width and color */
+  color: black; /* Fill color */
+}
+
+
+.interests {
+  color: #CDF563;
+  padding: 0 5px; /* Adjust padding as needed */
+}
+
+.content {
+    text-align: left;
+}
+
 .custom-h3 {
   font-size: 24px;
   font-weight: 700;
@@ -126,7 +150,6 @@ export default {
   margin-right: 50px;
 }
 
-
 .search-input {
   width: 180px;
   height: 35px;
@@ -140,15 +163,9 @@ export default {
 .white-heading {
   font-size: 14px;
   color: var(--color-black);
-  background-color: var(--color-white);
+  background-color: #CDF563;
   font-weight: 700;
   padding: 1%;
-}
-
-h3 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-white);
 }
 
 p {

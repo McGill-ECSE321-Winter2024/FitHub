@@ -46,7 +46,7 @@ public class CourseController {
             Course createdCourse = courseService.createCourse(course.getName(), course.getDescription(), course.getDifficulty().toString(), course.getStatus().toString(), course.getPricePerHour(), course.getCategory(), course.getUrl());
             return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(createdCourse), HttpStatus.CREATED);
         } catch (IllegalArgumentException e){
-            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<CourseResponseDTO>(new CourseResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 

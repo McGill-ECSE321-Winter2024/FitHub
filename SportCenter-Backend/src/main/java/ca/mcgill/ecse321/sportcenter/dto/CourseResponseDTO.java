@@ -16,11 +16,16 @@ public class CourseResponseDTO {
   private int pricePerHour;
   private String category;
   private String url;
+  private String error;
   private SportCenter center;
   
   @SuppressWarnings("unused")
   public CourseResponseDTO() {
     
+  }
+
+  public CourseResponseDTO(String error) {
+    this.error = error;
   }
   
   public CourseResponseDTO(String aName, String aDescription, String aDifficulty, String aStatus, int aPricePerHour, String aCategory, String aUrl)
