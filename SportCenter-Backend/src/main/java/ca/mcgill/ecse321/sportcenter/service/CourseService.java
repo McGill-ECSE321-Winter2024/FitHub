@@ -74,7 +74,7 @@ public class CourseService {
         if (status == null) {
             errorMessage.append("Course status cannot be null! ");
         }
-        if (pricePerHour == null || pricePerHour <= 0) {
+        if (pricePerHour == null || pricePerHour < 0) {
             errorMessage.append("Price per hour must be provided and greater than zero! ");
         }
     

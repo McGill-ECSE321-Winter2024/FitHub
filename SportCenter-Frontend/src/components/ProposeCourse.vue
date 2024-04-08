@@ -51,27 +51,74 @@ export default {
         category: "",
         description: "",
         difficulty: "",
+        status: "",
+        priceperhour: 0,
         url: ""
       },
     };
   },
   methods: {
     submitForm() {
-      // Form submission logic
+      // Get authentication information from cookies
+      const username = this.$cookies.get('username');
+      const password = this.$cookies.get('password');
+
+      // Check if user is authenticated
+      if (username && password) {
+        // Form submission logic
+        const formData = {
+          name: this.course.name,
+          description: this.course.description,
+          difficulty: this.course.difficulty,
+          status: "Pending",
+          category: this.course.category,
+          priceperhour: 0,
+          url: this.course.url
+        };
+
+        // Make POST request with authentication header
+        fetch('http://127.0.0.1:8080/courses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(username + ':' + password),
+            //credentials: 'include'
+          },
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Course created:', data);
+          // Handle success
+        })
+        .catch(error => {
+          console.error('Error creating course:', error);
+          // Handle error
+        });
+      } else {
+        // Handle unauthenticated user
+        console.error('User not authenticated');
+      }
     },
     cancelForm() {
       // Reset form data logic
-      this.course = {
-        name: "",
-        category: "",
-        description: "",
-        difficulty: "",
-        url: ""
-      };
+      //this.course = {
+        //name: "",
+        //category: "",
+        //description: "",
+        //difficulty: "",
+        //url: ""
+      //};
     },
   },
 };
 </script>
+
 
 <style scoped>
 .solid-background {
