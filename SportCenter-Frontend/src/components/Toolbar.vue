@@ -31,9 +31,13 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     My Account
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown" :style="{ transition: 'background-color 1.5s', zIndex: 1, backgroundColor: toolbarColor }">
-                                    <router-link class="dropdown-item" to="/settings">Settings <b-icon icon="gear"></b-icon></router-link>
-                                    <a class="dropdown-item" @click.prevent="signOut" style="color: var(--color-red)">Sign Out <b-icon icon="box-arrow-right" style="color: var(--color-red)"></b-icon></a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown"
+                                    :style="{ transition: 'background-color 1.5s', zIndex: 1, backgroundColor: toolbarColor }">
+                                    <router-link class="dropdown-item" to="/settings">Settings <b-icon
+                                            icon="gear"></b-icon></router-link>
+                                    <a class="dropdown-item" @click.prevent="signOut"
+                                        style="color: var(--color-red)">Sign Out <b-icon icon="box-arrow-right"
+                                            style="color: var(--color-red)"></b-icon></a>
                                 </div>
                             </div>
                         </li>
@@ -119,9 +123,10 @@ export default {
         },
         signOut() {
             this.isLoggedIn = false;
-            this.$cookies.keys().forEach(cookieName => {
-                this.$cookies.remove(cookieName);
-            });
+            this.$cookies.remove('username');
+            this.$cookies.remove('password');
+            this.$cookies.remove('role');
+            this.$cookies.remove('id');
         }
     }
 };
