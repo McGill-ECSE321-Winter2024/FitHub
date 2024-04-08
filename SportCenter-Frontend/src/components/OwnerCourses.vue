@@ -39,6 +39,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "Courses",
@@ -46,9 +47,13 @@ export default {
     return {
       list: [],
       hoveredCardColor: "",
+      username: "",
+      password: "",
     };
   },
   mounted() {
+    this.username = decodeURIComponent(this.$cookies.get('username'));
+    this.password = this.$cookies.get('password');
     this.getAllCourses();
   },
   methods: {
@@ -85,7 +90,7 @@ export default {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
         },
       };
 
@@ -101,7 +106,7 @@ export default {
         })
         .then((data) => {
           console.log("Course approved:", data);
-          // You can reload the courses list or update the UI as needed
+          this.getAllCourses(); // Refresh the courses list
         })
         .catch((error) => {
           console.error("Error approving course:", error);
@@ -113,7 +118,7 @@ export default {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
         },
       };
 
@@ -129,7 +134,7 @@ export default {
         })
         .then((data) => {
           console.log("Course disapproved:", data);
-          // You can reload the courses list or update the UI as needed
+          this.getAllCourses(); // Refresh the courses list
         })
         .catch((error) => {
           console.error("Error disapproving course:", error);
@@ -138,6 +143,8 @@ export default {
   },
 };
 </script>
+
+
 
 <style scoped>
 .solid-background {
