@@ -88,11 +88,11 @@ export default {
   height: 100px;
   padding: 20px;
   border-radius: 10px;
-  border: 1px solid #444;
+  border: 1px solid #ffffff;
   background-color: transparent;
   color: #ffffff;
   box-sizing: border-box;
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 .text-column {
