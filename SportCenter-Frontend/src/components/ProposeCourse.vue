@@ -59,29 +59,25 @@ export default {
   },
   methods: {
     submitForm() {
-      // Get authentication information from cookies
       const username = decodeURIComponent(this.$cookies.get('username'));
       const password = this.$cookies.get('password');
 
       console.log('Username:', username);
       console.log('Password:', password);
 
-      // Check if user is authenticated
       if (username && password) {
-        // Form submission logic
         const formData = {
           name: this.course.name,
           category: this.course.category,
           description: this.course.description,
           difficulty: this.course.difficulty,
           status: "Pending",
-          pricePerHour: this.course.priceperhour, // Ensure correct casing
+          pricePerHour: this.course.priceperhour,
           url: this.course.url
         };
 
         console.log('Form Data:', formData);
 
-        // Make POST request with authentication header
         fetch('http://127.0.0.1:8080/courses', {
           method: 'POST',
           headers: {
@@ -100,30 +96,32 @@ export default {
         })
         .then(data => {
           console.log('Course created:', data);
-          // Handle success
+          this.resetForm();
         })
         .catch(error => {
           console.error('Error creating course:', error);
-          // Handle error
         });
       } else {
-        // Handle unauthenticated user
         console.error('User not authenticated');
       }
     },
     cancelForm() {
-      // Reset form data logic
-      // this.course = {
-      //   name: "",
-      //   category: "",
-      //   description: "",
-      //   difficulty: "",
-      //   url: ""
-      // };
+      this.resetForm();
+    },
+    resetForm() {
+      this.course = {
+        name: "",
+        category: "",
+        description: "",
+        difficulty: "",
+        priceperhour: 0,
+        url: ""
+      };
     },
   },
 };
 </script>
+
 
 
 
