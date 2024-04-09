@@ -14,7 +14,7 @@
       <!-- Sidebar container with gray box -->
       <div
         class="sidebar-container"
-        style="width: 380px; margin-right: 50px; overflow-y: auto; height: 100%"
+        style="width: 500px; margin-right: 50px; overflow-y: auto; height: 100%"
       >
         <div
           class="sidebar"
@@ -23,7 +23,7 @@
             background-color: #232323;
             margin-top: 20px;
             margin-left: 20px;
-            width: 330px;
+            width: 360px;
             height: 90%;
           "
         >
@@ -81,7 +81,7 @@
               class="menu-item"
               style="cursor: pointer; padding: 20px; font-size: 20px"
             >
-              Manage courses
+              Approve/Disapprove Courses
             </li>
             <!-- Manage Locations Button -->
             <li
