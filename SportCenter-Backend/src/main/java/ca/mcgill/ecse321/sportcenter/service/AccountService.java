@@ -145,6 +145,7 @@ public class AccountService implements UserDetailsService {
         customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setPronouns(pronouns);
         customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
@@ -165,10 +166,10 @@ public class AccountService implements UserDetailsService {
             instructor.setEmail(email);
         }
 
-        instructor.setEmail(email);
         instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setPronouns(pronouns);
         instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
@@ -189,10 +190,10 @@ public class AccountService implements UserDetailsService {
             owner.setEmail(email);
         }
 
-        owner.setEmail(email);
         owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);
         owner.setImageURL(imageURL);
+        owner.setPronouns(pronouns);
         owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return ownerRepository.save(owner);
     }
@@ -236,6 +237,23 @@ public class AccountService implements UserDetailsService {
     }
     
     //--------------------------// Getters //--------------------------//
+
+    @Transactional
+    public Account findAccountById(Integer id) {
+        List<Account>  accounts = findAllAccounts();
+        Account account_found = null;
+        for (Account account : accounts) {
+            if (account.getId() == id) {
+                account_found = account;
+            }
+        }
+        
+        if (account_found == null) {
+            throw new IllegalArgumentException("There is no account with " + id + ".");
+        }
+
+        return account_found;
+    }
 
     @Transactional
 	public Customer findCustomerById(Integer id) {
