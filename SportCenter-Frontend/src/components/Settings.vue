@@ -131,6 +131,10 @@
       >
         <!-- Edit Profile -->
         <div v-if="currentTab === 'EditProfile'">
+          <img class="mt-3" v-bind:src="this.$cookies.get()"
+                                    @error="$event.target.src = defaultImage" 
+                                    :style="{ 'width': '200px', 'height': 'auto' }" />
+
           <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
             Edit profile
           </h2>
@@ -246,6 +250,10 @@ export default {
     ProposeCourse,
     // Add more components as needed
   },
+  mounted() {
+    // Call your function to retrieve JSON data and autofill the input field
+    this.getCurrentAccountInfo();
+  },
   data() {
     return {
       currentTab: "EditProfile", // Default tab
@@ -267,8 +275,42 @@ export default {
     toggleMenu(tabName) {
       this.currentTab = tabName;
     },
-    /*
-    getAccountType(item) {
+    getCurrentAccountInfo() {
+      const url = 'http://127.0.0.1:8080/accounts/' + this.$cookies.get("id");
+      fetch(url, {
+                method: 'GET',
+                credentials: 'include'
+            }).then((accountsResponse) => {
+                if (accountsResponse.status === 204) {
+                    console.log("No account with Id was found");
+                }
+                else {
+                    accountsResponse.json().then(accounts => {
+                        console.log(accounts.accounts);
+                        this.instructors = accounts.accounts;
+
+                        this.instructors.forEach(instructor => {
+                            this.getAllCourses(instructor.id);
+                        });
+
+                        console.log(this.instructorCourses);
+                    }).catch(error => {
+                        console.error('Error parsing JSON:', error);
+                    });
+                }
+            }).catch(error => {
+                console.error('Error fetching accounts:', error);
+            });
+    },
+    saveProfileInfo() {
+
+      // Create a JSON object with the data to be sent in the POST request
+      const requestBody = {
+          name: this.profile.name,
+          email: this.profile.email,
+          password: this.profile.password
+      };
+
       console.log(
         "username: ",
         decodeURIComponent(this.$cookies.get("username"))
@@ -276,29 +318,35 @@ export default {
       console.log("password: ", this.$cookies.get("password"));
       console.log("role: ", this.$cookies.get("role"));
       console.log("id: ", this.$cookies.get("id"));
-      roleResponse.text().then((role) => {
-        const role_and_id = role.split(",");
-        role = role_and_id[0];
-        const id = role_and_id[1];
 
-        // Save cookies and change page
-        this.$cookies.set("username", this.email);
-        this.$cookies.set("password", this.password);
-        this.$cookies.set("role", role);
-        this.$cookies.set("id", id);
-
-        console.log("Created new cookies:");
-        console.log(
-          "username: ",
-          decodeURIComponent(this.$cookies.get("username"))
-        );
-        console.log("password: ", this.$cookies.get("password"));
-        console.log("role: ", this.$cookies.get("role"));
-        console.log("id: ", this.$cookies.get("id"));
-
-        this.$router.push("/");
-      });
-    },*/
+      const requestOptions = {
+        method: "PUT",
+        credentials: "include",
+        body: requestBody,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
+        },
+      };
+      const url = 'http://127.0.0.1:8080/customers/' + this.$cookies.get("id");
+      fetch(
+        url,
+        requestOptions
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Profile was approved:", data);
+        })
+        .catch((error) => {
+          console.error("Failed to update profile:", error);
+        });
+      
+    },
   },
 };
 </script>

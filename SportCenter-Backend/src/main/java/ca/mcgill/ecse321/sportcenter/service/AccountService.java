@@ -238,6 +238,23 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Getters //--------------------------//
 
     @Transactional
+    public Account findAccountById(Integer id) {
+        List<Account>  accounts = findAllAccounts();
+        Account account_found = null;
+        for (Account account : accounts) {
+            if (account.getId() == id) {
+                account_found = account;
+            }
+        }
+        
+        if (account_found == null) {
+            throw new IllegalArgumentException("There is no account with " + id + ".");
+        }
+
+        return account_found;
+    }
+
+    @Transactional
 	public Customer findCustomerById(Integer id) {
 		Customer customer = customerRepository.findCustomerById(id);
         if (customer == null) {
