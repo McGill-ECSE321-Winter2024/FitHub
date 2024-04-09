@@ -9,7 +9,7 @@
           </div>
           <div class="form-group">
             <label>Name</label>     
-            <input class="text-field" id="courseName" v-model="course.name" required>
+            <input class="text-field" id="courseName" v-model="capitalizedCourseName" required>
           </div>
           <div class="form-group">
             <label>Category</label>
@@ -29,7 +29,7 @@
           </div>
 
           <div class="buttons">
-            <button id="save-btn" type="submit">Send</button>
+            <button id="save-btn" type="submit">Save</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
           </div>
         </form>
@@ -41,19 +41,78 @@
 <script>
 export default {
   props: {
-    course: Object // Receive the entire course object as a prop
+    course: Object 
   },
   methods: {
     submitForm() {
-      // Handle form submission
+
     },
     cancelForm() {
-      // Handle cancel action
+
+    },
+    capitalizeWords(text) {
+      return text.replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+      });
+    },
+    submitForm() {
+  const username = decodeURIComponent(this.$cookies.get('username'));
+  const password = this.$cookies.get('password');
+
+  console.log('Username:', username);
+  console.log('Password:', password);
+
+  if (username && password) {
+    const courseId = this.course.id; // Assuming you have access to the course ID
+    const formData = {
+      id: courseId,
+      name: this.course.name,
+      category: this.course.category,
+      description: this.course.description,
+      difficulty: this.course.difficulty,
+      status: this.course.status,
+      pricePerHour: this.course.priceperhour,
+      url: this.course.url
+    };
+
+    console.log('Form Data:', formData);
+
+    fetch(`http://127.0.0.1:8080/courses/${courseId}`, { // Use PUT method and include the course ID in the URL
+      method: 'PUT', // Change method to PUT
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(username + ':' + password)
+      },
+      credentials: 'include', 
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      console.log('Response Status:', response.status);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Course updated:', data);
+      // Optionally, you can handle the response data here if needed
+      // For example, you may want to update the UI with the updated course details
+    })
+    .catch(error => {
+      console.error('Error updating course:', error);
+    });
+  } else {
+    console.error('User not authenticated');
+  }
+}
+  },
+  computed: {
+    capitalizedCourseName() {
+      return this.capitalizeWords(this.course.name);
     }
   }
 };
 </script>
-
 
 
 

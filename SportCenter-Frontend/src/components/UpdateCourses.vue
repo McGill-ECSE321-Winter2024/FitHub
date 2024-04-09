@@ -10,7 +10,7 @@
 
     <div v-if="!showList">
       <!-- Display only the UpdateCourseForm component -->
-      <UpdateCourseForm :courseId="selectedCourseId" @close="showList = true" />
+      <UpdateCourseForm :course="selectedCourse" @close="showList = true" />
     </div>
  <div v-else>
     <div class="mt-5">
@@ -98,39 +98,38 @@ export default {
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
-    deleteCourse(courseId) {
-      const requestOptions = {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
-        },
-      };
+        deleteCourse(courseId) {
+        const username = decodeURIComponent(this.$cookies.get('username'));
+        const password = this.$cookies.get('password');
 
-      fetch(
-        `http://127.0.0.1:8080/course-disapproval/${courseId}`,
-        requestOptions
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Course disapproved:", data);
-          this.getAllCourses(); // Refresh the courses list
-        })
-        .catch((error) => {
-          console.error("Error disapproving course:", error);
-        });
-    },
+        const requestOptions = {
+            method: "DELETE", 
+            credentials: "include",
+            headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Basic ' + btoa(username + ':' + password),
+            },
+        };
+
+        fetch(
+            `http://127.0.0.1:8080/courses/${courseId}`, 
+            requestOptions
+        )
+            .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            console.log("Course deleted successfully");
+            this.getAllCourses(); // Refresh the courses list
+            })
+            .catch((error) => {
+            console.error("Error deleting course:", error);
+            });
+        },
         openUpdateCourseForm(course) {
-        // Logic to open the UpdateCourseForm component with the selected course details
         console.log("Opening UpdateCourseForm for course:", course);
-        this.selectedCourse = course; // Set the selected course
-        this.showList = false; // Hide the list of courses
+        this.selectedCourse = course;
+        this.showList = false;
         },
   },
   components: {
