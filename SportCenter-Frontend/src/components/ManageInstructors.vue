@@ -88,10 +88,12 @@
                   class="col m-0 ml-3 text-field"
                 />
               </div>
-              <button @click="saveEdit" class="save-btn">Save</button>
-              <button @click="cancelEdit" class="cancel-edit-btn">
-                Cancel
-              </button>
+              <div class="row popup-btn">
+                <button @click="saveEdit" class="save-btn">Save</button>
+                <button @click="cancelEdit" class="cancel-edit-btn">
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -221,6 +223,11 @@ export default {
   cursor: pointer;
 }
 
+.popup-btn {
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .setting-instructor-field {
   width: 90%;
   padding: 10px;
@@ -296,6 +303,12 @@ export default {
   background-color: #cdf563;
 }
 
+.save-btn:hover {
+  background-color: #a0ca35 !important;
+  border-color: #a0ca35 !important;
+  color: var(--color-black) !important;
+}
+
 .cancel-edit-btn {
   padding: 10px 10px;
   color: var(--color-black);
@@ -311,6 +324,12 @@ export default {
   background-color: #ec5545;
 }
 
+.cancel-edit-btn:hover {
+  background-color: #cd4c3e !important;
+  border-color: #cd4c3e !important;
+  color: var(--color-black) !important;
+}
+
 .text-field {
   width: 100%;
   padding: 10px;
@@ -323,7 +342,7 @@ export default {
   transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
     border-width 0.1s ease-in-out; /* Add transition effect */
   font-weight: normal; /* Set default font weight */
-  border-width: 1px; /* Set initial border width */
+  border-width: 2px; /* Set initial border width */
 }
 
 .text-field:focus,
