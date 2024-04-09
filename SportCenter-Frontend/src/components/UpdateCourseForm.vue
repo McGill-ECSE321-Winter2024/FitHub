@@ -105,8 +105,6 @@ export default {
     })
     .then(data => {
       console.log('Course updated:', data);
-      // Optionally, you can handle the response data here if needed
-      // For example, you may want to update the UI with the updated course details
     })
     .catch(error => {
       console.error('Error updating course:', error);
@@ -148,7 +146,7 @@ export default {
 .form-box {
   width: 700px;
   padding: 50px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--color-muted-muted-black);
   border-radius: 20px;
   margin-top: 20px;
   background-color: var(--color-black);
@@ -225,7 +223,7 @@ button {
   padding: 10px 10px;
   color: var(--color-black);
   border: none;
-  border-radius: 20px;
+  border-radius: 30px;
   cursor: pointer;
   font-size: 18px;
   font-weight: 700;

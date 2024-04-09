@@ -105,6 +105,17 @@
             >
               My sessions
             </li>
+
+                        <li
+              @click="toggleMenu('CreateUpdateSessions')"
+              :class="{
+                'menu-item-selected': currentTab === 'CreateUpdateSessions',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Manage sessions
+            </li>
             <!-- Propose Courses Button -->
             <li
               @click="toggleMenu('ProposeCourse')"
@@ -181,6 +192,10 @@
         <!-- My Sessions Settings -->
         <div v-else-if="currentTab === 'MySessions'">
           <CustomerSessions />
+        </div>
+
+        <div v-else-if="currentTab === 'CreateUpdateSessions'">
+          <CreateUpdateSessions />
         </div>
 
         <!-- Billing Account Settings -->
@@ -266,6 +281,7 @@ import BillingAccount from "./BillingAccount.vue";
 import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
 import UpdateCourses from "./UpdateCourses.vue";
+import CreateUpdateSessions from "./CreateUpdateSessions.vue";
 
 export default {
   name: "ProfileSettings",
@@ -274,7 +290,8 @@ export default {
     BillingAccount,
     CustomerSessions,
     ProposeCourse,
-    UpdateCourses
+    UpdateCourses,
+    CreateUpdateSessions
     // Add more components as needed
   },
   data() {
