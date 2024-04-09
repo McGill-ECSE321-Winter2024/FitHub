@@ -50,7 +50,7 @@
       data() {
         return {
             billingAccount: {},
-            cardNumber: billingAccount.cardNumber,
+            cardNumber: '',
             expirationDate: '',
             cvv: '',
             billingAddress: '',
@@ -59,14 +59,15 @@
         };
       },
 
-     // mounted() {
-        // Fetch location data when the component is created
-       // this.getBillingAccount();
-    //},
+      mounted() {
+        this.username = decodeURIComponent(this.$cookies.get('username'));
+        this.password = this.$cookies.get('password');
+        this.getBillingAccount();
+    },
 
       methods: {
 
-       getBillingAccount(){
+       getBillingAccount(id){
         const requestOptions = {
         method: 'GET',
         credentials: 'include',
@@ -76,7 +77,7 @@
             },
         };
 
-        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts/', requestOptions)
+        fetch(`http://localhost:8080/billing-accounts/${id}`, requestOptions)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -85,14 +86,20 @@
         })
         .then(data => {
           this.billingAccount = data;
-          console.log(this.list)
+          console.log(this.billingAccount);
+          this.cardNumber = data.cardNumber || '';
+          this.expirationDate = data.expirationDate || '';
+          this.cvv = data.cvv || '';
+          this.billingAddress = data.billingAddress || '';
+          this.cardHolder = data.cardHolder || '';
+          this.isDefault = data.isDefault || false;
         })
         .catch(error => {
-          console.error('Error fetching billing-accounts:', error);
+          console.error('Error fetching billing-account:', error);
         });
        },
     
-        async edit() {
+        async edit(id) {
         
             // Create a JSON object with the data to be sent in the POST request
             const requestBody = {
@@ -111,16 +118,14 @@
             console.log("The card holder is " + this.cardHolder);
             console.log("The isDefault is " + requestBody.isDefault);
             
-    
-            fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts/', {
+            fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts/${id}', {
                 method: 'PUT',
-                body: JSON.stringify(requestBody),
-                //headers: headers,     
+                body: JSON.stringify(requestBody),     
                 headers: {
                     'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
                     'Content-Type': 'application/json'
                 },
-                credentials: 'include', // Ensure cookies are sent with the request,
+                credentials: 'include',
                 mode: "cors",
             })  .then(response => response.text())
                 .then(result => {

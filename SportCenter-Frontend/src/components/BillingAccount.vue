@@ -152,6 +152,8 @@ export default {
   border: 2px solid #ccc;
   border-radius: 10px;
   margin:0px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .form-group-side {
