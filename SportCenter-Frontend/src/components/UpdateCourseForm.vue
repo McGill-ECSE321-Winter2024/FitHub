@@ -2,6 +2,9 @@
   <div class="solid-background">
     <div class="box">
       <div class="form-box">
+      <div class="title">
+         <h3 class="custom-h3">Edit course details below</h3>
+         </div>
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <label>Image</label>     
@@ -114,11 +117,9 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
 .solid-background {
-  background-color: var(--color-black);
+  background-color: transparent;
   height: 100vh;
 }
 
@@ -133,11 +134,9 @@ export default {
 }
 
 .custom-h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-white);
-  margin-bottom: 20px;
-  
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFFFFF;
 }
 
 .content {
@@ -161,6 +160,10 @@ export default {
   border-width: 1px;
 }
 
+.title {
+  justify-content: center;
+}
+
 .text-field-description {
   height: 100px;
 }
@@ -179,11 +182,12 @@ export default {
 }
 
 .form-box {
-  width: 600px;
-  padding: 20px;
+  width: 700px;
+  padding: 50px;
   border: 2px solid #ccc;
-  border-radius: 10px;
+  border-radius: 20px;
   margin-top: 20px;
+  background-color: var(--color-black);
 }
 
 .form-group-side {

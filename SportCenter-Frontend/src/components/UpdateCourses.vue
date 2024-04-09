@@ -8,11 +8,14 @@
       </div>
     </div>
 
-    <div v-if="!showList">
-      <!-- Display only the UpdateCourseForm component -->
-      <UpdateCourseForm :course="selectedCourse" @close="showList = true" />
-    </div>
- <div v-else>
+    <!-- Display the UpdateCourseForm component when the icon is clicked -->
+    <UpdateCourseForm 
+      v-if="showUpdateForm" 
+      :course="selectedCourse" 
+      @close="closeUpdateCourseForm" 
+      style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
+    />
+
     <div class="mt-5">
       <div class="row">
         <div
@@ -32,18 +35,17 @@
 
             <div class="buttons">
               <!-- Display the pencil icon and bind the click event to openUpdateCourseForm method -->
-                <b-icon
-                    icon="pencil-fill"
-                    @click="openUpdateCourseForm(course)"
-                    class="pencil-icon"
-                ></b-icon>
-                <button @click="deleteCourse(course.id)" class="disapprove">
+              <b-icon
+                icon="pencil-fill"
+                @click="openUpdateCourseForm(course)"
+                class="pencil-icon"
+              ></b-icon>
+              <button @click="deleteCourse(course.id)" class="disapprove">
                 Delete
               </button>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
@@ -61,8 +63,8 @@ export default {
       hoveredCardColor: "",
       username: "",
       password: "",
-      showList: true, // Add a data property to track whether to show the list of courses or the UpdateCourseForm
-      selectedCourseId: null, // Add a data property to store the selected course ID
+      showUpdateForm: false, // Add a data property to track whether to show the UpdateCourseForm
+      selectedCourse: null, // Add a data property to store the selected course
     };
   },
   mounted() {
@@ -98,46 +100,48 @@ export default {
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
-        deleteCourse(courseId) {
-        const username = decodeURIComponent(this.$cookies.get('username'));
-        const password = this.$cookies.get('password');
+    deleteCourse(courseId) {
+      const username = decodeURIComponent(this.$cookies.get('username'));
+      const password = this.$cookies.get('password');
 
-        const requestOptions = {
-            method: "DELETE", 
-            credentials: "include",
-            headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Basic ' + btoa(username + ':' + password),
-            },
-        };
+      const requestOptions = {
+        method: "DELETE", 
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
+        },
+      };
 
-        fetch(
-            `http://127.0.0.1:8080/courses/${courseId}`, 
-            requestOptions
-        )
-            .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            console.log("Course deleted successfully");
-            this.getAllCourses(); // Refresh the courses list
-            })
-            .catch((error) => {
-            console.error("Error deleting course:", error);
-            });
-        },
-        openUpdateCourseForm(course) {
-        console.log("Opening UpdateCourseForm for course:", course);
-        this.selectedCourse = course;
-        this.showList = false;
-        },
+      fetch(
+        `http://127.0.0.1:8080/courses/${courseId}`, 
+        requestOptions
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          console.log("Course deleted successfully");
+          this.getAllCourses(); // Refresh the courses list
+        })
+        .catch((error) => {
+          console.error("Error deleting course:", error);
+        });
+    },
+    openUpdateCourseForm(course) {
+      console.log("Opening UpdateCourseForm for course:", course);
+      this.selectedCourse = course;
+      this.showUpdateForm = true; // Show the UpdateCourseForm
+    },
+    closeUpdateCourseForm() {
+      this.showUpdateForm = false; // Hide the UpdateCourseForm
+    },
   },
   components: {
     UpdateCourseForm, // Register the UpdateCourseForm component
   },
 };
 </script>
-
 
 <style scoped>
 .pencil-icon {
@@ -158,6 +162,7 @@ export default {
   width: 70vw;
   overflow: auto;
   margin-left: -30px;
+  position: relative; /* Set the position to relative for proper positioning of the absolute element */
 }
 
 .custom-h1 {
@@ -205,24 +210,24 @@ body {
 }
 
 .approve{
-    border: 0px;
-    background-color: #CDF563;
-    color: var(--color-black);
-    font-weight: bold;
-    border-radius: 20px;
-    height: 40px;
-    width: 100px;
+  border: 0px;
+  background-color: #CDF563;
+  color: var(--color-black);
+  font-weight: bold;
+  border-radius: 20px;
+  height: 40px;
+  width: 100px;
 }
 
 .disapprove {
-    margin-left: 10px;
-    border: 0px;
-    background-color: #E3240C;
-    color: var(--color-black);
-    font-weight: bold;
-    border-radius: 20px;
-     height: 40px;
-    width: 100px;
+  margin-left: 10px;
+  border: 0px;
+  background-color: #E3240C;
+  color: var(--color-black);
+  font-weight: bold;
+  border-radius: 20px;
+  height: 40px;
+  width: 100px;
 }
 
 .buttons {
