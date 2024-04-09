@@ -1,10 +1,5 @@
 <template>
   <div class="solid-background">
-    <div class="header-container">
-      <h1 class="custom-h1">Propose a new course</h1>
-      <h3 class="custom-h3">Propose a new course by inputting the details. Your request will be reviewed by the owner.</h3>
-    </div>
-
     <div class="box">
       <div class="form-box">
         <form @submit.prevent="submitForm">
@@ -12,13 +7,15 @@
             <label>Image</label>     
             <input class="text-field" id="url" v-model="course.url" required>
           </div>
-          <div class="form-group">
-            <label>Name</label>     
-            <input class="text-field" id="courseName" v-model="course.name" required>
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <input class="text-field" id="category" v-model="course.category" required>
+          <div class="form-group flex-container">
+            <div class="name">
+              <label>Name</label>     
+              <input class="text-field" id="courseName" v-model="course.name" required>
+            </div>
+            <div class="category">
+              <label>Category</label>
+              <input class="text-field" id="category" v-model="course.category" required>
+            </div>
           </div>
           <div class="form-group">
             <label>Description</label>
@@ -26,13 +23,14 @@
           </div>
           <div class="form-group">
             <label>Difficulty</label>
-            <select v-model="course.difficulty" class="text-field">
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
+            <div class="difficulty">
+              <select v-model="course.difficulty" class="text-field">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
           </div>
-
           <div class="buttons">
             <button id="save-btn" type="submit">Send</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
@@ -125,33 +123,50 @@ export default {
 
 
 
-
 <style scoped>
 .solid-background {
-  background-color: var(--color-black);
+  background-color: transparent;
   height: 100vh;
 }
 
-.box{
+.box {
   display: flex;
   justify-content: center; /* Center content horizontally */
   align-items: center; /* Center content vertically */
 }
-.custom-h1 {
-  color: var(--color-white);
-  font-size: 35px;
-}
 
 .custom-h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--color-white);
-  margin-bottom: 20px;
-  
+  font-size: 24px;
+  font-weight: 700;
+  color: #FFFFFF;
 }
 
-.content {
+.form-box {
+  width: 700px;
+  padding: 50px;
+  border: 2px solid var(--color-muted-muted-black);
+  border-radius: 20px;
+  margin-top: 20px;
+  background-color: var(--color-black);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.title-container {
   text-align: center;
+  margin-bottom: 20px;
+}
+
+
+label {
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .text-field,
@@ -188,50 +203,11 @@ export default {
   border-width: 2px;
 }
 
-.form-box {
-  width: 600px;
-  padding: 20px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  margin-top: 20px;
-}
-
-.form-group-side {
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  text-align: left;
-  display: block;
-  margin-bottom: 5px;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-button {
-  padding: 10px 10px;
-  color: var(--color-black);
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 700;
-  width: 100px; 
-  height: 50px; 
-  margin-bottom: 15px;
-}
-
 .buttons {
   display: flex;
   justify-content: center; /* Center content horizontally */
 }
+
 #save-btn {
   background-color: #CDF563;
 }
@@ -241,8 +217,36 @@ button {
   background-color: #EC5545;
 }
 
+button {
+  padding: 10px 10px;
+  color: var(--color-black);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  width: 100px; 
+  height: 50px; 
+  margin-bottom: 15px;
+}
+
 button:hover {
   background-color: #0056b3;
 }
 
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center content vertically */
+}
+
+.name,
+.category,
+.price {
+  width: 48%; /* Adjust width as needed */
+}
+
+.difficulty{{
+  width: 100%;
+}}
 </style>

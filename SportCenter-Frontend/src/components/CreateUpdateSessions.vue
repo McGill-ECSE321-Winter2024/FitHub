@@ -1,81 +1,86 @@
 <template>
   <div>
-    <h2 style="color: #ffffff; font-size: 35px">My sessions</h2>
-    <h4 style="color: #ffffff; font-size: 20px; margin-bottom: 20px">
+    <h2 style="color: #ffffff; font-size: 35px; margin-left: 140px; margin-top: 50px;">My sessions</h2>
+    <h4 style="color: #ffffff; font-size: 20px; margin-bottom: 20px; margin-left: 140px;">
       Manage the sessions which you are supervising as an instructor.
     </h4>
-        <button id="save-btn">Create session</button>
+    <button id="save-btn" style="margin-left: 140px;">Create session</button>
 
     <!-- Properties and text fields -->
     <div style="color: #ffffff">
       <!-- Boxes -->
-      <div v-for="session in paginatedSessions" :key="session.name">
+      <div v-for="session in sessions.sessions" :key="session.name">
+      <div class="session-card">
         <div class="box">
           <div class="text-column">
             <div style="font-size: 25px; font-weight: bold">
-              {{ session.name }}
+              {{ session.course.name }}
             </div>
-            <div style="font-size: 18px">{{ session.details }}</div>
+            <div style="font-size: 18px">{{ session.date }}, {{ session.startTime }} - {{ session.endTime }}</div>
+            <div style="font-size: 18px">Capacity: {{ session.capacity }}, Floor {{ session.location.floor }} Room {{ session.location.room }} </div>
           </div>
-          <div class="button-column">
-            <div class="button">Unregister</div>
-          </div>
+          <div class="buttons">
+              <b-icon
+                icon="pencil-fill"
+                class="pencil-icon"
+              ></b-icon>
+              <b-icon
+                icon="trash-fill"
+                class="disapprove"
+              ></b-icon>
         </div>
-      </div>
-      <!-- Navigation arrows and page indicators -->
-      <div class="navigation">
-        <div class="arrows">
-          <div class="arrow" style="margin-right: 10px" @click="navigate(-1)">
-            &#10094;
-          </div>
-          <div class="page-indicator">{{ currentPage }} / {{ totalPages }}</div>
-          <div class="arrow" @click="navigate(1)">&#10095;</div>
         </div>
-      </div>
-      <div class="button-column" style="width: 90%; margin-top: 30px">
-        <a href="http://127.0.0.1:8087/#/courses" class="register-button">
-          Register to more sessions
-        </a>
+    </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       profile: { name: "", email: "", password: "" },
-      sessions: [
-        { name: "Goat yoga", details: "04/06/24, 10:00-12:00", capacity: "40", attendance: "20", room: "3", floor: "5" },
-        { name: "Jiu-jitsu 101", details: "04/07/24, 12:00-14:00" },
-        { name: "Badminton", details: "04/08/24, 10:00-11:00" },
-        // Add more sessions as needed
-      ],
-      itemsPerPage: 3,
-      currentPage: 1,
+      sessions: [],
     };
   },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.sessions.length / this.itemsPerPage);
-    },
-    paginatedSessions() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.sessions.slice(start, end);
+  methods: {
+    getAllSessions() {
+      const username = decodeURIComponent(this.$cookies.get('username'));
+      const password = this.$cookies.get('password');
+
+      console.log('Username:', username);
+      console.log('Password:', password);
+
+      fetch('http://127.0.0.1:8080/sessions', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
+        },
+        credentials: 'include', 
+      })
+      .then(response => {
+        console.log('Response Status:', response.status);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Sessions fetched:', data);
+        // Assign fetched sessions to this.sessions
+        this.sessions = data;
+      })
+      .catch(error => {
+        console.error('Error fetching sessions:', error);
+      });
     },
   },
-  methods: {
-    navigate(direction) {
-      if (
-        (direction === -1 && this.currentPage === 1) ||
-        (direction === 1 && this.currentPage === this.totalPages)
-      ) {
-        return;
-      }
-      this.currentPage += direction;
-    },
+  mounted() {
+    this.getAllSessions();
   },
 };
 </script>
@@ -86,23 +91,29 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  height: 100px;
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid #ffffff;
-  background-color: transparent;
+  width: 100%;
   color: #ffffff;
   box-sizing: border-box;
-  margin-top: 10px;
+}
+
+.session-card {
+    border-radius: 10px;
+    border: 1px solid #ffffff;
+    background-color: transparent;
+    padding: 30px;
+    margin-top: 20px;
+    margin-right: 150px;
+    margin-left: 150px;
 }
 
 .text-column {
-  flex: 1;
+  width: 50%; /* Adjusted width to make two columns */
 }
 
-.button-column {
-  flex-shrink: 0;
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .button {
@@ -116,6 +127,24 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.disapprove {
+    color: #EC5545; 
+    font-size: 20px;
+    cursor: pointer; 
+    margin-right: 25px; 
+}
+
+.pencil-icon {
+  color: #CDF563; 
+  font-size: 20px;
+  cursor: pointer; 
+  margin-right: 25px; 
+}
+
+.pencil-icon:hover {
+  color: #fff; 
 }
 
 #save-btn {
@@ -156,29 +185,5 @@ button {
 .register-button:hover {
   color: var(--color-green);
   font-weight: bold;
-}
-
-.navigation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  width: 90%;
-}
-
-.page-indicator {
-  font-size: 18px;
-  margin-top: 5px;
-}
-
-.arrows {
-  display: flex;
-}
-
-.arrow {
-  font-size: 24px;
-  cursor: pointer;
-  margin: 0 10px;
-  margin-right: 10px;
 }
 </style>

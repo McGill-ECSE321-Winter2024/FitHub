@@ -212,7 +212,7 @@ body {
 .disapprove {
     margin-left: 10px;
     border: 0px;
-    background-color: #E3240C;
+    background-color: #EC5545;
     color: var(--color-black);
     font-weight: bold;
     border-radius: 20px;

@@ -40,9 +40,11 @@
                 @click="openUpdateCourseForm(course)"
                 class="pencil-icon"
               ></b-icon>
-              <button @click="deleteCourse(course.id)" class="disapprove">
-                Delete
-              </button>
+              <b-icon
+                icon="trash-fill"
+                @click="deleteCourse(course.id)"
+                class="disapprove"
+              ></b-icon>
             </div>
           </div>
         </div>
@@ -222,14 +224,14 @@ body {
 }
 
 .disapprove {
-  margin-left: 10px;
-  border: 0px;
-  background-color: #EC5545;
-  color: var(--color-black);
-  font-weight: bold;
-  border-radius: 20px;
-  height: 40px;
-  width: 100px;
+  color: #EC5545;
+  font-size: 20px;
+  cursor: pointer; 
+  margin-right: 25px; 
+}
+
+.disapprove:hover {
+  color: #fff; 
 }
 
 .blur-background {
