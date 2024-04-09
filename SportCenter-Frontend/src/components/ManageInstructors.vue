@@ -13,7 +13,11 @@
                 :style="{ width: '80px', height: 'auto' }"
               />
             </div>
-            <h3 class="inst-info" style="font-weight: bold">James Luu</h3>
+            <div class="inst-name">James Luu</div>
+            <div class="inst-info">He/him</div>
+            <div class="inst-info" style="margin: 10px">
+              jamesluu0917@gmail.com
+            </div>
             <div class="row justify-content-center">
               <button
                 class="p-2 px-3 rounded justify-content-end btn btn-outline px-4"
@@ -162,6 +166,7 @@ export default {
 }
 
 .btn-outline {
+  margin-top: 10px;
   background-color: #cdf567 !important;
   border-color: #cdf567 !important;
   color: var(--color-black) !important;
@@ -183,7 +188,7 @@ export default {
 .box {
   border: 1px solid #ccc;
   color: #ffffff;
-  height: 400px;
+  height: 320px;
   width: 320px;
   border-radius: 8px;
   padding: 10px;
@@ -192,9 +197,17 @@ export default {
   align-items: center;
 }
 
-.inst-info {
+.inst-name {
   justify-content: center;
   text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.inst-info {
+  text-align: center;
+  font-size: 20px;
 }
 
 .save-button {
