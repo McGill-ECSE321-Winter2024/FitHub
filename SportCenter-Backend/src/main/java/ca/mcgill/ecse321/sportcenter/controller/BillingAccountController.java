@@ -115,7 +115,9 @@ public class BillingAccountController {
             List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
 
             for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
-                accounts.add(new BillingAccountResponseDTO(account));
+                if (account.getIsDefault() == false){
+                    accounts.add(new BillingAccountResponseDTO(account));
+                }
             }
        
             if(accounts.isEmpty())

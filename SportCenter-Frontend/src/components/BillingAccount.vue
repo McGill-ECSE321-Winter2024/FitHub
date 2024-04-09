@@ -6,7 +6,7 @@
     <h1 class="custom-h1">Billing account</h1>
     <h3>Manage your payment details for one-time purchase</h3>
 </div>
-
+<div class="form-container">
 <div class="form-box">
     <h3>Enter card details below</h3>
      <form>
@@ -24,11 +24,11 @@
       </div>
       <div class="form-group">
         <label for="billingAddress">Billing Address</label>
-        <input type="text" id="billingAddress" v-model="billingAddress" >
+        <input type="text" id="billingAddress" v-model="billingAddress" autocomplete="off" >
       </div>
       <div class="form-group">
         <label for="cardHolder">Card Holder</label>
-        <input type="text" id="cardHolder" v-model="cardHolder" >
+        <input type="text" id="cardHolder" v-model="cardHolder" autocomplete="off" >
       </div>
       <div class="form-group-side">
         <input type="checkbox" id="isDefault" v-model="isDefault" style="transform: scale(1.5);">
@@ -38,8 +38,11 @@
       <button id="cancel-btn" type="cancel" @click="cancel">Cancel</button>
     </form>
     </div>
+  </div>
     <!-- Display error message -->
     <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+    <p class="success-message" v-if="successMessage">{{ successMessage }}</p>
+    
   </div>
 </template>
 
@@ -58,7 +61,8 @@ export default {
         cardHolder: '',
         isDefault: false,
         errorMessage: 'Invalid input(s)',
-        showErrorMessage: false
+        showErrorMessage: false,
+        successMessage:''
     };
   },
   methods: {
@@ -87,8 +91,7 @@ export default {
 
         fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', {
             method: 'POST',
-            body: JSON.stringify(requestBody),
-            //headers: headers,     
+            body: JSON.stringify(requestBody),    
             headers: {
                 'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
                 'Content-Type': 'application/json'
@@ -99,13 +102,8 @@ export default {
             .then(result => {
                 console.log(result);
                 result = JSON.parse(result);
-                if (result.error == "") {     
-                    
-                }
-                else {
-                  this.errorMessage = result.error;
-                  this.showErrorMessage = true;
-                }
+                  this.successMessage = 'Added card successfully';
+                  this.$router.push('/billing-accounts');
             })
             .catch(error => {
                 console.error('Error creating billing account:', error);
@@ -114,8 +112,6 @@ export default {
             });
 
     },
-      // Here you can handle form submission, for example, sending data to a server
-      //this.successMessage = 'Added card successfully';
 
   cancel(){
     // Clear all input fields
@@ -146,14 +142,18 @@ export default {
   font-size: 45px;
 }
 
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .form-box {
   width: 700px;
   padding: 20px;
   border: 2px solid #ccc;
   border-radius: 10px;
   margin:0px;
-  display: flex;
-  justify-content: space-between;
 }
 
 .form-group-side {
@@ -221,6 +221,12 @@ h3 {
   font-size: 10px;
   font-weight: 100;
   border-color: #CDF563;
+}
+.success-message {
+  color: green;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 </style>

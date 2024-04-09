@@ -19,7 +19,7 @@
         <h6>Default card</h6>
         <div class="card-box">
           <h5 class="card-display">{{ defaultCard.cardNumber ? '**** ' + defaultCard.cardNumber.slice(-4) : '' }} | {{ defaultCard.expirationDate ? defaultCard.expirationDate.slice(0, 7) : '' }}</h5>
-        <router-link to="/billing-account-edit" class="edit-link">Edit</router-link>
+          <button @click="showEditPopup(defaultCard)" class="edit-link">Edit</button>
         <button @click="confirmDelete(defaultCard.id)" class="delete-link">Delete</button>
         </div>
 
@@ -29,17 +29,53 @@
         <h5 class="card-display">
           {{ account.cardNumber ? '**** ' + account.cardNumber.slice(-4) : '' }} | {{ account.expirationDate ? account.expirationDate.slice(0, 7) : '' }}
         </h5>
-        <router-link to="/billing-account-edit" class="edit-link">Edit</router-link>
+        <button @click="showEditPopup(account)" class="edit-link">Edit</button>
         <button @click="confirmDelete(account.id)" class="delete-link">Delete</button>
         </div>
         </div>
     </div>
 
-    <div class="popup-dialog" v-if="showDeleteConfirmation">
+    <div class="popup-delete" v-if="showDeleteConfirmation">
       <div class="popup-content">
         <p>Are you sure you want to delete this card?</p>
         <button @click="cancelDelete" class="cancel-btn">Cancel</button>
         <button @click="deleteAccount" class="confirm-btn">Delete</button>
+      </div>
+    </div>
+
+    <div class="popup-edit" v-if="showEditConfirmation">
+      <div class="popup-content">
+        <div class="form-box">
+        <h3>Edit card details below</h3>
+         <form>
+          <div class="form-group">
+            <label for="Card Number">Card Number</label>     
+            <input type="text" id="cardNumber" v-model="editedAccount.cardNumber" >
+          </div>
+          <div class="form-group">
+            <label for="expirationDate">Expiry Date</label>
+            <input type="text" id="expirationDate" v-model="editedAccount.expirationDate">
+          </div>
+          <div class="form-group">
+            <label for="cvv">Security Code (CVV)</label>
+            <input type="text" id="cvv" v-model="editedAccount.cvv">
+          </div>
+          <div class="form-group">
+            <label for="billingAddress">Billing Address</label>
+            <input type="text" id="billingAddress" v-model="editedAccount.billingAddress" >
+          </div>
+          <div class="form-group">
+            <label for="cardHolder">Card Holder</label>
+            <input type="text" id="cardHolder" v-model="editedAccount.cardHolder" >
+          </div>
+          <div class="form-group-side">
+            <input type="checkbox" id="isDefault" v-model="editedAccount.isDefault" style="transform: scale(1.5);">
+            <label for="isDefault">Save as default </label>
+          </div>
+          <button @click="cancelEdit" class="cancel-edit-btn">Cancel</button>
+          <button @click="saveEdit" class="save-btn">Save</button>
+        </form>
+        </div>
       </div>
     </div>
 
@@ -57,7 +93,9 @@
           billingAccounts: [],
           defaultCard: {},
           deleteAccountId: null,
-          showDeleteConfirmation: false 
+          showDeleteConfirmation: false,
+          showEditConfirmation: false,
+          editedAccount: null // Hold the account being edited 
         };
       },
       mounted() {
@@ -135,6 +173,7 @@
       .then(response => {
         // Handle success
         console.log('Account deleted successfully');
+        this.getDefaultBillingAccounts();
         this.getOtherBillingAccounts();
       })
       .catch(error => {
@@ -144,8 +183,55 @@
         this.deleteAccountId = null;
         this.showDeleteConfirmation = false; // Hide the pop-up dialog
       });
-    }
+    },
+    showEditPopup(account) {
+      this.editedAccount = { ...account }; // Copy account data
+      this.showEditConfirmation = true; // Show edit popup
+    },
+    cancelEdit() {
+      this.showEditConfirmation = false; // Hide edit popup
+      this.editedAccount = null; // Reset edited account
+    },
+    saveEdit() {
 
+      const editedData = {
+      cardNumber: this.editedAccount.cardNumber,
+      cardHolder: this.editedAccount.cardHolder,
+      billingAddress: this.editedAccount.billingAddress,
+      cvv: this.editedAccount.cvv,
+      isDefault: this.editedAccount.isDefault,
+      expirationDate: this.editedAccount.expirationDate
+    };
+    console.log("The card is " + cardNumber);
+    console.log("The expiry is " + expirationDate);
+    console.log("The cvv is " + cvv);
+    console.log("The billing address is " + billingAddress);
+    console.log("The card holder is " + cardHolder);
+    console.log("The isDefault is " + isDefault);
+    console.log("The id is " + this.editedAccount.id);
+        
+    // body: JSON.stringify(requestBody),   
+
+    axios.put(`http://localhost:8080/customers/${this.$cookies.get('id')}/billing-accounts/${this.editedAccount.id}`, editedData, {
+      headers: {
+        'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      // Handle success
+      console.log('Account updated successfully');
+      this.getDefaultBillingAccounts();
+      this.getOtherBillingAccounts();
+    })
+    .catch(error => {
+      console.error('Error updating account:', error);
+    })
+    .finally(() => {
+      this.showEditConfirmation = false; // Hide the edit popup
+      this.editedAccount = null; // Reset edited account
+    });
+    }
   }
     };
 
@@ -229,10 +315,6 @@
       margin-bottom: 15px;
     }
     
-    button:hover {
-      background-color: #121a22;
-    }
-    
     h2 {
       text-align: left;
       margin-left: 400px;
@@ -272,7 +354,7 @@
       color: #FFFFFF;
     }
 
-  .popup-dialog {
+  .popup-delete {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -311,6 +393,82 @@
 
 .confirm-btn {
   background-color: #EC5545 !important;
+}
+
+.popup-edit {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-black);
+  border: 2px solid #ccc;
+  border-radius: 40px;
+  padding: 20px;
+  z-index: 9999; /* Ensure it appears on top of other elements */
+  width: 850px; /* Adjust the width as needed */
+  height: 600px; /* Adjust the height as needed */
+}
+.form-box {
+  width: 800px;
+  height: 600px;
+  padding: 20px;
+  margin:0px;
+}
+
+.form-group-side {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+input[type="text"] {
+  background-color: var(--color-black);
+  width: 100%;
+  border: 1px solid #ccc;
+  color: #ccc;
+  border-radius: 7px;
+}
+
+label {
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.save-btn {
+  padding: 10px 10px;
+  color: var(--color-black);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  width: 100px; 
+  height: 50px; 
+  margin-bottom: 15px;
+    background-color: #CDF563;
+}
+
+.cancel-edit-btn {
+  padding: 10px 10px;
+  color: var(--color-black);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  width: 100px; 
+  height: 50px; 
+  margin-bottom: 15px;
+    margin-left: 150px; 
+    background-color: #EC5545;
 }
 
 </style>
