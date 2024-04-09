@@ -14,7 +14,7 @@
       <!-- Sidebar container with gray box -->
       <div
         class="sidebar-container"
-        style="width: 380px; margin-right: 50px; overflow-y: auto; height: 100%"
+        style="width: 500px; margin-right: 50px; overflow-y: auto; height: 100%"
       >
         <div
           class="sidebar"
@@ -23,7 +23,7 @@
             background-color: #232323;
             margin-top: 20px;
             margin-left: 20px;
-            width: 330px;
+            width: 360px;
             height: 90%;
           "
         >
@@ -77,7 +77,7 @@
               }"
               class="menu-item"
             >
-              Manage courses
+              Approve/Disapprove Courses
             </li>
             <!-- Manage Locations Button -->
             <li
@@ -164,12 +164,17 @@
           <OwnerCourses />
         </div>
 
+        <!-- My Sessions Settings -->
+        <div v-else-if="currentTab === 'MySessions'">
+          <CustomerSessions />
+        </div>
+
         <!-- Billing Account Settings -->
         <div v-else-if="currentTab === 'BillingAccount'">
           <BillingAccount />
         </div>
 
-            <div v-else-if="currentTab === 'ProposeCourse'">
+        <div v-else-if="currentTab === 'ProposeCourse'">
           <ProposeCourse />
         </div>
 
@@ -240,6 +245,7 @@
 import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccount from "./BillingAccount.vue";
 import BillingAccountOverview from "./BillingAccountOverview.vue";
+import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
 
 export default {
@@ -247,6 +253,7 @@ export default {
   components: {
     OwnerCourses,
     BillingAccount,
+    CustomerSessions,
     ProposeCourse,
     // Add more components as needed
   },
