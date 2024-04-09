@@ -90,9 +90,9 @@
             </li>
             <!-- Billing Account Button -->
             <li
-              @click="toggleMenu('BillingAccount')"
+              @click="toggleMenu('BillingAccountOverview')"
               :class="{
-                'menu-item-selected': currentTab === 'BillingAccount',
+                'menu-item-selected': currentTab === 'BillingAccountOverview',
               }"
               class="menu-item"
             >
@@ -168,8 +168,8 @@
         </div>
 
         <!-- Billing Account Settings -->
-        <div v-else-if="currentTab === 'BillingAccount'">
-          <BillingAccount />
+        <div v-else-if="currentTab === 'BillingAccountOverview'">
+          <BillingAccountOverview />
         </div>
 
         <div v-else-if="currentTab === 'ProposeCourse'">
@@ -239,7 +239,7 @@ export default {
   name: "ProfileSettings",
   components: {
     OwnerCourses,
-    BillingAccount,
+    BillingAccountOverview,
     CustomerSessions,
     ProposeCourse,
     // Add more components as needed
