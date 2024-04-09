@@ -182,54 +182,43 @@
             Edit sport center
           </h2>
           <!-- Properties and text fields -->
-          <div style="color: #ffffff">
-            <div style="margin-top: 20px; margin-bottom: 10px">
-              <div style="font-weight: bold">Name</div>
-              <input
-                type="name"
-                v-model="sportCenter.name"
-                class="text-field"
-              />
+          <div class="container content">
+            <div class="row  pb-2">
+              <div class="col p-0 " style="font-weight: bold">Name</div>
+              <div class="col p-0 ml-3" style="font-weight: bold">Email</div>
             </div>
-            <div style="margin-top: 20px; margin-bottom: 10px">
-              <div style="font-weight: bold">Email</div>
-              <input
-                type="email"
-                v-model="sportCenter.email"
-                class="text-field"
-              />
+            <div class="row  pb-2">
+              <input type="name" v-model="sportCenter.name" class="col m-0 text-field" />
+              <input type="name" v-model="sportCenter.email" class="col m-0 ml-3 text-field" />
             </div>
-            <div style="margin-top: 20px; margin-bottom: 10px">
-              <div style="font-weight: bold">Phone number</div>
-              <input
-                type="phone number"
-                v-model="sportCenter.phoneNumber"
-                class="text-field"
-              />
+            <div class="row  pb-2">
+              <div class="col p-0 " style="font-weight: bold">Phone number</div>
+              <div class="col p-0 ml-3" style="font-weight: bold">Address</div>
             </div>
-            <div style="margin-top: 20px; margin-bottom: 10px">
-              <div style="font-weight: bold">Address</div>
-              <input
-                type="text"
-                v-model="sportCenter.address"
-                class="text-field"
-              />
+            <div class="row  pb-2">
+              <input type="name" v-model="sportCenter.phoneNumber"  class="col m-0 text-field"/>
+              <input type="name" v-model="sportCenter.address"  class="col m-0 ml-3 text-field" />
             </div>
-            <div>
-              <label for="opening-time">Opening time</label>
-              <b-form-timepicker
-                id="opening-time"
-                class="timepicker"
-                :state="true"
-              ></b-form-timepicker>
+            <div class="row  pb-2">
+              <div class="col p-0 " style="font-weight: bold">Opening Time</div>
+              <div class="col p-0 ml-3" style="font-weight: bold">Closing Time</div>
             </div>
-            <div>
-              <label for="closing-time">Closing time</label>
-              <b-form-timepicker
-                id="closing-time"
-                class="timepicker"
-                :state="true"
-              ></b-form-timepicker>
+            <div class="row  pb-2">
+              <input class="timepicker text-field col p-0" type="time" v-model="sportCenter.openingTime"></input>
+              <input class="timepicker text-field col p-0 ml-3" type="time" v-model="sportCenter.closingTime"></input>
+            </div>
+            <div class="row justify-content-center">
+              <p class="error"
+                :class="{ 
+                  'hidden': !sportCenter.showErrorMessage && !sportCenter.showSuccessfulMessage, 
+                  'red-text': sportCenter.showErrorMessage && !sportCenter.showSuccessfulMessage, 
+                  'green-text': sportCenter.showSuccessfulMessage && !sportCenter.showErrorMessage 
+                }">
+                {{ sportCenter.errorMessage }}
+              </p>
+            </div>
+            <div class="row justify-content-center">
+              <button class="p-2 px-3 rounded justify-content-end btn btn-outline px-4" @click="updateSportCenterInfo">Save</button>
             </div>
           </div>
         </div>
@@ -258,6 +247,7 @@ export default {
   mounted() {
     // Call your function to retrieve JSON data and autofill the input field
     this.getCurrentAccountInfo();
+    this.getSportCenterInfo();
   },
   data() {
     return {
@@ -274,16 +264,26 @@ export default {
         showSuccessfulMessage: false,
       },
       sportCenter: {
+        name: "",
         email: "",
-        address: "",
         phoneNumber: "",
+        address: "",
         openingTime: "",
         closingTime: "",
+        errorMessage: 'Empty fields for name, address, email or phone number are not valid',
+        showErrorMessage: false,
+        showSuccessfulMessage: false,
       },
     };
   },
   methods: {
     toggleMenu(tabName) {
+      // Hide error messages when switching tabs
+      this.profile.showErrorMessage = false;
+      this.profile.showSuccessfulMessage = false;
+      this.sportCenter.showErrorMessage = false;
+      this.sportCenter.showSuccessfulMessage = false;
+
       this.currentTab = tabName;
     },
     getCurrentAccountInfo() {
@@ -310,6 +310,31 @@ export default {
                         console.error('Error parsing JSON:', error);
                     });
                 }
+            }).catch(error => {
+                console.error('Error fetching accounts:', error);
+            });
+    },
+    getSportCenterInfo() {
+      const url = 'http://127.0.0.1:8080/public/sport-center';
+      fetch(url, {
+                method: 'GET',
+                credentiZals: 'include',
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
+                },
+            }).then((sportCenterResponse) => {
+              sportCenterResponse.json().then(sportCenter => {
+                        console.log(sportCenter);
+                        this.sportCenter.name = sportCenter.name;
+                        this.sportCenter.email = sportCenter.email;
+                        this.sportCenter.address = sportCenter.address;
+                        this.sportCenter.phoneNumber = sportCenter.phoneNumber;
+                        this.sportCenter.openingTime = sportCenter.openingTime;
+                        this.sportCenter.closingTime = sportCenter.closingTime;
+                    }).catch(error => {
+                        console.error('Error parsing JSON:', error);
+                    });
             }).catch(error => {
                 console.error('Error fetching accounts:', error);
             });
@@ -357,7 +382,6 @@ export default {
         requestOptions
       )
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((data) => {
@@ -367,7 +391,7 @@ export default {
             // Update cookies if it worked
             this.$cookies.set('username', this.profile.email);
             this.$cookies.set('password', this.profile.password);
-            this.profile.errorMessage = "Profile was updated";
+            this.profile.errorMessage = "Your profile was updated";
             this.profile.showSuccessfulMessage = true;
             this.profile.showErrorMessage = false;
           }
@@ -378,13 +402,78 @@ export default {
             console.log(data.error);
           }
         });
-      
+    },
+    updateSportCenterInfo() {
+      // Function to format the time string with seconds, (Since when we edit the text field and hide the second field, it will put nothing but we want 00 to do the request)
+      const formatTimeWithSeconds = (timeString) => {
+        const timeParts = timeString.split(':');
+        // Ensure that all time parts (hours, minutes, seconds) are present
+        const formattedTime = `${timeParts[0]}:${timeParts[1]}:${timeParts[2] || '00'}`;
+        return formattedTime;
+      };
+
+      // Create a JSON object with the data to be sent in the POST request
+      const requestBody = {
+          name: this.sportCenter.name,
+          email: this.sportCenter.email,
+          phoneNumber: this.sportCenter.phoneNumber,
+          address: this.sportCenter.address,
+          openingTime: formatTimeWithSeconds(this.sportCenter.openingTime),
+          closingTime: formatTimeWithSeconds(this.sportCenter.closingTime),
+      };
+
+      console.log(requestBody);
+
+      const requestOptions = {
+        method: "PUT",
+        credentials: "include",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: 'Basic ' + btoa(this.$cookies.get("username") + ':' + this.$cookies.get("password")),
+        },
+      };
+
+      let url = 'http://127.0.0.1:8080/sport-center';
+      fetch(
+        url,
+        requestOptions
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.error === "") {
+            console.log("SportCenter was updated", data);
+            this.sportCenter.errorMessage = "The sport center was updated";
+            this.sportCenter.showSuccessfulMessage = true;
+            this.sportCenter.showErrorMessage = false;
+          }
+          else {
+            this.sportCenter.errorMessage = data.error;
+            this.sportCenter.showErrorMessage = true;
+            this.sportCenter.showSuccessfulMessage = false;
+            console.log(data.error);
+          }
+        });
     },
   },
 };
 </script>
 
 <style scoped>
+
+.btn-outline {
+    background-color: #cdf567 !important;
+    border-color: #cdf567 !important;
+    color: var(--color-black) !important;
+}
+
+.btn-outline:hover {
+    background-color: #a0ca35 !important;
+    border-color: #a0ca35 !important;
+    color: var(--color-black) !important;
+}
 
 h2 {
   color: #ffffff; 
@@ -453,6 +542,7 @@ h2 {
   text-align: left;
   overflow-x: hidden; /* Add this line */
   padding: 20px;
+  min-width: 50%;
 }
 
 .main-title {
@@ -479,22 +569,6 @@ h2 {
   border-width: 1px; /* Set initial border width */
 }
 
-.timepicker {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #444; /* Set initial border color to gray */
-  background-color: transparent;
-  color: #ffffff;
-  height: 50px;
-  box-sizing: border-box;
-  margin-top: 4px;
-  transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
-    border-width 0.1s ease-in-out; /* Add transition effect */
-  font-weight: normal; /* Set default font weight */
-  border-width: 1px; /* Set initial border width */
-}
-
 .text-field:focus,
 .text-field:hover {
   outline: none;
@@ -506,6 +580,11 @@ h2 {
 }
 
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
+  display: none;
+}
+
+/* Target the clock icon */
+input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 

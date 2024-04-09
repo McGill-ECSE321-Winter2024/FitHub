@@ -27,7 +27,7 @@ public class SportCenterController {
     @Autowired
     private SportCenterManagementService sportCenterManagementService;
 
-    @GetMapping("/sport-center")
+    @GetMapping(value={"/sport-center", "/public/sport-center"})
     public ResponseEntity<SportCenterDTO> getSportCenter() {
         return new ResponseEntity<SportCenterDTO>(new SportCenterDTO(sportCenterManagementService.getSportCenter()), HttpStatus.ACCEPTED);
     }
