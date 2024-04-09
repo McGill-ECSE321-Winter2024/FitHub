@@ -6,31 +6,40 @@
     </h4>
     <button id="save-btn" style="margin-left: 140px;">Create session</button>
 
+    <!-- Render UpdateSessionsForm only when selectedSession is not null -->
+    <UpdateSessionsForm
+      v-if="showUpdateForm && selectedSession"
+      :session="selectedSession"
+      @close="closeUpdateSessionForm"
+      style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
+    />
+
     <!-- Properties and text fields -->
     <div style="color: #ffffff">
       <!-- Boxes -->
       <div v-for="session in sessions.sessions" :key="session.name">
-      <div class="session-card">
-        <div class="box">
-          <div class="text-column">
-            <div style="font-size: 25px; font-weight: bold">
-              {{ session.course.name }}
+        <div class="session-card">
+          <div class="box">
+            <div class="text-column">
+              <div style="font-size: 25px; font-weight: bold">
+                {{ session.course.name }}
+              </div>
+              <div style="font-size: 18px">{{ session.date }}, {{ session.startTime }} - {{ session.endTime }}</div>
+              <div style="font-size: 18px">Capacity: {{ session.capacity }}, Floor {{ session.location.floor }} Room {{ session.location.room }} </div>
             </div>
-            <div style="font-size: 18px">{{ session.date }}, {{ session.startTime }} - {{ session.endTime }}</div>
-            <div style="font-size: 18px">Capacity: {{ session.capacity }}, Floor {{ session.location.floor }} Room {{ session.location.room }} </div>
-          </div>
-          <div class="buttons">
+            <div class="buttons">
               <b-icon
                 icon="pencil-fill"
                 class="pencil-icon"
+                @click="openUpdateSessionForm(session)"
               ></b-icon>
               <b-icon
                 icon="trash-fill"
                 class="disapprove"
               ></b-icon>
+            </div>
+          </div>
         </div>
-        </div>
-    </div>
       </div>
     </div>
   </div>
@@ -38,21 +47,21 @@
 
 <script>
 import axios from 'axios';
+import UpdateSessionsForm from "./UpdateSessionsForm.vue";
 
 export default {
   data() {
     return {
       profile: { name: "", email: "", password: "" },
       sessions: [],
+      showUpdateForm: false,
+      selectedSession: null,
     };
   },
   methods: {
     getAllSessions() {
       const username = decodeURIComponent(this.$cookies.get('username'));
       const password = this.$cookies.get('password');
-
-      console.log('Username:', username);
-      console.log('Password:', password);
 
       fetch('http://127.0.0.1:8080/sessions', {
         method: 'GET',
@@ -63,27 +72,35 @@ export default {
         credentials: 'include', 
       })
       .then(response => {
-        console.log('Response Status:', response.status);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
       .then(data => {
-        console.log('Sessions fetched:', data);
-        // Assign fetched sessions to this.sessions
         this.sessions = data;
       })
       .catch(error => {
         console.error('Error fetching sessions:', error);
       });
     },
+    openUpdateSessionForm(session) {
+      this.selectedSession = session;
+      this.showUpdateForm = true;
+    },
+    closeUpdateSessionForm() {
+      this.showUpdateForm = false;
+    }
   },
   mounted() {
     this.getAllSessions();
   },
+  components: {
+    UpdateSessionsForm,
+  },
 };
 </script>
+
 
 <style scoped>
 .box {

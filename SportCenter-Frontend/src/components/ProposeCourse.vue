@@ -246,7 +246,7 @@ button:hover {
   width: 48%; /* Adjust width as needed */
 }
 
-.difficulty{{
+.difficulty{
   width: 100%;
-}}
+}
 </style>
