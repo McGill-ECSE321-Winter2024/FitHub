@@ -2,35 +2,42 @@
   <div class="solid-background">
     <div class="box">
       <div class="form-box">
-      <div class="title">
-         <h3 class="custom-h3">Edit course details below</h3>
-         </div>
+        <div class="title-container">
+          <h3 class="custom-h3">Edit course details below</h3>
+        </div>
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <label>Image</label>     
             <input class="text-field" id="url" v-model="course.url" required>
           </div>
-          <div class="form-group">
-            <label>Name</label>     
-            <input class="text-field" id="courseName" v-model="capitalizedCourseName" required>
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <input class="text-field" id="category" v-model="course.category" required>
+          <div class="form-group flex-container">
+            <div class="name">
+              <label>Name</label>     
+              <input class="text-field" id="courseName" v-model="capitalizedCourseName" required>
+            </div>
+            <div class="category">
+              <label>Category</label>
+              <input class="text-field" id="category" v-model="course.category" required>
+            </div>
           </div>
           <div class="form-group">
             <label>Description</label>
             <textarea v-model="course.description" class="text-field-description"></textarea>
           </div>
-          <div class="form-group">
-            <label>Difficulty</label>
-            <select v-model="course.difficulty" class="text-field">
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
+          <div class="form-group flex-container">
+            <div class="difficulty">
+              <label>Difficulty</label>
+              <select v-model="course.difficulty" class="text-field">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+            <div class="price">
+              <label>Price</label>
+              <input class="text-field" id="priceperhour" v-model="course.pricePerHour" required>
+            </div>
           </div>
-
           <div class="buttons">
             <button id="save-btn" type="submit">Save</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
@@ -107,7 +114,10 @@ export default {
   } else {
     console.error('User not authenticated');
   }
-}
+}, 
+    cancelForm() {
+      this.$emit('close'); // Emit a close event
+    }
   },
   computed: {
     capitalizedCourseName() {
@@ -123,14 +133,10 @@ export default {
   height: 100vh;
 }
 
-.box{
+.box {
   display: flex;
   justify-content: center; /* Center content horizontally */
   align-items: center; /* Center content vertically */
-}
-.custom-h1 {
-  color: var(--color-white);
-  font-size: 35px;
 }
 
 .custom-h3 {
@@ -139,8 +145,32 @@ export default {
   color: #FFFFFF;
 }
 
-.content {
+.form-box {
+  width: 700px;
+  padding: 50px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  margin-top: 20px;
+  background-color: var(--color-black);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.title-container {
   text-align: center;
+  margin-bottom: 20px;
+}
+
+
+label {
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .text-field,
@@ -160,10 +190,6 @@ export default {
   border-width: 1px;
 }
 
-.title {
-  justify-content: center;
-}
-
 .text-field-description {
   height: 100px;
 }
@@ -181,32 +207,18 @@ export default {
   border-width: 2px;
 }
 
-.form-box {
-  width: 700px;
-  padding: 50px;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  margin-top: 20px;
-  background-color: var(--color-black);
-}
-
-.form-group-side {
-  margin-bottom: 15px;
+.buttons {
   display: flex;
-  align-items: center;
+  justify-content: center; /* Center content horizontally */
 }
 
-.form-group {
-  margin-bottom: 15px;
+#save-btn {
+  background-color: #CDF563;
 }
 
-label {
-  text-align: left;
-  display: block;
-  margin-bottom: 5px;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 500;
+#cancel-btn {
+  margin-left: 75px; 
+  background-color: #EC5545;
 }
 
 button {
@@ -222,21 +234,20 @@ button {
   margin-bottom: 15px;
 }
 
-.buttons {
-  display: flex;
-  justify-content: center; /* Center content horizontally */
-}
-#save-btn {
-  background-color: #CDF563;
-}
-
-#cancel-btn {
-  margin-left: 75px; 
-  background-color: #EC5545;
-}
-
 button:hover {
   background-color: #0056b3;
 }
 
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center content vertically */
+}
+
+.name,
+.category,
+.difficulty,
+.price {
+  width: 48%; /* Adjust width as needed */
+}
 </style>

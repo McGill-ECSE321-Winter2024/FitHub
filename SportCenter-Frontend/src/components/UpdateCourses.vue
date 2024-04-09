@@ -10,10 +10,10 @@
 
     <!-- Display the UpdateCourseForm component when the icon is clicked -->
     <UpdateCourseForm 
-      v-if="showUpdateForm" 
-      :course="selectedCourse" 
-      @close="closeUpdateCourseForm" 
-      style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
+        v-if="showUpdateForm" 
+        :course="selectedCourse" 
+        @close="closeUpdateCourseForm" 
+        style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
     />
 
     <div class="mt-5">
@@ -222,7 +222,7 @@ body {
 .disapprove {
   margin-left: 10px;
   border: 0px;
-  background-color: #E3240C;
+  background-color: #EC5545;
   color: var(--color-black);
   font-weight: bold;
   border-radius: 20px;
