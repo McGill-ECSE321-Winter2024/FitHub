@@ -45,7 +45,6 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.loginPage("http://127.0.0.1:8087/#/login")
 				.loginProcessingUrl("/login")
 				.defaultSuccessUrl("/login-success")
-				.failureUrl("/login-failure")
 				.permitAll()
             )	
 			.logout((logout) ->
