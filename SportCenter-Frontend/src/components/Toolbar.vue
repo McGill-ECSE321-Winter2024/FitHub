@@ -89,24 +89,24 @@ export default {
             }
         },
         updateToolbarColor(route) {
-            switch (route) {
-                case '/courses':
+            switch (true) {
+                case route.startsWith('/courses'):
                     this.toolbarColor = '#CDF567';
                     break;
-                case '/instructors':
+                case route.startsWith('/instructors'):
                     this.toolbarColor = '#6900BA';
                     break;
-                case '/login':
+                case route === '/login':
                     this.toolbarColor = '#FFBC4B';
                     break;
-                case '/registration':
+                case route === '/registration':
                     this.toolbarColor = '#3E8EF1';
                     break;
-                case '/settings':
+                case route === '/settings':
                     this.toolbarColor = '#CDF567';
                     break;
-                case '/sessions':
-                    this.toolbarColor = '#FFFFFF';
+                case route.startsWith('/sessions/courses/'):
+                    this.toolbarColor = '#3E8EF1';
                     break;
                 default:
                     this.toolbarColor = '#FFD0D6';
