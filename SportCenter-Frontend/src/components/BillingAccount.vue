@@ -6,103 +6,123 @@
     <h1 class="custom-h1">Billing account</h1>
     <h3>Manage your payment details for one-time purchase</h3>
 </div>
-
+<div class="form-container">
 <div class="form-box">
     <h3>Enter card details below</h3>
-    <form @submit.prevent="submitForm">
+     <form>
       <div class="form-group">
         <label for="Card Number">Card Number</label>     
-        <input type="text" id="cardNumber" v-model="formData.cardNumber" required>
+        <input type="text" id="cardNumber" v-model="cardNumber" >
       </div>
-      <form-row>
       <div class="form-group">
-        <label for="expiryDate">Expiry Date</label>
-        <input type="text" id="expiryDate" v-model="formData.expiryDate" required placeholder=" YYYY-MM-DD">
+        <label for="expirationDate">Expiry Date</label>
+        <input type="text" id="expirationDate" v-model="expirationDate"  placeholder=" YYYY-MM-DD">
       </div>
       <div class="form-group">
         <label for="cvv">Security Code (CVV)</label>
-        <input type="text" id="cvv" v-model="formData.cvv" required>
+        <input type="text" id="cvv" v-model="cvv" required>
       </div>
-      </form-row>
       <div class="form-group">
         <label for="billingAddress">Billing Address</label>
-        <input type="text" id="billingAddress" v-model="formData.billingAddress" required>
+        <input type="text" id="billingAddress" v-model="billingAddress" autocomplete="off" >
       </div>
       <div class="form-group">
         <label for="cardHolder">Card Holder</label>
-        <input type="text" id="cardHolder" v-model="formData.cardHolder" required>
+        <input type="text" id="cardHolder" v-model="cardHolder" autocomplete="off" >
       </div>
       <div class="form-group-side">
-        <input type="checkbox" id="isDefault" v-model="formData.isDefault" style="transform: scale(1.5);">
+        <input type="checkbox" id="isDefault" v-model="isDefault" style="transform: scale(1.5);">
         <label for="isDefault">Save as default </label>
       </div>
-      <button id="save-btn" type="save">Save</button>
-      <button id="cancel-btn" type="cancel">Cancel</button>
+      <button id="save-btn" type="save" @click="create" >Save</button>
+      <button id="cancel-btn" type="cancel" @click="cancel">Cancel</button>
     </form>
-
-</div>
-<p v-if="successMessage">{{ successMessage }}</p>
-</div>
+    </div>
+  </div>
+    <!-- Display error message -->
+    <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+    <p class="success-message" v-if="successMessage">{{ successMessage }}</p>
+    
+  </div>
 </template>
 
 <script>
 
+import axios from 'axios';
+
 export default {
+  
   data() {
     return {
-      formData: {
         cardNumber: '',
-        expiryDate: '',
+        expirationDate: '',
         cvv: '',
         billingAddress: '',
         cardHolder: '',
         isDefault: false,
-        successMessage: '' 
-      }
+        errorMessage: 'Invalid input(s)',
+        showErrorMessage: false,
+        successMessage:''
     };
   },
   methods: {
-      // Here you can handle form submission, for example, sending data to a server
-      //this.successMessage = 'Added card successfully';
-      //console.log('Form submitted:', this.formData);
-    submitForm() {
-      fetch('http://127.0.0.1:8080/customers/{cId}/billing-accounts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.formData),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          this.successMessage = data.message; // Assuming your backend returns a success message
-          console.log('Form submitted:', data);
-        })
-        .catch((error) => {
-          console.error('Error submitting form:', error);
-          // Handle error
-        });
+
+
+    
+    async create() {
+    
+        // Create a JSON object with the data to be sent in the POST request
+        const requestBody = {
+        cardNumber: this.cardNumber,
+        expirationDate: this.expirationDate,
+        cvv: this.cvv,
+        billingAddress: this.billingAddress,
+        cardHolder: this.cardHolder,
+        isDefault: this.isDefault
+        };
+
+        console.log("The card is " + requestBody.cardNumber);
+        console.log("The expiry is " + requestBody.expirationDate);
+        console.log("The cvv is " + this.cvv);
+        console.log("The billing address is " + requestBody.billingAddress);
+        console.log("The card holder is " + this.cardHolder);
+        console.log("The isDefault is " + requestBody.isDefault);
+        
+
+        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),    
+            headers: {
+                'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Ensure cookies are sent with the request,
+            mode: "cors",
+        })  .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                result = JSON.parse(result);
+                  this.successMessage = 'Added card successfully';
+                  this.$router.push('/billing-accounts');
+            })
+            .catch(error => {
+                console.error('Error creating billing account:', error);
+                this.errorMessage = 'Error creating billing account: ' + error.message;
+                this.showErrorMessage = true;
+            });
 
     },
-    cancelForm() {
 
-      return{
-        formData: {
-        cardNumber: '',
-        expiryDate: '',
-        cvv: '',
-        billingAddress: '',
-        cardHolder: '',
-        isDefault: false,
-        successMessage: '' 
-        }
-      };
-    },
+  cancel(){
+    // Clear all input fields
+      this.cardNumber = '';
+      this.expirationDate = '';
+      this.cvv = '';
+      this.billingAddress = '';
+      this.cardHolder = '';
+      this.isDefault = false;
+      this.errorMessage = ''
+  }
   }
 };
 </script>
@@ -122,6 +142,12 @@ export default {
   font-size: 45px;
 }
 
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .form-box {
   width: 700px;
   padding: 20px;
@@ -134,11 +160,6 @@ export default {
   margin-bottom: 15px;
   display: flex;
   align-items: center;
-}
-
-.form-row {
-  display: flex;
-  justify-content: space-between;
 }
 
 .form-group {
@@ -193,6 +214,19 @@ h3 {
   font-size: 24px;
   font-weight: 700;
   color: #FFFFFF;
+}
+
+.error-message {
+  color: #EC5545;
+  font-size: 10px;
+  font-weight: 100;
+  border-color: #CDF563;
+}
+.success-message {
+  color: green;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 300;
 }
 
 </style>

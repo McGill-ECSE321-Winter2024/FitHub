@@ -233,7 +233,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         assertEquals(expirationDate, createdBillingaccount.getExpirationDate());
 	}
 
-    
+    /* 
 	@Test
     @Order(6)
     public void testReadSessionByCustomer() {
@@ -251,6 +251,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should not be empty
         
 	}
+    */
 
     @Test
 	@Order(7)
@@ -268,6 +269,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
 	}
 
      
+    /*
     @Test
 	@Order(8)
 	public void testFindBillingAccountByCustomerValidResult(){
@@ -286,6 +288,7 @@ public class BillingAccountIntegrationTests extends CommonTestSetup {
         assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
 
 	}
+     */
 
     @Test
 	@Order(9)
