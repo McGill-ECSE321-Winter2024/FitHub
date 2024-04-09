@@ -69,37 +69,51 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Create Account //--------------------------//
 
     @Transactional
-    public Customer createCustomerAccount(String email, String password, String name, String imageURL) {
+    public Customer createCustomerAccount(String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Customer customer = new Customer();
         customer.setEmail(email);
         customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setPronouns(pronouns);
         customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
     @Transactional
-    public Instructor createInstructorAccount(String email, String password, String name, String imageURL) {
+    public Instructor createInstructorAccount(String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Instructor instructor = new Instructor();
         instructor.setEmail(email);
         instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setPronouns(pronouns);
         instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
     @Transactional
-    public Owner createOwnerAccount(String email, String password, String name, String imageURL) {
+    public Owner createOwnerAccount(String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
         uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Owner owner = new Owner();
         owner.setEmail(email);
@@ -113,43 +127,73 @@ public class AccountService implements UserDetailsService {
     //--------------------------// Update Account //--------------------------//
     
     @Transactional
-    public Customer updateCustomerAccount(Integer id, String email, String password, String name, String imageURL) {
+    public Customer updateCustomerAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
-        uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Customer customer = findCustomerById(id);
-        customer.setEmail(email);
+
+        // If it is the same email, then dont check if it is unique (it is not since it is used for this exact account), else verify
+        if (!customer.getEmail().equalsIgnoreCase(email)) {
+            uniqueEmail(email);
+            customer.setEmail(email);
+        }
+
         customer.setPassword(passwordEncoder.encode(password));
         customer.setName(name);
         customer.setImageURL(imageURL);
+        customer.setPronouns(pronouns);
         customer.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return customerRepository.save(customer);
     }
     
     @Transactional
-    public Instructor updateInstructorAccount(Integer id, String email, String password, String name, String imageURL) {
+    public Instructor updateInstructorAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
-        uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
 
         Instructor instructor = findInstructorById(id);
-        instructor.setEmail(email);
+
+        // If it is the same email, then dont check if it is unique (it is not since it is used for this exact account), else verify
+        if (!instructor.getEmail().equalsIgnoreCase(email)) {
+            uniqueEmail(email);
+            instructor.setEmail(email);
+        }
+
         instructor.setPassword(passwordEncoder.encode(password));
         instructor.setName(name);
         instructor.setImageURL(imageURL);
+        instructor.setPronouns(pronouns);
         instructor.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return instructorRepository.save(instructor);
     }
 
     @Transactional
-    public Owner updateOwnerAccount(Integer id, String email, String password, String name, String imageURL) {
+    public Owner updateOwnerAccount(Integer id, String email, String password, String name, String imageURL, String pronouns) {
         validAccountInfo(email, password, name);
-        uniqueEmail(email);
+
+        if (pronouns.isEmpty()) {
+            pronouns = "Any";
+        }
         
         Owner owner = findOwnerById(id);
-        owner.setEmail(email);
+
+        // If it is the same email, then dont check if it is unique (it is not since it is used for this exact account), else verify
+        if (!owner.getEmail().equalsIgnoreCase(email)) {
+            uniqueEmail(email);
+            owner.setEmail(email);
+        }
+
         owner.setPassword(passwordEncoder.encode(password));
         owner.setName(name);
         owner.setImageURL(imageURL);
+        owner.setPronouns(pronouns);
         owner.setCenter(toList(sportCenterRepository.findAll()).get(0));
         return ownerRepository.save(owner);
     }
@@ -161,7 +205,11 @@ public class AccountService implements UserDetailsService {
         Account account = findCustomerById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        account.delete();
+        customerRepository.save((Customer) account);
+        customerRepository.delete((Customer) account);
     }
 
     @Transactional
@@ -169,7 +217,11 @@ public class AccountService implements UserDetailsService {
         Account account = findInstructorById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        account.delete();
+        instructorRepository.save((Instructor) account);
+        instructorRepository.delete((Instructor) account);
     }
 
     @Transactional
@@ -177,10 +229,31 @@ public class AccountService implements UserDetailsService {
         Account account = findOwnerById(id);
         SportCenter sportCenter = sportCenterManagementService.getSportCenter();
         sportCenter.removeAccount(account);
-        sportCenterManagementService.updateSportCenter(sportCenter);
+        sportCenterRepository.save(sportCenter);
+
+        account.delete();
+        ownerRepository.save((Owner) account);
+        ownerRepository.delete((Owner) account);
     }
     
     //--------------------------// Getters //--------------------------//
+
+    @Transactional
+    public Account findAccountById(Integer id) {
+        List<Account>  accounts = findAllAccounts();
+        Account account_found = null;
+        for (Account account : accounts) {
+            if (account.getId() == id) {
+                account_found = account;
+            }
+        }
+        
+        if (account_found == null) {
+            throw new IllegalArgumentException("There is no account with " + id + ".");
+        }
+
+        return account_found;
+    }
 
     @Transactional
 	public Customer findCustomerById(Integer id) {

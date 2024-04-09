@@ -1,57 +1,57 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="area-blue" >
-                <ul class="circles">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                </ul>
-        </div >
-        <div class="page row align-items-start justify-content-center">
-            <Toolbar />
-            <div class="row align-items-center p-5">
+        <Toolbar />
+        <div class="page mt-5 pt-5 row align-items-start justify-content-center">
+            <div class="row align-items-center p-5 mt-5">
                 <!-- Column 1 -->
                 <div class="col">
                     <h1 class="mb-xl-5">Break the routine</h1>
                 </div>
         
                 <!-- Column 2 -->
-                <div class="col">
+                <div class="col ">
                 <form class="form-group">
                     <div class="container justify-content-center">
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="imageURL" class="form-control" type="text" placeholder="Your Profile Picture...">
-                    </div>
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="name" class="form-control" type="text" placeholder="Your Name...">
-                    </div>
-                    <div class="row my-xl-3 mr-xl-5">
-                        <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
-                    </div>
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
-                    </div>
-                    <div class="row mt-xl-3 my-3 mr-xl-5">
-                        <input v-model="pronouns" class="form-control" type="text" placeholder="Your Pronouns...">
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Register</button>
-                    </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="imageURL" class="form-control" type="text" placeholder="Your Profile Picture...">
+                        </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="name" class="form-control" type="text" placeholder="Your Name...">
+                        </div>
+                        <div class="row my-xl-3 mr-xl-5">
+                            <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+                        </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
+                        </div>
+                        <div class="row mt-xl-3 my-3 mr-xl-5">
+                            <input v-model="pronouns" class="form-control" type="text" placeholder="Your Pronouns...">
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="register">Register</button>
+                        </div>
                     </div>
                 </form>
                 </div>
             </div>
             
+            <div class="area-blue higher" >
+                    <ul class="circles">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                    </ul>
+            </div >
         </div>
     </div>
   </template>
@@ -64,65 +64,68 @@ export default {
         return {
             email: '',
             password: '',
+            name: '',
+            imageURL: '',
+            pronouns: '',
             errorMessage: 'Invalid email or password', // Initialize error message
             showErrorMessage: false
         };
     },
     methods: {
 
-    login() {
-        const params = new FormData();
-        params.append('username', this.email);
-        params.append('password', this.password);
+    register() {
+        // Create a JSON object with the data to be sent in the POST request
+        const requestBody = {
+            email: this.email,
+            password: this.password,
+            name: this.name,
+            imageURL: this.imageURL,
+            pronouns: this.pronouns,
+        };
 
-        const basicAuth = 'Basic ' + btoa(this.email + ':' + this.password);
-
-        fetch('http://localhost:8080/login', {
+        fetch('http://localhost:8080/public/customers', {
             method: 'POST',
-            body: params,
+            body: JSON.stringify(requestBody),
             headers: {
-                'Authorization': basicAuth,
+                'Content-Type': 'application/json'
             },
             credentials: 'include', // Ensure cookies are sent with the request,
             mode: "cors",
         })  .then(response => response.text())
             .then(result => {
-                if (result === 'success') {
-                    console.log('Successful')
-                    fetch('http://localhost:8080/role', {
-                        method: 'GET',
-                        mode: "cors",
-                        headers: {
-                            'Authorization': basicAuth,
-                        },
-                        credentials: 'include' // Ensure cookies are sent with the request,
-                    }).then((roleResponse) => {
-                        roleResponse.text().then(role => {
-                            console.log('Role:', role);
-                        }).catch(error => {
-                            console.error('Error reading role text:', error);
-                        });
-                    }).catch(error => {
-                        console.error('Error fetching role:', error);
-                    }); 
+                console.log(result);
+
+                result = JSON.parse(result);
+
+                if (result.error == "") {
+                    // Save cookies and change page
+                    this.$cookies.set('username', result.email);
+                    this.$cookies.set('password',  this.password);
+                    this.$cookies.set('role',  result.type);
+                    this.$cookies.set('id',  result.id);
+    
+                    console.log('Created new cookies:');
+                    console.log('username: ', decodeURIComponent(this.$cookies.get('username')));
+                    console.log('password: ', this.$cookies.get('password'));
+                    console.log('role: ', this.$cookies.get('role'));
+                    console.log('id: ', this.$cookies.get('id'));
+                    
+                    this.$router.push('/');
                 }
                 else {
+                    this.errorMessage = result.error;
                     this.showErrorMessage = true;
                 }
             })
             .catch(error => console.log('error', error));
 
-            
-
-    },
-    switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
     }
 }
 
 };
 </script>
-<style>
+<style scoped>
+
     .btn-outline {
         background-color: #fb7ea8 !important;
         border-color: #fb7ea8 !important;
@@ -135,19 +138,20 @@ export default {
         color: #fff !important;
     }
 
-    body {
-        background-image: linear-gradient(#3e8ef1);
-    }
-
     .page {
         min-height: 100vh;
-        font-family: "Rubik", sans-serif;
+        background-color: #3e8ef1;
 
         width: 100%;
         position: absolute;
         top:0;
         margin: 0px;
         padding: 0px;
+        z-index: 0; /* Ensure that this element is behind other content */
+    }
+
+    .higher {
+        z-index: 900; /* Ensure that this element is behind other content */
     }
 
     .form-control:valid {
@@ -182,6 +186,11 @@ export default {
     }
 
     /* https://codepen.io/mohaiman/pen/MQqMyo */
+    .area-blue{
+        width: 100%;
+        height:100%;
+        z-index: -1; /* Ensure that this element is behind other content */
+    }
 
     .circles{
         position: absolute;
@@ -200,8 +209,7 @@ export default {
         height: 20px;
         background: rgba(255, 255, 255, 0.5);
         animation: animate-round 25s linear infinite;
-        bottom: -150px;
-        
+        bottom: -150px;   
     }
 
     .circles li:nth-child(1){

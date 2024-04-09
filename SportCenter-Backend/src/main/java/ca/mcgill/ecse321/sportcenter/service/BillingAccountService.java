@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.sportcenter.service;
 
 import java.math.BigInteger;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class BillingAccountService {
     //--------------------------// Create Billing Account //--------------------------//
 
     @Transactional
-    public BillingAccount createBillingAccount(String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate, Customer customer){
+    public BillingAccount createBillingAccount(String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, LocalDate expirationDate, Customer customer){
         
         //Input validation check
         validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate);
@@ -71,7 +71,7 @@ public class BillingAccountService {
     //--------------------------// Update Account //--------------------------//
 
     @Transactional
-    public BillingAccount updateBillingAccount(Integer id, String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, Date expirationDate){
+    public BillingAccount updateBillingAccount(Integer id, String cardNumber, String cardHolder, String billingAddress, Integer cvv, boolean isDefault, LocalDate expirationDate){
         
         validBillingAccountInfo(cardNumber, cardHolder, billingAddress, cvv, expirationDate);
 
@@ -156,9 +156,21 @@ public class BillingAccountService {
 
     //--------------------------// Input validations //--------------------------//
 
-    private void validBillingAccountInfo(String cardNumber, String cardHolder, String billingAddress, Integer cvv, Date expirationDate){
-        if (cardNumber == null || cardHolder.isEmpty() || cardHolder.trim().length() == 0 || billingAddress.isEmpty() || billingAddress.trim().length() == 0 || cvv == null || expirationDate == null){
-            throw new IllegalArgumentException("Empty fields for cardNumber, cardHolder, billingAddress, cvv or expirationDate are not valid");
+    private void validBillingAccountInfo(String cardNumber, String cardHolder, String billingAddress, Integer cvv, LocalDate expirationDate){
+        if (cardNumber == null){
+            throw new IllegalArgumentException("Empty fields for cardNumber not valid");
+        }
+        if (cardHolder.isEmpty() || cardHolder.trim().length() == 0){
+            throw new IllegalArgumentException("Empty fields for cardHolder are not valid");
+        }
+        if (billingAddress.isEmpty() || billingAddress.trim().length() == 0){
+            throw new IllegalArgumentException("Empty fields for billingAddress are not valid");
+        }
+        if  (expirationDate == null){
+            throw new IllegalArgumentException("Empty fields for expirationDate are not valid");
+        }
+        if (cvv == null){
+            throw new IllegalArgumentException("Empty fields for cvv are not valid");
         }
         if (cardNumber.toString().length() != 16){
             throw new IllegalArgumentException("Invalid cardNumber; needs to be exactly 16 digits");
@@ -166,7 +178,7 @@ public class BillingAccountService {
         if (Integer.toString(cvv).length() != 3){
             throw new IllegalArgumentException("Invalid cvv; needs to be exactly 3 digits");
         }
-        if (expirationDate.before(java.sql.Date.valueOf(LocalDate.now()))){
+        if (expirationDate.isBefore(LocalDate.now())){
             throw new IllegalArgumentException("Invalid expirationDate");
         }
 

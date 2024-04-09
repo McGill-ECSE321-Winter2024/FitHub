@@ -29,7 +29,7 @@ class SessionPackage {
   Integer priceReduction;
   Integer duration;
   Date first;
-  0..3 packages <@>- 1 Course courses;
+  0..3 packages -> 1 Course course;
 }
 
 class Session {
@@ -56,8 +56,7 @@ class Course {
   description;
   Integer id;
   Integer pricePerHour;
-  icon1;
-  icon2;
+  category;
   url;
   enum Difficulty {Beginner, Intermediate, Advanced}
   enum Status {Approved, Pending, Closed, Disapproved}

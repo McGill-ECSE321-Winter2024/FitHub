@@ -115,7 +115,9 @@ public class BillingAccountController {
             List<BillingAccountResponseDTO> accounts = new ArrayList<BillingAccountResponseDTO>();
 
             for (BillingAccount account : billingService.findBillingAccountByCustomer(customer)){
-                accounts.add(new BillingAccountResponseDTO(account));
+                if (account.getIsDefault() == false){
+                    accounts.add(new BillingAccountResponseDTO(account));
+                }
             }
        
             if(accounts.isEmpty())
@@ -131,7 +133,7 @@ public class BillingAccountController {
        
    }
 
-   @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account"})
+   @GetMapping(value={"/customers/{cId}/billing-account", "/customers/{cId}/billing-account/"})
     public ResponseEntity<BillingAccountResponseDTO> findDefaultBillingAccountById(@PathVariable Integer cId) {
         
         try{

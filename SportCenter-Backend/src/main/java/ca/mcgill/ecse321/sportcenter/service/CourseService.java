@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Instructor;
+import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
+import ca.mcgill.ecse321.sportcenter.model.SportCenter;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
 
 /*
 * <p> Service class in charge of managing courses. It implements following use cases: </p>
@@ -30,12 +34,21 @@ public class CourseService {
 	CourseRepository courseRepository;
 
     @Autowired
+    SportCenterRepository sportCenterRepository;
+
+    @Autowired 
+    SportCenterManagementService sportCenterManagementService;
+
+    @Autowired
     SessionPackageRepository sessionPackageRepository;
+
+    @Autowired
+    SessionService sessionService;
 
     //--------------------------// Create Course //--------------------------//
 
     @Transactional
-    public Course createCourse(String name, String description, String diff, String status, Integer pricePerHour, String icon1, String icon2, String url) {
+    public Course createCourse(String name, String description, String diff, String status, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -61,7 +74,7 @@ public class CourseService {
         if (status == null) {
             errorMessage.append("Course status cannot be null! ");
         }
-        if (pricePerHour == null || pricePerHour <= 0) {
+        if (pricePerHour == null || pricePerHour < 0) {
             errorMessage.append("Price per hour must be provided and greater than zero! ");
         }
     
@@ -74,7 +87,7 @@ public class CourseService {
         if (errorMessage.length() > 0) {
             throw new IllegalArgumentException(errorMessage.toString().trim());
         }
-    
+     
         // If no errors, create and save the course
         Course course = new Course();
         course.setName(name.toLowerCase());
@@ -82,15 +95,15 @@ public class CourseService {
         course.setDifficulty(Course.Difficulty.valueOf(diff));
         course.setStatus(Course.Status.valueOf(status));
         course.setPricePerHour(pricePerHour);
-        course.setIcon1(icon1 != null ? icon1 : "none");
-        course.setIcon2(icon2 != null ? icon2 : "none");
+        course.setCategory(category);
         course.setUrl(url != null ? url : "none");
+        course.setCenter(toList(sportCenterRepository.findAll()).get(0));
         courseRepository.save(course);
         return course;
     }
     
     @Transactional
-    public Course proposeCourse(String name, String description, String diff, Integer pricePerHour, String icon1, String icon2, String url) {
+    public Course proposeCourse(String name, String description, String diff, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -134,9 +147,9 @@ public class CourseService {
         course.setDifficulty(Course.Difficulty.valueOf(diff));
         course.setStatus(Course.Status.valueOf("Pending"));
         course.setPricePerHour(pricePerHour);
-        course.setIcon1(icon1 != null ? icon1 : "none");
-        course.setIcon2(icon2 != null ? icon2 : "none");
+        course.setCategory(category);
         course.setUrl(url != null ? url : "none");
+        course.setCenter(toList(sportCenterRepository.findAll()).get(0));
         courseRepository.save(course);
         return course;
     }    
@@ -144,7 +157,7 @@ public class CourseService {
     //--------------------------// Update Course //--------------------------//
 
     @Transactional
-    public Course updateCourse(Integer id, String name, String description, String diff, String status, Integer pricePerHour, String icon1, String icon2, String url) {
+    public Course updateCourse(Integer id, String name, String description, String diff, String status, Integer pricePerHour, String category, String url) {
         // Accumulate error messages
         StringBuilder errorMessage = new StringBuilder();
     
@@ -184,8 +197,7 @@ public class CourseService {
         existingCourse.setDifficulty(Course.Difficulty.valueOf(diff));
         existingCourse.setStatus(Course.Status.valueOf(status));
         existingCourse.setPricePerHour(pricePerHour);
-        existingCourse.setIcon1(icon1 != null ? icon1 : "none");
-        existingCourse.setIcon2(icon2 != null ? icon2 : "none");
+        existingCourse.setCategory(category);
         existingCourse.setUrl(url != null ? url : "none");
         courseRepository.save(existingCourse);
         return existingCourse;
@@ -252,6 +264,16 @@ public class CourseService {
         return coursesByStatus;
     }
 
+    @Transactional
+    public List<Course> findCoursesByInstructor(Instructor instructor){
+        List<Course> coursesByInstructor = new ArrayList<>();
+        List<Session> sessions = sessionService.findSessionsByInstructor(instructor);
+        for (Session session : sessions) {
+            coursesByInstructor.add(session.getCourseType());
+        }
+        return coursesByInstructor;
+    }
+
     //--------------------------// Propose course //--------------------------//
 
     @Transactional
@@ -298,11 +320,18 @@ public class CourseService {
      public void deleteCourse(Integer id) {
         try {
             Course course = findCourseById(id);
+            SportCenter sportCenter = sportCenterManagementService.getSportCenter();
+            sportCenter.removeCourse(course);
+            sportCenterRepository.save(sportCenter);
+
             List<SessionPackage> list =  sessionPackageRepository.findSessionPackageByCourse(course);
             for(SessionPackage sessionPackage : list){
-                sessionPackageRepository.delete(sessionPackage);
+                sessionPackage.delete();
+                sessionPackageRepository.save(sessionPackage);
             }
             if (course != null){
+                course.delete();
+                courseRepository.save(course);
                 courseRepository.delete(course);
             }
 

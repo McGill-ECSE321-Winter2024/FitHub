@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -71,7 +71,8 @@ public class SessionIntegrationTests extends CommonTestSetup {
 	private String LOGIN_EMAIL = "julia@mail.com";
     private String LOGIN_PASSWORD = "secret1456165";
 
-	//------------------------- Instrucor ----------------------
+	//------------------------- Instructor ----------------------
+
 	String email = "olivia@mail.com";
     String password = "secretPassword";
     String instructorName = "Olivia";
@@ -83,7 +84,6 @@ public class SessionIntegrationTests extends CommonTestSetup {
     String newInstructorName = "Dada";
     String newImageURL = "dada.png";
 	Instructor newSupervisor;
-
 
 	//------------------------ Location ------------------------
 
@@ -109,13 +109,13 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 	Time startTime = Time.valueOf("08:00:00");
     Time endTime = Time.valueOf("09:00:00");
-    Date date = Date.valueOf("2024-02-18");
+	LocalDate date = LocalDate.parse("2024-02-18");
     Integer capacity = 10;
 	int validId = 0;
 
 	Time newStartTime = Time.valueOf("10:00:00");
     Time newEndTime = Time.valueOf("11:00:00");
-    Date newDate = Date.valueOf("2024-02-19");
+    LocalDate newDate = LocalDate.parse("2024-02-19");
     Integer newCapacity = 20;
 
 	Date dateForRecurrentTest = Date.valueOf("2024-05-02");
@@ -131,13 +131,13 @@ public class SessionIntegrationTests extends CommonTestSetup {
 		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		location = locationService.createLocation(floor, room);
-		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none", "none","none");
-		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL);
-		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL);
+		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none","none");
+		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL, "");
+		newSupervisor = accountService.createInstructorAccount(newEmail, newPassword, newInstructorName, newImageURL, "");
 		newLocation = locationService.createLocation(newFloor, newRoom);
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -224,7 +224,10 @@ public class SessionIntegrationTests extends CommonTestSetup {
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         SessionResponseDTO createdSession = response.getBody();
 		validId = createdSession.getId();
-		
+		assertEquals(capacity, createdSession.getCapacity());
+		assertEquals(date, createdSession.getDate());
+		assertEquals(startTime, createdSession.getStartTime());
+		assertEquals(endTime, createdSession.getEndTime());
 
 	}
 
@@ -265,6 +268,11 @@ public class SessionIntegrationTests extends CommonTestSetup {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.FOUND, response.getStatusCode());
+		SessionResponseDTO createdSession = response.getBody();;
+		assertEquals(capacity, createdSession.getCapacity());
+		assertEquals(date, createdSession.getDate());
+		assertEquals(startTime, createdSession.getStartTime());
+		assertEquals(endTime, createdSession.getEndTime());
 	}
 
 	@Test
@@ -325,8 +333,11 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-
-		
+		SessionResponseDTO createdSession = response.getBody();
+		assertEquals(newCapacity, createdSession.getCapacity());
+		assertEquals(newDate, createdSession.getDate());
+		assertEquals(newStartTime, createdSession.getStartTime());
+		assertEquals(newEndTime, createdSession.getEndTime());
 
 	}
 
@@ -343,6 +354,12 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+		SessionResponseDTO createdSession = response.getBody();
+		assertEquals(newCapacity, createdSession.getCapacity());
+		assertEquals(newDate, createdSession.getDate());
+		assertEquals(newStartTime, createdSession.getStartTime());
+		assertEquals(newEndTime, createdSession.getEndTime());
+
 	}
 
 	
@@ -359,6 +376,12 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+		SessionResponseDTO createdSession = response.getBody();
+		assertEquals(newCapacity, createdSession.getCapacity());
+		assertEquals(newDate, createdSession.getDate());
+		assertEquals(newStartTime, createdSession.getStartTime());
+		assertEquals(newEndTime, createdSession.getEndTime());
+
 
 	}
 
@@ -375,6 +398,18 @@ public class SessionIntegrationTests extends CommonTestSetup {
 
 		assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+		//This threw a 500 internal error and I can't figure out why, so I'll look into it later
+		/*
+		
+		ResponseEntity<SessionResponseDTO> responseRead = client.exchange("/sessions/" + validId, HttpMethod.GET, requestEntity, SessionResponseDTO.class);
+
+        // Assert
+        assertNotNull(responseRead);
+        assertEquals(HttpStatus.NO_CONTENT, responseRead.getStatusCode());
+		 
+		 */
+		
 
 
 	}

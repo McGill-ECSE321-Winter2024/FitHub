@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.sportcenter.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.Time;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -83,7 +83,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
     //---------------------// SessionPackage //------------------//
     int validId;
     int aDuration = 6;
-    Date aDate = Date.valueOf("2024-02-18");
+    LocalDate aDate = LocalDate.parse("2024-02-18");
     int aPriceReduction = 10;
 
     int aNewPriceReduction = 25;
@@ -98,10 +98,10 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
         Time closingTime = Time.valueOf("23:0:0");
 		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
-		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none", "none","none");
+		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none","none");
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -151,7 +151,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 		assertNotNull(response);
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
         SessionPackageResponseDTO createdPackage = response.getBody();
-        //assertEquals(aDate, createdPackage.getDate());
+        assertEquals(aDate, createdPackage.getDate());
         assertEquals(aDuration, createdPackage.getDuration());
         assertEquals(aPriceReduction, createdPackage.getPriceReduction());
 		validId = createdPackage.getId();
@@ -160,7 +160,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
     //----------------------// Update //-----------------------//
 
-    /*
+    
      
     
     @Test
@@ -184,7 +184,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
     }
 
-     */
+    
 
     //----------------------// Delete //-----------------------//
     @Test

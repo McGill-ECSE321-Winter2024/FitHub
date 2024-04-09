@@ -7,7 +7,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.event.annotation.AfterTestClass;
 
 import ca.mcgill.ecse321.sportcenter.dto.SportCenterDTO;
 import ca.mcgill.ecse321.sportcenter.model.Account;
@@ -44,7 +42,7 @@ import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class SportCenterIntegrationTests {
+public class SportCenterIntegrationTests extends CommonTestSetup{
     @Autowired
     private TestRestTemplate client;
     
@@ -87,12 +85,6 @@ public class SportCenterIntegrationTests {
     private String new_valid_email = "new@Email";
     private String new_valid_phone_number = "0987654321";
 
-    @BeforeAll
-    @AfterTestClass
-    public void clearDatabase() {
-        sportCenterRepository.deleteAll();
-    }
-
 	//--------------------------// LOGIN //--------------------------//
 
 	@Test
@@ -104,7 +96,7 @@ public class SportCenterIntegrationTests {
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 
         // Save one account in the system
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png");
+        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -142,7 +134,7 @@ public class SportCenterIntegrationTests {
         // Set up authentication for this test
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<SportCenterDTO>(new SportCenterDTO(new_valid_name, new_valid_opening_time, new_valid_closing_time, new_valid_address, new_valid_email, new_valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
+        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<>(new SportCenterDTO(new_valid_name, new_valid_opening_time, new_valid_closing_time, new_valid_address, new_valid_email, new_valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
         
         // Act
         ResponseEntity<SportCenterDTO> response = client.exchange("/sport-center", HttpMethod.PUT, requestEntity, SportCenterDTO.class);
@@ -180,14 +172,14 @@ public class SportCenterIntegrationTests {
     
     @Test
     @Order(4)
-    public void testAuthenticationFailedWhenCreatingValidSportCenter() {
+    public void testAuthenticationFailedWhenGettingValidSportCenter() {
         // Set up authentication for this test, however if the sportcenter was well deleted, then there is no account to log into
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
-        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<SportCenterDTO>(new SportCenterDTO(valid_name, valid_opening_time, valid_closing_time, valid_address, valid_email, valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
+        HttpEntity<SportCenterDTO> requestEntity = new HttpEntity<>(new SportCenterDTO(valid_name, valid_opening_time, valid_closing_time, valid_address, valid_email, valid_phone_number, valid_courses, valid_locations, valid_accounts), headers);
         
         // Act
-        ResponseEntity<SportCenterDTO> response = client.exchange("/sport-center", HttpMethod.POST, requestEntity, SportCenterDTO.class);
+        ResponseEntity<SportCenterDTO> response = client.exchange("/sport-center", HttpMethod.GET, requestEntity, SportCenterDTO.class);
 
         // Asserts
         assertNotNull(response);

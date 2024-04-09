@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.sportcenter.dto.AccountListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.AccountResponseDTO;
+import ca.mcgill.ecse321.sportcenter.model.Account;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Owner;
@@ -55,32 +56,37 @@ public class AccountController {
         return new ResponseEntity<String>("logout", HttpStatus.OK);
     }
 
-    @GetMapping("/role")
-    public ResponseEntity<String> getRole() {
+    @GetMapping("/role-id")
+    public ResponseEntity<String> getRoleAndId() {
         // Get the currently authenticated user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userType = "visitor";
+        String roleAndId = "visitor";
 
         // Check if the user is authenticated and has a specific role
         if (authentication != null && authentication.isAuthenticated()) {
             if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_OWNER"))) {
-                userType = "owner";
+                roleAndId = "owner,";
             } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_INSTRUCTOR"))) {
-                userType = "instructor";
-            }else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
-                userType = "customer";
+                roleAndId = "instructor,";
+            } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER"))) {
+                roleAndId = "customer,";
+            }
+
+            if (!roleAndId.equals("visitor")) {
+                Account account = (Account) accountService.loadUserByUsername(authentication.getName());
+                roleAndId += account.getId(); // add the id to the response
             }
         }
 
-        return new ResponseEntity<String>(userType, HttpStatus.OK);
+        return new ResponseEntity<String>(roleAndId, HttpStatus.OK);
     }
-    
+
     //--------------------------// Create Account //--------------------------//
     
-    @PostMapping(value={"/customers", "/customers/"})
+    @PostMapping(value={"/customers", "/customers/", "/public/customers"})
     public ResponseEntity<AccountResponseDTO> createCustomerAccount(@RequestBody AccountRequestDTO account) {
         try {
-            Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Customer createdAccount = accountService.createCustomerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -90,7 +96,7 @@ public class AccountController {
     @PostMapping(value={"/instructors", "/instructors/"})
     public ResponseEntity<AccountResponseDTO> createInstructorAccount(@RequestBody AccountRequestDTO account) {
         try {
-            Instructor createdAccount = accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Instructor createdAccount = accountService.createInstructorAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -100,7 +106,7 @@ public class AccountController {
     @PostMapping(value={"/owners", "/owners/"})
     public ResponseEntity<AccountResponseDTO>  createOwnerAccount(@RequestBody AccountRequestDTO account) {
         try {
-            Owner createdAccount = accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Owner createdAccount = accountService.createOwnerAccount(account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(createdAccount), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -112,7 +118,7 @@ public class AccountController {
     @PutMapping(value={"/customers/{id}", "/customers/{id}/"})
     public ResponseEntity<AccountResponseDTO> updateCustomerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         try {
-            Customer updatedAccount = accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Customer updatedAccount = accountService.updateCustomerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -122,7 +128,7 @@ public class AccountController {
     @PutMapping(value={"/instructors/{id}", "/instructors/{id}/"})
     public ResponseEntity<AccountResponseDTO> updateInstructorAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         try {
-            Instructor updatedAccount = accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Instructor updatedAccount = accountService.updateInstructorAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -132,7 +138,7 @@ public class AccountController {
     @PutMapping(value={"/owners/{id}", "/owners/{id}/"})
     public ResponseEntity<AccountResponseDTO> updateOwnerAccount(@PathVariable Integer id, @RequestBody AccountRequestDTO account) {
         try {
-            Owner updatedAccount = accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL());
+            Owner updatedAccount = accountService.updateOwnerAccount(id, account.getEmail(), account.getPassword(), account.getName(), account.getImageURL(), account.getPronouns());
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(updatedAccount), HttpStatus.ACCEPTED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -172,6 +178,15 @@ public class AccountController {
     }
     
     //--------------------------// Getters //--------------------------//
+
+    @GetMapping(value={"/accounts/{id}", "/accounts/{id}/"})
+    public ResponseEntity<AccountResponseDTO> findAccountById(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(accountService.findAccountById(id)), HttpStatus.FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping(value={"/customers/{id}", "/customers/{id}/"})
     public ResponseEntity<AccountResponseDTO> findCustomerById(@PathVariable Integer id) {

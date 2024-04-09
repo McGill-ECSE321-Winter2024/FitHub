@@ -1,6 +1,38 @@
 <template>
     <div class="container-fluid p-0 m-0">
-        <div class="area-orange" >
+        <Toolbar />
+        <div class="page pt-5 mt-5 row align-items-center justify-content-center">
+            <div class="row p-5 align-items-center mt-5">
+                <!-- Column 1 -->
+                <div class="col">
+                    <div class="container justify-content-center-lg">
+                        <div class="row px-xl-4 mb-xl-5 justify-content-center">
+                            <h1 class="mb-xl-5">Own Your Journey</h1>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Column 2 -->
+                <div class="col">
+                    <form class="form-group">
+                        <div class="container justify-content-center">
+                        <div class="row my-xl-5 mr-xl-5">
+                            <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
+                        </div>
+                        <div class="row mt-xl-5 my-3 mr-xl-5">
+                            <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
+                        </div>
+                        <div class="row justify-content-center mr-xl-5">
+                            <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Sign In</button>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="area-orange higher" >
                 <ul class="squares">
                         <li></li>
                         <li></li>
@@ -13,40 +45,7 @@
                         <li></li>
                         <li></li>
                 </ul>
-        </div >
-        <div class="page row align-items-start justify-content-center">
-            <Toolbar />
-            <div class="row p-5">
-                <!-- Column 1 -->
-                <div class="col">
-                    <div class="container justify-content-center-lg">
-                        <div class="row px-xl-4 mb-xl-5 justify-content-center">
-                            <h1 class="mb-xl-5">Own Your Journey</h1>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Column 2 -->
-                <div class="col">
-                <form class="form-group">
-                    <div class="container justify-content-center">
-                    <div class="row my-xl-5 mr-xl-5">
-                        <input v-model="email" class="form-control" type="text" placeholder="Your Email Address...">
-                    </div>
-                    <div class="row mt-xl-5 my-3 mr-xl-5">
-                        <input v-model="password" class="form-control" type="password" placeholder="Your Password...">
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <p class="error" :class="{ 'hidden': !showErrorMessage }">{{ errorMessage }}</p>
-                    </div>
-                    <div class="row justify-content-center mr-xl-5">
-                        <button class="p-2 px-3 rounded justify-content-center btn btn-outline px-4" @click="login">Sign In</button>
-                    </div>
-                    </div>
-                </form>
-                </div>
-            </div>
-            
+            </div >
         </div>
     </div>
   </template>
@@ -84,7 +83,7 @@ export default {
             .then(result => {
                 if (result === 'success') {
                     console.log('Successful')
-                    fetch('http://localhost:8080/role', {
+                    fetch('http://localhost:8080/role-id', {
                         method: 'GET',
                         mode: "cors",
                         headers: {
@@ -93,7 +92,24 @@ export default {
                         credentials: 'include' // Ensure cookies are sent with the request,
                     }).then((roleResponse) => {
                         roleResponse.text().then(role => {
-                            console.log('Role:', role);
+                            const role_and_id = role.split(',');
+                            role = role_and_id[0];
+                            const id = role_and_id[1];
+                            
+                            // Save cookies and change page
+                            this.$cookies.set('username', this.email);
+                            this.$cookies.set('password', this.password);
+                            this.$cookies.set('role', role);
+                            this.$cookies.set('id', id);
+
+                            console.log('Created new cookies:');
+                            console.log('username: ', decodeURIComponent(this.$cookies.get('username')));
+                            console.log('password: ', this.$cookies.get('password'));
+                            console.log('role: ', this.$cookies.get('role'));
+                            console.log('id: ', this.$cookies.get('id'));
+                            
+                            this.$router.push('/');
+
                         }).catch(error => {
                             console.error('Error reading role text:', error);
                         });
@@ -105,45 +121,47 @@ export default {
                     this.showErrorMessage = true;
                 }
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                this.showErrorMessage = true;
+                console.error('Error fetching role:', error);
+            }); 
 
-            
-
-    },
-    switchToHomePage() {
-        this.$router.push('/'); // Navigate to the '/' route
     }
 }
 
 };
 </script>
-<style>
+<style scoped>
     .btn-outline {
-        background-color: #3e8ef1 !important;
-        border-color: #3e8ef1 !important;
-        color: #fff !important;
+        background-color: var(--color-azure) !important;
+        border-color: var(--color-azure) !important;
+        color: var(--color-white) !important;
     }
 
     .btn-outline:hover {
-        background-color: #2469bd !important;
-        border-color: #2469bd !important;
-        color: #fff !important;
+        background-color: var(--color-storm) !important;
+        border-color: var(--color-storm) !important;
+        color: var(--color-white) !important;
     }
 
     .page {
         min-height: 100vh;
-        font-family: "Rubik", sans-serif;
-
+        background-color: var(--color-sunflower);
         width: 100%;
         position: absolute;
         top:0;
         margin: 0px;
         padding: 0px;
+        z-index: 0; /* Ensure that this element is behind other content */
+    }
+
+    .higher {
+        z-index: 900; /* Ensure that this element is behind other content */
     }
 
     .form-control:valid {
-        background: transparent;
-        color: #171313;
+        background-color: var(--color-sunflower);
+        color: var(--color-black);
         border-color: rgba(0, 0, 0, 0.2);
         border-style: solid;
         border-width: 2px;
@@ -151,12 +169,12 @@ export default {
     }
 
     .form-control::placeholder {
-        color: #171313;
+        color: var(--color-black);
         opacity: 1; /* Firefox */
     }
 
     .form-control::-ms-input-placeholder { /* Edge 12 -18 */
-        color: #171313;
+        color: var(--color-black);
     }
 
     .form-control:focus {
@@ -165,7 +183,7 @@ export default {
 
     h1 {
         z-index:950;
-        color: #171313;
+        color: var(--color-black);
     }
 
     .hidden {
@@ -175,9 +193,9 @@ export default {
 
     /* https://codepen.io/mohaiman/pen/MQqMyo */
     .area-orange{
-        background: #ffbc4b;
         width: 100%;
-        height:100vh;
+        height:100%;
+        z-index: -1; /* Ensure that this element is behind other content */
     }
 
     .squares{
