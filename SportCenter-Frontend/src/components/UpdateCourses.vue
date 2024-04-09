@@ -3,11 +3,16 @@
     <!-- Toolbar and search bar -->
     <div class="text-search-bar">
       <div class="text-content" style="text-align: left">
-        <h1 class="custom-h1">Approve or disapprove course</h1>
-        <h3 class="custom-h3">Approve or disapprove courses which instructors have proposed.</h3>
+        <h1 class="custom-h1">Manage courses</h1>
+        <h3 class="custom-h3">Edit or delete courses from the center.</h3>
       </div>
     </div>
 
+    <div v-if="!showList">
+      <!-- Display only the UpdateCourseForm component -->
+      <UpdateCourseForm :courseId="selectedCourseId" @close="showList = true" />
+    </div>
+ <div v-else>
     <div class="mt-5">
       <div class="row">
         <div
@@ -26,21 +31,28 @@
             <p>{{ course.description }}</p>
 
             <div class="buttons">
-              <button @click="approveCourse(course.id)" class="approve">
-                Approve
-              </button>
-              <button @click="disapproveCourse(course.id)" class="disapprove">
-                Disapprove
+              <!-- Display the pencil icon and bind the click event to openUpdateCourseForm method -->
+                <b-icon
+                    icon="pencil-fill"
+                    @click="openUpdateCourseForm(course)"
+                    class="pencil-icon"
+                ></b-icon>
+                <button @click="deleteCourse(course.id)" class="disapprove">
+                Delete
               </button>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// Import the UpdateCourseForm component
+import UpdateCourseForm from "./UpdateCourseForm.vue";
+
 export default {
   name: "Courses",
   data() {
@@ -49,6 +61,8 @@ export default {
       hoveredCardColor: "",
       username: "",
       password: "",
+      showList: true, // Add a data property to track whether to show the list of courses or the UpdateCourseForm
+      selectedCourseId: null, // Add a data property to store the selected course ID
     };
   },
   mounted() {
@@ -64,7 +78,7 @@ export default {
       };
 
       fetch(
-        "http://127.0.0.1:8080/public/courses?status=Pending",
+        "http://127.0.0.1:8080/public/courses",
         requestOptions
       )
         .then((response) => {
@@ -84,35 +98,7 @@ export default {
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
-    approveCourse(courseId) {
-      const requestOptions = {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
-        },
-      };
-
-      fetch(
-        `http://127.0.0.1:8080/course-approval/${courseId}?value=1`,
-        requestOptions
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Course approved:", data);
-          this.getAllCourses(); // Refresh the courses list
-        })
-        .catch((error) => {
-          console.error("Error approving course:", error);
-        });
-    },
-    disapproveCourse(courseId) {
+    deleteCourse(courseId) {
       const requestOptions = {
         method: "PUT",
         credentials: "include",
@@ -140,13 +126,33 @@ export default {
           console.error("Error disapproving course:", error);
         });
     },
+        openUpdateCourseForm(course) {
+        // Logic to open the UpdateCourseForm component with the selected course details
+        console.log("Opening UpdateCourseForm for course:", course);
+        this.selectedCourse = course; // Set the selected course
+        this.showList = false; // Hide the list of courses
+        },
+  },
+  components: {
+    UpdateCourseForm, // Register the UpdateCourseForm component
   },
 };
 </script>
 
 
-
 <style scoped>
+.pencil-icon {
+  color: #CDF563; 
+  font-size: 20px;
+  cursor: pointer; 
+  margin-right: 25px; 
+}
+
+.pencil-icon:hover {
+  color: #fff; 
+}
+
+/* Add styles for the UpdateCourseForm */
 .solid-background {
   background-color: var(--color-black);
   height: 100vh;
@@ -223,5 +229,6 @@ body {
 .buttons {
   display: flex;
   justify-content: center;
+  align-items:center;
 }
 </style>

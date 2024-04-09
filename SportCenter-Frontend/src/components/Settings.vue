@@ -14,7 +14,7 @@
       <!-- Sidebar container with gray box -->
       <div
         class="sidebar-container"
-        style="width: 500px; margin-right: 50px; overflow-y: auto; height: 100%"
+        style="width:420px; margin-right: 50px; overflow-y: auto; height: 100%"
       >
         <div
           class="sidebar"
@@ -116,6 +116,16 @@
             >
               Propose courses
             </li>
+              <li
+              @click="toggleMenu('UpdateCourses')"
+              :class="{
+                'menu-item-selected': currentTab === 'UpdateCourses',
+              }"
+              class="menu-item"
+              style="cursor: pointer; padding: 20px; font-size: 20px"
+            >
+              Manage courses
+            </li>
             <!-- Billing Account Button -->
             <li
               @click="toggleMenu('BillingAccount')"
@@ -181,6 +191,11 @@
         <div v-else-if="currentTab === 'ProposeCourse'">
           <ProposeCourse />
         </div>
+
+<div v-else-if="currentTab === 'UpdateCourses'" class="update-courses-container">
+  <UpdateCourses />
+</div>
+
 
         <!-- Sport Center Settings -->
         <div v-else-if="currentTab === 'EditSportCenter'">
@@ -250,6 +265,7 @@ import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccount from "./BillingAccount.vue";
 import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
+import UpdateCourses from "./UpdateCourses.vue";
 
 export default {
   name: "ProfileSettings",
@@ -258,6 +274,7 @@ export default {
     BillingAccount,
     CustomerSessions,
     ProposeCourse,
+    UpdateCourses
     // Add more components as needed
   },
   data() {
@@ -285,7 +302,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .menu-item {
   padding: 15px;
   border-radius: 5px;
@@ -350,4 +367,12 @@ export default {
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
   display: none;
 }
+
+.update-courses-container {
+  flex-grow: 1; /* Ensure the container takes up remaining space */
+  overflow: auto; /* Enable scrolling if content exceeds container height */
+  padding: 60px; /* Add padding to the container */
+  text-align: left; /* Align content to the left */
+}
+
 </style>
