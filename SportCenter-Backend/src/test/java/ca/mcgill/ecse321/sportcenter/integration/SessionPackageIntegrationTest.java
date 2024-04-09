@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
 import java.sql.Time;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -73,6 +74,9 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 	@Autowired
     private LocationService locationService;
 
+    @Autowired
+    private SessionPackageRepository sessionPackageRepository;
+
 
 
 
@@ -126,6 +130,10 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
     Integer capacity2 = 20;
     Session session2;
 
+    @AfterAll
+    public void removeSessionPackage(){
+        sessionPackageRepository.deleteAll();
+    }
     //------------------------// Empty Result Tests //-----------------//
 
     @Test

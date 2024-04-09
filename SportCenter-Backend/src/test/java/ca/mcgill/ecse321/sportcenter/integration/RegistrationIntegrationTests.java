@@ -36,14 +36,17 @@ import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.CustomerRepository;
 import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SportCenterRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
 import ca.mcgill.ecse321.sportcenter.service.RegistrationService;
+import ca.mcgill.ecse321.sportcenter.service.SessionPackageService;
 import ca.mcgill.ecse321.sportcenter.service.SessionService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
@@ -65,6 +68,9 @@ public class RegistrationIntegrationTests {
     CustomerRepository customerRepository;
 
     @Autowired
+    SessionPackageRepository sessionPackageRepository;
+
+    @Autowired
     AccountService accountService;
 
     @Autowired
@@ -78,6 +84,9 @@ public class RegistrationIntegrationTests {
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    SessionPackageService sessionPackageService;
 
     @Autowired
     SportCenterRepository sportCenterRepository;
@@ -100,18 +109,31 @@ public class RegistrationIntegrationTests {
     private Course course1;
     private Course course2;
     private Location location;
+    private SessionPackage sessionPackage;
+
+    //--------------------// SessionPackge //-------------------//
+    int aDuration = 6;
+    LocalDate aDate = LocalDate.parse("2024-02-17");
+    int aPriceReduction = 10;
+
+    int aNewPriceReduction = 25;
 
     @BeforeAll
 	public void intializeDatabase() {
-		sportCenterRepository.deleteAll();
+        /*
+
+        sportCenterRepository.deleteAll();
         registrationRepository.deleteAll();
         customerRepository.deleteAll();
         sessionRepository.deleteAll();
+         
+         */
+		
 
 		Time openingTime = Time.valueOf("6:0:0");
         Time closingTime = Time.valueOf("23:0:0");
 		
-        sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
+        //sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
         customer1 = accountService.createCustomerAccount("tayba.jusab@mail.mcgill.ca", "password", "Tayba", "rat.png", "");
         customer2 = accountService.createCustomerAccount("personB@gmail.com", "notMyPassword", "Person B", "tree.png", "");
         instructor1 = accountService.createInstructorAccount("instructor@mail.com", "instructor", "Jim", "gym.png", "");
@@ -121,20 +143,30 @@ public class RegistrationIntegrationTests {
         location = locationService.createLocation("5", "502");
         session1 = sessionService.proposeSuperviseSession(openingTime, closingTime, LocalDate.parse("2024-02-18"), 50, instructor1.getId(), course1.getId(), location.getId());
         session2 = sessionService.proposeSuperviseSession(openingTime, closingTime, LocalDate.parse("2024-12-06"), 100, instructor1.getId(), course2.getId(), location.getId());
+        
 	}
 
+    
+    
     @AfterTestClass
     public void clearDatabase() {
         sportCenterRepository.deleteAll();
         registrationRepository.deleteAll();
         customerRepository.deleteAll();
         sessionRepository.deleteAll();
+        sessionPackageRepository.deleteAll();
     }
+     
+    
+    
+     
+     
+    
 
     @Test
     @Order(0)
     public void login() {
-        accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
+        //accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
         // Login into that account
         LoginRequestDTO request = new LoginRequestDTO(LOGIN_EMAIL, LOGIN_PASSWORD);
         ResponseEntity<LoginResponseDTO> response = client.postForEntity("/login", request, LoginResponseDTO.class);
@@ -418,4 +450,38 @@ public class RegistrationIntegrationTests {
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+
+    /*
+    
+     @Test
+    @Order(12)
+    public void testCreateRegistrationFromSessionPackage(){
+
+        sessionPackage = sessionPackageService.createSessionPackage(aPriceReduction, aDuration, aDate, course1.getId());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/registrations?customerId=" + customer1.getId() + "&sessionPackageId=" + sessionPackage.getId();
+        
+        // Act
+        ResponseEntity<RegistrationListDTO> response = client.exchange(url, HttpMethod.POST, requestEntity, RegistrationListDTO.class);
+
+        // Asserts
+        assertNotNull(response);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        RegistrationListDTO createdRegistrations = response.getBody();
+        assertNotNull(createdRegistrations);
+        assertEquals(1, createdRegistrations.getRegistrations().size());
+        RegistrationResponseDTO createdRegistration = createdRegistrations.getRegistrations().get(0); 
+        assertEquals(customer1.getId(), createdRegistration.getAccount().getId());
+        assertEquals(session1.getId(), createdRegistration.getSession().getId());
+
+    }
+     
+     */
+
+   
+     
+ 
 }
