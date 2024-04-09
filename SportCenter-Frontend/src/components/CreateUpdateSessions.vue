@@ -1,9 +1,11 @@
 <template>
   <div>
     <h2 style="color: #ffffff; font-size: 35px">My sessions</h2>
-    <h4 style="color: #ffffff; font-size: 20px; margin-bottom: 50px">
-      Manage the sessions to which you are registered.
+    <h4 style="color: #ffffff; font-size: 20px; margin-bottom: 20px">
+      Manage the sessions which you are supervising as an instructor.
     </h4>
+        <button id="save-btn">Create session</button>
+
     <!-- Properties and text fields -->
     <div style="color: #ffffff">
       <!-- Boxes -->
@@ -45,7 +47,7 @@ export default {
     return {
       profile: { name: "", email: "", password: "" },
       sessions: [
-        { name: "Goat yoga", details: "04/06/24, 10:00-12:00" },
+        { name: "Goat yoga", details: "04/06/24, 10:00-12:00", capacity: "40", attendance: "20", room: "3", floor: "5" },
         { name: "Jiu-jitsu 101", details: "04/07/24, 12:00-14:00" },
         { name: "Badminton", details: "04/08/24, 10:00-11:00" },
         // Add more sessions as needed
@@ -115,6 +117,25 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+#save-btn {
+  background-color: #CDF563;
+  width: 160px; 
+}
+
+button {
+  padding: 10px 10px;
+  color: var(--color-black);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  width: 100px; 
+  height: 50px; 
+  margin-bottom: 15px;
+}
+
 
 .button:hover {
   color: darkred;

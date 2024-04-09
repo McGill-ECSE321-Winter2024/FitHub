@@ -85,7 +85,6 @@
                 'menu-item-selected': currentTab === 'CreateUpdateSessions',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Manage sessions
             </li>
@@ -105,7 +104,6 @@
                 'menu-item-selected': currentTab === 'UpdateCourses',
               }"
               class="menu-item"
-              style="cursor: pointer; padding: 20px; font-size: 20px"
             >
               Manage courses
             </li>
@@ -201,9 +199,9 @@
           <ProposeCourse />
         </div>
 
-<div v-else-if="currentTab === 'UpdateCourses'" class="update-courses-container">
-  <UpdateCourses />
-</div>
+        <div v-else-if="currentTab === 'UpdateCourses'">
+          <UpdateCourses />
+        </div>
 
 
         <!-- Sport Center Settings -->

@@ -18,7 +18,6 @@ public class SessionResponseDTO {
 
     @SuppressWarnings("unused")
     public SessionResponseDTO(){
-
     }
 
     public SessionResponseDTO(Session session){
