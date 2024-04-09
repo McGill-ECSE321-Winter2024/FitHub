@@ -17,7 +17,7 @@
       <div class="mt-5">
         <div class="row">
           <div v-for="course in list.courses" :key="course.id" class="col-md-5 col-lg-3 col-sm-12 mb-5">
-            <router-link :to="'/sessions/courses/' + course.id" class="hover-link">
+            <router-link :to="'/sessions/courses/' + course.id" class="hover-link px-2">
               <div>
                 <img :src="course.url" :alt="course.name" class="w-100 h-100">
               </div>
@@ -33,6 +33,7 @@
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 

@@ -94,13 +94,13 @@ export default {
                     this.toolbarColor = '#CDF567';
                     break;
                 case '/instructors':
-                    this.toolbarColor = '#FFE818';
+                    this.toolbarColor = '#6900BA';
                     break;
                 case '/login':
                     this.toolbarColor = '#FFBC4B';
                     break;
                 case '/registration':
-                    this.toolbarColor = '#CDF567';
+                    this.toolbarColor = '#3E8EF1';
                     break;
                 case '/settings':
                     this.toolbarColor = '#CDF567';
