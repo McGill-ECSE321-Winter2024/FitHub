@@ -1,19 +1,19 @@
 <template>
-
-<div class="solid-background" :class="{ 'blur-background': showDeleteConfirmation || showEditConfirmation || showAddConfirmation }">
+<div class="page" >
+<div class="solid-background">
     
-    <div class="text-content">
+    <div class="text-content" :class="{ 'blur-background': isPopupOpen }">
         <h1 class="custom-h1">Billing account overview</h1>
         <h3>Manage your payment details for one-time purchase</h3>
     </div>
     
 
-    <div class="card-box">
+    <div class="card-box" :class="{ 'blur-background': isPopupOpen }">
         <h5 class="card-display">**** 0000 | YYYY-MM</h5>
         <button @click="showAddPopup()" class="add-link">Add new card</button>
     </div>
 
-    <div class="cards">
+    <div class="cards" :class="{ 'blur-background': isPopupOpen }">
         <h2>My cards</h2>
     
         <h6>Default card</h6>
@@ -43,6 +43,7 @@
         <p class="no-data">No other cards added</p>
         </div>
     </div>
+</div>
 
     <div class="popup-delete" v-if="showDeleteConfirmation">
       <div class="popup-content">
@@ -149,7 +150,8 @@
             cardHolder: '',
             isDefault: false
           },
-          showAddConfirmation: false
+          showAddConfirmation: false,
+          isPopupOpen: false,
         };
       },
       mounted() {
@@ -212,9 +214,11 @@
     confirmDelete(accountId) {
       this.deleteAccountId = accountId;
       this.showDeleteConfirmation = true;
+      this.isPopupOpen = true; 
     },
     cancelDelete() {
       this.showDeleteConfirmation = false; // Hide the pop-up dialog
+      this.isPopupOpen = false; 
     },
     deleteAccount() {
       // Call the API to delete the account
@@ -227,6 +231,13 @@
       .then(response => {
         // Handle success
         console.log('Account deleted successfully');
+        if (this.defaultCard.id === this.deleteAccountId) {
+          this.defaultCard = {}; // Reset default card
+        }
+        else {
+          // If the deleted card is in the "Other cards" section, remove it from the array
+          this.billingAccounts = this.billingAccounts.filter(account => account.id !== this.deleteAccountId);
+        }
         this.getDefaultBillingAccounts();
         this.getOtherBillingAccounts();
       })
@@ -236,15 +247,18 @@
       .finally(() => {
         this.deleteAccountId = null;
         this.showDeleteConfirmation = false; // Hide the pop-up dialog
+        this.isPopupOpen = false; 
       });
     },
     showEditPopup(account) {
       this.editedAccount = { ...account }; // Copy account data
       this.showEditConfirmation = true; // Show edit popup
+      this.isPopupOpen = true; 
     },
     cancelEdit() {
       this.showEditConfirmation = false; // Hide edit popup
       this.editedAccount = null; // Reset edited account
+      this.isPopupOpen = false; 
     },
     saveEdit() {
 
@@ -284,6 +298,7 @@
     .finally(() => {
       this.showEditConfirmation = false; // Hide the edit popup
       this.editedAccount = null; // Reset edited account
+      this.isPopupOpen = false; 
     });
     },
     showAddPopup() {
@@ -298,6 +313,7 @@
 
       // Show the add card pop-up
       this.showAddConfirmation = true;
+      this.isPopupOpen = true; 
     },
     cancelAdd() {
       this.showAddConfirmation = false; // Hide the add card pop-up
@@ -310,6 +326,7 @@
         isDefault: false
       };
       // Reset edited account
+      this.isPopupOpen = false; 
     },
     saveAdd(){
       const requestBody = {
@@ -355,6 +372,7 @@
             })
             .finally(() => {
                 this.showAddConfirmation = false; // Hide the add card pop-up
+                this.isPopupOpen = false; 
            });
     },
   }
@@ -630,6 +648,10 @@ label {
       font-size: 15px;
       font-weight: 400;
       color: #FFFFFF;
+}
+
+.blur-background {
+  filter: blur(2px);
 }
 
 </style>
