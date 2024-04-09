@@ -10,15 +10,15 @@
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <label>Image</label>     
-            <input type="text" id="url" v-model="course.url" required>
+            <input class="text-field" id="url" v-model="course.url" required>
           </div>
           <div class="form-group">
             <label>Name</label>     
-            <input type="text" id="courseName" v-model="course.name" required>
+            <input class="text-field" id="courseName" v-model="course.name" required>
           </div>
           <div class="form-group">
             <label>Category</label>
-            <input type="text" id="category" v-model="course.category" required>
+            <input class="text-field" id="category" v-model="course.category" required>
           </div>
           <div class="form-group">
             <label>Description</label>
@@ -154,51 +154,38 @@ export default {
   text-align: center;
 }
 
-.text-field-description,
 .text-field,
-input[type="text"],
-textarea {
+.text-field-description {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 7px;
-  background-color: var(--color-black);
-  color: #ccc;
-  font-family: inherit; /* Inherit font family */
+  border-radius: 5px;
+  border: 1px solid #444;
+  background-color: transparent;
+  color: #ffffff;
+  height: 50px;
+  box-sizing: border-box;
+  margin-top: 4px;
+  transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
+    border-width 0.1s ease-in-out; /* Add transition effect */
+  font-weight: normal;
+  border-width: 1px;
 }
 
-.text-field option {
-  background-color: var(--color-black);
-  color: #ccc;
-}
-
-/* Disable default dropdown arrow */
-.text-field::-ms-expand {
-  display: none;
-}
-
-.text-field::-webkit-select-arrow {
-  display: none;
-}
-
-.text-field::-webkit-scrollbar {
-  width: 8px;
-}
-
-.text-field::-webkit-scrollbar-track {
-  background: var(--color-black);
-}
-
-.text-field::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+.text-field-description {
+  height: 100px;
 }
 
 .text-field:focus,
-input[type="text"]:focus,
-textarea:focus {
+.text-field:hover,
+.text-field-description:focus,
+.text-field-description:hover {
   outline: none;
   border-color: #fff;
+}
+
+.text-field:focus,
+.text-field-description:focus {
+  border-width: 2px;
 }
 
 .form-box {
@@ -217,12 +204,6 @@ textarea:focus {
 
 .form-group {
   margin-bottom: 15px;
-}
-
-input[type="checkbox"] {
-  align-self: left;
-  align-items: left;
-  margin-right: 5px;
 }
 
 label {
