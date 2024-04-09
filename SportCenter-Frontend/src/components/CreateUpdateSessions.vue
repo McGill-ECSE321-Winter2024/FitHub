@@ -4,13 +4,20 @@
     <h4 style="color: #ffffff; font-size: 20px; margin-bottom: 20px; margin-left: 140px;">
       Manage the sessions which you are supervising as an instructor.
     </h4>
-    <button id="save-btn" style="margin-left: 140px;">Create session</button>
+<button id="save-btn" style="margin-left: 140px;" @click="openCreateSessionForm">Create session</button>
 
     <!-- Render UpdateSessionsForm only when selectedSession is not null -->
     <UpdateSessionsForm
       v-if="showUpdateForm && selectedSession"
       :session="selectedSession"
       @close="closeUpdateSessionForm"
+      style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
+    />
+
+   <!-- Render CreateSessionForm only when showCreateForm is true -->
+    <CreateSessionForm
+      v-if="showCreateForm"
+      @close="closeCreateSessionForm"
       style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
     />
 
@@ -48,6 +55,7 @@
 <script>
 import axios from 'axios';
 import UpdateSessionsForm from "./UpdateSessionsForm.vue";
+import CreateSessionForm from "./CreateSessionForm.vue";
 
 export default {
   data() {
@@ -56,6 +64,7 @@ export default {
       sessions: [],
       showUpdateForm: false,
       selectedSession: null,
+      showCreateForm: false,
     };
   },
   methods: {
@@ -90,6 +99,12 @@ export default {
     },
     closeUpdateSessionForm() {
       this.showUpdateForm = false;
+    },
+    openCreateSessionForm() {
+      this.showCreateForm = true;
+    },
+    closeCreateSessionForm() {
+      this.showCreateForm = false;
     }
   },
   mounted() {
@@ -97,6 +112,7 @@ export default {
   },
   components: {
     UpdateSessionsForm,
+    CreateSessionForm
   },
 };
 </script>
