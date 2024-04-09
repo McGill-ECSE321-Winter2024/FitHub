@@ -1,44 +1,23 @@
 <template>
-  <div
-    style="
-      font-family: Figtree;
-      height: 100vh;
-      background-color: var(--color-black);
-    "
+  <div class="content-container"
   >
     <div style="background-color: var(--color-black)">
       <Toolbar />
     </div>
     <!-- Container for sidebar and main content -->
-    <div class="content-container">
+    <div class="row p-0 m-0">
       <!-- Sidebar container with gray box -->
       <div
-        class="sidebar-container"
-        style="width: 500px; margin-right: 50px; overflow-y: auto; height: 100%"
+        class="sidebar-container col-auto p-0 m-0"
       >
         <div
-          class="sidebar"
-          style="
-            border-radius: 10px;
-            background-color: #232323;
-            margin-top: 20px;
-            margin-left: 20px;
-            width: 360px;
-            height: 90%;
-          "
+          class="sidebar p-0 m-3"
         >
-          <h2 style="color: #ffffff; font-size: 35px; padding: 30px">
+          <h2>
             Settings
           </h2>
           <!-- Adjust font size here -->
-          <ul
-            style="
-              list-style-type: none;
-              padding: 0;
-              text-align: left;
-              color: #ffffff;
-            "
-          >
+          <ul>
             <!-- Edit Profile Button -->
             <li
               @click="toggleMenu('EditProfile')"
@@ -126,35 +105,54 @@
 
       <!-- Main content -->
       <div
-        class="main-content"
-        style="flex-grow: 1; overflow: auto; padding: 60px; text-align: left"
+        class="main-content col m-0"
       >
         <!-- Edit Profile -->
         <div v-if="currentTab === 'EditProfile'">
-          <img class="mt-3" v-bind:src="this.$cookies.get()"
-                                    @error="$event.target.src = defaultImage" 
-                                    :style="{ 'width': '200px', 'height': 'auto' }" />
-
-          <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
+          <h2>
             Edit profile
           </h2>
+
           <!-- Properties and text fields -->
-          <div style="color: #ffffff">
-            <div style="margin-top: 20px; margin-bottom: 10px">
-              <div style="font-weight: bold">Name</div>
-              <input type="text" v-model="profile.name" class="text-field" />
+          <div class="container content">
+
+            <img class="row mt-3 mx-auto" :src="profile.imageURL"
+                                      @error="$event.target.src = profile.defaultImage" 
+                                      :style="{ 'width': '80px', 'height': 'auto'}" />
+            <div class="row  pb-2">
+              <div style="font-weight: bold">Image URL</div>
             </div>
-            <div style="margin-top: 20px; margin-bottom: 10px">
-              <div style="font-weight: bold">Email</div>
-              <input type="email" v-model="profile.email" class="text-field" />
+            <div class="row  pb-2">
+              <input type="text" v-model="profile.imageURL" class="text-field" />
             </div>
-            <div style="margin-top: 20px; margin-bottom: 50px">
-              <div style="font-weight: bold">Password</div>
-              <input
-                type="password"
-                v-model="profile.password"
-                class="text-field"
-              />
+            <div class="row  pb-2">
+              <div class="col p-0 " style="font-weight: bold">Name</div>
+              <div class="col p-0 ml-3" style="font-weight: bold">Pronouns</div>
+            </div>
+            <div class="row  pb-2">
+              <input type="text" v-model="profile.name" class="col text-field" />
+              <input type="text" v-model="profile.pronouns" class="col m-0 ml-3 text-field" />
+            </div>
+            <div class="row  pb-2">
+              <div class="col p-0 " style="font-weight: bold">Email</div>
+              <div class="col p-0 ml-3" style="font-weight: bold">Password</div>
+            </div>
+            <div class="row  pb-2">
+              <input type="email" v-model="profile.email" class="col text-field" />
+              <input type="password" v-model="profile.password" class="col m-0 ml-3 text-field" />
+            </div>
+            <div class="row justify-content-center">
+              <p class="error"
+                :class="{ 
+                  'hidden': !profile.showErrorMessage && !profile.showSuccessfulMessage, 
+                  'red-text': profile.showErrorMessage && !profile.showSuccessfulMessage, 
+                  'green-text': profile.showSuccessfulMessage && !profile.showErrorMessage 
+                }">
+                {{ profile.errorMessage }}
+              </p>
+            </div>
+            <div class="row justify-content-center">
+              <button class="p-2 px-3 rounded justify-content-end btn btn-outline px-4" @click="saveProfileInfo">Save</button>
             </div>
           </div>
         </div>
@@ -180,7 +178,7 @@
 
         <!-- Sport Center Settings -->
         <div v-else-if="currentTab === 'EditSportCenter'">
-          <h2 style="color: #ffffff; font-size: 35px; margin-bottom: 50px">
+          <h2>
             Edit sport center
           </h2>
           <!-- Properties and text fields -->
@@ -265,9 +263,15 @@ export default {
     return {
       currentTab: "EditProfile", // Default tab
       profile: {
+        imageURL: "",
         name: "",
         email: "",
+        pronouns: "",
         password: "",
+        defaultImage: require('@/assets/pfp.png'),
+        errorMessage: 'Empty fields for email, password or name are not valid',
+        showErrorMessage: false,
+        showSuccessfulMessage: false,
       },
       sportCenter: {
         email: "",
@@ -286,21 +290,22 @@ export default {
       const url = 'http://127.0.0.1:8080/accounts/' + this.$cookies.get("id");
       fetch(url, {
                 method: 'GET',
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
+                },
             }).then((accountsResponse) => {
                 if (accountsResponse.status === 204) {
                     console.log("No account with Id was found");
                 }
                 else {
                     accountsResponse.json().then(accounts => {
-                        console.log(accounts.accounts);
-                        this.instructors = accounts.accounts;
-
-                        this.instructors.forEach(instructor => {
-                            this.getAllCourses(instructor.id);
-                        });
-
-                        console.log(this.instructorCourses);
+                        console.log(accounts);
+                        this.profile.imageURL = accounts.imageURL;
+                        this.profile.name = accounts.name;
+                        this.profile.email = accounts.email;
+                        this.profile.pronouns = accounts.pronouns;
                     }).catch(error => {
                         console.error('Error parsing JSON:', error);
                     });
@@ -313,9 +318,11 @@ export default {
 
       // Create a JSON object with the data to be sent in the POST request
       const requestBody = {
-          name: this.profile.name,
           email: this.profile.email,
-          password: this.profile.password
+          password: this.profile.password,
+          name: this.profile.name,
+          imageURL: this.profile.imageURL,
+          pronouns: this.profile.pronouns
       };
 
       console.log(
@@ -326,31 +333,50 @@ export default {
       console.log("role: ", this.$cookies.get("role"));
       console.log("id: ", this.$cookies.get("id"));
 
+      console.log(requestBody);
+
       const requestOptions = {
         method: "PUT",
         credentials: "include",
-        body: requestBody,
+        body: JSON.stringify(requestBody),
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
+          Authorization: 'Basic ' + btoa(this.$cookies.get("username") + ':' + this.$cookies.get("password")),
         },
       };
-      const url = 'http://127.0.0.1:8080/customers/' + this.$cookies.get("id");
+
+      let url = 'http://127.0.0.1:8080/owners/' + this.$cookies.get("id");
+      if (this.$cookies.get("role") == "customer") {
+        url = 'http://127.0.0.1:8080/customers/' + this.$cookies.get("id");
+      }
+      else if (this.$cookies.get("role") == "instructors") {
+        url = 'http://127.0.0.1:8080/instructors/' + this.$cookies.get("id");
+      }
       fetch(
         url,
         requestOptions
       )
         .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
+          console.log(response);
           return response.json();
         })
         .then((data) => {
-          console.log("Profile was approved:", data);
-        })
-        .catch((error) => {
-          console.error("Failed to update profile:", error);
+          if (data.error === "") {
+            console.log("Profile was approved:", data);
+            
+            // Update cookies if it worked
+            this.$cookies.set('username', this.profile.email);
+            this.$cookies.set('password', this.profile.password);
+            this.profile.errorMessage = "Profile was updated";
+            this.profile.showSuccessfulMessage = true;
+            this.profile.showErrorMessage = false;
+          }
+          else {
+            this.profile.errorMessage = data.error;
+            this.profile.showErrorMessage = true;
+            this.profile.showSuccessfulMessage = false;
+            console.log(data.error);
+          }
         });
       
     },
@@ -358,30 +384,88 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+h2 {
+  color: #ffffff; 
+  font-size: 2em;
+  padding: 30px;
+}
+
+.toolbar-container {
+  background-color: var(--color-black);
+}
+
+.content-container {
+  background-color: var(--color-black);
+  min-height: 100vh;
+}
+
+.content {
+  width: 80%;
+  color: #ffffff;
+}
+
+.sidebar-container {
+  height: 100%;
+}
+
+.sidebar {
+  border-radius: 10px;
+  background-color: #232323;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  color: #ffffff;
+  font-size: .8em;
+}
+
+.sidebar-title {
+  color: #ffffff;
+  font-size: .8em;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  text-align: left;
+  color: #ffffff;
+}
+
 .menu-item {
-  padding: 20px;
+  padding: 10px;
+  margin: 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 10px;
-  margin-bottom: 10px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.2em;
 }
 
 .menu-item-selected {
   background-color: #444;
 }
 
-.content-container {
-  display: flex;
-  height: calc(100% - 50px);
+.main-content {
+  text-align: left;
+  overflow-x: hidden; /* Add this line */
+  padding: 20px;
+}
+
+.main-title {
+  color: #ffffff;
+  font-size: 35px;
+}
+
+.container {
+  color: #ffffff;
 }
 
 .text-field {
-  width: 90%;
+  width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #444; /* Set initial border color to gray */
@@ -389,7 +473,6 @@ export default {
   color: #ffffff;
   height: 50px;
   box-sizing: border-box;
-  margin-top: 4px;
   transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
     border-width 0.1s ease-in-out; /* Add transition effect */
   font-weight: normal; /* Set default font weight */
@@ -397,7 +480,7 @@ export default {
 }
 
 .timepicker {
-  width: 90%;
+  width: 100%;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #444; /* Set initial border color to gray */
@@ -424,5 +507,21 @@ export default {
 
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
   display: none;
+}
+
+.error {
+  font-size: .8em;
+}
+
+.red-text {
+  color: #F56363; 
+}
+
+.green-text {
+  color: #cdf567; 
+}
+
+.hidden {
+    visibility: hidden;
 }
 </style>
