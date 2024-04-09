@@ -23,6 +23,18 @@ public class AccountResponseDTO {
         this.error = error;
     }
 
+    public AccountResponseDTO(Account account) {
+        this.id = account.getId();
+        this.type = AccountType.CUSTOMER;
+        this.email = account.getEmail();
+        this.password = account.getPassword();
+        this.name = account.getName();
+        this.imageURL = account.getImageURL();
+        this.pronouns = account.getPronouns();
+        this.type = null;
+        this.error = "";
+    }
+
     public AccountResponseDTO(Customer customer) {
         this.id = customer.getId();
         this.type = AccountType.CUSTOMER;

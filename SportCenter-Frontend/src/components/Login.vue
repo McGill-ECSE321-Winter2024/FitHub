@@ -121,7 +121,10 @@ export default {
                     this.showErrorMessage = true;
                 }
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                this.showErrorMessage = true;
+                console.error('Error fetching role:', error);
+            }); 
 
     }
 }

@@ -179,6 +179,15 @@ public class AccountController {
     
     //--------------------------// Getters //--------------------------//
 
+    @GetMapping(value={"/accounts/{id}", "/accounts/{id}/"})
+    public ResponseEntity<AccountResponseDTO> findAccountById(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(accountService.findAccountById(id)), HttpStatus.FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<AccountResponseDTO>(new AccountResponseDTO(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value={"/customers/{id}", "/customers/{id}/"})
     public ResponseEntity<AccountResponseDTO> findCustomerById(@PathVariable Integer id) {
         try {
