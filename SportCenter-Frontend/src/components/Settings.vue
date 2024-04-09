@@ -168,12 +168,17 @@
           <OwnerCourses />
         </div>
 
+        <!-- My Sessions Settings -->
+        <div v-else-if="currentTab === 'MySessions'">
+          <CustomerSessions />
+        </div>
+
         <!-- Billing Account Settings -->
         <div v-else-if="currentTab === 'BillingAccount'">
           <BillingAccount />
         </div>
 
-            <div v-else-if="currentTab === 'ProposeCourse'">
+        <div v-else-if="currentTab === 'ProposeCourse'">
           <ProposeCourse />
         </div>
 
@@ -243,6 +248,7 @@
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
 import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccount from "./BillingAccount.vue";
+import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
 
 export default {
@@ -250,6 +256,7 @@ export default {
   components: {
     OwnerCourses,
     BillingAccount,
+    CustomerSessions,
     ProposeCourse,
     // Add more components as needed
   },
