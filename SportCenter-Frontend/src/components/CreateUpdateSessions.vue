@@ -42,6 +42,7 @@
               ></b-icon>
               <b-icon
                 icon="trash-fill"
+                @click="deleteSession(session.id)"
                 class="disapprove"
               ></b-icon>
             </div>
@@ -105,7 +106,38 @@ export default {
     },
     closeCreateSessionForm() {
       this.showCreateForm = false;
-    }
+    },
+deleteSession(sessionID) {
+  const username = decodeURIComponent(this.$cookies.get('username'));
+  const password = this.$cookies.get('password');
+
+  if (username && password) {
+    fetch(`http://127.0.0.1:8080/sessions/${sessionID}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(username + ':' + password)
+      },
+      credentials: 'include',
+    })
+      .then(response => {
+        console.log('Session Delete Response Status:', response.status);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // Remove the session from the sessions array on successful deletion
+        this.sessions = this.sessions.filter(session => session.id !== sessionID);
+
+        // Refresh sessions after deletion
+        this.getAllSessions();
+      })
+      .catch(error => {
+        console.error('Error deleting session:', error);
+      });
+  } else {
+    console.error('User not authenticated');
+  }
+}
   },
   mounted() {
     this.getAllSessions();

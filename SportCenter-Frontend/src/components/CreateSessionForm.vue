@@ -230,6 +230,8 @@ export default {
           .catch(error => {
             console.error('Error creating session:', error);
           });
+
+          this.$emit('close');
       }
     },
     cancelForm() {
