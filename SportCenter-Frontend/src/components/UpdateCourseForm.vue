@@ -34,7 +34,7 @@
               </select>
             </div>
             <div class="price">
-              <label>Price</label>
+              <label>Price per hour</label>
               <input class="text-field" id="priceperhour" v-model="course.pricePerHour" required>
             </div>
           </div>

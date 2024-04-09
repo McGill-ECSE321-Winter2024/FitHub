@@ -1,7 +1,7 @@
 <template>
-  <div class="solid-background">
+   <div class="solid-background">
     <!-- Toolbar and search bar -->
-    <div class="text-search-bar">
+    <div class="text-search-bar" :class="{ 'blur-background': isPopupOpen }">
       <div class="text-content" style="text-align: left">
         <h1 class="custom-h1">Manage courses</h1>
         <h3 class="custom-h3">Edit or delete courses from the center.</h3>
@@ -16,7 +16,7 @@
         style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
     />
 
-    <div class="mt-5">
+    <div class="mt-5 " :class="{ 'blur-background': isPopupOpen }"> 
       <div class="row">
         <div
           class="col-md-5 col-lg-3 col-sm-12 mb-5"
@@ -127,18 +127,20 @@ export default {
         .catch((error) => {
           console.error("Error deleting course:", error);
         });
-    },
+        },
     openUpdateCourseForm(course) {
-      console.log("Opening UpdateCourseForm for course:", course);
-      this.selectedCourse = course;
-      this.showUpdateForm = true; // Show the UpdateCourseForm
+        console.log("Opening UpdateCourseForm for course:", course);
+        this.selectedCourse = course;
+        this.showUpdateForm = true; 
+        this.isPopupOpen = true; 
     },
     closeUpdateCourseForm() {
-      this.showUpdateForm = false; // Hide the UpdateCourseForm
+        this.showUpdateForm = false; 
+        this.isPopupOpen = false; 
     },
   },
   components: {
-    UpdateCourseForm, // Register the UpdateCourseForm component
+    UpdateCourseForm, 
   },
 };
 </script>
@@ -228,6 +230,10 @@ body {
   border-radius: 20px;
   height: 40px;
   width: 100px;
+}
+
+.blur-background {
+  filter: blur(2px);
 }
 
 .buttons {
