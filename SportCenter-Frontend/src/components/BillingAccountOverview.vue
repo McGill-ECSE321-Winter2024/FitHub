@@ -9,7 +9,7 @@
     
 
     <div class="card-box">
-        <h5 class="card-display">****0000 | YYYY-MM</h5>
+        <h5 class="card-display">**** 0000 | YYYY-MM</h5>
         <router-link to="/billing-account" class="add-link">Add new card</router-link>
     </div>
 
@@ -18,15 +18,15 @@
     
         <h6>Default card</h6>
         <div class="card-box">
-        <h5 class="card-display">****8888 | 2026-10</h5>
+          <h5 class="card-display">{{ defaultCard.cardNumber ? '**** ' + defaultCard.cardNumber.slice(-4) : '' }} | {{ defaultCard.expirationDate ? defaultCard.expirationDate.slice(0, 7) : '' }}</h5>
         <router-link to="/billing-account-edit" class="edit-link">Edit</router-link>
         <router-link to="/billing-account-delete" class="delete-link">Delete</router-link>
         </div>
 
-        <div class="other-cards" v-for="account in billingAccounts":key="account.id">
+        <div class="other-cards">
         <h6>Other cards</h6>
         <div class="card-box">
-        <h5 class="card-display">{{ account.cardNumber }} | {{ account.expirationDate }} </h5>
+          <h5 v-for="account in billingAccounts" class="card-display"> {{ account.cardNumber }} | {{ account.expirationDate }} </h5>
         <router-link to="/billing-account-edit" class="edit-link">Edit</router-link>
         <router-link to="/billing-account-delete" class="delete-link">Delete</router-link>
         </div>
@@ -43,13 +43,11 @@
 
       data() {
         return {
-            billingAccounts: [],
-            billingAccount: {}
+          billingAccounts: [],
+          defaultCard: {}
         };
       },
-
       mounted() {
-        // Fetch location data when the component is created
        this.getDefaultBillingAccounts();
        this.getOtherBillingAccounts();
     },
@@ -73,8 +71,8 @@
           return response.json();
         })
         .then(data => {
-          this.list = data;
-          console.log(this.list)
+          this.defaultCard = data;
+          console.log(this.defaultCard)
         })
         .catch(error => {
           console.error('Error fetching billing-accounts:', error);
@@ -99,8 +97,8 @@
           return response.json();
         })
         .then(data => {
-          this.list = data;
-          console.log(this.list)
+          this.billingAccounts = data;
+          console.log(this.billingAccounts)
         })
         .catch(error => {
           console.error('Error fetching billing-accounts:', error);
@@ -228,7 +226,9 @@
     }
     
     h6 {
+      margin-left: 20px;
       text-align: left;
+      display: flex;
       margin-left: 400px;
       margin-top: 20px;
       margin-bottom: 5px;
