@@ -2,7 +2,7 @@
     <div>  
     <div id="instructor_page" class="p-0 m-0">
         <Toolbar />
-        <div class="row align-items-start justify-content-start p-0 m-0">
+        <div class="row align-items-start justify-content-start p-2 m-0">
             <div class="container pt-5">
                 <div class="row">
                     <h2>Meet our Instructors</h2>
@@ -13,12 +13,12 @@
 
                 <div class="row align-items-start justify-content-start over">
                     <hooper group="group1" :loop="false" :itemsToShow="3" :initialSlide="0" class="over h-100 pt-5">
-                        <slide class="instructor third-width my-auto" v-for="instructor in instructors"
+                        <slide class="instructor my-auto" v-for="instructor in instructors"
                             :key="instructor.id">
-                            <div class="list">
+                            <div class="list third-width p-2">
                                 <img class="mt-3" v-bind:src=instructor.imageURL
                                     @error="$event.target.src = defaultImage" 
-                                    :style="{ 'width': '200px', 'height': 'auto' }" />
+                                    :style="{ 'width': '100%'}" />
                                 <ul class="m-0 p-0">
                                     <li class="heading">{{ instructor.name }}</li>
                                     <li>{{ instructor.email }}</li>
@@ -70,7 +70,7 @@ export default {
         return {
             instructors: [],
             instructorCourses: {}, // Object to store courses for each instructor
-            defaultImage: require('@/assets/pfp.png')
+            defaultImage: require('@/assets/pfp.png'),
         };
     },
     mounted() {
@@ -150,23 +150,24 @@ export default {
 }
 
 .list {
-    width: 200px;
+    max-width: 200px;
     margin: auto;
 }
 
 ul {
     list-style-type: none;
-    font-size: .9em;
+    font-size: .9rem;
     text-align: start;
 }
 
 h3 {
+    font-size: 1.5rem;
     text-align: start;
 }
 
 
 .heading {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-weight: 700;
     width: 200px;
 }
