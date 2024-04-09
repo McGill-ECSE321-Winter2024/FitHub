@@ -23,10 +23,12 @@ import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.RegistrationService;
+import ca.mcgill.ecse321.sportcenter.service.SessionPackageService;
 import ca.mcgill.ecse321.sportcenter.service.SessionService;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 
 /**
  * <p>Controller class in charge of managing registrations. It implements following use cases: </p>
@@ -46,6 +48,9 @@ public class RegistrationController {
     @Autowired
     private SessionService sessionService;
 
+    @Autowired
+    private SessionPackageService sessionPackageService;
+
     //--------------------------// Create Registration //--------------------------//
 
     @PostMapping(value= {"/registrations", "/registrations/"})
@@ -58,6 +63,29 @@ public class RegistrationController {
         }
         catch(IllegalArgumentException e){
             return new ResponseEntity<>(new RegistrationResponseDTO(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = {"/registrations/session-package", "/registrations/session-package/"})
+    public ResponseEntity<RegistrationListDTO> createRegistrationBySessionPackage(@RequestParam Integer customerId, @RequestParam Integer sessionPackageId) {
+        try{
+            Customer customer = accountService.findCustomerById(customerId);
+            SessionPackage sessionPackage = sessionPackageService.getSessionPackageById(sessionPackageId);
+            List<Registration> createdRegistrations = registrationService.createRegistrationsFromSessionPackage(customer, sessionPackage);
+
+            List<RegistrationResponseDTO> registrations = new ArrayList<RegistrationResponseDTO>();
+            for (Registration model : createdRegistrations){
+                registrations.add(new RegistrationResponseDTO(model));
+            }
+            if(registrations.isEmpty())
+                return new ResponseEntity<RegistrationListDTO>((
+                    new RegistrationListDTO(registrations)),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<RegistrationListDTO>(new RegistrationListDTO(registrations),HttpStatus.CREATED);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<RegistrationListDTO>(new RegistrationListDTO(), HttpStatus.BAD_REQUEST);
         }
     }
 

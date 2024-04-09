@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.mcgill.ecse321.sportcenter.dto.SessionListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionPackageListDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionPackageRequestDTO;
 import ca.mcgill.ecse321.sportcenter.dto.SessionPackageResponseDTO;
+import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
+import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.service.SessionPackageService;
 
@@ -61,6 +64,26 @@ public class SessionPackageController {
         }
         catch(IllegalArgumentException e){
             return new ResponseEntity<SessionPackageListDTO>(new SessionPackageListDTO(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/session-packages/{id}/sessions")
+    public ResponseEntity<SessionListDTO> findSessionsBySessionPackage(@PathVariable int id){
+        try{
+            List<SessionResponseDTO> sessions = new ArrayList<SessionResponseDTO>();
+            for (Session model : sessionPackageService.findSessionsBySessionPackage(id)){
+                sessions.add(new SessionResponseDTO(model));
+            }
+            if(sessions.isEmpty())
+                return new ResponseEntity<SessionListDTO>((
+                    new SessionListDTO(sessions)),HttpStatus.NO_CONTENT);
+            else{
+                return new ResponseEntity<SessionListDTO>(new SessionListDTO(sessions),HttpStatus.OK);
+            }
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<SessionListDTO>(new SessionListDTO(), HttpStatus.BAD_REQUEST);
         }
 
     }
