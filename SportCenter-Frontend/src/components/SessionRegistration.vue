@@ -49,7 +49,7 @@
         <div class="popup" v-if="showSuccessConfirmation">
             <div class="popup-content">
                 <p>You have succesfully been registered!</p>
-                <button @click="closePopup" style="color: var(--color-azure)">OK</button>
+                <button class="popup-button" @click="closePopup" style="color: var(--color-azure)">OK</button>
             </div>
         </div>
 
