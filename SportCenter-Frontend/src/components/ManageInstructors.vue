@@ -2,22 +2,22 @@
   <div>
     <h2 style="color: #ffffff; font-size: 35px">Manage instructors</h2>
     <div class="container">
-      <div class="row" v-for="(boxRow, index) in boxRows" :key="index">
-        <div class="col" v-for="(box, boxIndex) in boxRow" :key="boxIndex">
-          <div class="col box">
-            <div class="image-container">
+      <div class="row m-0">
+        <div class="col" v-for="instructor in instructors" :key="instructor.id">
+          <div class="col instructor p-2 m-2">
+            <div class="image-container row align-items-center justify-elements-center m-0">
               <img
-                class="row mt-3 mx-auto circular-image"
+                class="circular-image m-auto"
                 :src="instructor.imageURL"
                 @error="$event.target.src = instructor.defaultImage"
                 :style="{ width: '80px', height: 'auto' }"
               />
             </div>
-            <div class="inst-name">James Luu</div>
-            <div class="inst-info">He/him</div>
-            <div class="inst-info" style="margin: 10px">
-              jamesluu0917@gmail.com
-            </div>
+            <div class="inst-name">{{ instructor.name }}</div>
+            <div class="inst-info">{{ instructor.pronouns }}</div>
+            <div class="inst-info">
+              {{ instructor.email }}
+            </div>   
             <div class="row justify-content-center">
               <button
                 class="p-2 px-3 rounded justify-content-end btn btn-outline px-4"
@@ -36,14 +36,14 @@
             <form>
               <div class="image-container">
                 <img
-                  class="row mt-3 mx-auto circular-image"
+                  class="row circular-image mx-auto"
                   :src="instructor.imageURL"
                   @error="$event.target.src = instructor.defaultImage"
                   :style="{ width: '80px', height: 'auto' }"
                 />
               </div>
               <div class="row m-0 pb-2">
-                <div style="font-weight: bold">Image URL</div>
+                <div>Image URL</div>
               </div>
               <div class="row m-0 pb-2">
                 <input
@@ -53,8 +53,8 @@
                 />
               </div>
               <div class="row m-0 pb-2">
-                <div class="col p-0" style="font-weight: bold">Name</div>
-                <div class="col p-0 ml-3" style="font-weight: bold">
+                <div class="col p-0">Name</div>
+                <div class="col p-0 ml-3">
                   Pronouns
                 </div>
               </div>
@@ -71,8 +71,8 @@
                 />
               </div>
               <div class="row m-0 pb-2">
-                <div class="col p-0" style="font-weight: bold">Email</div>
-                <div class="col p-0 ml-3" style="font-weight: bold">
+                <div class="col p-0">Email</div>
+                <div class="col p-0 ml-3">
                   Password
                 </div>
               </div>
@@ -117,26 +117,40 @@ export default {
         email: "",
         password: "",
       },
-      // use backend data (number of instructors) to build boxRows list
-      // boxRows is a list of rows, which is itself a list of 3 boxes
-      // this layout allows for populating the content from left to right, row by row
-      boxRows: [
-        [
-          { image: "", name: "", pronouns: "", email: "", password: "" },
-          { image: "", name: "", pronouns: "", email: "", password: "" },
-          { image: "", name: "", pronouns: "", email: "", password: "" },
-        ],
-        [{ image: "", name: "", pronouns: "", email: "", password: "" }],
-      ],
+      instructors: [],
     };
   },
+  mounted() {
+      // Fetch accounts data when the component is created
+      this.fetchInstructors();
+  },
   methods: {
-    saveBox(rowIndex, boxIndex) {
-      const box = this.boxRows[rowIndex][boxIndex];
-      // Here you can perform save operation, for now just log the data
-      console.log("Saving box:", box);
-    },
+      fetchInstructors() {
+        fetch('http://localhost:8080/public/instructors', {
+            method: 'GET',
+            credentials: 'include'
+        }).then((accountsResponse) => {
+            if (accountsResponse.status === 204) {
+                console.log("No instructors in the database");
+            }
+            else {
+                accountsResponse.json().then(accounts => {
+                    console.log(accounts.accounts);
+                    this.instructors = accounts.accounts;
 
+                    this.instructors.forEach(instructor => {
+                        this.getAllCourses(instructor.id);
+                    });
+
+                    console.log(this.instructorCourses);
+                }).catch(error => {
+                    console.error('Error parsing JSON:', error);
+                });
+            }
+        }).catch(error => {
+            console.error('Error fetching accounts:', error);
+        });
+    },
     showEditPopup(instructor) {
       this.editedInstructor = { ...instructor }; // Copy account data
       this.showEditConfirmation = true; // Show edit popup
@@ -179,32 +193,33 @@ export default {
   border-color: #a0ca35 !important;
   color: var(--color-black) !important;
 }
+
 .circular-image {
   border-radius: 50%; /* Set border-radius to 50% for circular shape */
 }
 
 .image-container {
   text-align: center; /* Center the image */
+  height: 110px;
+  overflow-y: hidden;
 }
 
-.box {
+.instructor {
   border: 1px solid #ccc;
   color: #ffffff;
-  height: 320px;
-  width: 320px;
   border-radius: 8px;
-  padding: 10px;
-  margin-top: 50px;
   justify-content: center;
   align-items: center;
+  width: 250px;
+  font-weight: normal;
 }
 
 .inst-name {
   justify-content: center;
   text-align: center;
-  font-size: 25px;
-  font-weight: bold;
+  font-size: 1.5rem;
   margin-top: 10px;
+  font-weight: bold;
 }
 
 .inst-info {
@@ -344,7 +359,7 @@ export default {
   height: 50px;
   box-sizing: border-box;
   transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
-    border-width 0.1s ease-in-out; /* Add transition effect */
+  border-width 0.1s ease-in-out; /* Add transition effect */
   font-weight: normal; /* Set default font weight */
   border-width: 2px; /* Set initial border width */
 }

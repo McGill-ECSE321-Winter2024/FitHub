@@ -167,6 +167,11 @@
           <ManageInstructors />
         </div>
 
+        <!-- Manage Locations Settings -->
+        <div v-else-if="currentTab === 'ManageLocations'">
+          <ManageLocations />
+        </div>
+
         <!-- My Sessions Settings -->
         <div v-else-if="currentTab === 'MySessions'">
           <CustomerSessions />
@@ -239,6 +244,7 @@ import BillingAccountOverview from "./BillingAccountOverview.vue";
 import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
 import ManageInstructors from "./ManageInstructors.vue";
+import ManageLocations from "./Location.vue";
 
 export default {
   name: "ProfileSettings",
@@ -248,6 +254,7 @@ export default {
     CustomerSessions,
     ProposeCourse,
     ManageInstructors,
+    ManageLocations
     // Add more components as needed
   },
   mounted() {
