@@ -5,7 +5,7 @@
         <div class="title-container">
           <h3 class="custom-h3">Edit course details below</h3>
         </div>
-        <form @submit.prevent="submitForm">
+        <form>
           <div class="form-group">
             <label>Image</label>     
             <input class="text-field" id="url" v-model="course.url" required>
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="buttons">
-            <button id="save-btn" type="submit">Save</button>
+            <button id="save-btn" type="submit" @click="submitForm">Save</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
           </div>
         </form>
@@ -52,6 +52,9 @@
 export default {
   props: {
     course: Object 
+  },
+  mounted()  {
+    console.log(this.course.name);
   },
   methods: {
     capitalizeWords(text) {
@@ -70,16 +73,18 @@ export default {
     const courseId = this.course.id; // Assuming you have access to the course ID
     const formData = {
       id: courseId,
-      name: this.course.name,
+      name: this.course.name.toLowerCase(),
       category: this.course.category,
       description: this.course.description,
       difficulty: this.course.difficulty,
       status: this.course.status,
-      pricePerHour: this.course.priceperhour,
-      url: this.course.url
+      pricePerHour: this.course.pricePerHour,
+      url: this.course.url,
+      center: this.course.center
     };
 
     console.log('Form Data:', formData);
+    console.log(this.course.pricePerHour);
 
     fetch(`http://127.0.0.1:8080/courses/${courseId}`, { // Use PUT method and include the course ID in the URL
       method: 'PUT', // Change method to PUT
@@ -116,7 +121,7 @@ export default {
     capitalizedCourseName() {
       return this.capitalizeWords(this.course.name);
     }
-  }
+  },
 };
 </script>
 

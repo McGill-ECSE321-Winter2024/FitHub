@@ -197,6 +197,7 @@ public class CourseService {
         existingCourse.setDifficulty(Course.Difficulty.valueOf(diff));
         existingCourse.setStatus(Course.Status.valueOf(status));
         existingCourse.setPricePerHour(pricePerHour);
+        
         existingCourse.setCategory(category);
         existingCourse.setUrl(url != null ? url : "none");
         courseRepository.save(existingCourse);
