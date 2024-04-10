@@ -278,7 +278,7 @@ export default {
     CustomerSessions,
     ProposeCourse,
     UpdateCourses,
-    CreateUpdateSessions
+    CreateUpdateSessions,
     ManageInstructors,
     // Add more components as needed
   },
