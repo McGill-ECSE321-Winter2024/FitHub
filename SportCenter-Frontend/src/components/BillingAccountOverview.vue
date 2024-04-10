@@ -56,7 +56,7 @@
     <div class="popup-edit" v-if="showEditConfirmation">
       <div class="popup-content">
         <div class="form-box">
-        <h7>Edit card details below</h7>
+        <h6>Edit card details below</h6>
          <form>
           <div class="form-group">
             <label for="Card Number">Card Number</label>     
@@ -92,7 +92,7 @@
     <div class="popup-edit" v-if="showAddConfirmation">
       <div class="popup-content">
         <div class="form-box">
-        <h7>Enter card details below</h7>
+        <h6>Enter card details below</h6>
          <form>
           <div class="form-group">
             <label for="Card Number">Card Number</label>     
