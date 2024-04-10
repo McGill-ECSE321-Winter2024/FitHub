@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 style="color: #ffffff; font-size: 35px">Manage instructors</h2>
+    <h2>Manage instructors</h2>
     <div class="container">
       <div class="row m-0">
         <div class="col" v-for="instructor in instructors" :key="instructor.id">
@@ -138,10 +138,6 @@ export default {
                     console.log(accounts.accounts);
                     this.instructors = accounts.accounts;
 
-                    this.instructors.forEach(instructor => {
-                        this.getAllCourses(instructor.id);
-                    });
-
                     console.log(this.instructorCourses);
                 }).catch(error => {
                     console.error('Error parsing JSON:', error);
@@ -167,6 +163,14 @@ export default {
 </script>
 
 <style scoped>
+
+h2 {
+  color: #ffffff; 
+  font-size: 2rem;
+  padding: 30px;
+  padding-left: 0px;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -210,7 +214,7 @@ export default {
   border-radius: 8px;
   justify-content: center;
   align-items: center;
-  width: 250px;
+  width: 240px;
   font-weight: normal;
 }
 
@@ -224,7 +228,7 @@ export default {
 
 .inst-info {
   text-align: center;
-  font-size: 20px;
+  font-size: 1rem;
 }
 
 .save-button {

@@ -13,9 +13,9 @@
         <div
           class="sidebar p-0 m-3"
         >
-          <h2>
+          <h1>
             Settings
-          </h2>
+          </h1>
           <!-- Adjust font size here -->
           <ul>
             <!-- Edit Profile Button -->
@@ -128,35 +128,35 @@
       >
         <!-- Edit Profile -->
         <div v-if="currentTab === 'EditProfile'">
-          <h2>
-            Edit profile
-          </h2>
 
           <!-- Properties and text fields -->
           <div class="container content">
+            <h2>
+              Edit profile
+            </h2>
 
             <img class="row mt-3 mx-auto" :src="profile.imageURL"
                                       @error="$event.target.src = profile.defaultImage" 
                                       :style="{ 'width': '80px', 'height': 'auto'}" />
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div style="font-weight: bold">Image URL</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="text" v-model="profile.imageURL" class="text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Name</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Pronouns</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="text" v-model="profile.name" class="col text-field" />
               <input type="text" v-model="profile.pronouns" class="col m-0 ml-3 text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Email</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Password</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="email" v-model="profile.email" class="col text-field" />
               <input type="password" v-model="profile.password" class="col m-0 ml-3 text-field" />
             </div>
@@ -183,12 +183,12 @@
 
         <!-- Manage Instructors Settings -->
         <div v-else-if="currentTab === 'ManageInstructors'">
-          <ManageInstructors />
+          <ManageInstructors class="container content" />
         </div>
 
         <!-- Manage Locations Settings -->
         <div v-else-if="currentTab === 'ManageLocations'">
-          <ManageLocations />
+          <ManageLocations class="container content" />
         </div>
 
         <!-- My Sessions Settings -->
@@ -216,32 +216,32 @@
 
         <!-- Sport Center Settings -->
         <div v-else-if="currentTab === 'EditSportCenter'">
-          <h2>
-            Edit sport center
-          </h2>
           <!-- Properties and text fields -->
           <div class="container content">
-            <div class="row  pb-2">
+            <h2>
+              Edit sport center
+            </h2>
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Name</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Email</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="name" v-model="sportCenter.name" class="col m-0 text-field" />
               <input type="name" v-model="sportCenter.email" class="col m-0 ml-3 text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Phone number</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Address</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="name" v-model="sportCenter.phoneNumber"  class="col m-0 text-field"/>
               <input type="name" v-model="sportCenter.address"  class="col m-0 ml-3 text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Opening Time</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Closing Time</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input class="timepicker text-field col p-0" type="time" v-model="sportCenter.openingTime"></input>
               <input class="timepicker text-field col p-0 ml-3" type="time" v-model="sportCenter.closingTime"></input>
             </div>
@@ -520,10 +520,17 @@ export default {
     color: var(--color-black) !important;
 }
 
+h1 {
+  color: #ffffff; 
+  font-size: 2rem;
+  padding: 30px;
+}
+
 h2 {
   color: #ffffff; 
-  font-size: 2em;
+  font-size: 2rem;
   padding: 30px;
+  padding-left: 0px;
 }
 
 .toolbar-container {
@@ -536,7 +543,8 @@ h2 {
 }
 
 .content {
-  width: 80%;
+  padding: 0px;
+  width: 90%;
   color: #ffffff;
 }
 
