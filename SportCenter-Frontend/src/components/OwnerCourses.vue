@@ -3,15 +3,23 @@
     <!-- Toolbar and search bar -->
     <div class="text-search-bar">
       <div class="text-content" style="text-align: left">
-        <h1 class="custom-h1">Approve or disapprove course</h1>
-        <h3 class="custom-h3">Approve or disapprove courses which instructors have proposed.</h3>
+        <h2 class="custom-h2">Approve or disapprove course</h2>
+        <h4 class="custom-h4">
+          Approve or disapprove courses which instructors have proposed.
+        </h4>
       </div>
     </div>
 
     <div class="popup-delete" v-if="showPopup">
       <div class="popup-content">
-        <p>Enter the price per hour for {{ capitalize(selectedCourse.name) }}:</p>
-        <input v-model="pricePerHour" placeholder="Price per hour" class="text-field">
+        <p>
+          Enter the price per hour for {{ capitalize(selectedCourse.name) }}:
+        </p>
+        <input
+          v-model="pricePerHour"
+          placeholder="Price per hour"
+          class="text-field"
+        />
         <div class="popup-buttons">
           <button @click="submitPrice" class="approve">Approve</button>
           <button @click="cancelPopup" class="disapprove">Cancel</button>
@@ -27,10 +35,19 @@
           :key="course.id"
         >
           <div>
-            <img :src="course.url" :alt="course.name" class="w-100 h-100" style="margin-bottom:10px;"/>
+            <img
+              :src="course.url"
+              :alt="course.name"
+              class="w-100 h-100"
+              style="margin-bottom: 10px"
+            />
           </div>
           <h3>
-            <h3><span class="white-heading">{{ course.category }},  {{ course.pricePerHour }}$/hour</span></h3>
+            <h3>
+              <span class="white-heading"
+                >{{ course.category }}, {{ course.pricePerHour }}$/hour</span
+              >
+            </h3>
           </h3>
           <div>
             <h3>{{ capitalize(course.name) }}</h3>
@@ -61,12 +78,12 @@ export default {
       password: "",
       showPopup: false,
       selectedCourse: null,
-      pricePerHour: null
+      pricePerHour: null,
     };
   },
   mounted() {
-    this.username = decodeURIComponent(this.$cookies.get('username'));
-    this.password = this.$cookies.get('password');
+    this.username = decodeURIComponent(this.$cookies.get("username"));
+    this.password = this.$cookies.get("password");
     this.getAllCourses();
   },
   methods: {
@@ -109,7 +126,7 @@ export default {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
+          Authorization: "Basic " + btoa(this.username + ":" + this.password),
         },
       };
 
@@ -134,10 +151,10 @@ export default {
     submitPrice() {
       // Check if pricePerHour is valid
       if (!this.pricePerHour || this.pricePerHour <= 0) {
-        alert('Please enter a valid price per hour.');
+        alert("Please enter a valid price per hour.");
         return;
       }
-      
+
       // Call the API to approve the course with the entered price per hour
       const courseId = this.selectedCourse.id;
       const requestOptions = {
@@ -145,7 +162,7 @@ export default {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
+          Authorization: "Basic " + btoa(this.username + ":" + this.password),
         },
       };
 
@@ -172,11 +189,10 @@ export default {
     cancelPopup() {
       // Hide the popup when cancel is clicked
       this.showPopup = false;
-    }
+    },
   },
 };
 </script>
-
 
 <style scoped>
 .solid-background {
@@ -188,12 +204,12 @@ export default {
   margin-top: 50px;
 }
 
-.custom-h1 {
+.custom-h2 {
   color: #ffffff;
-  font-size: 35px;
+  font-size: 2rem;
 }
 
-.custom-h3 {
+.custom-h4 {
   font-size: 20px;
   font-weight: 600;
   color: var(--color-white);
@@ -202,11 +218,10 @@ export default {
 .white-heading {
   font-size: 14px;
   color: var(--color-black);
-  background-color: #CDF563;
+  background-color: #cdf563;
   font-weight: 700;
   padding: 1%;
 }
-
 
 .search-input {
   width: 180px;
@@ -216,7 +231,6 @@ export default {
   background-color: #bfd3f2;
   color: #ffffff;
 }
-
 
 h3 {
   font-size: 20px;
@@ -235,25 +249,25 @@ body {
   padding: 0;
 }
 
-.approve{
-    border: 0px;
-    background-color: #CDF563;
-    color: var(--color-black);
-    font-weight: bold;
-    border-radius: 20px;
-    height: 40px;
-    width: 100px;
+.approve {
+  border: 0px;
+  background-color: #cdf563;
+  color: var(--color-black);
+  font-weight: bold;
+  border-radius: 20px;
+  height: 40px;
+  width: 100px;
 }
 
 .disapprove {
-    margin-left: 10px;
-    border: 0px;
-    background-color: #EC5545;
-    color: var(--color-black);
-    font-weight: bold;
-    border-radius: 20px;
-     height: 40px;
-    width: 100px;
+  margin-left: 10px;
+  border: 0px;
+  background-color: #ec5545;
+  color: var(--color-black);
+  font-weight: bold;
+  border-radius: 20px;
+  height: 40px;
+  width: 100px;
 }
 
 .text-field {
@@ -280,7 +294,6 @@ body {
 .text-field:focus {
   border-width: 2px;
 }
-
 
 .buttons {
   display: flex;
