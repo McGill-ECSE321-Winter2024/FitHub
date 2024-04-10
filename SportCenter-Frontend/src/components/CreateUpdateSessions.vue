@@ -96,6 +96,7 @@ export default {
     },
     openUpdateSessionForm(session) {
       this.selectedSession = session;
+      console.log(session);
       this.showUpdateForm = true;
     },
     closeUpdateSessionForm() {

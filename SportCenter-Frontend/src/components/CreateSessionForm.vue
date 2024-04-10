@@ -212,6 +212,7 @@ export default {
                       })
                       .then(data => {
                         console.log('Session updated:', data);
+                         this.$emit('close');
                       })
                       .catch(error => {
                         console.error('Error updating session:', error);
@@ -231,7 +232,6 @@ export default {
             console.error('Error creating session:', error);
           });
 
-          this.$emit('close');
       }
     },
     cancelForm() {

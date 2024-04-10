@@ -10,14 +10,6 @@
             <label>Capacity</label>
             <input class="text-field" v-model="session.capacity" required>
           </div>
-
-          <div class="form-group">
-            <label>Course</label>
-            <select class="text-field" v-model="session.course.name" required>
-                <option v-for="course in courses.courses" :key="course.id">{{ course.name }}</option>
-            </select>
-          </div>
-
           <div class="form-group flex-container">
             <div class="form-group">
               <label>Date</label>
@@ -35,14 +27,14 @@
           <div class="form-group">
             <label>Floor</label>
             <div class="choice">
-              <select v-model="session.location.floor" class="text-field">
-                <option v-for="location in locations.locations" :key="location.id">{{ location.floor }}</option>
+              <select v-model="session.location.id" class="text-field">
+               <option v-for="location in locations.locations" :key="location.id" :value="location.id">{{ location.floor }}</option>
               </select>
             </div>
             <label>Room</label>
             <div class="choice">
-              <select v-model="session.location.room" class="text-field">
-                <option v-for="location in locations.locations" :key="location.id">{{ location.room }}</option>
+              <select v-model="session.location.id" class="text-field">
+             <option v-for="location in locations.locations" :key="location.id" :value="location.id">{{ location.room }}</option>
               </select>
             </div>
           </div>
@@ -75,87 +67,118 @@ export default {
   },
   methods: {
     submitForm() {
-      const username = decodeURIComponent(this.$cookies.get('username'));
-      const password = this.$cookies.get('password');
+  const formatTimeWithSeconds = (timeString) => {
+    const timeParts = timeString.split(':');
+    // Ensure that all time parts (hours, minutes, seconds) are present
+    const formattedTime = `${timeParts[0]}:${timeParts[1]}:${timeParts[2] || '00'}`;
+    return formattedTime;
+  };
 
-      console.log('Username:', username);
-      console.log('Password:', password);
+  const username = decodeURIComponent(this.$cookies.get('username'));
+  const password = this.$cookies.get('password');
 
-if (username && password) {
-    const sessionID = this.session.id;
-    const locationID = this.session.location.id;
-const sessionUpdate = {
-    capacity: this.session.capacity,
-    date: this.session.date,
-    course: {
-        name: this.session.course.name,
-        difficulty: this.session.course.difficulty,
-        status: this.session.course.status,
-        description: this.session.course.description,
-        pricePerHour: this.session.course.pricePerHour,
-        category: this.session.course.category,
-        url: this.session.course.url,
-        center: this.session.course.center
-    }, // <-- Add comma here
-    endTime: this.session.endTime,
-    startTime: this.session.startTime,
-    supervisor: this.session.supervisor,
-    location: {
-        floor: this.session.location.floor,
-        room: this.session.location.room
-    }
-};
+  console.log('Username:', username);
+  console.log('Password:', password);
 
+  if (username && password) {
 
+    console.log(this.session.course.id);
 
-        fetch(`http://127.0.0.1:8080/sessions/${sessionID}`, {
-            method: 'PUT', // Change method to PUT
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Basic ' + btoa(username + ':' + password)
-            },
-            credentials: 'include',
-            body: JSON.stringify(sessionUpdate)
-          })
+    fetch(`http://127.0.0.1:8080/courses?name=${this.session.course.name}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(username + ':' + password)
+      },
+      credentials: 'include',
+    })
+      .then(response => {
+        console.log('Course Getting Response Status:', response.status);
+        return response.json();
+      })
+      .then(data => {
+        console.log('Course got:', data);
+        this.getCourse = data;
+
+        // Fetch supervisor data
+        fetch(`http://127.0.0.1:8080/instructors/${this.$cookies.get('id')}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(username + ':' + password)
+          },
+          credentials: 'include',
+        })
           .then(response => {
-            console.log('Session Update Response Status:', response.status);
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
+            console.log('Instructor getting:', response.status);
             return response.json();
           })
           .then(data => {
-            console.log('Session updated:', data);
-          })
-          .catch(error => {
-            console.error('Error updating session:', error);
-          });
+            console.log('Instructor got:', data);
+            this.getInstructor = data;
 
-        fetch(`http://127.0.0.1:8080/sessions/${sessionID}/locations/${locationID}`, {
-            method: 'PUT', // Change method to PUT
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Basic ' + btoa(username + ':' + password)
-            },
-            credentials: 'include',
-          })
-          .then(response => {
-            console.log('Location Update Response Status:', response.status);
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log('Location updated:', data);
+            const sessionCreate = {
+              capacity: this.session.capacity,
+              date: this.session.date,
+              course: {
+                name: this.getCourse.name,
+                difficulty: this.getCourse.difficulty,
+                status: this.getCourse.status,
+                description: this.getCourse.description,
+                pricePerHour: this.getCourse.pricePerHour,
+                category: this.getCourse.category,
+                url: this.getCourse.url,
+              },
+              supervisor: {
+                name: this.getInstructor.name,
+                email: this.getInstructor.email,
+                password: this.$cookies.get('password'), // Corrected interpolation
+                imageURL: this.getInstructor.imageURL,
+                pronouns: this.getInstructor.pronouns
+              },
+              location: { floor: this.session.location.floor, room: this.session.location.room }, // Include location
+              endTime: formatTimeWithSeconds(this.session.endTime),
+              startTime: formatTimeWithSeconds(this.session.startTime),
+            };
+
+            console.log(sessionCreate);
+
+            // PUT request to update session
+            fetch(`http://127.0.0.1:8080/sessions/${this.session.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + btoa(username + ':' + password)
+              },
+              credentials: 'include',
+              body: JSON.stringify(sessionCreate)
+            })
+              .then(response => {
+                console.log('Session Update Response Status:', response.status);
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(data => {
+                console.log('Session updated:', data);
+                this.$emit('close');
+              })
+              .catch(error => {
+                console.error('Error updating session:', error);
+              });
           })
           .catch(error => {
-            console.error('Error updating location:', error);
+            console.error('Error getting location:', error);
           });
-      } else {
-        console.error('User not authenticated');
-      }
-    },
+      })
+      .catch(error => {
+        console.error('Error getting instructor:', error);
+      });
+  } else {
+    console.error('Username or password is not available');
+  }
+},
     cancelForm() {
       this.$emit('close');
     },
