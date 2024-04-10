@@ -16,6 +16,8 @@
             <div style="font-size: 18px">{{ session.date }}, {{ convertTo12HourFormat(session.startTime) }} - {{
         convertTo12HourFormat(session.endTime) }}</div>
           </div>
+            <div style="font-size: 18px">{{ session.location.floor}}, {{ session.location.room}} </div>
+          </div>
           <div class="button-column">
             <div class="button" @click="cancelRegistration(session.id)">Unregister</div>
           </div>
