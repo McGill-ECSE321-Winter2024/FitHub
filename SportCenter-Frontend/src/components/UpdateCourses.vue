@@ -3,23 +3,28 @@
     <!-- Toolbar and search bar -->
     <div class="text-search-bar" :class="{ 'blur-background': isPopupOpen }">
       <div class="text-content" style="text-align: left">
-        <h1 class="custom-h1">Manage courses</h1>
-        <h3 class="custom-h3">Edit or delete courses from the center.</h3>
+        <h2 class="custom-h2">Manage courses</h2>
+        <h4 class="custom-h4">Edit or delete courses from the center.</h4>
       </div>
     </div>
 
     <!-- Display the UpdateCourseForm component when the icon is clicked -->
-<UpdateCourseForm 
-    v-if="showUpdateForm" 
-    :course="selectedCourse" 
-    @submit="updateCourse" 
-    @cancel="closeUpdateCourseForm" 
-    @close="closeUpdateCourseForm" 
-    style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
-/>
+    <UpdateCourseForm
+      v-if="showUpdateForm"
+      :course="selectedCourse"
+      @submit="updateCourse"
+      @cancel="closeUpdateCourseForm"
+      @close="closeUpdateCourseForm"
+      style="
+        z-index: 9999;
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+      "
+    />
 
-
-    <div class="mt-5 " :class="{ 'blur-background': isPopupOpen }"> 
+    <div class="mt-5" :class="{ 'blur-background': isPopupOpen }">
       <div class="row">
         <div
           class="col-md-5 col-lg-3 col-sm-12 mb-5"
@@ -27,10 +32,19 @@
           :key="course.id"
         >
           <div>
-            <img :src="course.url" :alt="course.name" class="w-100 h-100" style="margin-bottom:10px;" />
+            <img
+              :src="course.url"
+              :alt="course.name"
+              class="w-100 h-100"
+              style="margin-bottom: 10px"
+            />
           </div>
           <h3>
-            <h3><span class="white-heading">{{ course.category }},  {{ course.pricePerHour }}$/hour</span></h3>
+            <h3>
+              <span class="white-heading"
+                >{{ course.category }}, {{ course.pricePerHour }}$/hour</span
+              >
+            </h3>
           </h3>
           <div>
             <h3>{{ capitalize(course.name) }}</h3>
@@ -74,8 +88,8 @@ export default {
     };
   },
   mounted() {
-    this.username = decodeURIComponent(this.$cookies.get('username'));
-    this.password = this.$cookies.get('password');
+    this.username = decodeURIComponent(this.$cookies.get("username"));
+    this.password = this.$cookies.get("password");
     this.getAllCourses();
   },
   methods: {
@@ -107,22 +121,19 @@ export default {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
     deleteCourse(courseId) {
-      const username = decodeURIComponent(this.$cookies.get('username'));
-      const password = this.$cookies.get('password');
+      const username = decodeURIComponent(this.$cookies.get("username"));
+      const password = this.$cookies.get("password");
 
       const requestOptions = {
-        method: "DELETE", 
+        method: "DELETE",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Basic ' + btoa(username + ':' + password),
+          Authorization: "Basic " + btoa(username + ":" + password),
         },
       };
 
-      fetch(
-        `http://127.0.0.1:8080/courses/${courseId}`, 
-        requestOptions
-      )
+      fetch(`http://127.0.0.1:8080/courses/${courseId}`, requestOptions)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -135,39 +146,38 @@ export default {
         });
     },
     openUpdateCourseForm(course) {
-        console.log("Opening UpdateCourseForm for course:", course);
-        this.selectedCourse = { ... course};
-        this.showUpdateForm = true; 
-        this.isPopupOpen = true; 
+      console.log("Opening UpdateCourseForm for course:", course);
+      this.selectedCourse = { ...course };
+      this.showUpdateForm = true;
+      this.isPopupOpen = true;
     },
     closeUpdateCourseForm() {
       this.showUpdateForm = false;
       this.isPopupOpen = false;
     },
     updateCourse(formData) {
-        console.log("Updating course with data:", formData);
-        // Send the form data to update the course via API
-        // Hide the update form after successful update
-        this.showUpdateForm = false;
-    }
+      console.log("Updating course with data:", formData);
+      // Send the form data to update the course via API
+      // Hide the update form after successful update
+      this.showUpdateForm = false;
+    },
   },
   components: {
-    UpdateCourseForm, 
+    UpdateCourseForm,
   },
 };
 </script>
 
-
 <style scoped>
 .pencil-icon {
-  color: #CDF563; 
+  color: #cdf563;
   font-size: 20px;
-  cursor: pointer; 
-  margin-right: 25px; 
+  cursor: pointer;
+  margin-right: 25px;
 }
 
 .pencil-icon:hover {
-  color: #fff; 
+  color: #fff;
 }
 
 /* Add styles for the UpdateCourseForm */
@@ -181,12 +191,12 @@ export default {
   margin-top: 50px;
 }
 
-.custom-h1 {
+.custom-h2 {
   color: #ffffff;
-  font-size: 35px;
+  font-size: 2rem;
 }
 
-.custom-h3 {
+.custom-h4 {
   font-size: 20px;
   font-weight: 600;
   color: var(--color-white);
@@ -200,12 +210,11 @@ export default {
   background-color: #bfd3f2;
   color: #ffffff;
 }
-
 .white-heading {
-  padding:5px;
+  padding: 5px;
   font-size: 14px;
   color: var(--color-black);
-  background-color: #CDF563;
+  background-color: #cdf563;
   font-weight: 700;
 }
 
@@ -226,9 +235,9 @@ body {
   padding: 0;
 }
 
-.approve{
+.approve {
   border: 0px;
-  background-color: #CDF563;
+  background-color: #cdf563;
   color: var(--color-black);
   font-weight: bold;
   border-radius: 20px;
@@ -237,14 +246,14 @@ body {
 }
 
 .disapprove {
-  color: #EC5545;
+  color: #ec5545;
   font-size: 20px;
-  cursor: pointer; 
-  margin-right: 25px; 
+  cursor: pointer;
+  margin-right: 25px;
 }
 
 .disapprove:hover {
-  color: #fff; 
+  color: #fff;
 }
 
 .blur-background {
@@ -254,6 +263,6 @@ body {
 .buttons {
   display: flex;
   justify-content: center;
-  align-items:center;
+  align-items: center;
 }
 </style>
