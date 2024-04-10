@@ -54,12 +54,6 @@ export default {
     course: Object 
   },
   methods: {
-    submitForm() {
-
-    },
-    cancelForm() {
-
-    },
     capitalizeWords(text) {
       return text.replace(/\b\w/g, function(char) {
         return char.toUpperCase();
@@ -105,6 +99,7 @@ export default {
     })
     .then(data => {
       console.log('Course updated:', data);
+      this.$emit('close'); // Emit a close event
     })
     .catch(error => {
       console.error('Error updating course:', error);
