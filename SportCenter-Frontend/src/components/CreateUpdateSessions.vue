@@ -100,13 +100,16 @@ export default {
     },
     closeUpdateSessionForm() {
       this.showUpdateForm = false;
+        this.getAllSessions();
     },
     openCreateSessionForm() {
       this.showCreateForm = true;
     },
     closeCreateSessionForm() {
       this.showCreateForm = false;
+      this.getAllSessions();
     },
+
 deleteSession(sessionID) {
   const username = decodeURIComponent(this.$cookies.get('username'));
   const password = this.$cookies.get('password');
