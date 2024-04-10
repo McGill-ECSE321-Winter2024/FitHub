@@ -3,10 +3,8 @@
 
 <div class="solid-background">
 
-<div class="text-content">
-    <h1 class="custom-h1">My Locations</h1>
-    <h4>Manage the rooms of your sport center</h4>
-</div>
+<h2>Manage locations</h2>
+<h4>Manage the rooms of your sport center</h4>
 
 <div class="table">
     <table>
@@ -217,17 +215,7 @@ export default {
 
 .solid-background {
   background-color: #121212;
-  height: 100vh;
-  width: 100vw;
   overflow: auto;
-}
-
-.custom-h1 {
-  display: flex;
-  justify-content: center;
-  margin-top: 200px; 
-  color: #ffffff;
-  font-size: 45px;
 }
 
 
@@ -250,6 +238,14 @@ export default {
   display: flex;
   justify-content: center;
 }
+
+h2 {
+  color: #ffffff; 
+  font-size: 2rem;
+  padding: 30px;
+  padding-left: 0px;
+}
+
 h3 {
   display: flex;
   justify-content: center;
