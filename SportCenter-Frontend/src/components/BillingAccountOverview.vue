@@ -1,30 +1,36 @@
 <template>
-
-    <div class="solid-background">
+<div class="page" >
+<div class="solid-background">
     
-    <div class="text-content">
+    <div class="text-content" :class="{ 'blur-background': isPopupOpen }">
         <h1 class="custom-h1">Billing account overview</h1>
         <h3>Manage your payment details for one-time purchase</h3>
     </div>
     
 
-    <div class="card-box">
+    <div class="card-box" :class="{ 'blur-background': isPopupOpen }">
         <h5 class="card-display">**** 0000 | YYYY-MM</h5>
-        <router-link to="/billing-account" class="add-link">Add new card</router-link>
+        <button @click="showAddPopup()" class="add-link">Add new card</button>
     </div>
 
-    <div class="cards">
+    <div class="cards" :class="{ 'blur-background': isPopupOpen }">
         <h2>My cards</h2>
     
         <h6>Default card</h6>
+        <div class="default-cards"v-if="defaultCard && Object.keys(defaultCard).length > 0">
         <div class="card-box">
           <h5 class="card-display">{{ defaultCard.cardNumber ? '**** ' + defaultCard.cardNumber.slice(-4) : '' }} | {{ defaultCard.expirationDate ? defaultCard.expirationDate.slice(0, 7) : '' }}</h5>
           <button @click="showEditPopup(defaultCard)" class="edit-link">Edit</button>
         <button @click="confirmDelete(defaultCard.id)" class="delete-link">Delete</button>
         </div>
+        </div>
+        <div v-else>
+          <p class="no-data">No card saved as default</p>
+        </div>
+        
 
-        <div class="other-cards">
         <h6>Other cards</h6>
+        <div class="other-cards" v-if="billingAccounts && billingAccounts.billingAccounts && billingAccounts.billingAccounts.length > 0">
         <div v-for="account in billingAccounts.billingAccounts" :key="account.id" class="card-box">
         <h5 class="card-display">
           {{ account.cardNumber ? '**** ' + account.cardNumber.slice(-4) : '' }} | {{ account.expirationDate ? account.expirationDate.slice(0, 7) : '' }}
@@ -33,7 +39,11 @@
         <button @click="confirmDelete(account.id)" class="delete-link">Delete</button>
         </div>
         </div>
+        <div v-else>
+        <p class="no-data">No other cards added</p>
+        </div>
     </div>
+</div>
 
     <div class="popup-delete" v-if="showDeleteConfirmation">
       <div class="popup-content">
@@ -46,7 +56,7 @@
     <div class="popup-edit" v-if="showEditConfirmation">
       <div class="popup-content">
         <div class="form-box">
-        <h3>Edit card details below</h3>
+        <h7>Edit card details below</h7>
          <form>
           <div class="form-group">
             <label for="Card Number">Card Number</label>     
@@ -70,10 +80,46 @@
           </div>
           <div class="form-group-side">
             <input type="checkbox" id="isDefault" v-model="editedAccount.isDefault" style="transform: scale(1.5);">
-            <label for="isDefault">Save as default </label>
+            <label for="isDefault" style="margin-left: 10px;">Save as default </label>
           </div>
           <button @click="cancelEdit" class="cancel-edit-btn">Cancel</button>
           <button @click="saveEdit" class="save-btn">Save</button>
+        </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup-edit" v-if="showAddConfirmation">
+      <div class="popup-content">
+        <div class="form-box">
+        <h7>Enter card details below</h7>
+         <form>
+          <div class="form-group">
+            <label for="Card Number">Card Number</label>     
+            <input type="text" id="cardNumber" v-model="newAccount.cardNumber" >
+          </div>
+          <div class="form-group">
+            <label for="expirationDate">Expiry Date</label>
+            <input type="text" id="expirationDate" placeholder=" YYYY-MM-DD" v-model="newAccount.expirationDate">
+          </div>
+          <div class="form-group">
+            <label for="cvv">Security Code (CVV)</label>
+            <input type="text" id="cvv" v-model="newAccount.cvv">
+          </div>
+          <div class="form-group">
+            <label for="billingAddress">Billing Address</label>
+            <input type="text" id="billingAddress" v-model="newAccount.billingAddress" autocomplete="off" >
+          </div>
+          <div class="form-group">
+            <label for="cardHolder">Card Holder</label>
+            <input type="text" id="cardHolder" v-model="newAccount.cardHolder" autocomplete="off">
+          </div>
+          <div class="form-group-side">
+            <input type="checkbox" id="isDefault" v-model="newAccount.isDefault" style="transform: scale(1.5);">
+            <label for="isDefault" style="margin-left: 10px;">Save as default </label>
+          </div>
+          <button @click="cancelAdd" class="cancel-edit-btn">Cancel</button>
+          <button @click="saveAdd" class="save-btn">Save</button>
         </form>
         </div>
       </div>
@@ -95,7 +141,17 @@
           deleteAccountId: null,
           showDeleteConfirmation: false,
           showEditConfirmation: false,
-          editedAccount: null // Hold the account being edited 
+          editedAccount: null, // Hold the account being edited 
+          newAccount: {
+            cardNumber: '',
+            expirationDate: '',
+            cvv: '',
+            billingAddress: '',
+            cardHolder: '',
+            isDefault: false
+          },
+          showAddConfirmation: false,
+          isPopupOpen: false,
         };
       },
       mounted() {
@@ -158,9 +214,11 @@
     confirmDelete(accountId) {
       this.deleteAccountId = accountId;
       this.showDeleteConfirmation = true;
+      this.isPopupOpen = true; 
     },
     cancelDelete() {
       this.showDeleteConfirmation = false; // Hide the pop-up dialog
+      this.isPopupOpen = false; 
     },
     deleteAccount() {
       // Call the API to delete the account
@@ -173,6 +231,13 @@
       .then(response => {
         // Handle success
         console.log('Account deleted successfully');
+        if (this.defaultCard.id === this.deleteAccountId) {
+          this.defaultCard = {}; // Reset default card
+        }
+        else {
+          // If the deleted card is in the "Other cards" section, remove it from the array
+          this.billingAccounts = this.billingAccounts.filter(account => account.id !== this.deleteAccountId);
+        }
         this.getDefaultBillingAccounts();
         this.getOtherBillingAccounts();
       })
@@ -182,15 +247,18 @@
       .finally(() => {
         this.deleteAccountId = null;
         this.showDeleteConfirmation = false; // Hide the pop-up dialog
+        this.isPopupOpen = false; 
       });
     },
     showEditPopup(account) {
       this.editedAccount = { ...account }; // Copy account data
       this.showEditConfirmation = true; // Show edit popup
+      this.isPopupOpen = true; 
     },
     cancelEdit() {
       this.showEditConfirmation = false; // Hide edit popup
       this.editedAccount = null; // Reset edited account
+      this.isPopupOpen = false; 
     },
     saveEdit() {
 
@@ -230,8 +298,83 @@
     .finally(() => {
       this.showEditConfirmation = false; // Hide the edit popup
       this.editedAccount = null; // Reset edited account
+      this.isPopupOpen = false; 
     });
-    }
+    },
+    showAddPopup() {
+      this.newAccount = {
+        cardNumber: '',
+        expirationDate: '',
+        cvv: '',
+        billingAddress: '',
+        cardHolder: '',
+        isDefault: false
+      };
+
+      // Show the add card pop-up
+      this.showAddConfirmation = true;
+      this.isPopupOpen = true; 
+    },
+    cancelAdd() {
+      this.showAddConfirmation = false; // Hide the add card pop-up
+      this.newAccount = {
+        cardNumber: '',
+        expirationDate: '',
+        cvv: '',
+        billingAddress: '',
+        cardHolder: '',
+        isDefault: false
+      };
+      // Reset edited account
+      this.isPopupOpen = false; 
+    },
+    saveAdd(){
+      const requestBody = {
+        cardNumber: this.newAccount.cardNumber,
+        expirationDate: this.newAccount.expirationDate,
+        cvv: this.newAccount.cvv,
+        billingAddress: this.newAccount.billingAddress,
+        cardHolder: this.newAccount.cardHolder,
+        isDefault: this.newAccount.isDefault
+      };
+
+      console.log("The card is " + this.newAccount.cardNumber);
+      console.log("The expiry is " + this.newAccount.expirationDate);
+      console.log("The cvv is " + this.newAccount.cvv);
+      console.log("The billing address is " + this.newAccount.billingAddress);
+      console.log("The card holder is " + this.newAccount.cardHolder);
+      console.log("The isDefault is " + this.newAccount.isDefault);
+
+        
+
+        fetch('http://localhost:8080/customers/' + this.$cookies.get('id') + '/billing-accounts', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),    
+            headers: {
+                'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password')),
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Ensure cookies are sent with the request,
+            mode: "cors",
+        })  .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                result = JSON.parse(result);
+                this.successMessage = 'Added card successfully';
+                this.getDefaultBillingAccounts();
+                this.getOtherBillingAccounts();
+                this.showAddConfirmation = false; // Hide the add card pop-up
+            })
+            .catch(error => {
+                console.error('Error creating billing account:', error);
+                this.errorMessage = 'Error creating billing account: ' + error.message;
+                this.showErrorMessage = true;
+            })
+            .finally(() => {
+                this.showAddConfirmation = false; // Hide the add card pop-up
+                this.isPopupOpen = false; 
+           });
+    },
   }
     };
 
@@ -245,16 +388,23 @@
       width: 100vw;
       overflow: auto;
     }
+    .blur-background {
+    filter: blur(10px); /* Adjust the blur amount as needed */
+    pointer-events: none; /* Ensure that the blurred background is not clickable */
+  }
     .custom-h1 {
-      margin-top: 300px;
-      margin-left: 480px; 
+      margin-top: 20px;
+      margin-left: 230px; 
       color: #ffffff;
       font-size: 45px;
     }
 
     .card-box {
       width: 700px;
-      margin: 20px auto;
+      margin-left: 130px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      /*margin: 20px auto;*/
       padding: 20px;
       border: 2px solid #ccc;
       border-radius: 5px;
@@ -313,11 +463,12 @@
       font-size: 20px;
       font-weight: 700; 
       margin-bottom: 15px;
+      background-color: var(--color-black);
     }
     
     h2 {
       text-align: left;
-      margin-left: 400px;
+      margin-left: 130px; 
       margin-top: 50px;
       margin-bottom: 20px;
       font-size: 30px;
@@ -337,20 +488,27 @@
 
     h3 {
       margin-bottom: 50px;
+      margin-left: 190px;
       font-size: 24px;
       font-weight: 700;
       color: #FFFFFF;
     }
     
     h6 {
-      margin-left: 20px;
+      margin-left: 130px;
       text-align: left;
       display: flex;
-      margin-left: 400px;
       margin-top: 20px;
       margin-bottom: 5px;
       font-size: 20px;
       font-weight: 600;
+      color: #FFFFFF;
+    }
+    h7 {
+      margin-bottom: 70px;
+      margin-left: 50px;
+      font-size: 24px;
+      font-weight: 700;
       color: #FFFFFF;
     }
 
@@ -417,6 +575,7 @@
 
 .form-group-side {
   margin-bottom: 15px;
+  margin-left: 10px;
   display: flex;
   align-items: center;
 }
@@ -447,6 +606,7 @@ label {
   color: var(--color-black);
   border: none;
   border-radius: 20px;
+  margin-left: 50px; /* Add margin-left to create space between buttons */
   cursor: pointer;
   font-size: 18px;
   font-weight: 500;
@@ -469,6 +629,29 @@ label {
   margin-bottom: 15px;
     margin-left: 150px; 
     background-color: #EC5545;
+}
+
+.popup-edit .cancel-edit-btn {
+  margin-right: 20px; /* Add margin-right to create space between buttons */
+}
+
+.popup-edit .save-btn {
+  margin-left: 20px; /* Add margin-left to create space between buttons */
+}
+
+.no-data {
+      margin-left: 150px;
+      text-align: left;
+      display: flex;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      font-size: 15px;
+      font-weight: 400;
+      color: #FFFFFF;
+}
+
+.blur-background {
+  filter: blur(2px);
 }
 
 </style>
