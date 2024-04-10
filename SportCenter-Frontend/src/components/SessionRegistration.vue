@@ -76,7 +76,6 @@ export default {
     data() {
         return {
             sessions: [],
-            sessionPackages: [],
             showSuccessConfirmation: false,
             showError: false,
             showNoCookies: false
@@ -84,49 +83,36 @@ export default {
     },
     mounted() {
         this.fetchSessions();
-        this.fetchSessionsPackage();
     },
     methods: {
-        fetchSessions() {
-            fetch(`http://127.0.0.1:8080/public/sessions/courses/${this.cId}`, {
-                method: 'GET',
-                credentials: 'include'
-            }).then((sessionsResponse) => {
-                if (sessionsResponse.status === 204) {
-                    console.log("No sessions for this course in database");
-                }
-                else {
-                    sessionsResponse.json().then(sessions => {
-                        this.sessions = sessions.sessions;
+  fetchSessions() {
+    const LOGIN_EMAIL = "@";
+    const LOGIN_PASSWORD = "password";
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
+    headers.append('Content-Type', 'application/json');
 
-                        console.log(this.sessions);
-                    }).catch(error => {
-                        console.error('Error parsing JSON:', error);
-                    });
-                }
+    fetch(`http://127.0.0.1:8080/sessions/courses/${this.cId}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: headers // Include headers in the request
+    }).then((sessionsResponse) => {
+        if (sessionsResponse.status === 204) {
+            console.log("No sessions for this course in database");
+        }
+        else {
+            sessionsResponse.json().then(sessions => {
+                this.sessions = sessions.sessions;
+                console.log(this.sessions);
             }).catch(error => {
-                console.error('Error fetching sessions:', error);
+                console.error('Error parsing JSON:', error);
             });
-        },
-        fetchSessionsPackage() {
-            fetch(`http://127.0.0.1:8080/public/session-packages/course/${this.cId}`, {
-                method: 'GET',
-                credentials: 'include'
-            }).then((sessionPackagesResponse) => {
-                if (sessionPackagesResponse.status === 204) {
-                    console.log("No session packages for this course in database")
-                } else {
-                    sessionPackagesResponse.json().then(sessionPackages => {
-                        this.sessionPackages = sessionPackages.sessionPackages;
-                        console.log(this.sessionPackages)
-                    }).catch(error => {
-                        console.error('Error parsing JSON:', error);
-                    });
-                }
-            }).catch(error => {
-                console.error('Error fetching session packages:', error);
-            });
-        },
+        }
+    }).catch(error => {
+        console.error('Error fetching sessions:', error);
+    });
+},
+
         register(sessionId) {
             const username = decodeURIComponent(this.$cookies.get('username'));
             const password = this.$cookies.get('password');
