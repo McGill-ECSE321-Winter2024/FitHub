@@ -42,23 +42,23 @@
                   :style="{ width: '80px', height: 'auto' }"
                 />
               </div>
-              <div class="row pb-2">
+              <div class="row m-0 pb-2">
                 <div style="font-weight: bold">Image URL</div>
               </div>
-              <div class="row pb-2">
+              <div class="row m-0 pb-2">
                 <input
                   type="text"
                   v-model="instructor.imageURL"
                   class="text-field"
                 />
               </div>
-              <div class="row pb-2">
+              <div class="row m-0 pb-2">
                 <div class="col p-0" style="font-weight: bold">Name</div>
                 <div class="col p-0 ml-3" style="font-weight: bold">
                   Pronouns
                 </div>
               </div>
-              <div class="row pb-2">
+              <div class="row m-0 pb-2">
                 <input
                   type="text"
                   v-model="instructor.name"
@@ -70,17 +70,17 @@
                   class="col m-0 ml-3 text-field"
                 />
               </div>
-              <div class="row pb-2">
+              <div class="row m-0 pb-2">
                 <div class="col p-0" style="font-weight: bold">Email</div>
                 <div class="col p-0 ml-3" style="font-weight: bold">
                   Password
                 </div>
               </div>
-              <div class="row pb-2">
+              <div class="row m-0 pb-2">
                 <input
                   type="email"
                   v-model="instructor.email"
-                  class="col text-field"
+                  class="col m-0 text-field"
                 />
                 <input
                   type="password"
@@ -88,7 +88,7 @@
                   class="col m-0 ml-3 text-field"
                 />
               </div>
-              <div class="row popup-btn">
+              <div class="row m-0 popup-btn">
                 <button @click="saveEdit" class="save-btn">Save</button>
                 <button @click="cancelEdit" class="cancel-edit-btn">
                   Cancel
@@ -225,7 +225,6 @@ export default {
 
 .popup-btn {
   justify-content: center;
-  margin-top: 20px;
 }
 
 .setting-instructor-field {
@@ -268,6 +267,14 @@ export default {
   font-weight: 400px;
 }
 
+.popup-content {
+  width: 90%; /* Adjust the width as needed */
+  height: 95%; /* Adjust the width as needed */
+  margin: auto;
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
 .popup-edit {
   position: fixed;
   top: 50%;
@@ -276,16 +283,13 @@ export default {
   background-color: var(--color-black);
   border: 2px solid #ccc;
   border-radius: 40px;
-  padding: 20px;
   z-index: 9999; /* Ensure it appears on top of other elements */
-  width: 850px; /* Adjust the width as needed */
-  height: 600px; /* Adjust the height as needed */
+  max-width: 600px;
+  width: 80%; /* Adjust the width as needed */
+  height: 80%; /* Adjust the width as needed */
 }
 .form-box {
-  width: 800px;
-  height: 600px;
   padding: 20px;
-  margin: 0px;
   color: #ffffff;
 }
 
