@@ -109,9 +109,9 @@
             </li>
             <!-- Billing Account Button -->
             <li
-              @click="toggleMenu('BillingAccount')"
+              @click="toggleMenu('BillingAccountOverview')"
               :class="{
-                'menu-item-selected': currentTab === 'BillingAccount',
+                'menu-item-selected': currentTab === 'BillingAccountOverview',
               }"
               class="menu-item"
             >
@@ -201,7 +201,7 @@
         </div>
 
         <!-- Billing Account Settings -->
-        <div v-else-if="currentTab === 'BillingAccount'">
+        <div v-else-if="currentTab === 'BillingAccountOverview'">
           <BillingAccountOverview />
         </div>
 
@@ -363,7 +363,7 @@ export default {
       const url = 'http://127.0.0.1:8080/public/sport-center';
       fetch(url, {
                 method: 'GET',
-                credentiZals: 'include',
+                credentials: 'include',
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),

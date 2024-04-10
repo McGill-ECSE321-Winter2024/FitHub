@@ -15,26 +15,26 @@
                     <CoursesCol black-heading="STRETCHING" title="Goat Yoga"
                         description="Discover serenity and strength with Goat Yoga, where yoga meets playful interaction with adorable goats, fostering relaxation and joy."
                         image-url="https://hellericksfarm.com/wp-content/uploads/2023/03/goat-yoga.jpeg"
-                        alt-text="goat-yoga" />
+                        alt-text="goat-yoga" style="text-align: justify"/>
                 </div>
                 <div class="col-md-6 col-lg-3 col-sm-12">
                     <CoursesCol black-heading="MARTIAL ARTS" title="Jiu Jitsu 101" description="Master the art of self-defense and discipline in Jiu Jitsu 101, where you'll learn
                             fundamental techniques and strategies to protect yourself while promoting physical
                             and mental wellness."
                         image-url="https://cdn.evolve-mma.com/wp-content/uploads/2015/05/why-bjj-is-the-perfect-martial-art.jpg"
-                        alt-text="jiu-jitsu" />
+                        alt-text="jiu-jitsu" style="text-align: justify"/>
                 </div>
                 <div class="col-md-6 col-lg-3 col-sm-12">
                     <CoursesCol black-heading="STRENGTH TRAINING" title="Weightlifting II" description="Embark on a journey to amplify your strength and endurance in Weightlifting II,
                             a course designed to elevate your lifting techniques and push your fitness boundaries."
                         image-url="https://jackcityfitness.com/wp-content/uploads/10-Essential-Weight-Lifting-Tips.jpg"
-                        alt-text="weightlifting" />
+                        alt-text="weightlifting" style="text-align: justify"/>
                 </div>
                 <div class="col-md-6 col-lg-3 col-sm-12">
                     <CoursesCol black-heading="CARDIO" title="Zumba For All" description="Unleash your energy and groove to the rhythm in Zumba For All, an exhilarating dance fitness
                             program that blends Latin and international music for a fun and effective workout."
                         image-url="https://www.verywellfit.com/thmb/WtaRzGOCbJdVYFlWr_7VOfwn_Ow=/3000x2002/filters:no_upscale():max_bytes(150000):strip_icc()/zumba-fatcamera-c9d4ee824a0f4fda883484f878abc8ae.jpg"
-                        alt-text="zumba" />
+                        alt-text="zumba" style="text-align: justify"/>
 
                 </div>
             </div>

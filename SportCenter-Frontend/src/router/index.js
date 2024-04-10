@@ -8,8 +8,6 @@ import Courses from '@/components/Courses'
 import Instructors from '@/components/Instructors'
 import Registration from '@/components/Registration'
 import Settings from "@/components/Settings";
-import BillingAccount from "@/components/BillingAccount";
-import BillingAccountOverview from "@/components/BillingAccountOverview";
 import SessionRegistration from "@/components/SessionRegistration"
 import Location from '@/components/Location'
 
@@ -50,24 +48,15 @@ export default new Router({
       component: Settings,
     },
     {
-      path: "/billing-account",
-      name: "BillingAccount",
-      component: BillingAccount,
-    },
-    {
-      path: "/billing-accounts",
-      name: "BillingAccountOverview",
-      component: BillingAccountOverview,
-    },
-    {
       path: '/location',
       name: 'Location',
       component: Location
     },
     {
-      path: "/sessions",
+      path: "/sessions/courses/:cId",
       name: "SessionRegistration",
       component: SessionRegistration,
+      props: true
     }
   ]
 })

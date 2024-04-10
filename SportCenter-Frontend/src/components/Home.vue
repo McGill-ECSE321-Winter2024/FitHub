@@ -32,8 +32,6 @@ export default {
     const password = this.$cookies.get('password');
     if (username && password) {
       this.showSplash = false;
-      console.log("Not showing splash");
-      console.log(`Username for splash: ${username}`)
     } else {
       this.showSplash = true;
     }

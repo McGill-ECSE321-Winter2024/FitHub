@@ -1,5 +1,5 @@
 <template>
-    <div class="p-5 d-flex" :style="{ backgroundColor: toolbarColor, transition: 'background-color 1.5s'}"">
+    <div class="p-5 d-flex" :style="{ backgroundColor: toolbarColor, transition: 'background-color 1.5s' }"">
         <router-link to=" /" class="navbar-brand mr-auto p-2">
         <img width="100" height="100" src="https://img.icons8.com/ios-filled/100/acrobatics.png"
             alt="acrobatics" />itHub
@@ -8,16 +8,16 @@
             <div>
                 <ul class="navbar-nav nav flex-column">
                     <li class="nav-item">
-                        <router-link to="/courses" class="nav-link">Courses</router-link>
+                        {{ sportCenter.email }}
                     </li>
                     <li class="nav-item">
-                        <router-link to="/instructors" class="nav-link">Instructors</router-link>
+                        {{ sportCenter.phoneNumber }}
                     </li>
                     <li class="nav-item">
-                        <router-link to="/login" class="nav-link">Already a Member?</router-link>
+                        {{ sportCenter.address }}
                     </li>
                     <li class="nav-item">
-                        <router-link to="/registration" class="nav-link">Register Here!</router-link>
+                        {{ convertTo12HourFormat(sportCenter.openingTime) }} - {{ convertTo12HourFormat(sportCenter.closingTime) }}
                     </li>
                 </ul>
             </div>
@@ -33,7 +33,18 @@ export default {
     data() {
         return {
             mounted: false,
-            toolbarColor: '#FFD0D5'
+            toolbarColor: '#FFD0D5',
+            sportCenter: {
+                name: "",
+                email: "",
+                phoneNumber: "",
+                address: "",
+                openingTime: "",
+                closingTime: "",
+                errorMessage: 'Empty fields for name, address, email or phone number are not valid',
+                showErrorMessage: false,
+                showSuccessfulMessage: false,
+            },
         };
     },
     mounted() {
@@ -45,6 +56,7 @@ export default {
         if (router.currentRoute.path != '/') {
             this.updateToolbarColor(router.currentRoute.path);
         }
+        this.getSportCenterInfo();
     },
     beforeDestroy() {
         EventBus.$off('beforeSlideOccurred', this.handleChangeBackgroundColor);
@@ -61,25 +73,58 @@ export default {
             }
         },
         updateToolbarColor(route) {
-            switch (route) {
-                case '/courses':
+            switch (true) {
+                case route.startsWith('/courses'):
                     this.toolbarColor = '#CDF567';
                     break;
-                case '/instructors':
-                    this.toolbarColor = '#FFE818';
+                case route.startsWith('/instructors'):
+                    this.toolbarColor = '#6900BA';
                     break;
-                case '/login':
+                case route === '/login':
                     this.toolbarColor = '#FFBC4B';
                     break;
-                case '/registration':
+                case route === '/registration':
+                    this.toolbarColor = '#3E8EF1';
+                    break;
+                case route === '/settings':
                     this.toolbarColor = '#CDF567';
                     break;
-                case '/settings':
-                    this.toolbarColor = '#CDF567';
+                case route.startsWith('/sessions/courses/'):
+                    this.toolbarColor = '#3E8EF1';
                     break;
                 default:
                     this.toolbarColor = '#FFD0D6';
             }
+        },
+        getSportCenterInfo() {
+            const url = 'http://127.0.0.1:8080/public/sport-center';
+            fetch(url, {
+                method: 'GET',
+                credentials: 'include',
+            }).then((sportCenterResponse) => {
+                sportCenterResponse.json().then(sportCenter => {
+                    console.log(sportCenter);
+                    this.sportCenter.name = sportCenter.name;
+                    this.sportCenter.email = sportCenter.email;
+                    this.sportCenter.address = sportCenter.address;
+                    this.sportCenter.phoneNumber = sportCenter.phoneNumber;
+                    this.sportCenter.openingTime = sportCenter.openingTime;
+                    this.sportCenter.closingTime = sportCenter.closingTime;
+                }).catch(error => {
+                    console.error('Error parsing JSON:', error);
+                });
+            }).catch(error => {
+                console.error('Error fetching accounts:', error);
+            });
+        },
+        convertTo12HourFormat(timeString) {
+            const [hours, minutes] = timeString.split(':');
+            let hour = parseInt(hours, 10);
+            const period = hour >= 12 ? 'PM' : 'AM';
+            hour = hour % 12 || 12;
+            const paddedMinutes = minutes.padStart(2, '0');
+            const twelveHourTime = `${hour}:${paddedMinutes} ${period}`;
+            return twelveHourTime;
         },
     }
 };
@@ -95,5 +140,4 @@ export default {
     color: var(--color-black);
     font-size: 75px;
 }
-
 </style>

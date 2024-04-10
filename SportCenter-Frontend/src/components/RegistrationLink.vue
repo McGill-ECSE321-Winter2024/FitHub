@@ -1,7 +1,7 @@
 <template>
     <div class="whole-screen p-5" id="registration-link">
         <div class="mb-5">
-            <h1>Exclusive Offer: Get 30% Off Your First Course Package!</h1>
+            <h1>Exclusive Offer: Get 30% Off Your First Course Session!</h1>
         </div>
         <div class="py-5">
             <p>Want to have access to all these incredible courses? Take advantage of our special offer

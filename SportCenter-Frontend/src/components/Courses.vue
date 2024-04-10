@@ -17,12 +17,14 @@
       <div class="mt-5">
         <div class="row">
           <div v-for="course in list.courses" :key="course.id" class="col-md-5 col-lg-3 col-sm-12 mb-5">
-            <router-link to="/sessions">
+            <router-link :to="'/sessions/courses/' + course.id" class="hover-link px-2">
               <div>
                 <img :src="course.url" :alt="course.name" class="w-100 h-100">
               </div>
               <div class="content">
-                <h3><span class="white-heading">{{ course.category }}</span></h3>
+              <div class="category-price">
+                <h3><span class="white-heading">{{ course.category.toUpperCase() }},  {{ course.pricePerHour }}$/hour</span></h3>
+                </div>
                 <div>
                   <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
                   <p>{{ course.description }}</p>
@@ -33,6 +35,7 @@
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -97,6 +100,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 .solid-background {
   background-color: var(--color-black);
   height: 100vh;
@@ -104,7 +109,19 @@ export default {
   overflow: auto;
 }
 
+.category-price {
+
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.category-price h3 {
+  margin-right: 10px; /* Adjust margin as needed */
+}
+
 .custom-h1 {
+  color: var(--color-white);
   font-size: 55px;
 }
 
@@ -155,8 +172,8 @@ export default {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  background-color: #FFFF;
-  color: #ffffff;
+  background-color: #bfd3f2;
+  color: var(--color-white);
 }
 
 .white-heading {
@@ -176,5 +193,25 @@ p {
 body {
   margin: 0;
   padding: 0;
+}
+
+.hover-link {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-link:hover {
+  text-decoration: none; /* Remove default underline */
+}
+
+.hover-link:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 3px solid #CDF563; /* Adjust the border width and color as needed */
+  box-sizing: border-box;
 }
 </style>

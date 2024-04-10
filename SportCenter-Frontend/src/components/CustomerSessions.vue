@@ -7,16 +7,17 @@
     <!-- Properties and text fields -->
     <div style="color: #ffffff">
       <!-- Boxes -->
-      <div v-for="session in paginatedSessions" :key="session.name">
+      <div v-for="session in this.sessions" :key="session.id">
         <div class="box">
           <div class="text-column">
             <div style="font-size: 25px; font-weight: bold">
-              {{ session.name }}
+              {{ capitalize(session.course.name) }}
             </div>
-            <div style="font-size: 18px">{{ session.details }}</div>
+            <div style="font-size: 18px">{{ session.date }}, {{ convertTo12HourFormat(session.startTime) }} - {{
+        convertTo12HourFormat(session.endTime) }}</div>
           </div>
           <div class="button-column">
-            <div class="button">Unregister</div>
+            <div class="button" @click="cancelRegistration(session.id)">Unregister</div>
           </div>
         </div>
       </div>
@@ -43,16 +44,13 @@
 export default {
   data() {
     return {
-      profile: { name: "", email: "", password: "" },
-      sessions: [
-        { name: "Goat yoga", details: "04/06/24, 10:00-12:00" },
-        { name: "Jiu-jitsu 101", details: "04/07/24, 12:00-14:00" },
-        { name: "Badminton", details: "04/08/24, 10:00-11:00" },
-        // Add more sessions as needed
-      ],
+      sessions: [],
       itemsPerPage: 3,
       currentPage: 1,
     };
+  },
+  mounted() {
+    this.fetchSessions();
   },
   computed: {
     totalPages() {
@@ -65,6 +63,66 @@ export default {
     },
   },
   methods: {
+    fetchSessions() {
+      const customerId = this.$cookies.get('id');
+      fetch(`http://127.0.0.1:8080/customers/${customerId}/sessions/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
+        }
+      }).then((registrationResponse) => {
+        if (registrationResponse.status === 204) {
+          console.log("No registrations for this customer in database");
+        }
+        else {
+          registrationResponse.json().then(sessions => {
+            this.sessions = sessions.sessions;
+
+            console.log(this.sessions);
+          }).catch(error => {
+            console.error('Error parsing JSON:', error);
+          });
+        }
+      }).catch(error => {
+        console.error('Error fetching sessions:', error);
+      });
+    },
+    cancelRegistration(sessionId) {
+      const username = decodeURIComponent(this.$cookies.get('username'));
+      const password = this.$cookies.get('password');
+
+      console.log('Username:', username);
+      console.log('Password:', password);
+
+      if (username && password) {
+        console.log('Session ID: ', sessionId);
+        console.log('Customer ID: ', this.$cookies.get('id'));
+        const customerId = this.$cookies.get('id');
+
+        fetch(`http://127.0.0.1:8080/registrations/${customerId}/${sessionId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
+          },
+          credentials: 'include',
+        })
+          .then(response => {
+            console.log('Response Status:', response.status);
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+          })
+          .then(data => {
+            console.log('Registration deleted:');
+            this.sessions = this.sessions.filter(session => session.id !== sessionId);
+          })
+      } else {
+        console.error('User not authenticated');
+      }
+    },
     navigate(direction) {
       if (
         (direction === -1 && this.currentPage === 1) ||
@@ -73,6 +131,18 @@ export default {
         return;
       }
       this.currentPage += direction;
+    },
+    capitalize(str) {
+      return str.replace(/\b\w/g, (char) => char.toUpperCase());
+    },
+    convertTo12HourFormat(timeString) {
+      const [hours, minutes] = timeString.split(':');
+      let hour = parseInt(hours, 10);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      const paddedMinutes = minutes.padStart(2, '0');
+      const twelveHourTime = `${hour}:${paddedMinutes} ${period}`;
+      return twelveHourTime;
     },
   },
 };
