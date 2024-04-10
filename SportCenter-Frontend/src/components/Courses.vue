@@ -22,7 +22,9 @@
                 <img :src="course.url" :alt="course.name" class="w-100 h-100">
               </div>
               <div class="content">
-                <h3><span class="white-heading">{{ course.category }}</span></h3>
+              <div class="category-price">
+                <h3><span class="white-heading">{{ course.category }},  {{ course.pricePerHour }}$/hour</span></h3>
+                </div>
                 <div>
                   <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
                   <p>{{ course.description }}</p>
@@ -97,11 +99,24 @@ export default {
 </script>
 
 <style scoped>
+
+
 .solid-background {
   background-color: var(--color-black);
   height: 100vh;
   width: 100vw;
   overflow: auto;
+}
+
+.category-price {
+
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.category-price h3 {
+  margin-right: 10px; /* Adjust margin as needed */
 }
 
 .custom-h1 {
