@@ -127,6 +127,7 @@ export default {
             this.$cookies.remove('password');
             this.$cookies.remove('role');
             this.$cookies.remove('id');
+            this.$router.push('/')
         }
     }
 };

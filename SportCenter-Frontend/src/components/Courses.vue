@@ -23,7 +23,7 @@
               </div>
               <div class="content">
               <div class="category-price">
-                <h3><span class="white-heading">{{ course.category }},  {{ course.pricePerHour }}$/hour</span></h3>
+                <h3><span class="white-heading">{{ course.category.toUpperCase() }},  {{ course.pricePerHour }}$/hour</span></h3>
                 </div>
                 <div>
                   <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
