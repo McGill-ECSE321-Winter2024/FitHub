@@ -10,14 +10,13 @@
       <div v-for="session in this.sessions" :key="session.id">
         <div class="box">
           <div class="text-column">
-            <div style="font-size: 25px; font-weight: bold">
+            <div style="font-size: 25px; font-weight: bold; margin-top:15px;">
               {{ capitalize(session.course.name) }}
             </div>
-            <div style="font-size: 18px">{{ session.date }}, {{ convertTo12HourFormat(session.startTime) }} - {{
-        convertTo12HourFormat(session.endTime) }}</div>
+            <div style="font-size: 18px; margin-bottom:15px;">{{ session.date }}, {{ convertTo12HourFormat(session.startTime) }} - {{
+        convertTo12HourFormat(session.endTime) }} <br> Floor {{ session.location.floor}} Room {{ session.location.room}}</div>
           </div>
-            <div style="font-size: 18px">Floor {{ session.location.floor}} Room {{ session.location.room}} </div>
-          </div>
+            <div style="font-size: 18px"> </div>
           <div class="button-column">
             <div class="button" @click="cancelRegistration(session.id)">Unregister</div>
           </div>
