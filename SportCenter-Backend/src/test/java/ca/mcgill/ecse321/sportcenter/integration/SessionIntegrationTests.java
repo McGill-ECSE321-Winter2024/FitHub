@@ -118,7 +118,7 @@ public class SessionIntegrationTests extends CommonTestSetup {
     LocalDate newDate = LocalDate.parse("2024-02-19");
     Integer newCapacity = 20;
 
-	Date dateForRecurrentTest = Date.valueOf("2024-05-02");
+	LocalDate dateForRecurrentTest = LocalDate.parse("2024-05-02");
 	int recurrenceDuration = 2;
 
 	//---------------login -------------------------------

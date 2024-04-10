@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.glassfish.jaxb.runtime.v2.schemagen.xmlschema.LocalAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,13 +82,13 @@ public class SessionService {
 
     //This function creates weekly sessions based on the specified recurrenceDuration
     @Transactional
-    public List<Session> createRecurrentSessions(Time aStartTime, Time aEndTime, Date startDate, int aCapacity, int iId, int cId, int lId, int recurrenceDuration){
+    public List<Session> createRecurrentSessions(Time aStartTime, Time aEndTime, LocalDate startDate, int aCapacity, int iId, int cId, int lId, int recurrenceDuration){
         List<Session> createdSessions = new ArrayList<Session>();
-        Date date = startDate;
+        LocalDate date = startDate;
         for(int i=0; i<recurrenceDuration; i++){
             Session createdSession = proposeSuperviseSession(aStartTime,aEndTime,date,aCapacity,iId,cId,lId);
             createdSessions.add(createdSession);
-            date = new Date(date.getTime() + MILLIS_IN_A_WEEK); //Update the date to next week
+            date = startDate.plusDays(7); //Update the date to next week
         }
         return createdSessions;
     }
