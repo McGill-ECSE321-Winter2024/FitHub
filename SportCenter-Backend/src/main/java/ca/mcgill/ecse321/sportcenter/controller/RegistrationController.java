@@ -78,7 +78,6 @@ public class RegistrationController {
 
     //--------------------------// Read Registration //--------------------------//
 
-
     @GetMapping(value={"/registrations/{customerId}/{sessionId}", "/registrations/{customerId}/{sessionId}/"})
     public ResponseEntity<RegistrationResponseDTO> findRegistration(@PathVariable Integer customerId, @PathVariable Integer sessionId) {
         return new ResponseEntity<>(new RegistrationResponseDTO(registrationService.findRegistration(customerId, sessionId)), HttpStatus.FOUND);
@@ -126,7 +125,7 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping(value = {"/customers/{customerId}/sessions", "/customers/{customerId}/sessions/"})
+    @GetMapping(value = {"/customers/{customerId}/sessions", "/customers/{customerId}/sessions/", "public/customers/{customerId}/sessions/"})
     public ResponseEntity<SessionListDTO> getAllSessionsFromCustomer(@PathVariable Integer customerId) {
         List<SessionResponseDTO> sessions = new ArrayList<>();
         try{
