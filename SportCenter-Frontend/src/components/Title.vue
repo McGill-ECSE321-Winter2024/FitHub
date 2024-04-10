@@ -209,6 +209,10 @@ div.slide-right h1 {
     animation-duration: 11s;
 }
 
+.row {
+    padding-top: 12%;
+}
+
 @keyframes animate-blob {
 
     0% {
