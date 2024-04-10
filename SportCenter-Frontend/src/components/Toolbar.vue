@@ -156,4 +156,8 @@ export default {
     background-color: var(--color-black);
     color: var(--color-white);
 }
+
+.dropdown-menu {
+    transform: translateX(-22px);
+}
 </style>

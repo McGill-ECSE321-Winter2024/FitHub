@@ -1,21 +1,23 @@
 <template>
-    <div class="whole-screen p-5" id="registration-link">
-        <div class="mb-5">
+    <div class="whole-screen p-5 w-100 container-fluid" id="registration-link">
+        <div class="row m-0 mb-5">
             <h1>Exclusive Offer: Get 30% Off Your First Course Session!</h1>
         </div>
-        <div class="py-5">
+        <div class="row m-0 py-5">
             <p>Want to have access to all these incredible courses? Take advantage of our special offer
                 today!
                 <br>Click the button below to unlock your discount and start your fitness journey with us.
             </p>
         </div>
-        <div id="container" class="pt-5">
-            <router-link to="/registration"  tag="button" class="learn-more">
-                <span class="circle" aria-hidden="true">
-                    <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">Register Now</span>
-            </router-link>
+        <div class="row m-0">
+            <div class="ml-auto pt-5">
+                <router-link to="/registration"  tag="button" class="learn-more">
+                    <span class="circle" aria-hidden="true">
+                        <span class="icon arrow"></span>
+                    </span>
+                    <span class="button-text">Register Now</span>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -32,8 +34,8 @@ export default {
 
 <style scoped>
 .whole-screen {
-    width: 100vw;
-    height: 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
     padding-top: 10% !important;
 }
 
@@ -140,6 +142,10 @@ p {
     font-weight: 400;
     text-align: left;
     font-size: 120%;
+}
+
+h1 {
+    font-size: 4rem;
 }
 
 #registration-link {

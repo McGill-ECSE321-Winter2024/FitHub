@@ -107,6 +107,7 @@ export default {
   height: 100vh;
   width: 100vw;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .category-price {

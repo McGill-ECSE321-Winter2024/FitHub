@@ -101,7 +101,7 @@ export default {
                     // Save cookies and change page
                     this.$cookies.set('username', result.email);
                     this.$cookies.set('password',  this.password);
-                    this.$cookies.set('role',  result.type);
+                    this.$cookies.set('role',  result.type.toLowerCase());
                     this.$cookies.set('id',  result.id);
     
                     console.log('Created new cookies:');
