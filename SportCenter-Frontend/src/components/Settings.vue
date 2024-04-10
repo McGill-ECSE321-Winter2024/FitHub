@@ -143,10 +143,12 @@
             <h2>
               Edit profile
             </h2>
-
-            <img class="row mt-3 mx-auto" :src="profile.imageURL"
+            
+            <div class="image-container">
+            <img class="row circular-image mt-3 mx-auto" :src="profile.imageURL"
                                       @error="$event.target.src = profile.defaultImage" 
-                                      :style="{ 'width': '80px', 'height': 'auto'}" />
+                                      :style="{ 'width': '150px', 'height': 'auto'}" />
+              </div>
             <div class="row m-0 pb-2">
               <div style="font-weight: bold">Image URL</div>
             </div>
@@ -525,6 +527,14 @@ export default {
 
 <style scoped>
 
+.circular-image {
+  border-radius: 50%; /* Set border-radius to 50% for circular shape */
+}
+
+.image-container {
+  text-align: center; /* Center the image */
+}
+
 .btn-outline {
     background-color: #cdf567 !important;
     border-color: #cdf567 !important;
@@ -573,6 +583,7 @@ h2 {
   min-height: 80vh;
   border-radius: 10px;
   background-color: #343434;
+  width: 280px;
 }
 
 .sidebar ul {
