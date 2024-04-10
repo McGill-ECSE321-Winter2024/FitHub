@@ -39,7 +39,7 @@
                             <td>{{ session.supervisor.name }}</td>
                             <td>{{ session.capacity }}</td>
                             <td>{{ session.location.floor }}, {{ session.location.room }}</td>
-                            <button class="register-btn" @click="register(session.id)">Register</button>
+                            <td><button class="register-btn" @click="register(session.id)">Register</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -56,14 +56,14 @@
         <div class="popup" v-if="showError">
             <div class="popup-content">
                 <p>There was an error creating your registration. Please try again later.</p>
-                <button @click="closePopup" style="color: var(--color-azure)">OK</button>
+                <button class="popup-button" @click="closePopup">OK</button>
             </div>
         </div>
 
         <div class="popup" v-if="showNoCookies">
             <div class="popup-content">
                 <p>You cannot register without an account!</p>
-                <button @click="closePopup" style="color: var(--color-azure)">OK</button>
+                <button class="popup-button" @click="closePopup">OK</button>
             </div>
         </div>
         <Footer />
@@ -274,6 +274,9 @@ table tr:last-child td:last-child {
     height: 30px;
     margin-top: 5%;
 }
+.register-btn:hover {
+    background-color: var(--color-sunflower);
+}
 
 .popup {
     position: fixed;
@@ -288,7 +291,7 @@ table tr:last-child td:last-child {
     /* Ensure it appears on top of other elements */
     width: 400px;
     /* Adjust the width as needed */
-    height: 150px;
+    height: 160px;
     /* Adjust the height as needed */
 }
 
@@ -311,4 +314,18 @@ table tr:last-child td:last-child {
     font-size: 16px;
     font-weight: 400px;
 }
+
+.popup-button {
+        background-color: #3E8EF1 !important;
+        border-color: #3E8EF1 !important;
+        color: #fff !important;
+        font-weight: 600;
+}   
+.popup-button:hover {
+        background-color: #1f6ac6 !important;
+        border-color: #1f6ac6 !important;
+        color: #fff !important;
+        font-weight: 600;
+}   
+
 </style>
