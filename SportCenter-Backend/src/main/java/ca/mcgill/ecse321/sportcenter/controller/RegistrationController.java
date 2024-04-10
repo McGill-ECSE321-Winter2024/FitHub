@@ -125,7 +125,7 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping(value = {"/customers/{customerId}/sessions", "/customers/{customerId}/sessions/"})
+    @GetMapping(value = {"/customers/{customerId}/sessions", "/customers/{customerId}/sessions/", "public/customers/{customerId}/sessions/"})
     public ResponseEntity<SessionListDTO> getAllSessionsFromCustomer(@PathVariable Integer customerId) {
         List<SessionResponseDTO> sessions = new ArrayList<>();
         try{

@@ -167,39 +167,6 @@ export default {
                 this.showNoCookies = true;
             }
         },
-        cancelRegistration(sessionId) {
-            const username = decodeURIComponent(this.$cookies.get('username'));
-            const password = this.$cookies.get('password');
-
-            console.log('Username:', username);
-            console.log('Password:', password);
-
-            if (username && password) {
-                console.log('Session ID: ', sessionId);
-                console.log('Customer ID: ', this.$cookies.get('id'));
-                const customerId = this.$cookies.get('id');
-
-                fetch(`http://127.0.0.1:8080/registrations/${customerId}/${sessionId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
-                    },
-                    credentials: 'include',
-                })
-                    .then(response => {
-                        console.log('Response Status:', response.status);
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                    })
-                    .then(data => {
-                        console.log('Registration deleted:');
-                    })
-            } else {
-                console.error('User not authenticated');
-            }
-        },
         capitalize(str) {
             return str.replace(/\b\w/g, (char) => char.toUpperCase());
         },
