@@ -1,5 +1,5 @@
 <template>
-   <div class="solid-background">
+  <div class="solid-background">
     <!-- Toolbar and search bar -->
     <div class="text-search-bar" :class="{ 'blur-background': isPopupOpen }">
       <div class="text-content" style="text-align: left">
@@ -9,12 +9,15 @@
     </div>
 
     <!-- Display the UpdateCourseForm component when the icon is clicked -->
-    <UpdateCourseForm 
-        v-if="showUpdateForm" 
-        :course="selectedCourse" 
-        @close="closeUpdateCourseForm" 
-        style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
-    />
+<UpdateCourseForm 
+    v-if="showUpdateForm" 
+    :course="selectedCourse" 
+    @submit="updateCourse" 
+    @cancel="closeUpdateCourseForm" 
+    @close="closeUpdateCourseForm" 
+    style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
+/>
+
 
     <div class="mt-5 " :class="{ 'blur-background': isPopupOpen }"> 
       <div class="row">
@@ -67,6 +70,7 @@ export default {
       password: "",
       showUpdateForm: false, // Add a data property to track whether to show the UpdateCourseForm
       selectedCourse: null, // Add a data property to store the selected course
+      isPopupOpen: false, // Add a data property to track whether the popup is open
     };
   },
   mounted() {
@@ -129,23 +133,30 @@ export default {
         .catch((error) => {
           console.error("Error deleting course:", error);
         });
-        },
+    },
     openUpdateCourseForm(course) {
         console.log("Opening UpdateCourseForm for course:", course);
-        this.selectedCourse = course;
+        this.selectedCourse = { ... course};
         this.showUpdateForm = true; 
         this.isPopupOpen = true; 
     },
     closeUpdateCourseForm() {
-        this.showUpdateForm = false; 
-        this.isPopupOpen = false; 
+      this.showUpdateForm = false;
+      this.isPopupOpen = false;
     },
+    updateCourse(formData) {
+        console.log("Updating course with data:", formData);
+        // Send the form data to update the course via API
+        // Hide the update form after successful update
+        this.showUpdateForm = false;
+    }
   },
   components: {
     UpdateCourseForm, 
   },
 };
 </script>
+
 
 <style scoped>
 .pencil-icon {
