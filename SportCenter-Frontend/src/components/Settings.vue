@@ -78,6 +78,16 @@
             >
               My sessions
             </li>
+
+                        <li
+              @click="toggleMenu('CreateUpdateSessions')"
+              :class="{
+                'menu-item-selected': currentTab === 'CreateUpdateSessions',
+              }"
+              class="menu-item"
+            >
+              Manage sessions
+            </li>
             <!-- Propose Courses Button -->
             <li
               @click="toggleMenu('ProposeCourse')"
@@ -87,6 +97,15 @@
               class="menu-item"
             >
               Propose courses
+            </li>
+              <li
+              @click="toggleMenu('UpdateCourses')"
+              :class="{
+                'menu-item-selected': currentTab === 'UpdateCourses',
+              }"
+              class="menu-item"
+            >
+              Manage courses
             </li>
             <!-- Billing Account Button -->
             <li
@@ -177,6 +196,10 @@
           <CustomerSessions />
         </div>
 
+        <div v-else-if="currentTab === 'CreateUpdateSessions'">
+          <CreateUpdateSessions />
+        </div>
+
         <!-- Billing Account Settings -->
         <div v-else-if="currentTab === 'BillingAccount'">
           <BillingAccountOverview />
@@ -185,6 +208,11 @@
         <div v-else-if="currentTab === 'ProposeCourse'">
           <ProposeCourse />
         </div>
+
+        <div v-else-if="currentTab === 'UpdateCourses'">
+          <UpdateCourses />
+        </div>
+
 
         <!-- Sport Center Settings -->
         <div v-else-if="currentTab === 'EditSportCenter'">
@@ -243,6 +271,8 @@ import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccountOverview from "./BillingAccountOverview.vue";
 import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
+import UpdateCourses from "./UpdateCourses.vue";
+import CreateUpdateSessions from "./CreateUpdateSessions.vue";
 import ManageInstructors from "./ManageInstructors.vue";
 import ManageLocations from "./Location.vue";
 
@@ -253,6 +283,8 @@ export default {
     BillingAccountOverview,
     CustomerSessions,
     ProposeCourse,
+    UpdateCourses,
+    CreateUpdateSessions,
     ManageInstructors,
     ManageLocations
     // Add more components as needed
@@ -594,6 +626,13 @@ h2 {
 
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
   display: none;
+}
+
+.update-courses-container {
+  flex-grow: 1; /* Ensure the container takes up remaining space */
+  overflow: auto; /* Enable scrolling if content exceeds container height */
+  padding: 60px; /* Add padding to the container */
+  text-align: left; /* Align content to the left */
 }
 
 /* Target the clock icon */
