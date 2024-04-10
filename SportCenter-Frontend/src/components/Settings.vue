@@ -181,6 +181,11 @@
           <OwnerCourses />
         </div>
 
+        <!-- Manage Instructors Settings -->
+        <div v-else-if="currentTab === 'ManageInstructors'">
+          <ManageInstructors />
+        </div>
+
         <!-- My Sessions Settings -->
         <div v-else-if="currentTab === 'MySessions'">
           <CustomerSessions />
@@ -192,7 +197,7 @@
 
         <!-- Billing Account Settings -->
         <div v-else-if="currentTab === 'BillingAccount'">
-          <BillingAccount />
+          <BillingAccountOverview />
         </div>
 
         <div v-else-if="currentTab === 'ProposeCourse'">
@@ -258,22 +263,23 @@
 <script>
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
 import OwnerCourses from "./OwnerCourses.vue";
-import BillingAccount from "./BillingAccount.vue";
 import BillingAccountOverview from "./BillingAccountOverview.vue";
 import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
 import UpdateCourses from "./UpdateCourses.vue";
 import CreateUpdateSessions from "./CreateUpdateSessions.vue";
+import ManageInstructors from "./ManageInstructors.vue";
 
 export default {
   name: "ProfileSettings",
   components: {
     OwnerCourses,
-    BillingAccount,
+    BillingAccountOverview,
     CustomerSessions,
     ProposeCourse,
     UpdateCourses,
     CreateUpdateSessions
+    ManageInstructors,
     // Add more components as needed
   },
   mounted() {
@@ -533,7 +539,7 @@ h2 {
 
 .sidebar {
   border-radius: 10px;
-  background-color: #232323;
+  background-color: #343434;
 }
 
 .sidebar ul {
@@ -567,7 +573,7 @@ h2 {
 }
 
 .menu-item-selected {
-  background-color: #444;
+  background-color: #505050;
 }
 
 .main-content {
@@ -590,7 +596,7 @@ h2 {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #444; /* Set initial border color to gray */
+  border: 1px solid #7d7d7d; /* Set initial border color to gray */
   background-color: transparent;
   color: #ffffff;
   height: 50px;
@@ -598,7 +604,7 @@ h2 {
   transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
     border-width 0.1s ease-in-out; /* Add transition effect */
   font-weight: normal; /* Set default font weight */
-  border-width: 1px; /* Set initial border width */
+  border-width: 2px; /* Set initial border width */
 }
 
 .text-field:focus,
@@ -608,7 +614,7 @@ h2 {
 }
 
 .text-field:focus {
-  border-width: 2px; /* Increase border width on hover or focus */
+  border-width: 4px; /* Increase border width on hover or focus */
 }
 
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
