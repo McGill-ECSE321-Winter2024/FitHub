@@ -86,8 +86,8 @@ export default {
     },
     methods: {
         fetchSessions() {
-            // const LOGIN_EMAIL = "@";
-            // const LOGIN_PASSWORD = "password";
+            const LOGIN_EMAIL = "@";
+            const LOGIN_PASSWORD = "password";
             // const headers = new Headers();
             // headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
             // headers.append('Content-Type', 'application/json');
@@ -97,7 +97,7 @@ export default {
                 credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
+                    Authorization: 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD),
                 }
             }).then((sessionsResponse) => {
                 if (sessionsResponse.status === 204) {
