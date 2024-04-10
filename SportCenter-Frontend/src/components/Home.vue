@@ -1,5 +1,5 @@
 <template>
-  <div> 
+  <div id="home"> 
     <transition name="fade">
       <div v-if="showSplash" class="splash" @click="hideSplash">
         <h1 class="splash-title">
@@ -47,6 +47,10 @@ export default {
 </script>
 
 <style scoped>
+#home {
+  overflow-x: hidden;
+}
+
 .splash {
   position: fixed;
   top: 0;

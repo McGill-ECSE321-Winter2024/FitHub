@@ -93,7 +93,7 @@ export default {
                     }).then((roleResponse) => {
                         roleResponse.text().then(role => {
                             const role_and_id = role.split(',');
-                            role = role_and_id[0];
+                            role = role_and_id[0].toLowerCase();
                             const id = role_and_id[1];
                             
                             // Save cookies and change page

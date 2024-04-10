@@ -30,36 +30,11 @@ body {
   height: 100%;
 }
 
-h1 {                /* Used for big headings of Sign In and Registration */
-    font-weight: 700;
-    font-size: 3rem;
-    text-align: left;
-}
-
-@media (min-width: 576px) { /* Small devices (576px and up) */
-    h1 {
-        font-size: 4rem;
-    }
-}
-
-@media (min-width: 768px) { /* Medium devices (768px and up) */
-    h1 {
-        font-size: 5rem;
-    }
-}
-
-/* Adjust font size for small screens */
-@media (max-width: 767.98px) {
-    #title-heading {
-        font-size: 5em;
-        /* Adjust the font size as needed */
-    }
-}
 
 h1 {
     /* Used for big headings of Sign In and Registration */
     font-weight: 700;
-    font-size: 5em;
+    font-size: 5rem;
     text-align: left;
 }
 

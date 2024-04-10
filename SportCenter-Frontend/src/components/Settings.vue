@@ -11,7 +11,7 @@
         class="sidebar-container col-auto p-0 m-0"
       >
         <div
-          class="sidebar p-0 m-3"
+          class="sidebar p-1 m-3"
         >
           <h1>
             Settings
@@ -35,6 +35,7 @@
                 'menu-item-selected': currentTab === 'EditSportCenter',
               }"
               class="menu-item"
+              v-if="role === 'owner'"
             >
               Edit sport center
             </li>
@@ -45,6 +46,7 @@
                 'menu-item-selected': currentTab === 'ManageInstructors',
               }"
               class="menu-item"
+              v-if="role === 'owner'"
             >
               Manage instructors
             </li>
@@ -55,8 +57,9 @@
                 'menu-item-selected': currentTab === 'ManageCourses',
               }"
               class="menu-item"
+              v-if="role === 'owner'"
             >
-              Approve/Disapprove Courses
+              Manage courses
             </li>
             <!-- Manage Locations Button -->
             <li
@@ -65,6 +68,7 @@
                 'menu-item-selected': currentTab === 'ManageLocations',
               }"
               class="menu-item"
+              v-if="role === 'owner'"
             >
               Manage locations
             </li>
@@ -75,37 +79,41 @@
                 'menu-item-selected': currentTab === 'MySessions',
               }"
               class="menu-item"
+              v-if="role === 'customer'"
             >
               My sessions
             </li>
 
                         <li
-              @click="toggleMenu('CreateUpdateSessions')"
+              @click="toggleMenu('ManageSessions')"
               :class="{
-                'menu-item-selected': currentTab === 'CreateUpdateSessions',
+                'menu-item-selected': currentTab === 'ManageSessions',
               }"
               class="menu-item"
+              v-if="role === 'instructor'"
             >
               Manage sessions
             </li>
             <!-- Propose Courses Button -->
             <li
-              @click="toggleMenu('ProposeCourse')"
+              @click="toggleMenu('ProposeCourses')"
               :class="{
-                'menu-item-selected': currentTab === 'ProposeCourse',
+                'menu-item-selected': currentTab === 'ProposeCourses',
               }"
               class="menu-item"
+              v-if="role === 'instructor'"
             >
               Propose courses
             </li>
               <li
-              @click="toggleMenu('UpdateCourses')"
+              @click="toggleMenu('ReviewCourses')"
               :class="{
-                'menu-item-selected': currentTab === 'UpdateCourses',
+                'menu-item-selected': currentTab === 'ReviewCourses',
               }"
               class="menu-item"
+              v-if="role === 'owner'"
             >
-              Manage courses
+              Review courses
             </li>
             <!-- Billing Account Button -->
             <li
@@ -114,6 +122,7 @@
                 'menu-item-selected': currentTab === 'BillingAccountOverview',
               }"
               class="menu-item"
+              v-if="role === 'customer'"
             >
               Billing account
             </li>
@@ -178,7 +187,7 @@
 
         <!-- Manage Courses Settings -->
         <div v-else-if="currentTab === 'ManageCourses'">
-          <OwnerCourses />
+          <ManageCourses />
         </div>
 
         <!-- Manage Instructors Settings -->
@@ -193,24 +202,24 @@
 
         <!-- My Sessions Settings -->
         <div v-else-if="currentTab === 'MySessions'">
-          <CustomerSessions />
+          <CustomerSessions class="container content"  />
         </div>
 
-        <div v-else-if="currentTab === 'CreateUpdateSessions'">
-          <CreateUpdateSessions />
+        <div v-else-if="currentTab === 'ManageSessions'">
+          <ManageSessions class="container content"  />
         </div>
 
         <!-- Billing Account Settings -->
         <div v-else-if="currentTab === 'BillingAccountOverview'">
-          <BillingAccountOverview />
+          <BillingAccountOverview class="container content"  />
         </div>
 
-        <div v-else-if="currentTab === 'ProposeCourse'">
-          <ProposeCourse />
+        <div v-else-if="currentTab === 'ProposeCourses'">
+          <ProposeCourses class="container content" />
         </div>
 
-        <div v-else-if="currentTab === 'UpdateCourses'">
-          <UpdateCourses />
+        <div v-else-if="currentTab === 'ReviewCourses'">
+          <ReviewCourses class="container content" />
         </div>
 
 
@@ -267,27 +276,30 @@
 
 <script>
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
-import OwnerCourses from "./OwnerCourses.vue";
 import BillingAccountOverview from "./BillingAccountOverview.vue";
 import CustomerSessions from "./CustomerSessions.vue";
-import ProposeCourse from "./ProposeCourse.vue";
-import UpdateCourses from "./UpdateCourses.vue";
-import CreateUpdateSessions from "./CreateUpdateSessions.vue";
+import ProposeCourses from "./ProposeCourse.vue";
+import ReviewCourses from "./OwnerCourses.vue";
+import ManageSessions from "./CreateUpdateSessions.vue";
 import ManageInstructors from "./ManageInstructors.vue";
 import ManageLocations from "./Location.vue";
+import ManageCourses from "./UpdateCourses.vue"
 
 export default {
   name: "ProfileSettings",
   components: {
-    OwnerCourses,
     BillingAccountOverview,
     CustomerSessions,
-    ProposeCourse,
-    UpdateCourses,
-    CreateUpdateSessions,
+    ProposeCourses,
+    ManageCourses,
+    ManageSessions,
     ManageInstructors,
-    ManageLocations
+    ManageLocations,
+    ReviewCourses,
     // Add more components as needed
+  },
+  created() {
+    this.setRole();
   },
   mounted() {
     // Call your function to retrieve JSON data and autofill the input field
@@ -297,6 +309,7 @@ export default {
   data() {
     return {
       currentTab: "EditProfile", // Default tab
+      role: "",
       profile: {
         imageURL: "",
         name: "",
@@ -322,6 +335,10 @@ export default {
     };
   },
   methods: {
+    setRole() {
+      this.role = this.$cookies.get('role');
+      console.log(this.role);
+    },
     toggleMenu(tabName) {
       // Hide error messages when switching tabs
       this.profile.showErrorMessage = false;
@@ -553,6 +570,7 @@ h2 {
 }
 
 .sidebar {
+  min-height: 80vh;
   border-radius: 10px;
   background-color: #343434;
 }
@@ -584,7 +602,7 @@ h2 {
   border-radius: 5px;
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1.4em;
 }
 
 .menu-item-selected {
