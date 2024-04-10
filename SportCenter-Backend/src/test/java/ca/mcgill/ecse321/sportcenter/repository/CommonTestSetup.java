@@ -31,6 +31,9 @@ public class CommonTestSetup {
     private OwnerRepository ownerRepo;
 
     @Autowired
+    private SessionPackageRepository sessionPackageRepository;
+
+    @Autowired
 	private CourseRepository courseRepository;
     @Autowired
 	private LocationRepository locationRepository;
@@ -45,6 +48,7 @@ public class CommonTestSetup {
         registrationRepository.deleteAll();
 		sessionRepository.deleteAll();
         sportCenterRepo.deleteAll();
+        sessionPackageRepository.deleteAll();
         courseRepository.deleteAll();
         locationRepository.deleteAll();
         customerRepo.deleteAll();

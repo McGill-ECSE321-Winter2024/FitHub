@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import ca.mcgill.ecse321.sportcenter.model.Course;
+import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
 import ca.mcgill.ecse321.sportcenter.repository.SessionPackageRepository;
+import ca.mcgill.ecse321.sportcenter.repository.SessionRepository;
 import jakarta.transaction.Transactional;
 
 /*
@@ -25,6 +29,9 @@ public class SessionPackageService {
 
     @Autowired
     private CourseRepository courseRepo;
+
+    @Autowired
+    private SessionRepository sessionRepo;
 
     //--------------------------// Create SessionPackage //--------------------------//
 
@@ -83,14 +90,31 @@ public class SessionPackageService {
     }
 
     @Transactional
-    public SessionPackage getSessionPackageById(int Id){
-        SessionPackage sessionPackage = sessionPackageRepo.findSessionPackageById(Id);
+    public SessionPackage getSessionPackageById(int id){
+        SessionPackage sessionPackage = sessionPackageRepo.findSessionPackageById(id);
         if(sessionPackage ==null){
             throw new IllegalArgumentException("SessionPackage not found");
         }
         return sessionPackage;
     }
 
+    @Transactional
+    public List<Session> findSessionsBySessionPackage(int id){
+        SessionPackage sessionPackage = sessionPackageRepo.findSessionPackageById(id);
+        if(sessionPackage ==null){
+            throw new IllegalArgumentException("SessionPackage not found");
+        }
+        LocalDate startDate = sessionPackage.getDate();
+        LocalDate endDate =  startDate.plusDays(sessionPackage.getDuration() * 7);
+        List<Session> sessions = new ArrayList<Session>();
+        List<Session> sessionByCourse = sessionRepo.findByCourseType(sessionPackage.getCourse());
 
+        for(Session session : sessionByCourse){
+            if(session.getDate().isAfter(startDate) && session.getDate().isBefore(endDate)){
+                sessions.add(session);
+            }
+        }
+        return sessions;
+    }
 
 }

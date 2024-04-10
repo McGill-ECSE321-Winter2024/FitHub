@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.sportcenter.model.Registration;
 import ca.mcgill.ecse321.sportcenter.model.Customer;
 import ca.mcgill.ecse321.sportcenter.model.Session;
+import ca.mcgill.ecse321.sportcenter.model.SessionPackage;
 import ca.mcgill.ecse321.sportcenter.repository.RegistrationRepository;
 
 /*
@@ -29,6 +30,9 @@ public class RegistrationService {
     @Autowired
     private SessionService sessionService;
 
+    @Autowired
+    private SessionPackageService sessionPackageService;
+
     //--------------------------// Create Registration //--------------------------//
 
     @Transactional
@@ -42,6 +46,16 @@ public class RegistrationService {
         Registration registration = new Registration(key);
         registrationRepository.save(registration);
         return registration;
+    }
+
+    @Transactional
+    public List<Registration> createRegistrationsFromSessionPackage(Customer customer, SessionPackage sessionPackage){
+        List<Registration> registrations = new ArrayList<Registration>();
+        List<Session> sessions = sessionPackageService.findSessionsBySessionPackage(sessionPackage.getId()); //Sessions sould be the list of sessions linked to that sessionPackage
+        for(Session session : sessions){
+            registrations.add(createRegistration(customer, session));
+        }
+        return registrations;
     }
 
     //--------------------------// Update Registration //--------------------------//

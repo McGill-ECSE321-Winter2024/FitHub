@@ -54,8 +54,8 @@ public class CommonTestSetup {
         registrationRepository.deleteAll();
 		sessionRepository.deleteAll();
         sportCenterRepo.deleteAll();
-        sessionPackageRepository.deleteAll();
         courseRepository.deleteAll();
+        sessionPackageRepository.deleteAll();
         locationRepository.deleteAll();
         customerRepo.deleteAll();
         instructorRepo.deleteAll();

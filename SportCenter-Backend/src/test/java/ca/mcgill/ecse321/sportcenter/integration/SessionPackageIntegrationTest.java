@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
 import java.sql.Time;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -32,6 +33,7 @@ import ca.mcgill.ecse321.sportcenter.dto.SessionResponseDTO;
 import ca.mcgill.ecse321.sportcenter.model.Course;
 import ca.mcgill.ecse321.sportcenter.model.Instructor;
 import ca.mcgill.ecse321.sportcenter.model.Location;
+import ca.mcgill.ecse321.sportcenter.model.Session;
 import ca.mcgill.ecse321.sportcenter.model.Course.Difficulty;
 import ca.mcgill.ecse321.sportcenter.model.Course.Status;
 import ca.mcgill.ecse321.sportcenter.repository.CourseRepository;
@@ -41,6 +43,7 @@ import ca.mcgill.ecse321.sportcenter.service.AccountService;
 import ca.mcgill.ecse321.sportcenter.service.CourseService;
 import ca.mcgill.ecse321.sportcenter.service.LocationService;
 import ca.mcgill.ecse321.sportcenter.service.SessionPackageService;
+import ca.mcgill.ecse321.sportcenter.service.SessionService;
 import ca.mcgill.ecse321.sportcenter.service.SportCenterManagementService;
 
 /*
@@ -65,6 +68,16 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 	@Autowired
     private CourseService courseService;
 
+    @Autowired
+    private SessionService sessionService;
+
+	@Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private SessionPackageRepository sessionPackageRepository;
+
+
 
 
 	//-------------------------// Headers //------------------------------//
@@ -80,16 +93,48 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
     Status status = Status.Approved;
 	Course course;
 
+    //------------------------- Instructor ----------------------
+
+	String email = "olivia@mail.com";
+    String password = "secretPassword";
+    String instructorName = "Olivia";
+    String imageURL = "pfp.png";
+	Instructor supervisor;
+
+    //------------------------ Location ------------------------
+
+	String floor = "2";
+    String room = "200";
+	Location location;
+
     //---------------------// SessionPackage //------------------//
     int validId;
     int aDuration = 6;
-    LocalDate aDate = LocalDate.parse("2024-02-18");
+    LocalDate aDate = LocalDate.parse("2024-02-17");
     int aPriceReduction = 10;
 
     int aNewPriceReduction = 25;
 
-    //------------------------// Empty Result Tests //-----------------//
+    //------------------------// Sessions //-------------------------//
 
+	Time startTime1 = Time.valueOf("08:00:00");
+    Time endTime1 = Time.valueOf("09:00:00");
+	LocalDate date1 = LocalDate.parse("2024-02-18");
+    Integer capacity1 = 10;
+    Session session1;
+	
+
+	Time startTime2 = Time.valueOf("10:00:00");
+    Time endTime2 = Time.valueOf("11:00:00");
+    LocalDate date2 = LocalDate.parse("2024-02-19");
+    Integer capacity2 = 20;
+    Session session2;
+
+    @AfterAll
+    public void removeSessionPackage(){
+        sessionPackageRepository.deleteAll();
+    }
+    //------------------------// Empty Result Tests //-----------------//
 
     @Test
     @Order(0)
@@ -99,6 +144,10 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 		
         sportCenterService.createSportCenter("Fithub", openingTime, closingTime, "16", "sportcenter@mail.com", "455-645-4566");
 		course = courseService.createCourse(courseName, description, diff.toString(), status.toString(), 1, "none","none");
+        location = locationService.createLocation(floor, room);
+		supervisor = accountService.createInstructorAccount(email, password, instructorName, imageURL, "");
+        
+
 
         // Save one account in the system
         accountService.createCustomerAccount(LOGIN_EMAIL, LOGIN_PASSWORD, "Julia", "Doritos.png", "");
@@ -129,6 +178,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
 	}
 
+
     //-----------------// Create //-------------------------
 
     @Test
@@ -158,13 +208,54 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
     }
 
+    //-------------------------// Getter //------------------//
+
+    @Test
+    @Order(3)
+    public void testSessionBySessionPackageEmptyResult(){
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/session-packages/" + validId + "/sessions";
+		
+		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
+        // Assert
+        assertNotNull(response);
+        SessionListDTO sessionListDTO = response.getBody();
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Should be empty
+        
+    }
+
+    @Test
+    @Order(4)
+    public void testSessionBySessionPackage(){
+        session1 = sessionService.proposeSuperviseSession(startTime1, endTime1, date1, capacity1, supervisor.getId(), course.getId(), location.getId());
+        session2 = sessionService.proposeSuperviseSession(startTime2, endTime2, date2, capacity2, supervisor.getId(), course.getId(), location.getId());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        String url = "/session-packages/" + validId + "/sessions";
+		
+		ResponseEntity<SessionListDTO> response = client.exchange(url, HttpMethod.GET, requestEntity, SessionListDTO.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // Should be empty
+        SessionListDTO sessionListDTO = response.getBody();
+        assertEquals(2,sessionListDTO.getSessions().size());
+
+    }
+
     //----------------------// Update //-----------------------//
 
     
      
     
     @Test
-	@Order(3)
+	@Order(5)
     public void testUpdateSessionPackage(){
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(LOGIN_EMAIL, LOGIN_PASSWORD);
@@ -188,7 +279,7 @@ public class SessionPackageIntegrationTest extends CommonTestSetup {
 
     //----------------------// Delete //-----------------------//
     @Test
-	@Order(4)
+	@Order(6)
 	public void testDeleteValidSessionPackage(){
 
 		HttpHeaders headers = new HttpHeaders();
