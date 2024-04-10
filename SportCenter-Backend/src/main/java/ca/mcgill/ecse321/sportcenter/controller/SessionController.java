@@ -97,7 +97,7 @@ public class SessionController {
         
     }
 
-    @GetMapping("/sessions/courses/{cId}")
+    @GetMapping(value = {"/sessions/courses/{cId}", "public/sessions/courses/{cId}"})
     public ResponseEntity<SessionListDTO> findSessionsByCourse(@PathVariable int cId){
         try{
             Course course = courseService.findCourseById(cId);
