@@ -24,10 +24,10 @@
           :key="course.id"
         >
           <div>
-            <img :src="course.url" :alt="course.name" class="w-100 h-100" />
+            <img :src="course.url" :alt="course.name" class="w-100 h-100" style="margin-bottom:10px;" />
           </div>
           <h3>
-            <span class="white-heading">{{ course.category }}</span>
+            <h3><span class="white-heading">{{ course.category }},  {{ course.pricePerHour }}$/hour</span></h3>
           </h3>
           <div>
             <h3>{{ capitalize(course.name) }}</h3>
@@ -82,7 +82,7 @@ export default {
       };
 
       fetch(
-        "http://127.0.0.1:8080/public/courses",
+        "http://127.0.0.1:8080/public/courses?status=Approved",
         requestOptions
       )
         .then((response) => {
@@ -165,8 +165,9 @@ export default {
   height: 100vh;
   width: 70vw;
   overflow: auto;
-  margin-left: -30px;
   position: relative; /* Set the position to relative for proper positioning of the absolute element */
+  margin-left: 100px;
+  margin-top: 50px;
 }
 
 .custom-h1 {
@@ -190,9 +191,10 @@ export default {
 }
 
 .white-heading {
+  padding:5px;
   font-size: 14px;
   color: var(--color-black);
-  background-color: #FFF;
+  background-color: #CDF563;
   font-weight: 700;
 }
 

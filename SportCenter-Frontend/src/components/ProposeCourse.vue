@@ -1,5 +1,11 @@
 <template>
   <div class="solid-background">
+
+    <div class="title-container">
+    <h1 class="custom-h1"> Propose a new course </h1>
+          <h3 class="custom-h3">Propose a new course details by inputting the details below. <br> Your request will be reviewed by the owner.</h3>
+    </div>
+
     <div class="box">
       <div class="form-box">
         <form @submit.prevent="submitForm">
@@ -137,8 +143,21 @@ export default {
 
 .custom-h3 {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: #FFFFFF;
+  margin-left: 250px;
+}
+
+.custom-h1 {
+  margin-top: 10px;
+  margin-left: 250px;
+  color: #ffffff;
+  font-size: 45px;
+}
+
+.title-container {
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .form-box {
@@ -154,10 +173,6 @@ export default {
   margin-bottom: 15px;
 }
 
-.title-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
 
 
 label {
@@ -206,6 +221,7 @@ label {
 .buttons {
   display: flex;
   justify-content: center; /* Center content horizontally */
+  margin-bottom: -15px;
 }
 
 #save-btn {
@@ -227,7 +243,7 @@ button {
   font-weight: 700;
   width: 100px; 
   height: 50px; 
-  margin-bottom: 15px;
+  margin-top:10px;
 }
 
 button:hover {
