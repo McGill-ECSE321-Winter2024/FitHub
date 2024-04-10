@@ -13,7 +13,8 @@
             <div style="font-size: 25px; font-weight: bold">
               {{ capitalize(session.course.name) }}
             </div>
-            <div style="font-size: 18px">{{ session.date }}, {{ session.startTime }} - {{ session.endTime }}</div>
+            <div style="font-size: 18px">{{ session.date }}, {{ convertTo12HourFormat(session.startTime) }} - {{
+        convertTo12HourFormat(session.endTime) }}</div>
           </div>
           <div class="button-column">
             <div class="button" @click="cancelRegistration(session.id)">Unregister</div>
@@ -64,9 +65,13 @@ export default {
   methods: {
     fetchSessions() {
       const customerId = this.$cookies.get('id');
-      fetch(`http://127.0.0.1:8080/public/customers/${customerId}/sessions/`, {
+      fetch(`http://127.0.0.1:8080/customers/${customerId}/sessions/`, {
         method: 'GET',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
+        }
       }).then((registrationResponse) => {
         if (registrationResponse.status === 204) {
           console.log("No registrations for this customer in database");
@@ -129,7 +134,16 @@ export default {
     },
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
-    }
+    },
+    convertTo12HourFormat(timeString) {
+      const [hours, minutes] = timeString.split(':');
+      let hour = parseInt(hours, 10);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      const paddedMinutes = minutes.padStart(2, '0');
+      const twelveHourTime = `${hour}:${paddedMinutes} ${period}`;
+      return twelveHourTime;
+    },
   },
 };
 </script>

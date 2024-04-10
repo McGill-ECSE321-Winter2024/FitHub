@@ -85,33 +85,36 @@ export default {
         this.fetchSessions();
     },
     methods: {
-  fetchSessions() {
-    const LOGIN_EMAIL = "@";
-    const LOGIN_PASSWORD = "password";
-    const headers = new Headers();
-    headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
-    headers.append('Content-Type', 'application/json');
+        fetchSessions() {
+            // const LOGIN_EMAIL = "@";
+            // const LOGIN_PASSWORD = "password";
+            // const headers = new Headers();
+            // headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
+            // headers.append('Content-Type', 'application/json');
 
-    fetch(`http://127.0.0.1:8080/sessions/courses/${this.cId}`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: headers // Include headers in the request
-    }).then((sessionsResponse) => {
-        if (sessionsResponse.status === 204) {
-            console.log("No sessions for this course in database");
-        }
-        else {
-            sessionsResponse.json().then(sessions => {
-                this.sessions = sessions.sessions;
-                console.log(this.sessions);
+            fetch(`http://127.0.0.1:8080/sessions/courses/${this.cId}`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
+                }
+            }).then((sessionsResponse) => {
+                if (sessionsResponse.status === 204) {
+                    console.log("No sessions for this course in database");
+                }
+                else {
+                    sessionsResponse.json().then(sessions => {
+                        this.sessions = sessions.sessions;
+                        console.log(this.sessions);
+                    }).catch(error => {
+                        console.error('Error parsing JSON:', error);
+                    });
+                }
             }).catch(error => {
-                console.error('Error parsing JSON:', error);
+                console.error('Error fetching sessions:', error);
             });
-        }
-    }).catch(error => {
-        console.error('Error fetching sessions:', error);
-    });
-},
+        },
 
         register(sessionId) {
             const username = decodeURIComponent(this.$cookies.get('username'));

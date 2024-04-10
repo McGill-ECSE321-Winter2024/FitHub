@@ -100,11 +100,7 @@ export default {
             const url = 'http://127.0.0.1:8080/public/sport-center';
             fetch(url, {
                 method: 'GET',
-                credentiZals: 'include',
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: 'Basic ' + btoa(this.$cookies.get('username') + ':' + this.$cookies.get('password')),
-                },
+                credentials: 'include',
             }).then((sportCenterResponse) => {
                 sportCenterResponse.json().then(sportCenter => {
                     console.log(sportCenter);
