@@ -1,6 +1,13 @@
 <template>
   <div>
-    <h2>Manage instructors</h2>
+    <div class="row p-0 m-0">
+      <h2 >Manage instructors</h2>
+        <button
+        class="rounded btn btn-outline ml-auto my-auto"
+        @click="showCreatePopup()">
+        Create
+      </button>
+    </div>
     <div class="container">
       <div class="row m-0">
         <div class="col" v-for="instructor in instructors" :key="instructor.id">
@@ -21,10 +28,23 @@
             <div class="row justify-content-center">
               <button
                 class="p-2 px-3 rounded justify-content-end btn btn-outline px-4"
-                @click="showEditPopup(instructor)"
+                @click="showEditPopup(instructor, instructor.id)"
               >
                 Edit
               </button>
+              <div class="buttons">
+                <!-- Display the pencil icon and bind the click event to openUpdateCourseForm method -->
+                <b-icon
+                  icon="pencil-fill"
+                  @click="openUpdateCourseForm(course)"
+                  class="pencil-icon"
+                ></b-icon>
+                <b-icon
+                  icon="trash-fill"
+                  @click="deleteCourse(course.id)"
+                  class="disapprove"
+                ></b-icon>
+              </div>
             </div>
           </div>
         </div>
@@ -37,7 +57,7 @@
               <div class="image-container">
                 <img
                   class="row circular-image mx-auto"
-                  :src="instructor.imageURL"
+                  :src="editedInstructor.imageURL"
                   @error="$event.target.src = instructor.defaultImage"
                   :style="{ width: '80px', height: 'auto' }"
                 />
@@ -48,7 +68,7 @@
               <div class="row m-0 pb-2">
                 <input
                   type="text"
-                  v-model="instructor.imageURL"
+                  v-model="editedInstructor.imageURL"
                   class="text-field"
                 />
               </div>
@@ -61,12 +81,12 @@
               <div class="row m-0 pb-2">
                 <input
                   type="text"
-                  v-model="instructor.name"
+                  v-model="editedInstructor.name"
                   class="col text-field"
                 />
                 <input
                   type="text"
-                  v-model="instructor.pronouns"
+                  v-model="editedInstructor.pronouns"
                   class="col m-0 ml-3 text-field"
                 />
               </div>
@@ -79,17 +99,27 @@
               <div class="row m-0 pb-2">
                 <input
                   type="email"
-                  v-model="instructor.email"
+                  v-model="editedInstructor.email"
                   class="col m-0 text-field"
                 />
                 <input
                   type="password"
-                  v-model="instructor.password"
+                  v-model="editedInstructor.password"
                   class="col m-0 ml-3 text-field"
                 />
               </div>
+              <div class="row justify-content-center">
+              <p class="error"
+                :class="{ 
+                  'hidden': !this.showErrorMessage && !this.showSuccessfulMessage, 
+                  'red-text': this.showErrorMessage && !this.showSuccessfulMessage, 
+                  'green-text': this.showSuccessfulMessage && !this.showErrorMessage 
+                }">
+                {{ this.errorMessage }}
+              </p>
+            </div>
               <div class="row m-0 popup-btn">
-                <button @click="saveEdit" class="save-btn">Save</button>
+                <button @click="updateInstructor" class="save-btn">Save</button>
                 <button @click="cancelEdit" class="cancel-edit-btn">
                   Cancel
                 </button>
@@ -103,23 +133,26 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      instructors: [],
-      showEditConfirmation: false,
-      editedInstructor: null, // Hold the instructor being edited
-      instructor: {
-        imageURL: "",
-        defaultImage: require("@/assets/pfp.png"),
-        name: "",
-        pronouns: "",
-        email: "",
-        password: "",
-      },
-      instructors: [],
-    };
-  },
+  export default {
+    data() {
+      return {
+        showEditConfirmation: false,
+        editedInstructor: null, // Hold the instructor being edited
+        editedId: null,
+        instructor: {
+          imageURL: "",
+          defaultImage: require("@/assets/pfp.png"),
+          name: "",
+          pronouns: "",
+          email: "",
+          password: "",
+        },
+        instructors: [],
+        errorMessage: 'Empty fields for email, password or name are not valid',
+        showErrorMessage: false,
+        showSuccessfulMessage: false,
+      };
+    },
   mounted() {
       // Fetch accounts data when the component is created
       this.fetchInstructors();
@@ -147,8 +180,14 @@ export default {
             console.error('Error fetching accounts:', error);
         });
     },
-    showEditPopup(instructor) {
+    showCreatePopup() {
+
+    },
+    showEditPopup(instructor, id) {
       this.editedInstructor = { ...instructor }; // Copy account data
+      this.editedId = id;
+      console.log('edited id' + this.editedId);
+      this.editedInstructor.password = ""; // No password since encrypted
       this.showEditConfirmation = true; // Show edit popup
     },
     saveEdit() {
@@ -158,6 +197,51 @@ export default {
       this.editedInstructor = null; // Reset edited account
       this.showEditConfirmation = false; // Hide edit popup
     },
+    updateInstructor() {
+        // Create a JSON object with the data to be sent in the POST request
+        const requestBody = {
+            email: this.editedInstructor.email,
+            password: this.editedInstructor.password,
+            name: this.editedInstructor.name,
+            imageURL: this.editedInstructor.imageURL,
+            pronouns: this.editedInstructor.pronouns,
+        };
+
+        const requestOptions = {
+          method: "PUT",
+          credentials: "include",
+          body: JSON.stringify(requestBody),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: 'Basic ' + btoa(this.$cookies.get("username") + ':' + this.$cookies.get("password")),
+          },
+        };
+
+        const url = 'http://localhost:8080/instructors/' + this.editedId;
+        fetch(
+        url,
+        requestOptions
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.error === "") {
+            console.log("Instructor was saved:", data);
+            
+            this.saveEdit();
+            this.showErrorMessage = false;
+            this.fetchInstructors();
+          }
+          else {
+            this.errorMessage = data.error;
+            this.showErrorMessage = true;
+            this.showSuccessfulMessage = false;
+            console.log(data.error);
+          }
+        });
+
+    }
   },
 };
 </script>
@@ -169,6 +253,10 @@ h2 {
   font-size: 2rem;
   padding: 30px;
   padding-left: 0px;
+}
+
+.create-btn-container {
+  padding: 30px;
 }
 
 .container {
@@ -380,5 +468,21 @@ h2 {
 
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
   display: none;
+}
+
+.error {
+  font-size: .8em;
+}
+
+.red-text {
+  color: #F56363; 
+}
+
+.green-text {
+  color: #cdf567; 
+}
+
+.hidden {
+    visibility: hidden;
 }
 </style>
