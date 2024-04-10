@@ -2,7 +2,7 @@
     <div class="container-fluid p-0 m-0">
         <Toolbar />
         <div class="page pt-5 mt-5 row align-items-center justify-content-center">
-            <div class="row p-5 align-items-center mt-5">
+            <div class="row m-0 p-5 align-items-center mt-5">
                 <!-- Column 1 -->
                 <div class="col">
                     <div class="container justify-content-center-lg">

@@ -2,6 +2,9 @@
   <div class="solid-background">
     <div class="box">
       <div class="form-box">
+        <div class="title-container">
+          <h3 class="custom-h3">Edit course details below</h3>
+        </div>
         <form @submit.prevent="submitForm">
           <div class="form-group">
             <label>Image</label>     
@@ -10,7 +13,7 @@
           <div class="form-group flex-container">
             <div class="name">
               <label>Name</label>     
-              <input class="text-field" id="courseName" v-model="course.name" required>
+              <input class="text-field" id="courseName" v-model="capitalizedCourseName" required>
             </div>
             <div class="category">
               <label>Category</label>
@@ -21,18 +24,22 @@
             <label>Description</label>
             <textarea v-model="course.description" class="text-field-description"></textarea>
           </div>
-          <div class="form-group">
-            <label>Difficulty</label>
+          <div class="form-group flex-container">
             <div class="difficulty">
+              <label>Difficulty</label>
               <select v-model="course.difficulty" class="text-field">
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Advanced">Advanced</option>
               </select>
             </div>
+            <div class="price">
+              <label>Price per hour</label>
+              <input class="text-field" id="priceperhour" v-model="course.pricePerHour" required>
+            </div>
           </div>
           <div class="buttons">
-            <button id="save-btn" type="submit">Send</button>
+            <button id="save-btn" type="submit">Save</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
           </div>
         </form>
@@ -43,85 +50,80 @@
 
 <script>
 export default {
-  data() {
-    return {
-      course: {
-        name: "",
-        category: "",
-        description: "",
-        difficulty: "",
-        status: "",
-        priceperhour: 0,
-        url: ""
-      },
-    };
+  props: {
+    course: Object 
   },
   methods: {
     submitForm() {
-      const username = decodeURIComponent(this.$cookies.get('username'));
-      const password = this.$cookies.get('password');
 
-      console.log('Username:', username);
-      console.log('Password:', password);
-
-      if (username && password) {
-        const formData = {
-          name: this.course.name,
-          category: this.course.category,
-          description: this.course.description,
-          difficulty: this.course.difficulty,
-          status: "Pending",
-          pricePerHour: this.course.priceperhour,
-          url: this.course.url
-        };
-
-        console.log('Form Data:', formData);
-
-        fetch('http://127.0.0.1:8080/courses', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(decodeURIComponent(this.$cookies.get('username')) + ':' + this.$cookies.get('password'))
-          },
-          credentials: 'include', 
-          body: JSON.stringify(formData)
-        })
-        .then(response => {
-          console.log('Response Status:', response.status);
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Course created:', data);
-          this.resetForm();
-        })
-        .catch(error => {
-          console.error('Error creating course:', error);
-        });
-      } else {
-        console.error('User not authenticated');
-      }
     },
     cancelForm() {
-      this.resetForm();
+
     },
-    resetForm() {
-      this.course = {
-        name: "",
-        category: "",
-        description: "",
-        difficulty: "",
-        priceperhour: 0,
-        url: ""
-      };
+    capitalizeWords(text) {
+      return text.replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+      });
     },
+    submitForm() {
+  const username = decodeURIComponent(this.$cookies.get('username'));
+  const password = this.$cookies.get('password');
+
+  console.log('Username:', username);
+  console.log('Password:', password);
+
+  if (username && password) {
+    const courseId = this.course.id; // Assuming you have access to the course ID
+    const formData = {
+      id: courseId,
+      name: this.course.name,
+      category: this.course.category,
+      description: this.course.description,
+      difficulty: this.course.difficulty,
+      status: this.course.status,
+      pricePerHour: this.course.priceperhour,
+      url: this.course.url
+    };
+
+    console.log('Form Data:', formData);
+
+    fetch(`http://127.0.0.1:8080/courses/${courseId}`, { // Use PUT method and include the course ID in the URL
+      method: 'PUT', // Change method to PUT
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(username + ':' + password)
+      },
+      credentials: 'include', 
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      console.log('Response Status:', response.status);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Course updated:', data);
+    })
+    .catch(error => {
+      console.error('Error updating course:', error);
+    });
+  } else {
+    console.error('User not authenticated');
+  }
+}, 
+    cancelForm() {
+      this.$emit('close'); // Emit a close event
+    }
   },
+  computed: {
+    capitalizedCourseName() {
+      return this.capitalizeWords(this.course.name);
+    }
+  }
 };
 </script>
-
-
 
 <style scoped>
 .solid-background {
@@ -242,11 +244,8 @@ button:hover {
 
 .name,
 .category,
+.difficulty,
 .price {
   width: 48%; /* Adjust width as needed */
-}
-
-.difficulty{
-  width: 100%;
 }
 </style>

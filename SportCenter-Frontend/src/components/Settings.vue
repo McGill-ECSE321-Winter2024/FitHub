@@ -13,9 +13,9 @@
         <div
           class="sidebar p-0 m-3"
         >
-          <h2>
+          <h1>
             Settings
-          </h2>
+          </h1>
           <!-- Adjust font size here -->
           <ul>
             <!-- Edit Profile Button -->
@@ -78,6 +78,16 @@
             >
               My sessions
             </li>
+
+                        <li
+              @click="toggleMenu('CreateUpdateSessions')"
+              :class="{
+                'menu-item-selected': currentTab === 'CreateUpdateSessions',
+              }"
+              class="menu-item"
+            >
+              Manage sessions
+            </li>
             <!-- Propose Courses Button -->
             <li
               @click="toggleMenu('ProposeCourse')"
@@ -87,6 +97,15 @@
               class="menu-item"
             >
               Propose courses
+            </li>
+              <li
+              @click="toggleMenu('UpdateCourses')"
+              :class="{
+                'menu-item-selected': currentTab === 'UpdateCourses',
+              }"
+              class="menu-item"
+            >
+              Manage courses
             </li>
             <!-- Billing Account Button -->
             <li
@@ -109,35 +128,35 @@
       >
         <!-- Edit Profile -->
         <div v-if="currentTab === 'EditProfile'">
-          <h2>
-            Edit profile
-          </h2>
 
           <!-- Properties and text fields -->
           <div class="container content">
+            <h2>
+              Edit profile
+            </h2>
 
             <img class="row mt-3 mx-auto" :src="profile.imageURL"
                                       @error="$event.target.src = profile.defaultImage" 
                                       :style="{ 'width': '80px', 'height': 'auto'}" />
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div style="font-weight: bold">Image URL</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="text" v-model="profile.imageURL" class="text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Name</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Pronouns</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="text" v-model="profile.name" class="col text-field" />
               <input type="text" v-model="profile.pronouns" class="col m-0 ml-3 text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Email</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Password</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="email" v-model="profile.email" class="col text-field" />
               <input type="password" v-model="profile.password" class="col m-0 ml-3 text-field" />
             </div>
@@ -162,9 +181,23 @@
           <OwnerCourses />
         </div>
 
+        <!-- Manage Instructors Settings -->
+        <div v-else-if="currentTab === 'ManageInstructors'">
+          <ManageInstructors class="container content" />
+        </div>
+
+        <!-- Manage Locations Settings -->
+        <div v-else-if="currentTab === 'ManageLocations'">
+          <ManageLocations class="container content" />
+        </div>
+
         <!-- My Sessions Settings -->
         <div v-else-if="currentTab === 'MySessions'">
           <CustomerSessions />
+        </div>
+
+        <div v-else-if="currentTab === 'CreateUpdateSessions'">
+          <CreateUpdateSessions />
         </div>
 
         <!-- Billing Account Settings -->
@@ -176,34 +209,39 @@
           <ProposeCourse />
         </div>
 
+        <div v-else-if="currentTab === 'UpdateCourses'">
+          <UpdateCourses />
+        </div>
+
+
         <!-- Sport Center Settings -->
         <div v-else-if="currentTab === 'EditSportCenter'">
-          <h2>
-            Edit sport center
-          </h2>
           <!-- Properties and text fields -->
           <div class="container content">
-            <div class="row  pb-2">
+            <h2>
+              Edit sport center
+            </h2>
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Name</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Email</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="name" v-model="sportCenter.name" class="col m-0 text-field" />
               <input type="name" v-model="sportCenter.email" class="col m-0 ml-3 text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Phone number</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Address</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input type="name" v-model="sportCenter.phoneNumber"  class="col m-0 text-field"/>
               <input type="name" v-model="sportCenter.address"  class="col m-0 ml-3 text-field" />
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <div class="col p-0 " style="font-weight: bold">Opening Time</div>
               <div class="col p-0 ml-3" style="font-weight: bold">Closing Time</div>
             </div>
-            <div class="row  pb-2">
+            <div class="row m-0 pb-2">
               <input class="timepicker text-field col p-0" type="time" v-model="sportCenter.openingTime"></input>
               <input class="timepicker text-field col p-0 ml-3" type="time" v-model="sportCenter.closingTime"></input>
             </div>
@@ -230,10 +268,13 @@
 <script>
 // Import OwnerProfileSettings and OwnerSportCenterSettings components
 import OwnerCourses from "./OwnerCourses.vue";
-import BillingAccount from "./BillingAccount.vue";
 import BillingAccountOverview from "./BillingAccountOverview.vue";
 import CustomerSessions from "./CustomerSessions.vue";
 import ProposeCourse from "./ProposeCourse.vue";
+import UpdateCourses from "./UpdateCourses.vue";
+import CreateUpdateSessions from "./CreateUpdateSessions.vue";
+import ManageInstructors from "./ManageInstructors.vue";
+import ManageLocations from "./Location.vue";
 
 export default {
   name: "ProfileSettings",
@@ -242,6 +283,10 @@ export default {
     BillingAccountOverview,
     CustomerSessions,
     ProposeCourse,
+    UpdateCourses,
+    CreateUpdateSessions,
+    ManageInstructors,
+    ManageLocations
     // Add more components as needed
   },
   mounted() {
@@ -475,10 +520,17 @@ export default {
     color: var(--color-black) !important;
 }
 
+h1 {
+  color: #ffffff; 
+  font-size: 2rem;
+  padding: 30px;
+}
+
 h2 {
   color: #ffffff; 
-  font-size: 2em;
+  font-size: 2rem;
   padding: 30px;
+  padding-left: 0px;
 }
 
 .toolbar-container {
@@ -491,7 +543,8 @@ h2 {
 }
 
 .content {
-  width: 80%;
+  padding: 0px;
+  width: 90%;
   color: #ffffff;
 }
 
@@ -501,7 +554,7 @@ h2 {
 
 .sidebar {
   border-radius: 10px;
-  background-color: #232323;
+  background-color: #343434;
 }
 
 .sidebar ul {
@@ -535,7 +588,7 @@ h2 {
 }
 
 .menu-item-selected {
-  background-color: #444;
+  background-color: #505050;
 }
 
 .main-content {
@@ -558,7 +611,7 @@ h2 {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #444; /* Set initial border color to gray */
+  border: 1px solid #7d7d7d; /* Set initial border color to gray */
   background-color: transparent;
   color: #ffffff;
   height: 50px;
@@ -566,7 +619,7 @@ h2 {
   transition: border-color 0.1s ease-in-out, font-weight 0.1s ease-in-out,
     border-width 0.1s ease-in-out; /* Add transition effect */
   font-weight: normal; /* Set default font weight */
-  border-width: 1px; /* Set initial border width */
+  border-width: 2px; /* Set initial border width */
 }
 
 .text-field:focus,
@@ -576,11 +629,18 @@ h2 {
 }
 
 .text-field:focus {
-  border-width: 2px; /* Increase border width on hover or focus */
+  border-width: 4px; /* Increase border width on hover or focus */
 }
 
 .text-field[type="time"]::-webkit-datetime-edit-second-field {
   display: none;
+}
+
+.update-courses-container {
+  flex-grow: 1; /* Ensure the container takes up remaining space */
+  overflow: auto; /* Enable scrolling if content exceeds container height */
+  padding: 60px; /* Add padding to the container */
+  text-align: left; /* Align content to the left */
 }
 
 /* Target the clock icon */

@@ -3,10 +3,8 @@
 
 <div class="solid-background">
 
-<div class="text-content">
-    <h1 class="custom-h1">My Locations</h1>
-    <h4>Manage the rooms of your sport center</h4>
-</div>
+<h2>Manage locations</h2>
+<h4>Manage the rooms of your sport center</h4>
 
 <div class="table">
     <table>
@@ -116,11 +114,11 @@ export default {
         },
         async createLocation() {
             
-            //This needs to be modified with the cookies
-            const LOGIN_EMAIL = "@";
-            const LOGIN_PASSWORD = "password";
+            const username = decodeURIComponent(this.$cookies.get('username'));
+            const password = this.$cookies.get('password');
+
             const headers = new Headers();
-            headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
+            headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
             headers.append('Content-Type', 'application/json');
 
             const newLocation = {
@@ -134,6 +132,7 @@ export default {
               body: JSON.stringify(newLocation),
               headers: headers
             };
+
             console.log("The floor is " + newLocation.floor);
             console.log("The room is " + this.newLocationRoom);
       
@@ -148,6 +147,8 @@ export default {
               .then(data => {
                 // Automatically refresh the data after creating a new location
                 this.getAllLocations();
+                this.toDeleteLocationRoom =null;
+                this.toDeleteLocationFloor = null;
                 
               })
               .catch(error => {
@@ -157,11 +158,11 @@ export default {
         },
         async deleteLocation() {
 
-            //This needs to be modified with the cookies, will be done later
-            const LOGIN_EMAIL = "@";
-            const LOGIN_PASSWORD = "password";
+            const username = decodeURIComponent(this.$cookies.get('username'));
+            const password = this.$cookies.get('password');
+
             const headers = new Headers();
-            headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
+            headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
             headers.append('Content-Type', 'application/json');
 
             const toDeleteLocation = {
@@ -189,7 +190,9 @@ export default {
             .then(data => {
                 // Automatically refresh the data after creating a new location
                 this.getAllLocations();
-                console.log(data)
+                console.log(data);
+                this.newLocationRoom = null; // Clear the input field
+                this.newLocationFloor = null; // Clear the input field
             })
             .catch(error => {
                 console.error('Error creating locations:', error);
@@ -212,17 +215,7 @@ export default {
 
 .solid-background {
   background-color: #121212;
-  height: 100vh;
-  width: 100vw;
   overflow: auto;
-}
-
-.custom-h1 {
-  display: flex;
-  justify-content: center;
-  margin-top: 200px; 
-  color: #ffffff;
-  font-size: 45px;
 }
 
 
@@ -245,6 +238,14 @@ export default {
   display: flex;
   justify-content: center;
 }
+
+h2 {
+  color: #ffffff; 
+  font-size: 2rem;
+  padding: 30px;
+  padding-left: 0px;
+}
+
 h3 {
   display: flex;
   justify-content: center;

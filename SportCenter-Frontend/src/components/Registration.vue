@@ -2,14 +2,14 @@
     <div class="container-fluid p-0 m-0">
         <Toolbar />
         <div class="page mt-5 pt-5 row align-items-start justify-content-center">
-            <div class="row align-items-center p-5 mt-5">
+            <div class="row m-0 p-0 align-items-center p-5 mt-5">
                 <!-- Column 1 -->
                 <div class="col">
                     <h1 class="mb-xl-5">Break the routine</h1>
                 </div>
         
                 <!-- Column 2 -->
-                <div class="col ">
+                <div class="col p-0 m-0">
                 <form class="form-group">
                     <div class="container justify-content-center">
                         <div class="row mt-xl-3 my-3 mr-xl-5">
@@ -68,7 +68,7 @@ export default {
             imageURL: '',
             pronouns: '',
             errorMessage: 'Invalid email or password', // Initialize error message
-            showErrorMessage: false
+            showErrorMessage: false,
         };
     },
     methods: {
