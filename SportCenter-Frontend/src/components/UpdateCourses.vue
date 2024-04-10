@@ -1,14 +1,22 @@
 <template>
-  <div class="solid-background">
+   <div class="solid-background">
     <!-- Toolbar and search bar -->
-    <div class="text-search-bar">
+    <div class="text-search-bar" :class="{ 'blur-background': isPopupOpen }">
       <div class="text-content" style="text-align: left">
-        <h1 class="custom-h1">Approve or disapprove course</h1>
-        <h3 class="custom-h3">Approve or disapprove courses which instructors have proposed.</h3>
+        <h1 class="custom-h1">Manage courses</h1>
+        <h3 class="custom-h3">Edit or delete courses from the center.</h3>
       </div>
     </div>
 
-    <div class="mt-5">
+    <!-- Display the UpdateCourseForm component when the icon is clicked -->
+    <UpdateCourseForm 
+        v-if="showUpdateForm" 
+        :course="selectedCourse" 
+        @close="closeUpdateCourseForm" 
+        style="z-index: 9999; position: absolute; top: 50px; left: 50%; transform: translateX(-50%);"
+    />
+
+    <div class="mt-5 " :class="{ 'blur-background': isPopupOpen }"> 
       <div class="row">
         <div
           class="col-md-5 col-lg-3 col-sm-12 mb-5"
@@ -26,12 +34,17 @@
             <p>{{ course.description }}</p>
 
             <div class="buttons">
-              <button @click="approveCourse(course.id)" class="approve">
-                Approve
-              </button>
-              <button @click="disapproveCourse(course.id)" class="disapprove">
-                Disapprove
-              </button>
+              <!-- Display the pencil icon and bind the click event to openUpdateCourseForm method -->
+              <b-icon
+                icon="pencil-fill"
+                @click="openUpdateCourseForm(course)"
+                class="pencil-icon"
+              ></b-icon>
+              <b-icon
+                icon="trash-fill"
+                @click="deleteCourse(course.id)"
+                class="disapprove"
+              ></b-icon>
             </div>
           </div>
         </div>
@@ -41,6 +54,9 @@
 </template>
 
 <script>
+// Import the UpdateCourseForm component
+import UpdateCourseForm from "./UpdateCourseForm.vue";
+
 export default {
   name: "Courses",
   data() {
@@ -49,6 +65,8 @@ export default {
       hoveredCardColor: "",
       username: "",
       password: "",
+      showUpdateForm: false, // Add a data property to track whether to show the UpdateCourseForm
+      selectedCourse: null, // Add a data property to store the selected course
     };
   },
   mounted() {
@@ -64,7 +82,7 @@ export default {
       };
 
       fetch(
-        "http://127.0.0.1:8080/public/courses?status=Pending",
+        "http://127.0.0.1:8080/public/courses",
         requestOptions
       )
         .then((response) => {
@@ -84,75 +102,71 @@ export default {
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
-    approveCourse(courseId) {
+    deleteCourse(courseId) {
+      const username = decodeURIComponent(this.$cookies.get('username'));
+      const password = this.$cookies.get('password');
+
       const requestOptions = {
-        method: "PUT",
+        method: "DELETE", 
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
+          'Authorization': 'Basic ' + btoa(username + ':' + password),
         },
       };
 
       fetch(
-        `http://127.0.0.1:8080/course-approval/${courseId}?value=1`,
+        `http://127.0.0.1:8080/courses/${courseId}`, 
         requestOptions
       )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Course approved:", data);
+          console.log("Course deleted successfully");
           this.getAllCourses(); // Refresh the courses list
         })
         .catch((error) => {
-          console.error("Error approving course:", error);
+          console.error("Error deleting course:", error);
         });
-    },
-    disapproveCourse(courseId) {
-      const requestOptions = {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: 'Basic ' + btoa(this.username + ':' + this.password),
         },
-      };
-
-      fetch(
-        `http://127.0.0.1:8080/course-disapproval/${courseId}`,
-        requestOptions
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Course disapproved:", data);
-          this.getAllCourses(); // Refresh the courses list
-        })
-        .catch((error) => {
-          console.error("Error disapproving course:", error);
-        });
+    openUpdateCourseForm(course) {
+        console.log("Opening UpdateCourseForm for course:", course);
+        this.selectedCourse = course;
+        this.showUpdateForm = true; 
+        this.isPopupOpen = true; 
     },
+    closeUpdateCourseForm() {
+        this.showUpdateForm = false; 
+        this.isPopupOpen = false; 
+    },
+  },
+  components: {
+    UpdateCourseForm, 
   },
 };
 </script>
 
-
-
 <style scoped>
+.pencil-icon {
+  color: #CDF563; 
+  font-size: 20px;
+  cursor: pointer; 
+  margin-right: 25px; 
+}
+
+.pencil-icon:hover {
+  color: #fff; 
+}
+
+/* Add styles for the UpdateCourseForm */
 .solid-background {
   background-color: var(--color-black);
   height: 100vh;
   width: 70vw;
   overflow: auto;
   margin-left: -30px;
+  position: relative; /* Set the position to relative for proper positioning of the absolute element */
 }
 
 .custom-h1 {
@@ -200,28 +214,33 @@ body {
 }
 
 .approve{
-    border: 0px;
-    background-color: #CDF563;
-    color: var(--color-black);
-    font-weight: bold;
-    border-radius: 20px;
-    height: 40px;
-    width: 100px;
+  border: 0px;
+  background-color: #CDF563;
+  color: var(--color-black);
+  font-weight: bold;
+  border-radius: 20px;
+  height: 40px;
+  width: 100px;
 }
 
 .disapprove {
-    margin-left: 10px;
-    border: 0px;
-    background-color: #EC5545;
-    color: var(--color-black);
-    font-weight: bold;
-    border-radius: 20px;
-     height: 40px;
-    width: 100px;
+  color: #EC5545;
+  font-size: 20px;
+  cursor: pointer; 
+  margin-right: 25px; 
+}
+
+.disapprove:hover {
+  color: #fff; 
+}
+
+.blur-background {
+  filter: blur(2px);
 }
 
 .buttons {
   display: flex;
   justify-content: center;
+  align-items:center;
 }
 </style>
