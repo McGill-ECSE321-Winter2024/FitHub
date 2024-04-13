@@ -38,3 +38,13 @@ To access the Home of our project, please consult this [wiki page](https://githu
 | Émilia Gagné   | 35              |
 | Julia Grenier  | 35              |
 
+## Deliverable 3 - Overview of individual effort
+
+| Name           | Individual Effort |
+| -------------- | ----------------- |
+| Anjali Singhal | 45              |
+| Sahar Fathi    | 45              |
+| James Luu      | 45              |
+| Tayba Jusab    | 45              |
+| Émilia Gagné   | 45              |
+| Julia Grenier  | 45              |
