@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css?family=Figtree:300,400,500,600,700,800,900');
+* {
+    font-family: "Figtree", sans-serif;
+}
+
+html {
+    height: 100%;
+}
+:root{
+    --color-white: #FFFFFF;
+    --color-black: #121212;
+    --color-muted-black: #837e7e;
+    --color-muted-muted-black: rgb(145, 137, 137);
+    --color-pink: #FFD0D6;
+    --color-salmon: #FB7EA8;
+    --color-sunflower: #FFBC4B;
+    --color-purple: #6900BA;
+    --color-yellow: #FFE818;
+    --color-green: #CDF567;
+    --color-azure: #3E8EF1;
+    --color-storm: #A4C9D8;
+    --color-red: #EC5545;
+}
+
+body {
+  font-weight: 700;
+  font-style: normal;
+  color: var(--color-black);
+  background-color: white;
+  height: 100%;
+}
+
+
+h1 {
+    /* Used for big headings of Sign In and Registration */
+    font-weight: 700;
+    font-size: 5rem;
+    text-align: left;
+}
+
+/* Used for headings at the beginning of the page like Our Courses, Our Instructors, etc */
+h2 {
+    font-size: 28px;
+    text-align: justify;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: var(--color-black) !important;
+}
+
+.nav-link:hover {
+    color: var(--color-muted-black) !important;
+}
+
+.btn {
+    border-radius: 20px !important;
+    font-weight: 600;
+}
+
+.btn-primary {
+    border-color: #524E5E !important;
+    background-color: #524E5E !important;
+    color: #FFFFFF !important;
+}
+
+.btn-secondary {
+    border-color: #F9F9F9 !important;
+    background-color: #F9F9F9 !important;
+    color: #524E5E !important;
+}
+
+.btn-animation {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    transition: background-color 0.3s ease; /* Transition effect for background */
+}
+.btn-animation:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Increase opacity on hover */
+    color: white;
+}
+
+
+.btn-outline {
+    border-color: #524E5E !important;
+    color: #524E5E !important;
+}
+
+.btn-outline:hover {
+    background-color: #524E5E !important;
+    color: #FFFFFF !important;
+}
+
+/* Form style */
+.form-control:valid {
+    background: transparent;
+    border: white;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-style: solid;
+    border-width: 2px;
+    padding: 20px;
+}
+
+.form-control::placeholder {
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.form-control::-ms-input-placeholder {
+    /* Edge 12 -18 */
+    color: white;
+}
+
+.form-control:focus {
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.075), 0 0 8px rgba(255, 255, 255, 0.6);
+}
