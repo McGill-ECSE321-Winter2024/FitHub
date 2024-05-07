@@ -4,7 +4,8 @@
 
 This web application facilitates the management of a local sport center. It provides a platform for the owner and instructor to schedule different types of classes and allows customers to register for specific sessions.
 
-To access the Home of our project, please consult this [wiki page](https://github.com/McGill-ECSE321-Winter2024/project-group-12/wiki).
+Click here for [screenshots](https://github.com/McGill-ECSE321-Winter2024/FitHub/wiki/Screenshots) of our application.<br>
+To access the Home of our project, please consult this [wiki page](https://github.com/McGill-ECSE321-Winter2024/project-group-12/wiki).<br>
 
 ## Team Members
 
