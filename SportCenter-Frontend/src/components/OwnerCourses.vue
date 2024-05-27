@@ -189,6 +189,7 @@ export default {
     cancelPopup() {
       // Hide the popup when cancel is clicked
       this.showPopup = false;
+      this.pricePerHour = "";
     },
   },
 };

@@ -154,6 +154,7 @@ export default {
     closeUpdateCourseForm() {
       this.showUpdateForm = false;
       this.isPopupOpen = false;
+      this.getAllCourses(); 
     },
     updateCourse(formData) {
       console.log("Updating course with data:", formData);

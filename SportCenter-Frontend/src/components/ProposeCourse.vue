@@ -8,7 +8,6 @@
 
     <div class="box">
       <div class="form-box">
-        <form @submit.prevent="submitForm">
           <div class="form-group">
             <label>Image</label>     
             <input class="text-field" id="url" v-model="course.url" required>
@@ -41,7 +40,6 @@
             <button id="save-btn" type="submit">Send</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
           </div>
-        </form>
       </div>
     </div>
   </div>

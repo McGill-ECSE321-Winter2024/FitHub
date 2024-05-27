@@ -5,7 +5,7 @@
         <div class="title-container">
           <h3 class="custom-h3">Edit course details below</h3>
         </div>
-        <form>
+        <form @submit.prevent="submitForm">
           <div class="form-group">
             <label>Image</label>     
             <input class="text-field" id="url" v-model="course.url" required>
@@ -13,7 +13,7 @@
           <div class="form-group flex-container">
             <div class="name">
               <label>Name</label>     
-              <input class="text-field" id="courseName" v-model="capitalizedCourseName" required>
+              <input class="text-field" id="courseName" v-model="course.name" required>
             </div>
             <div class="category">
               <label>Category</label>
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="buttons">
-            <button id="save-btn" type="submit" @click="submitForm">Save</button>
+            <button id="save-btn" type="submit">Save</button>
             <button id="cancel-btn" type="button" @click="cancelForm">Cancel</button>
           </div>
         </form>
@@ -53,77 +53,66 @@ export default {
   props: {
     course: Object 
   },
-  mounted()  {
-    console.log(this.course.name);
-  },
   methods: {
-    capitalizeWords(text) {
-      return text.replace(/\b\w/g, function(char) {
-        return char.toUpperCase();
-      });
-    },
     submitForm() {
-  const username = decodeURIComponent(this.$cookies.get('username'));
-  const password = this.$cookies.get('password');
+      const username = decodeURIComponent(this.$cookies.get('username'));
+      const password = this.$cookies.get('password');
 
-  console.log('Username:', username);
-  console.log('Password:', password);
+      console.log('Username:', username);
+      console.log('Password:', password);
 
-  if (username && password) {
-    const courseId = this.course.id; // Assuming you have access to the course ID
-    const formData = {
-      id: courseId,
-      name: this.course.name.toLowerCase(),
-      category: this.course.category,
-      description: this.course.description,
-      difficulty: this.course.difficulty,
-      status: this.course.status,
-      pricePerHour: this.course.pricePerHour,
-      url: this.course.url,
-      center: this.course.center
-    };
+      if (username && password) {
+        const courseId = this.course.id; // Assuming you have access to the course ID
+        const formData = {
+          id: courseId,
+          name: this.course.name,
+          category: this.course.category,
+          description: this.course.description,
+          difficulty: this.course.difficulty,
+          status: this.course.status,
+          pricePerHour: this.course.pricePerHour,
+          url: this.course.url,
+          center: this.course.center
+        };
 
-    console.log('Form Data:', formData);
-    console.log(this.course.pricePerHour);
+        console.log('Form Data:', formData);
+        console.log(this.course.pricePerHour);
 
-    fetch(`http://127.0.0.1:8080/courses/${courseId}`, { // Use PUT method and include the course ID in the URL
-      method: 'PUT', // Change method to PUT
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(username + ':' + password)
-      },
-      credentials: 'include', 
-      body: JSON.stringify(formData)
-    })
-    .then(response => {
-      console.log('Response Status:', response.status);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+        fetch(`http://127.0.0.1:8080/courses/${courseId}`, { // Use PUT method and include the course ID in the URL
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + btoa(username + ':' + password)
+          },
+          credentials: 'include', 
+          body: JSON.stringify(formData)
+        })
+        .then(response => {
+          console.log('Response Status:', response.status);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Course updated:', data);
+          this.$emit('close'); // Emit a close event
+          
+        })
+        .catch(error => {
+          console.error('Error updating course:', error);
+        });
+      } else {
+        console.error('User not authenticated');
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Course updated:', data);
-      this.$emit('close'); // Emit a close event
-    })
-    .catch(error => {
-      console.error('Error updating course:', error);
-    });
-  } else {
-    console.error('User not authenticated');
-  }
-}, 
+    },
     cancelForm() {
       this.$emit('close'); // Emit a close event
     }
-  },
-  computed: {
-    capitalizedCourseName() {
-      return this.capitalizeWords(this.course.name);
-    }
-  },
+  }
 };
 </script>
+
 
 <style scoped>
 .solid-background {
