@@ -38,15 +38,14 @@
               class="w-100 h-100"
               style="margin-bottom: 10px"
             />
-          </div>
-          <h3>
-            <h3>
-              <span class="white-heading"
-                >{{ course.category }}, {{ course.pricePerHour }}$/hour</span
-              >
-            </h3>
-          </h3>
-          <div>
+                <div class="category-price">
+                  <h3>
+                    <span class="white-heading">{{ course.category.toUpperCase() }},  {{ course.pricePerHour }}$/hour</span>
+                  </h3>
+                </div>
+                <div class="difficulty" :style="{ backgroundColor: getColorDifficulty(course.difficulty) }">
+                  {{ course.difficulty }}
+                </div>
             <h3>{{ capitalize(course.name) }}</h3>
             <p>{{ course.description }}</p>
 
@@ -117,6 +116,19 @@ export default {
           console.error("Error fetching courses:", error);
         });
     },
+        getColorDifficulty(difficulty) {
+      switch (difficulty) {
+        case 'Advanced':
+          return '#E3240C';
+        case 'Intermediate':
+          return '#FF5746';
+        case 'Beginner':
+          return '#CDF563';
+        default:
+          return '';
+      }
+    },
+
     capitalize(str) {
       return str.replace(/\b\w/g, (char) => char.toUpperCase());
     },
@@ -217,6 +229,15 @@ export default {
   color: var(--color-black);
   background-color: #cdf563;
   font-weight: 700;
+}
+
+.difficulty {
+  font-size: 14px;
+  color: var(--color-black);
+  font-weight: 700;
+  padding: 1%;
+  width: 95px;
+  margin-bottom: 10px;
 }
 
 h3 {

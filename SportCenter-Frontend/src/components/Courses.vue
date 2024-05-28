@@ -22,8 +22,13 @@
                 <img :src="course.url" :alt="course.name" class="w-100 h-100">
               </div>
               <div class="content">
-              <div class="category-price">
-                <h3><span class="white-heading">{{ course.category.toUpperCase() }},  {{ course.pricePerHour }}$/hour</span></h3>
+                <div class="category-price">
+                  <h3>
+                    <span class="white-heading">{{ course.category.toUpperCase() }},  {{ course.pricePerHour }}$/hour</span>
+                  </h3>
+                </div>
+                <div class="difficulty" :style="{ backgroundColor: getColorDifficulty(course.difficulty) }">
+                  {{ course.difficulty }}
                 </div>
                 <div>
                   <h3 class="custom-h3">{{ capitalize(course.name) }}</h3>
@@ -39,9 +44,8 @@
   </div>
 </template>
 
-
 <script>
-import ProposeCourse from './ProposeCourse.vue'; 
+import ProposeCourse from './ProposeCourse.vue';
 
 export default {
   name: 'Courses',
@@ -80,7 +84,7 @@ export default {
           console.error('Error fetching courses:', error);
         });
     },
-    getBorderColor(difficulty) {
+    getColorDifficulty(difficulty) {
       switch (difficulty) {
         case 'Advanced':
           return '#E3240C';
@@ -100,8 +104,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .solid-background {
   background-color: var(--color-black);
   height: 100vh;
@@ -111,7 +113,6 @@ export default {
 }
 
 .category-price {
-
   align-items: center;
   width: 100%;
   height: 100%;
@@ -132,14 +133,13 @@ export default {
   color: black; /* Fill color */
 }
 
-
 .interests {
   color: #CDF563;
   padding: 0 5px; /* Adjust padding as needed */
 }
 
 .content {
-    text-align: left;
+  text-align: left;
 }
 
 .custom-h3 {
@@ -183,6 +183,15 @@ export default {
   background-color: #CDF563;
   font-weight: 700;
   padding: 1%;
+}
+
+.difficulty {
+  font-size: 14px;
+  color: var(--color-black);
+  font-weight: 700;
+  padding: 1%;
+  width: 95px;
+  margin-bottom: 10px;
 }
 
 p {
