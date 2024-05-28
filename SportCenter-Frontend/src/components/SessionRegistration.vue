@@ -1,7 +1,7 @@
 <template>
     <div>
         <Toolbar />
-        <div id="registration_page">
+        <div id="registration_page" v-if="!noSessions">
             <div class="row mt-5 pb-5">
                 <div class="col ml-5 mr-5">
                     <img :src="this.sessions[0].course.url" :alt="this.sessions[0].course.name" width="300px"
@@ -46,9 +46,17 @@
             </div>
         </div>
 
+        <div v-else class="container-text-content">
+        <div class="text-content">
+            <h1 class="custom-h1"> Apologies!</h1>
+            <h3 class="custom-h3">No sessions of this class currently exist.</h3>
+            <h3 class="custom-h3">Please verify again later.</h3>
+        </div>
+        </div>
+
         <div class="popup" v-if="showSuccessConfirmation">
             <div class="popup-content">
-                <p>You have succesfully been registered!</p>
+                <p>You have successfully been registered!</p>
                 <button class="popup-button" @click="closePopup" style="color: var(--color-azure)">OK</button>
             </div>
         </div>
@@ -71,11 +79,13 @@
 </template>
 
 <script>
+
 export default {
     props: ['cId'],
     data() {
         return {
             sessions: [],
+            noSessions: false,
             showSuccessConfirmation: false,
             showError: false,
             showNoCookies: false
@@ -88,9 +98,6 @@ export default {
         fetchSessions() {
             const LOGIN_EMAIL = "@";
             const LOGIN_PASSWORD = "password";
-            // const headers = new Headers();
-            // headers.append('Authorization', 'Basic ' + btoa(LOGIN_EMAIL + ':' + LOGIN_PASSWORD));
-            // headers.append('Content-Type', 'application/json');
 
             fetch(`http://127.0.0.1:8080/sessions/courses/${this.cId}`, {
                 method: 'GET',
@@ -102,10 +109,12 @@ export default {
             }).then((sessionsResponse) => {
                 if (sessionsResponse.status === 204) {
                     console.log("No sessions for this course in database");
+                    this.noSessions = true;
                 }
                 else {
                     sessionsResponse.json().then(sessions => {
                         this.sessions = sessions.sessions;
+                        this.noSessions = this.sessions.length === 0;
                         console.log(this.sessions);
                     }).catch(error => {
                         console.error('Error parsing JSON:', error);
@@ -120,12 +129,7 @@ export default {
             const username = decodeURIComponent(this.$cookies.get('username'));
             const password = this.$cookies.get('password');
 
-            console.log('Username:', username);
-            console.log('Password:', password);
-
             if (username && password) {
-                console.log('Session ID: ', sessionId);
-                console.log('Customer ID: ', this.$cookies.get('id'));
                 const customerId = this.$cookies.get('id');
 
                 fetch(`http://127.0.0.1:8080/registrations?customerId=${customerId}&sessionId=${sessionId}`, {
@@ -137,22 +141,18 @@ export default {
                     credentials: 'include',
                 })
                     .then(response => {
-                        console.log('Response Status:', response.status);
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
                         }
                         return response.json();
                     })
                     .then(data => {
-                        console.log('Registration created:', data);
                         this.showSuccessConfirmation = true;
                     })
                     .catch(error => {
-                        console.error('Error creating registration:', error);
                         this.showError = true;
                     });
             } else {
-                console.error('User not authenticated');
                 this.showNoCookies = true;
             }
         },
@@ -184,6 +184,30 @@ export default {
     width: 100vw;
     overflow: auto;
 }
+.container-text-content {
+  background-color: var(--color-azure);
+  height: 65vh;
+  width: 100vw;
+  overflow: auto;
+  display: flex;            
+  justify-content: center;  
+  align-items: center;     
+  flex-direction: column;   
+  text-align: left;       
+}
+
+.custom-h1 {
+  font-size: 2.5em;
+  color: black; 
+  margin-bottom: 20px;
+}
+
+.custom-h3 {
+  font-size: 1.5em;
+  color: black;
+}
+
+
 
 .course-image {
     border-radius: 5px;
