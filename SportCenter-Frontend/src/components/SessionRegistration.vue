@@ -48,9 +48,9 @@
 
         <div v-else class="container-text-content">
         <div class="text-content">
-            <h1 class="custom-h1"> Apologies!</h1>
-            <h3 class="custom-h3">No sessions of this class currently exist.</h3>
-            <h3 class="custom-h3">Please verify again later.</h3>
+            <h1 class="custom-h1"> Sorry!</h1>
+            <h3 class="custom-h3">No sessions of this course exist.</h3>
+            <h3 class="custom-h3">Please check again later.</h3>
         </div>
         </div>
 
