@@ -186,8 +186,8 @@ export default {
 }
 .container-text-content {
   background-color: var(--color-azure);
+  width: 100%;
   height: 65vh;
-  width: 100vw;
   overflow: auto;
   display: flex;            
   justify-content: center;  

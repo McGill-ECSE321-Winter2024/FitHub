@@ -18,4 +18,6 @@ export default {
   text-align: center;
   color: var(--color-black);
 }
+
+
 </style>
